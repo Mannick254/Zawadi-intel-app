@@ -1,0 +1,57 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f4f4f4;
+}
+form, #intelList {
+  margin-bottom: 20px;
+}
+.intel-entry {
+  background: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-left: 4px solid #0074D9;
+}
+.intel-entry:hover {
+  box-shadow: 0 0 10px #0074D9;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+@keyframes pulse {
+  0% { background-color: #1a1a1a; }
+  50% { background-color: #222; }
+  100% { background-color: #1a1a1a; }
+}
+
+body {
+  animation: pulse 10s infinite;
+}
+button {
+  background: #0074D9;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+body {
+  background: url('archive-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* dark overlay */
+  z-index: -1;
+}
+body {
+  background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+  color: #fff;
+}
+.intel-entry {
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #00bcd4;
+}

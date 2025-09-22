@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zawadi Intel</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="loginScreen">
+    <h2>Enter Password to Access Zawadi Intel</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <button onclick="checkPassword()">Unlock</button>
+    <p id="loginError" style="color:red;"></p>
+  </div>
+
+  <!-- App Content (Hidden until unlocked) -->
+  <div id="appContent" style="display:none;">
+    <h1>Zawadi Intel Archive</h1>
+    <form id="intelForm">
+      <input type="text" id="title" placeholder="Intel Title" required>
+      <textarea id="content" placeholder="Intel Content" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+
+    <input type="text" id="searchInput" placeholder="Search Intel" oninput="searchIntel()">
+    <div id="intelList"></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registered'));
+    }
+  </script>
+</body>
+</html>
