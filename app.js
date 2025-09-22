@@ -1,4 +1,4 @@
-const correctPassword = "1234OCHY"; // You can change this
+const correctPassword = "zawadi2025"; // You can change this
 
 function checkPassword() {
   const input = document.getElementById('passwordInput').value;
