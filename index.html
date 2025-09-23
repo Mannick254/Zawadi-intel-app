@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,8 @@
   <title>Zawadi Intel</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+
 </head>
 <body>
   <!-- Login Screen -->
@@ -12,8 +15,10 @@
     <h2>Login to Zawadi Intel</h2>
     <input type="text" id="usernameInput" placeholder="Enter username or email">
     <input type="password" id="passwordInput" placeholder="Enter password">
-    <button onclick="loginUser()">Login</button>
-    <button onclick="toggleRegister()">New user? Register here</button>
+    <div class="button-group">
+      <button onclick="loginUser()">Login</button>
+      <button onclick="toggleRegister()">New user? Register here</button>
+    </div>
     <p id="loginError" style="color:red;"></p>
   </div>
 
@@ -22,8 +27,10 @@
     <h2>Create Account</h2>
     <input type="text" id="newUsername" placeholder="Choose username or email">
     <input type="password" id="newPassword" placeholder="Choose password">
-    <button onclick="registerUser()">Register</button>
-    <button onclick="toggleRegister()">Back to Login</button>
+    <div class="button-group">
+      <button onclick="registerUser()">Register</button>
+      <button onclick="toggleRegister()">Back to Login</button>
+    </div>
     <p id="registerError" style="color:red;"></p>
   </div>
 
@@ -32,18 +39,41 @@
     <h1>Zawadi Intel Archive</h1>
     <p id="currentUserDisplay"></p>
 
+    <!-- Intel Entry Form -->
     <form id="intelForm">
       <input type="text" id="title" placeholder="Intel Title" required>
       <textarea id="content" placeholder="Intel Content" required></textarea>
-      <button type="submit">Submit</button>
-      <button type="button" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
-      <button type="button" onclick="revealAllIntel()">🗂️ Reveal All</button>
-      <button type="button" onclick="clearAllIntel()">🗑️ Clear All</button>
+
+      <div class="button-group">
+        <button type="submit">✅ Submit</button>
+        <button type="button" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+        <button type="button" onclick="revealAllIntel()">🗂️ Reveal All</button>
+        <button type="button" onclick="clearAllIntel()">🗑️ Clear All</button>
+      </div>
+
       <p id="entryCount"></p>
     </form>
 
-    <input type="text" id="searchInput" placeholder="Search Intel" oninput="searchIntel()">
+    <!-- Search Section -->
+    <div class="search-section">
+      <input type="text" id="searchInput" placeholder="🔍 Search Intel" oninput="searchIntel()">
+    </div>
+
+    <!-- Intel Display -->
     <div id="intelList"></div>
+
+    <!-- Settings Panel -->
+<div id="settingsPanel" style="margin-top: 30px;">
+  <h3>⚙️ Author Settings</h3>
+  <button onclick="showLoginStats()">📊 View Login Stats</button>
+  <div id="loginStats" style="margin-top: 10px;"></div>
+</div>
+
+
+    <!-- Logout Button -->
+    <div class="logout-section">
+      <button onclick="logout()" class="logout-button">🔓 Logout</button>
+    </div>
   </div>
 
   <script src="app.js"></script>
@@ -55,4 +85,3 @@
   </script>
 </body>
 </html>
-
