@@ -2,38 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Zawadi Intel</title>
+  <title>Zawadi Intel — Legacy Archive</title>
+  <meta name="description" content="Zawadi Intel is a legacy archive for biographies, dreams, and field notes.">
+  <meta name="keywords" content="biography, legacy, Zawadi Intel, Mannick254, Nickson Okoth">
+  <meta name="author" content="MANNICK">
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
 </head>
 <body>
-  <!-- Login Screen -->
-  <div id="loginScreen">
-    <h2>Enter Password to Access Zawadi Intel</h2>
-    <input type="password" id="passwordInput" placeholder="Enter password">
-    <button onclick="checkPassword()">Unlock</button>
-    <p id="loginError" style="color:red;"></p>
-  </div>
+  <header>
+    <h1>📜 Zawadi Intel</h1>
+    <p>Every entry is a seed of memory. Every login, a step toward legacy.</p>
+    <a href="app.html" class="btn">🔐 Enter the Archive</a>
+  </header>
 
-  <!-- App Content (Hidden until unlocked) -->
-  <div id="appContent" style="display:none;">
-    <h1>Zawadi Intel Archive</h1>
-    <form id="intelForm">
-      <input type="text" id="title" placeholder="Intel Title" required>
-      <textarea id="content" placeholder="Intel Content" required></textarea>
-      <button type="submit">Submit</button>
-    </form>
+  <section>
+    <h2>About the Archive</h2>
+    <p>Zawadi Intel is a secure, cinematic archive where users record personal intel, field notes, and legacy stories. Built by <strong>Nickson Ochieng Okoth</strong>, it blends emotional resonance with technical mastery.</p>
+  </section>
 
-    <input type="text" id="searchInput" placeholder="Search Intel" oninput="searchIntel()">
-    <div id="intelList"></div>
-  </div>
+  <section>
+    <h2>Featured Biography</h2>
+    <p>“From Ashes to Ambition” — a journey of resilience, creativity, and legacy-building. Authored by Nickson, this story anchors the archive’s emotional core.</p>
+  </section>
 
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker registered'));
-    }
-  </script>
+  <footer>
+    <p>&copy; 2025 Zawadi Intel. Built with legacy in mind.</p>
+  </footer>
 </body>
 </html>
