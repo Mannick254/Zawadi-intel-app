@@ -1,42 +1,13 @@
+/* Base Styling */
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background: #f4f4f4;
-}
-form, #intelList {
-  margin-bottom: 20px;
-}
-.intel-entry {
-  background: #fff;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-left: 4px solid #0074D9;
-}
-.intel-entry:hover {
-  box-shadow: 0 0 10px #0074D9;
-  transform: scale(1.02);
-  transition: all 0.3s ease;
-}
-@keyframes pulse {
-  0% { background-color: #1a1a1a; }
-  50% { background-color: #222; }
-  100% { background-color: #1a1a1a; }
-}
-
-body {
-  animation: pulse 10s infinite;
-}
-button {
-  background: #0074D9;
   color: #fff;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-body {
-  background: url('archive-bg.jpg') no-repeat center center fixed;
+  background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364),
+              url('archive-bg.jpg') no-repeat center center fixed;
   background-size: cover;
   position: relative;
+  animation: pulse 10s infinite;
 }
 
 body::before {
@@ -47,11 +18,101 @@ body::before {
   background: rgba(0, 0, 0, 0.6); /* dark overlay */
   z-index: -1;
 }
-body {
-  background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
-  color: #fff;
+
+/* Pulse Animation */
+@keyframes pulse {
+  0% { background-color: #1a1a1a; }
+  50% { background-color: #222; }
+  100% { background-color: #1a1a1a; }
 }
+
+/* Form and Intel Layout */
+form, #intelList {
+  margin-bottom: 20px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Intel Entry Styling */
 .intel-entry {
   background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
   border-left: 4px solid #00bcd4;
+  border-radius: 5px;
+}
+
+.intel-entry:hover {
+  box-shadow: 0 0 10px #00bcd4;
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* Button Styling */
+button {
+  background: #0074D9;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #005fa3;
+}
+
+/* Button Group Layout */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Search Section */
+.search-section {
+  margin-top: 20px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* Logout Section */
+.logout-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.logout-button {
+  background-color: #c00;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #a00;
+}
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #111;
+  color: #eee;
 }
