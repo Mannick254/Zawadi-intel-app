@@ -1,3 +1,7 @@
+const authorUsername = "Nickson"; // Your author account name
+const authorPassword = "blessedhots2025"; // Your private access password
+
+
 let currentUser = null;
 
 // Encrypt and decrypt functions
@@ -49,6 +53,8 @@ function loginUser() {
   const username = document.getElementById('usernameInput').value.trim();
   const password = document.getElementById('passwordInput').value;
   const error = document.getElementById('loginError');
+  document.getElementById('settingsPanel').style.display = (currentUser === authorUsername) ? 'block' : 'none';
+
 
   const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
   if (users[username] && decrypt(users[username]) === password) {
@@ -196,4 +202,71 @@ window.onload = () => {
     document.title = "Zawadi Intel 🔐";
   }, 500);
 };
+function logout() {
+  currentUser = null;
+  document.getElementById('appContent').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'block';
+  document.getElementById('intelList').innerHTML = '';
+  document.getElementById('entryCount').textContent = '';
+  document.getElementById('title').value = '';
+  document.getElementById('content').value = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('currentUserDisplay').textContent = '';
+}
+function loginUser() {
+  const username = document.getElementById('usernameInput').value.trim();
+  const password = document.getElementById('passwordInput').value;
+  const error = document.getElementById('loginError');
+
+  const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
+  if (users[username] && decrypt(users[username]) === password) {
+    currentUser = username;
+
+    // Log login history
+    const loginLog = JSON.parse(localStorage.getItem('zawadiLoginLog')) || [];
+    loginLog.push({ user: username, time: new Date().toISOString() });
+    localStorage.setItem('zawadiLoginLog', JSON.stringify(loginLog));
+
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('registerScreen').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+    document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
+    loadDraft();
+    document.getElementById('intelList').innerHTML = '<p>🔍 Search to reveal intel entries.</p>';
+    document.getElementById('entryCount').textContent = '';
+  } else {
+    error.textContent = "Invalid credentials.";
+  }
+}
+function showLoginStats() {
+  const statsDiv = document.getElementById('loginStats');
+
+  // Check if current user is the author
+  if (currentUser !== authorUsername) {
+    statsDiv.innerHTML = "<p style='color:red;'>Access denied. Author only.</p>";
+    return;
+  }
+
+  // Prompt for password
+  const input = prompt("🔐 Author access only. Enter password:");
+  if (input !== authorPassword) {
+    statsDiv.innerHTML = "<p style='color:red;'>Incorrect password.</p>";
+    return;
+  }
+
+  // Show login stats
+  const loginLog = JSON.parse(localStorage.getItem('zawadiLoginLog')) || [];
+  const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
+
+  let html = `<p>Total Registered Users: ${Object.keys(users).length}</p>`;
+  html += `<p>Total Logins Recorded: ${loginLog.length}</p>`;
+  html += `<ul>`;
+  loginLog.slice().reverse().forEach(entry => {
+    html += `<li>${entry.user} logged in at ${new Date(entry.time).toLocaleString()}</li>`;
+  });
+  html += `</ul>`;
+
+  statsDiv.innerHTML = html;
+}
+
 
