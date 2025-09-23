@@ -9,19 +9,37 @@
 <body>
   <!-- Login Screen -->
   <div id="loginScreen">
-    <h2>Enter Password to Access Zawadi Intel</h2>
+    <h2>Login to Zawadi Intel</h2>
+    <input type="text" id="usernameInput" placeholder="Enter username or email">
     <input type="password" id="passwordInput" placeholder="Enter password">
-    <button onclick="checkPassword()">Unlock</button>
+    <button onclick="loginUser()">Login</button>
+    <button onclick="toggleRegister()">New user? Register here</button>
     <p id="loginError" style="color:red;"></p>
   </div>
 
-  <!-- App Content (Hidden until unlocked) -->
+  <!-- Registration Screen -->
+  <div id="registerScreen" style="display:none;">
+    <h2>Create Account</h2>
+    <input type="text" id="newUsername" placeholder="Choose username or email">
+    <input type="password" id="newPassword" placeholder="Choose password">
+    <button onclick="registerUser()">Register</button>
+    <button onclick="toggleRegister()">Back to Login</button>
+    <p id="registerError" style="color:red;"></p>
+  </div>
+
+  <!-- App Content (Hidden until logged in) -->
   <div id="appContent" style="display:none;">
     <h1>Zawadi Intel Archive</h1>
+    <p id="currentUserDisplay"></p>
+
     <form id="intelForm">
       <input type="text" id="title" placeholder="Intel Title" required>
       <textarea id="content" placeholder="Intel Content" required></textarea>
       <button type="submit">Submit</button>
+      <button type="button" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
+      <button type="button" onclick="revealAllIntel()">🗂️ Reveal All</button>
+      <button type="button" onclick="clearAllIntel()">🗑️ Clear All</button>
+      <p id="entryCount"></p>
     </form>
 
     <input type="text" id="searchInput" placeholder="Search Intel" oninput="searchIntel()">
@@ -37,3 +55,4 @@
   </script>
 </body>
 </html>
+
