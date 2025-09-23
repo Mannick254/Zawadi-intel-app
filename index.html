@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,19 +8,29 @@
   <meta name="keywords" content="biography, legacy, Zawadi Intel, Mannick254, Nickson Okoth">
   <meta name="author" content="MANNICK">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <header>
-    <h1>📜 Zawadi Intel</h1>
-    <p>Every entry is a seed of memory. Every login, a step toward legacy.</p>
-    <a href="app.html" class="btn">🔐 Enter the Archive</a>
-  </header>
+  <!-- Login Screen -->
+  <div id="loginScreen">
+    <h2>Enter Password to Access Zawadi Intel</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <button onclick="checkPassword()">Unlock</button>
+    <p id="loginError" style="color:red;"></p>
+  </div>
 
-  <section>
-    <h2>About the Archive</h2>
-    <p>Zawadi Intel is a secure, cinematic archive where users record personal intel, field notes, and legacy stories. Built by <strong>Nickson Ochieng Okoth</strong>, it blends emotional resonance with technical mastery.</p>
-  </section>
+  <!-- App Content (Hidden until unlocked) -->
+  <div id="appContent" style="display:none;">
+    <h1>Zawadi Intel Archive</h1>
+    <form id="intelForm">
+      <input type="text" id="title" placeholder="Intel Title" required>
+      <textarea id="content" placeholder="Intel Content" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+
+    <input type="text" id="searchInput" placeholder="Search Intel" oninput="searchIntel()">
+    <div id="intelList"></div>
+  </div>
 
   <section>
     <h2>Featured Biography</h2>

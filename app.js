@@ -235,37 +235,7 @@ function loginUser() {
     document.getElementById('intelList').innerHTML = '<p>🔍 Search to reveal intel entries.</p>';
     document.getElementById('entryCount').textContent = '';
   } else {
-    error.textContent = "Invalid credentials.";
+    document.getElementById('loginError').textContent = "Incorrect password. Try again.";
   }
 }
-function showLoginStats() {
-  const statsDiv = document.getElementById('loginStats');
-
-  // Check if current user is the author
-  if (currentUser !== authorUsername) {
-    statsDiv.innerHTML = "<p style='color:red;'>Access denied. Author only.</p>";
-    return;
-  }
-
-  // Prompt for password
-  const input = prompt("🔐 Author access only. Enter password:");
-  if (input !== authorPassword) {
-    statsDiv.innerHTML = "<p style='color:red;'>Incorrect password.</p>";
-    return;
-  }
-
-  // Show login stats
-  const loginLog = JSON.parse(localStorage.getItem('zawadiLoginLog')) || [];
-  const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
-
-  let html = `<p>Total Registered Users: ${Object.keys(users).length}</p>`;
-  html += `<p>Total Logins Recorded: ${loginLog.length}</p>`;
-  html += `<ul>`;
-  loginLog.slice().reverse().forEach(entry => {
-    html += `<li>${entry.user} logged in at ${new Date(entry.time).toLocaleString()}</li>`;
-  });
-  html += `</ul>`;
-
-  statsDiv.innerHTML = html;
-}
-
+document.getElementById('passwordForm').addEventListener('submit', function(e) {
