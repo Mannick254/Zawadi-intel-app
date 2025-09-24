@@ -1,44 +1,34 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zawadi Intel — Legacy Archive</title>
-  <meta name="description" content="Zawadi Intel is a legacy archive for biographies, dreams, and field notes.">
-  <meta name="keywords" content="biography, legacy, Zawadi Intel, Mannick254, Nickson Okoth">
-  <meta name="author" content="MANNICK">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <meta name="description" content="A cinematic archive for personal intel, dreams, and legacy notes." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
 </head>
 <body>
-  <!-- Login Screen -->
-  <div id="loginScreen">
-    <h2>Enter Password to Access Zawadi Intel</h2>
-    <input type="password" id="passwordInput" placeholder="Enter password">
-    <button onclick="checkPassword()">Unlock</button>
-    <p id="loginError" style="color:red;"></p>
-  </div>
-
-  <!-- App Content (Hidden until unlocked) -->
-  <div id="appContent" style="display:none;">
-    <h1>Zawadi Intel Archive</h1>
-    <form id="intelForm">
-      <input type="text" id="title" placeholder="Intel Title" required>
-      <textarea id="content" placeholder="Intel Content" required></textarea>
-      <button type="submit">Submit</button>
-    </form>
-
-    <input type="text" id="searchInput" placeholder="Search Intel" oninput="searchIntel()">
-    <div id="intelList"></div>
-  </div>
-
-  <section>
-    <h2>Featured Biography</h2>
-    <p>“From Ashes to Ambition” — a journey of resilience, creativity, and legacy-building. Authored by Nickson, this story anchors the archive’s emotional core.</p>
-  </section>
+  <header>
+    <h1>📜 Zawadi Intel</h1>
+    <p class="tagline">“Every entry is a seed of memory. Every login, a step toward legacy.”</p>
+    <div class="button-group">
+      <a href="app.html" class="btn">🔐 Enter the Archive</a>
+      <a href="biography.html" class="btn">📖 View Public Biographies</a>
+    </div>
+  </header>
 
   <footer>
-    <p>&copy; 2025 Zawadi Intel. Built with legacy in mind.</p>
+    <p>&copy; 2025 Zawadi Intel. Built by Nickson Ochieng Okoth.</p>
   </footer>
+
+  <script>
+    window.onload = () => {
+      setTimeout(() => {
+        document.title = "Zawadi Intel 🔐 Legacy Archive";
+      }, 500);
+    };
+  </script>
 </body>
 </html>

@@ -1,39 +1,37 @@
-const authorUsername = "Nickson"; // Your author account name
-const authorPassword = "blessedhots2025"; // Your private access password
-
-
+const encryptionKey = "ZawadiLegacyKey2025"; // 🔐 Change for production
 let currentUser = null;
 
-// Encrypt and decrypt functions
+// AES Encrypt/Decrypt
 function encrypt(text) {
-  return btoa(unescape(encodeURIComponent(text)));
+  return CryptoJS.AES.encrypt(text, encryptionKey).toString();
 }
-
-function decrypt(text) {
-  return decodeURIComponent(escape(atob(text)));
-}
-
-// Toggle between login and registration
-function toggleRegister() {
-  const loginScreen = document.getElementById('loginScreen');
-  const registerScreen = document.getElementById('registerScreen');
-  if (loginScreen.style.display === 'none') {
-    loginScreen.style.display = 'block';
-    registerScreen.style.display = 'none';
-  } else {
-    loginScreen.style.display = 'none';
-    registerScreen.style.display = 'block';
+function decrypt(cipher) {
+  try {
+    return CryptoJS.AES.decrypt(cipher, encryptionKey).toString(CryptoJS.enc.Utf8);
+  } catch {
+    return "[Decryption Failed]";
   }
 }
 
-// Register new user
+// Sanitize input
+function sanitize(input) {
+  return input.replace(/<[^>]*>?/gm, '');
+}
+
+// Toggle login/register
+function toggleRegister() {
+  document.getElementById('loginScreen').classList.toggle('hidden');
+  document.getElementById('registerScreen').classList.toggle('hidden');
+}
+
+// Register user
 function registerUser() {
-  const username = document.getElementById('newUsername').value.trim();
-  const password = document.getElementById('newPassword').value;
+  const username = sanitize(document.getElementById('newUsername').value.trim());
+  const password = sanitize(document.getElementById('newPassword').value);
   const error = document.getElementById('registerError');
 
-  if (!username || !password) {
-    error.textContent = "Username and password required.";
+  if (!username || !password || username.length < 3) {
+    error.textContent = "Please enter a valid username and password.";
     return;
   }
 
@@ -50,35 +48,49 @@ function registerUser() {
 
 // Login user
 function loginUser() {
-  const username = document.getElementById('usernameInput').value.trim();
-  const password = document.getElementById('passwordInput').value;
+  const username = sanitize(document.getElementById('usernameInput').value.trim());
+  const password = sanitize(document.getElementById('passwordInput').value);
   const error = document.getElementById('loginError');
-  document.getElementById('settingsPanel').style.display = (currentUser === authorUsername) ? 'block' : 'none';
-
 
   const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
   if (users[username] && decrypt(users[username]) === password) {
     currentUser = username;
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('registerScreen').style.display = 'none';
-    document.getElementById('appContent').style.display = 'block';
+    localStorage.setItem('currentUser', username);
+
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('registerScreen').classList.add('hidden');
+    document.getElementById('appContent').classList.remove('hidden');
     document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
-    loadDraft();
-    document.getElementById('intelList').innerHTML = '<p>🔍 Search to reveal intel entries.</p>';
-    document.getElementById('entryCount').textContent = '';
   } else {
-    error.textContent = "Invalid credentials.";
+    error.textContent = "Incorrect username or password.";
   }
 }
 
-// Handle form submission
+// Logout
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('currentUser');
+  document.getElementById('appContent').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('currentUserDisplay').textContent = '';
+}
+// Submit intel
 document.getElementById('intelForm').addEventListener('submit', function(e) {
   e.preventDefault();
   if (!currentUser) return;
 
-  const title = encrypt(document.getElementById('title').value);
-  const content = encrypt(document.getElementById('content').value);
-  const intel = { title, content, timestamp: new Date().toISOString() };
+  const title = encrypt(sanitize(document.getElementById('title').value));
+  const content = encrypt(sanitize(document.getElementById('content').value));
+  const tags = sanitize(document.getElementById('tagsInput').value);
+  const isPublic = document.getElementById('makePublic').checked;
+  const intel = {
+    title,
+    content,
+    tags,
+    author: currentUser,
+    public: isPublic,
+    timestamp: new Date().toISOString()
+  };
 
   const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
   const userIntel = allIntel[currentUser] || [];
@@ -87,50 +99,38 @@ document.getElementById('intelForm').addEventListener('submit', function(e) {
   localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
   localStorage.removeItem(`draftIntel_${currentUser}`);
   this.reset();
-  document.getElementById('intelList').innerHTML = '<p>✅ Intel saved. Search to view.</p>';
-  document.getElementById('entryCount').textContent = '';
+  revealAllIntel();
 });
-
-// Delete an intel entry
-function deleteIntel(timestamp) {
+function revealAllIntel() {
   const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-  let userIntel = allIntel[currentUser] || [];
-  userIntel = userIntel.filter(entry => entry.timestamp !== timestamp);
-  allIntel[currentUser] = userIntel;
-  localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
-  searchIntel();
-}
+  const entries = allIntel[currentUser] || [];
+  const list = document.getElementById('intelList');
+  list.innerHTML = '';
 
-// Highlight matched text
-function highlight(text, query) {
-  const regex = new RegExp(`(${query})`, 'gi');
-  return text.replace(regex, '<mark>$1</mark>');
-}
+  entries.forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'intel-entry';
+    div.innerHTML = `
+      <h3>${decrypt(entry.title)}</h3>
+      <p>${decrypt(entry.content)}</p>
+      <small>${entry.timestamp}</small>
+    `;
+    list.appendChild(div);
+  });
 
-// Search intel entries
+  document.getElementById('entryCount').textContent = `Total Entries: ${entries.length}`;
+}
 function searchIntel() {
   const query = document.getElementById('searchInput').value.toLowerCase();
-  const intelList = document.getElementById('intelList');
-  intelList.innerHTML = '';
   const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-  const storedIntel = allIntel[currentUser] || [];
+  const entries = allIntel[currentUser] || [];
+  const list = document.getElementById('intelList');
+  list.innerHTML = '';
 
-  if (!query) {
-    intelList.innerHTML = '<p>🔍 Enter a keyword to reveal intel.</p>';
-    document.getElementById('entryCount').textContent = '';
-    return;
-  }
-
-  const filtered = storedIntel.filter(entry =>
+  const filtered = entries.filter(entry =>
     decrypt(entry.title).toLowerCase().includes(query) ||
     decrypt(entry.content).toLowerCase().includes(query)
   );
-
-  if (filtered.length === 0) {
-    intelList.innerHTML = '<p>No matching intel found.</p>';
-    document.getElementById('entryCount').textContent = 'Total Entries: 0';
-    return;
-  }
 
   filtered.forEach(entry => {
     const div = document.createElement('div');
@@ -139,15 +139,17 @@ function searchIntel() {
       <h3>${highlight(decrypt(entry.title), query)}</h3>
       <p>${highlight(decrypt(entry.content), query)}</p>
       <small>${entry.timestamp}</small>
-      <button onclick="deleteIntel('${entry.timestamp}')">Delete</button>
     `;
-    intelList.appendChild(div);
+    list.appendChild(div);
   });
 
   document.getElementById('entryCount').textContent = `Total Entries: ${filtered.length}`;
 }
 
-// Auto-save draft
+function highlight(text, query) {
+  const regex = new RegExp(`(${query})`, 'gi');
+  return text.replace(regex, '<mark>$1</mark>');
+}
 document.getElementById('title').addEventListener('input', saveDraft);
 document.getElementById('content').addEventListener('input', saveDraft);
 
@@ -168,74 +170,3 @@ function loadDraft() {
     document.getElementById('content').value = draft.content;
   }
 }
-
-// Dark mode toggle
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-}
-
-// Install prompt logic
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-
-  const installBtn = document.createElement('button');
-  installBtn.textContent = '📥 Install Zawadi Intel';
-  installBtn.style.margin = '10px';
-  installBtn.onclick = () => {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('Zawadi Intel installed');
-      }
-      deferredPrompt = null;
-    });
-  };
-
-  document.body.appendChild(installBtn);
-});
-
-// Splash delay
-window.onload = () => {
-  setTimeout(() => {
-    document.title = "Zawadi Intel 🔐";
-  }, 500);
-};
-function logout() {
-  currentUser = null;
-  document.getElementById('appContent').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'block';
-  document.getElementById('intelList').innerHTML = '';
-  document.getElementById('entryCount').textContent = '';
-  document.getElementById('title').value = '';
-  document.getElementById('content').value = '';
-  document.getElementById('searchInput').value = '';
-  document.getElementById('currentUserDisplay').textContent = '';
-}
-function loginUser() {
-  const username = document.getElementById('usernameInput').value.trim();
-  const password = document.getElementById('passwordInput').value;
-  const error = document.getElementById('loginError');
-
-  const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
-  if (users[username] && decrypt(users[username]) === password) {
-    currentUser = username;
-
-    // Log login history
-    const loginLog = JSON.parse(localStorage.getItem('zawadiLoginLog')) || [];
-    loginLog.push({ user: username, time: new Date().toISOString() });
-    localStorage.setItem('zawadiLoginLog', JSON.stringify(loginLog));
-
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('registerScreen').style.display = 'none';
-    document.getElementById('appContent').style.display = 'block';
-    document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
-    loadDraft();
-    document.getElementById('intelList').innerHTML = '<p>🔍 Search to reveal intel entries.</p>';
-    document.getElementById('entryCount').textContent = '';
-  } else {
-    document.getElementById('loginError').textContent = "Incorrect password. Try again.";
-  }
-}
-document.getElementById('passwordForm').addEventListener('submit', function(e) {

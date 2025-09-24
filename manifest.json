@@ -1,10 +1,11 @@
 {
   "name": "Zawadi Intel",
   "short_name": "Zawadi",
+  "description": "A cinematic archive for personal intel, dreams, and legacy notes.",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0f2027",
-  "theme_color": "#0074D9",
+  "theme_color": "#2c3e50",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -12,11 +13,6 @@
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"

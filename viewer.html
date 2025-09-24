@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legacy Entry — Zawadi Intel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>📜 Legacy Entry</h1>
+    <p class="tagline">“One story. One spark. One legacy.”</p>
+    <div class="button-group">
+      <a href="app.html" class="btn">🔙 Back to Archive</a>
+    </div>
+  </header>
+
+  <section class="intel-card" id="viewerCard">
+    <h2 id="viewerTitle">Loading title...</h2>
+    <p id="viewerContent">Loading content...</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Zawadi Intel. Legacy preserved by Nickson Ochieng Okoth.</p>
+  </footer>
+
+  <script>
+    const encryptionKey = "ZawadiLegacyKey2025";
+
+    function decrypt(cipher) {
+      try {
+        return CryptoJS.AES.decrypt(cipher, encryptionKey).toString(CryptoJS.enc.Utf8);
+      } catch {
+        return "[Decryption Failed]";
+      }
+    }
+
+    window.onload = () => {
+      const rawTitle = localStorage.getItem('fullIntelTitle');
+      const rawContent = localStorage.getItem('fullIntelContent');
+
+      document.getElementById('viewerTitle').textContent = decrypt(rawTitle);
+      document.getElementById('viewerContent').textContent = decrypt(rawContent);
+    };
+  </script>
+</body>
+</html>
