@@ -1,5 +1,6 @@
 const cacheName = "zawadi-intel-v1";
 const assets = [
+  "/",
   "index.html",
   "app.html",
   "biography.html",
@@ -8,7 +9,8 @@ const assets = [
   "app.js",
   "manifest.json",
   "icons/icon-192.png",
-  "icons/icon-512.png"
+  "icons/icon-512.png",
+  "offline.html"
 ];
 
 self.addEventListener("install", event => {
@@ -18,11 +20,23 @@ self.addEventListener("install", event => {
     })
   );
 });
-
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+      return response || fetch(event.request).catch(() => caches.match("offline.html"));
     })
+  );
+});
+
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(key => {
+          if (key !== cacheName) return caches.delete(key);
+        })
+      )
+    )
   );
 });
