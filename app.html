@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="js/crypto-vault.js"></script> <!-- 🔐 Secure encryption logic -->
+  <script src="crypto-vault.js"></script> <!-- 🔐 Secure encryption logic -->
 </head>
 <body>
   <!-- Navigation Bar -->
@@ -18,45 +18,45 @@
     <a href="biography.html" class="btn">📖 Biographies</a>
     <a href="media.html" class="btn">📺 Media</a>
     <a href="viewer.html" class="btn">🗂️ Viewer</a>
+    <a href="offline.html" class="btn">📴 Offline</a>
     <a href="legacy.html" class="btn">🌱 Legacy</a>
   </nav>
 
   <!-- Modal Triggers -->
   <div class="modal-triggers">
-    <button class="btn" id="openAuthModal">🔐 Login / Register</button>
+    <button class="btn" id="openLoginModal">🔐 Login</button>
+    <button class="btn" id="openRegisterModal">🆕 Register</button>
     <button class="btn" id="openProfileModal">👤 Profile</button>
   </div>
 
-  <!-- 🔐 Auth Modal (Login & Register) -->
-  <div id="authModal" class="modal">
+  <!-- 🔐 Login Modal -->
+  <div id="loginModal" class="modal">
     <div class="modal-content">
-      <span class="close" id="closeAuthModal">&times;</span>
-      <div class="auth-tabs">
-        <button id="authTabLogin" class="auth-tab active">Login</button>
-        <button id="authTabRegister" class="auth-tab">Register</button>
+      <span class="close" id="closeLoginModal">&times;</span>
+      <h2>Login to Zawadi Intel</h2>
+      <input type="text" id="usernameInput" placeholder="Enter username" />
+      <input type="password" id="passwordInput" placeholder="Enter password" />
+      <div class="button-group">
+        <button type="button" onclick="loginUser()">Login</button>
+        <button type="button" id="toRegisterModal">New user? Register</button>
       </div>
-      <div id="authLoginPanel">
-        <h2>Login to Zawadi Intel</h2>
-        <form id="loginForm">
-          <input type="text" id="usernameInput" placeholder="Enter username" required />
-          <input type="password" id="passwordInput" placeholder="Enter password" required />
-          <div class="button-group">
-            <button type="submit">Login</button>
-          </div>
-          <p id="loginError" class="error-text"></p>
-        </form>
+      <p id="loginError" class="error-text"></p>
+    </div>
+  </div>
+
+  <!-- 🆕 Registration Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeRegisterModal">&times;</span>
+      <h2>Create Account</h2>
+      <input type="text" id="newUsername" placeholder="Choose username" />
+      <input type="password" id="newPassword" placeholder="Choose password" />
+      <div class="button-group">
+        <button type="button" onclick="registerUser()">Register</button>
+        <button type="button" id="toLoginModal">Back to Login</button>
       </div>
-      <div id="authRegisterPanel" style="display:none;">
-        <h2>Create Account</h2>
-        <form id="registerForm">
-          <input type="text" id="newUsername" placeholder="Choose username" required />
-          <input type="password" id="newPassword" placeholder="Choose password" required />
-          <div class="button-group">
-            <button type="submit">Register</button>
-          </div>
-          <p id="registerError" class="error-text"></p>
-        </form>
-      </div>
+      <p id="registerError" class="error-text"></p>
+      <a href="media.html" class="btn">📺 Watch YouTube</a>
     </div>
   </div>
 
@@ -88,24 +88,16 @@
     <p id="currentUserDisplay"></p>
 
     <!-- 👤 User Profile Section -->
-    <section id="profileSection" class="chrome-profile-card">
-      <div class="chrome-profile-header">
-        <div class="chrome-avatar">
-          <img src="icons/icon-192.png" alt="User Avatar" />
-        </div>
-        <div class="chrome-profile-meta">
-          <h2 id="chromeProfileName">👤 User Profile</h2>
-          <span id="chromeProfileEmail" style="color:#00bcd4;font-size:1em;"></span>
-        </div>
-      </div>
-      <form id="profileForm" class="chrome-profile-form">
-        <input type="text" id="profileDisplayName" placeholder="Display Name" />
-        <textarea id="profileBio" placeholder="Tell us about yourself..."></textarea>
-        <label style="margin-bottom:0.5em;display:flex;align-items:center;gap:0.7em;">
-          <span style="min-width:90px;">Theme Color:</span>
-          <input type="color" id="profileThemeColor" value="#00bcd4" style="width:40px;height:40px;border:none;background:none;cursor:pointer;" />
+    <section id="profileSection" class="profile-card">
+      <h2>👤 User Profile</h2>
+      <form id="profileForm">
+        <label>Display Name:
+          <input type="text" id="profileDisplayName" placeholder="Display Name" />
         </label>
-        <button type="submit" class="chrome-save-btn">💾 Save Profile</button>
+        <label>Short Bio:
+          <textarea id="profileBio" placeholder="Tell us about yourself..."></textarea>
+        </label>
+        <button type="submit">💾 Save Profile</button>
         <span id="profileMsg"></span>
       </form>
       <div id="profileInfo"></div>
@@ -121,11 +113,8 @@
         <button type="submit">✅ Submit</button>
         <button type="button" onclick="toggleDarkMode()">🌓 Dark Mode</button>
         <button type="button" onclick="exportIntel()">📤 Export</button>
+        <button type="button" onclick="logout()">🔓 Logout</button>
       </div>
-    <!-- Logout Button at Bottom -->
-    <div id="logoutBottomWrapper" style="width:100%;display:flex;justify-content:center;position:fixed;left:0;bottom:0;z-index:9999;background:rgba(34,40,49,0.95);padding:1em 0;">
-      <button type="button" class="btn" onclick="logout()" style="font-size:1.1em;min-width:180px;">🔓 Logout</button>
-    </div>
       <p id="entryCount"></p>
     </form>
 
@@ -139,8 +128,7 @@
   </div>
 
   <!-- 🧠 Load app logic after DOM -->
-  <script src="js/main.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/decrypt.js"></script> <!-- 🔐 Decryption logic -->
+  <script src="app.js"></script>
 </body>
+  <script src="decrypt-obfuscated.js"></script> <!-- 🔐 Obfuscated decryption logic -->
 </html>

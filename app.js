@@ -1,97 +1,53 @@
-// === Unified Authentication & Encryption Logic ===
-const encryptionKey = "2025Zawadi";
-let currentUser = localStorage.getItem('currentUser') || null;
-
-function encrypt(text) {
-  return CryptoJS.AES.encrypt(text, encryptionKey).toString();
-}
-function decrypt(cipher) {
-  try {
-    return CryptoJS.AES.decrypt(cipher, encryptionKey).toString(CryptoJS.enc.Utf8);
-  } catch {
-    return "[Decryption Failed]";
+// Cleanup: Remove Raila Odinga biography from public entries if present
+function removeRailaOdingaFromPublic() {
+  const key = "ZawadiLegacyKey2025";
+  const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
+  if (allIntel['public']) {
+    allIntel['public'] = allIntel['public'].filter(e => {
+      try {
+        return CryptoJS.AES.decrypt(e.title, key).toString(CryptoJS.enc.Utf8) !== "Raila Amolo Odinga";
+      } catch { return true; }
+    });
+    localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
   }
 }
-
-function sanitize(input) {
-  return input.replace(/<[^>]*>?/gm, '');
-}
-
-function getRegisteredUserCount() {
-  const users = JSON.parse(localStorage.getItem('zawadiUsers')) || {};
-  return Object.keys(users).length;
-}
-window.showRegisteredUserCount = function() {
-  alert('Total registered users: ' + getRegisteredUserCount());
-}
+// Call cleanup once on load
+removeRailaOdingaFromPublic();
 // ===== Modal Dialog Logic =====
 document.addEventListener('DOMContentLoaded', function() {
   // Modal elements
-  const authModal = document.getElementById('authModal');
+  const loginModal = document.getElementById('loginModal');
+  const registerModal = document.getElementById('registerModal');
   const profileModal = document.getElementById('profileModal');
   // Triggers
-  const openAuth = document.getElementById('openAuthModal');
+  const openLogin = document.getElementById('openLoginModal');
+  const openRegister = document.getElementById('openRegisterModal');
   const openProfile = document.getElementById('openProfileModal');
   // Close buttons
-  const closeAuth = document.getElementById('closeAuthModal');
+  const closeLogin = document.getElementById('closeLoginModal');
+  const closeRegister = document.getElementById('closeRegisterModal');
   const closeProfile = document.getElementById('closeProfileModal');
-  // Auth tabs
-  const tabLogin = document.getElementById('authTabLogin');
-  const tabRegister = document.getElementById('authTabRegister');
-  const panelLogin = document.getElementById('authLoginPanel');
-  const panelRegister = document.getElementById('authRegisterPanel');
+  // Switch links
+  const toRegister = document.getElementById('toRegisterModal');
+  const toLogin = document.getElementById('toLoginModal');
 
   // Open modals
-  if (openAuth) openAuth.onclick = () => { authModal.style.display = 'block'; };
+  if (openLogin) openLogin.onclick = () => { loginModal.style.display = 'block'; };
+  if (openRegister) openRegister.onclick = () => { registerModal.style.display = 'block'; };
   if (openProfile) openProfile.onclick = () => { profileModal.style.display = 'block'; loadProfileModal(); };
   // Close modals
-  if (closeAuth) closeAuth.onclick = () => { authModal.style.display = 'none'; };
+  if (closeLogin) closeLogin.onclick = () => { loginModal.style.display = 'none'; };
+  if (closeRegister) closeRegister.onclick = () => { registerModal.style.display = 'none'; };
   if (closeProfile) closeProfile.onclick = () => { profileModal.style.display = 'none'; };
-  // Tab switching
-  if (tabLogin && tabRegister && panelLogin && panelRegister) {
-    tabLogin.onclick = () => {
-      tabLogin.classList.add('active');
-      tabRegister.classList.remove('active');
-      panelLogin.style.display = '';
-      panelRegister.style.display = 'none';
-    };
-    tabRegister.onclick = () => {
-      tabRegister.classList.add('active');
-      tabLogin.classList.remove('active');
-      panelRegister.style.display = '';
-      panelLogin.style.display = 'none';
-    };
-  }
+  // Switch between login/register
+  if (toRegister) toRegister.onclick = () => { loginModal.style.display = 'none'; registerModal.style.display = 'block'; };
+  if (toLogin) toLogin.onclick = () => { registerModal.style.display = 'none'; loginModal.style.display = 'block'; };
   // Close modal on outside click
   window.onclick = function(event) {
-    if (event.target === authModal) authModal.style.display = 'none';
+    if (event.target === loginModal) loginModal.style.display = 'none';
+    if (event.target === registerModal) registerModal.style.display = 'none';
     if (event.target === profileModal) profileModal.style.display = 'none';
   };
-
-  // Add submit listeners for login and register forms
-  const loginForm = document.getElementById('loginForm');
-  if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      loginUser();
-    });
-  }
-  const registerForm = document.getElementById('registerForm');
-  if (registerForm) {
-    registerForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      registerUser();
-    });
-  }
-
-  // Show auth modal if not logged in
-  if (!currentUser && authModal) authModal.style.display = 'block';
-  if (currentUser) {
-    document.getElementById('appContent').classList.remove('hidden');
-    document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
-    loadDraft();
-    revealAllIntel();
-  }
 });
 
 // Profile Modal Logic
@@ -153,11 +109,32 @@ function showNotification(message, type = "info") {
   setTimeout(() => { notif.style.display = 'none'; }, 2500);
 }
 
-// Toggle login/register (if using screen-based modals)
+let currentUser = localStorage.getItem('currentUser') || null;
+
+if (currentUser) {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appContent').classList.remove('hidden');
+  document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
+  loadDraft();
+  revealAllIntel();
+}
+
+
+// 🔐 Encryption handled by crypto-vault.js
+// Functions encrypt(text) and decrypt(cipher) are already loaded
+
+// 🧼 Sanitize input
+function sanitize(input) {
+  return input.replace(/<[^>]*>?/gm, '');
+}
+
+// 🔁 Toggle login/register view
 function toggleRegister() {
   document.getElementById('loginScreen').classList.toggle('hidden');
   document.getElementById('registerScreen').classList.toggle('hidden');
 }
+
+// 🆕 Register user
 function registerUser() {
   const username = sanitize(document.getElementById('newUsername').value.trim());
   const password = sanitize(document.getElementById('newPassword').value);
@@ -179,7 +156,7 @@ function registerUser() {
   error.textContent = "✅ Registered successfully. You can now log in.";
 }
 
-// Login user
+// 🔐 Login user
 function loginUser() {
   const username = sanitize(document.getElementById('usernameInput').value.trim());
   const password = sanitize(document.getElementById('passwordInput').value);
@@ -190,32 +167,27 @@ function loginUser() {
     currentUser = username;
     localStorage.setItem('currentUser', username);
 
-    // Hide login/register modals, show app content
-    const loginModal = document.getElementById('loginModal');
-    const registerModal = document.getElementById('registerModal');
-    if (loginModal) loginModal.style.display = 'none';
-    if (registerModal) registerModal.style.display = 'none';
-    document.getElementById('appContent').classList.remove('hidden');
-    document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
-    loadDraft();
-    revealAllIntel();
-    loadProfile();
-    showNotification('Login successful!', 'success');
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('registerScreen').classList.add('hidden');
+  document.getElementById('appContent').classList.remove('hidden');
+  document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
+  loadDraft();
+  revealAllIntel();
+  loadProfile();
+  showNotification('Login successful!', 'success');
   } else {
     error.textContent = "Incorrect username or password.";
     showNotification('Incorrect username or password.', 'error');
   }
 }
 
-// Logout
+// 🚪 Logout
 function logout() {
   currentUser = null;
   localStorage.removeItem('currentUser');
   document.getElementById('appContent').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('currentUserDisplay').textContent = '';
-  // Show login modal
-  const loginModal = document.getElementById('loginModal');
-  if (loginModal) loginModal.style.display = 'block';
   showNotification('Logged out.', 'info');
 }
 
@@ -227,59 +199,34 @@ document.getElementById('intelForm').addEventListener('submit', function(e) {
   const title = encrypt(sanitize(document.getElementById('title').value));
   const content = encrypt(sanitize(document.getElementById('content').value));
   const tags = sanitize(document.getElementById('tagsInput').value);
+  const isPublic = document.getElementById('makePublic').checked;
 
-  // All entries are public and saved under a shared/public key
   const intel = {
     title,
     content,
     tags,
     author: currentUser,
-    public: true,
+    public: isPublic,
     timestamp: new Date().toISOString()
   };
 
-  if (!navigator.onLine) {
-    // Queue for later
-    let queued = JSON.parse(localStorage.getItem('zawadiQueuedIntel')) || [];
-    queued.push(intel);
-    localStorage.setItem('zawadiQueuedIntel', JSON.stringify(queued));
-    showNotification('You are offline. Your biography will be saved when you are back online.', 'error');
-    return;
-  }
-
   const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-  if (!allIntel['public']) allIntel['public'] = [];
-  allIntel['public'].push(intel);
+  const userIntel = allIntel[currentUser] || [];
+  userIntel.push(intel);
+  allIntel[currentUser] = userIntel;
 
   localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
   localStorage.removeItem(`draftIntel_${currentUser}`);
   this.reset();
   revealAllIntel();
-  showNotification('Biography submitted and made public!', 'success');
-});
-
-// Auto-save queued biographies when back online
-window.addEventListener('online', function() {
-  const queued = JSON.parse(localStorage.getItem('zawadiQueuedIntel')) || [];
-  if (queued.length === 0) return;
-  const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-  if (!allIntel['public']) allIntel['public'] = [];
-  allIntel['public'] = allIntel['public'].concat(queued);
-  localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
-  localStorage.removeItem('zawadiQueuedIntel');
-  revealAllIntel();
-  showNotification('Queued biographies have been saved now that you are online.', 'success');
+  showNotification('Intel submitted!', 'success');
 // ===== User Profile Logic =====
 function loadProfile() {
   if (!currentUser) return;
   const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
   document.getElementById('profileDisplayName').value = profile.displayName || '';
   document.getElementById('profileBio').value = profile.bio || '';
-  document.getElementById('profileThemeColor').value = profile.themeColor || '#00bcd4';
   updateProfileInfo(profile);
-  // Chrome-style card update
-  document.getElementById('chromeProfileName').textContent = profile.displayName ? `👤 ${profile.displayName}` : '👤 User Profile';
-  document.querySelector('.chrome-profile-card').style.setProperty('--chrome-theme', profile.themeColor || '#00bcd4');
 }
 
 function updateProfileInfo(profile) {
@@ -302,19 +249,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!currentUser) return;
       const displayName = document.getElementById('profileDisplayName').value.trim();
       const bio = document.getElementById('profileBio').value.trim();
-      const themeColor = document.getElementById('profileThemeColor').value || '#00bcd4';
-      const profile = { displayName, bio, themeColor };
+      const profile = { displayName, bio };
       localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
       updateProfileInfo(profile);
-      document.getElementById('chromeProfileName').textContent = displayName ? `👤 ${displayName}` : '👤 User Profile';
-      document.querySelector('.chrome-profile-card').style.setProperty('--chrome-theme', themeColor);
-      document.getElementById('profileMsg').textContent = 'Profile saved!';
-      setTimeout(() => { document.getElementById('profileMsg').textContent = ''; }, 2000);
       showNotification('Profile updated!', 'success');
-    });
-    // Live update theme color
-    document.getElementById('profileThemeColor').addEventListener('input', function() {
-      document.querySelector('.chrome-profile-card').style.setProperty('--chrome-theme', this.value);
     });
   }
 });
@@ -323,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // 📖 Reveal all entries
 function revealAllIntel() {
   const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-  const entries = allIntel['public'] || [];
+  const entries = allIntel[currentUser] || [];
   const list = document.getElementById('intelList');
   list.innerHTML = '';
 
@@ -339,7 +277,7 @@ function revealAllIntel() {
       ${entry.tags ? `<div class="intel-tags">${entry.tags.split(',').map(tag => `<span class='tag'>#${tag.trim()}</span>`).join(' ')}</div>` : ''}
       <div class="intel-card-footer">
         <small>${entry.timestamp}</small>
-        <span class="public-badge">🌍 Public</span>
+        ${entry.public ? '<span class="public-badge">🌍 Public</span>' : ''}
       </div>
     `;
     list.appendChild(div);
@@ -402,3 +340,13 @@ function loadDraft() {
   }
 }
 // 🔄 On load, check if user is logged in
+window.onload = function() {
+  currentUser = localStorage.getItem('currentUser');
+  if (currentUser) {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appContent').classList.remove('hidden');
+  document.getElementById('currentUserDisplay').textContent = `Logged in as: ${currentUser}`;
+  loadDraft();
+  loadProfile();
+  }
+};

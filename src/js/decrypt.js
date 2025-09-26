@@ -1,13 +1,8 @@
+// Unified decryption logic for all app pages
 function decrypt(cipher) {
   try {
-    const key = getKey();
-    return CryptoJS.AES.decrypt(cipher, key).toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.decrypt(cipher, "2025Zawadi").toString(CryptoJS.enc.Utf8);
   } catch {
     return "[Decryption Failed]";
   }
-}
-
-function getKey() {
-  // Generate a session-based key or obfuscate this logic
-  return "ZawadiLegacyKey2025"; // ⚠️ Still exposed unless obfuscated
 }

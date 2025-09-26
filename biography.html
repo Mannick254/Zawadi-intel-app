@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Public Biographies — Zawadi Intel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="decrypt-obfuscated.js"></script> <!-- 🔐 Secure decryption -->
+</head>
+<body>
+  <header class="fade-in">
+  <h1>📖 Public Biographies</h1>
+  <p class="tagline">“Shared stories. Eternal echoes.”</p>
+  <nav class="button-group slide-up">
+    <a href="index.html" class="btn">🏠 Home</a>
+    <a href="app.html" class="btn">🔐 Archive</a>
+    <a href="biography.html" class="btn">📖 Biographies</a>
+    <a href="media.html" class="btn">📺 Media</a>
+    <a href="viewer.html" class="btn">🗂️ Viewer</a>
+    <a href="offline.html" class="btn">📴 Offline</a>
+    <a href="legacy.html" class="btn">🌱 Legacy</a>
+    <button onclick="showRandomIntel()" class="btn">🎲 Surprise Me</button>
+  </nav>
+</header>
+<div id="introOverlay">
+  <h2>✨ Welcome to Zawadi Intel</h2>
+  <p>Where every story becomes a legacy.</p>
+</div>
+
+<section class="video-spotlight slide-up">...</section>
+<section class="write-legacy slide-up">...</section>
+<section class="bio-card fade-in">...</section>
+<section id="publicList" class="slide-up"></section>
+<div id="legacyTip" class="fade-in">
+  💡 Tip: You don’t need an account to write your legacy. Just start typing below.
+</div>
+
+
+  <!-- 🎥 YouTube Spotlight -->
+  <section class="video-spotlight">
+    <h2>🎥 Legacy Spotlight</h2>
+    <iframe width="100%" height="315" src="https://www.youtube.com/embed/2O7K-8G2nwU"
+      title="Faith Kipyegon Documentary" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </section>
+
+  <!-- 📝 Guest Legacy Writer -->
+  <section class="write-legacy">
+    <h2>📝 Write Your Legacy</h2>
+    <textarea id="guestLegacy" placeholder="Write something about yourself..."></textarea>
+    <button onclick="saveGuestLegacy()">💾 Save Locally</button>
+    <div id="guestDisplay" class="legacy-output"></div>
+  </section>
+
+  <!-- 🔦 Featured Biography -->
+  <section class="bio-card fade-in">
+    <h2>Featured Biography</h2>
+    <h3>Faith Chepngetich Kipyegon</h3>
+    <p><strong>Born:</strong> January 10, 1994 – Nakuru County, Kenya</p>
+    <p><strong>Nickname:</strong> The Smiling Destroyer</p>
+    <p><strong>Specialty:</strong> 1500m, 5000m</p>
+    <p><strong>Legacy Quote:</strong> <em>“I run with faith, not fear.”</em></p>
+
+    <h4>🏆 Career Highlights</h4>
+    <ul>
+      <li>3× Olympic Gold (1500m): Rio 2016, Tokyo 2020, Paris 2024</li>
+      <li>5× World Champion (1500m & 5000m)</li>
+      <li>World Records: 1500m, Mile, 3000m</li>
+    </ul>
+
+    <h4>🌱 Early Life</h4>
+    <p>Raised in Keringet, Nakuru County, Faith ran barefoot until age 15. Her breakout came in 2010 at the World Cross Country Championships.</p>
+
+    <h4>👩‍👧 Personal Life</h4>
+    <p>Married to Olympic bronze medalist Timothy Kitum. Mother to Alyn Chepkor Kiprono. Resides in Eldoret, Kenya.</p>
+
+    <h4>🕊️ Legacy Impact</h4>
+    <p>Faith is the only woman to win three consecutive Olympic golds in the 1500m. Her 2023 record-breaking streak earned her World Athlete of the Year.</p>
+  </section>
+
+
+  <!-- ✍️ Public Biography Submission -->
+  <section class="bio-submit fade-in">
+    <h2>Post Your Biography</h2>
+    <form id="bioForm">
+      <input type="text" id="bioName" placeholder="Your Name" required />
+      <textarea id="bioContent" placeholder="Write your biography..." required></textarea>
+      <input type="text" id="bioQuote" placeholder="Favorite Quote (optional)" />
+      <button type="submit">🌍 Post Publicly</button>
+      <p id="bioFormMsg"></p>
+    </form>
+  </section>
+
+  <!-- 🔓 Public Entries -->
+  <section id="publicList"></section>
+
+  <footer>
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
+  </footer>
+
+  <script>
+    function decrypt(cipher) {
+      try {
+        return CryptoJS.AES.decrypt(cipher, "ZawadiLegacyKey2025").toString(CryptoJS.enc.Utf8);
+      } catch {
+        return "[Decryption Failed]";
+      }
+    }
+
+    function loadPublicIntel() {
+      const publicEntries = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
+      const list = document.getElementById('publicList');
+      list.innerHTML = '';
+
+      // Collect all public entries from all users and from the 'public' array
+      let allPublic = [];
+      Object.values(publicEntries).forEach(val => {
+        if (Array.isArray(val)) {
+          allPublic = allPublic.concat(val.filter(e => e.public));
+        }
+      });
+
+      // Sort by most recent
+      allPublic.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      allPublic.forEach(entry => {
+        const div = document.createElement('div');
+        div.className = 'intel-entry';
+        div.innerHTML = `
+          <h3>${decrypt(entry.title)}</h3>
+          <p>${decrypt(entry.content)}</p>
+          ${entry.quote ? `<blockquote class="quote">${decrypt(entry.quote)}</blockquote>` : ''}
+          <small>By ${entry.author} — ${entry.timestamp}</small>
+        `;
+        list.appendChild(div);
+      });
+    }
+    // Handle public biography submission
+    document.addEventListener('DOMContentLoaded', function() {
+      const bioForm = document.getElementById('bioForm');
+      if (bioForm) {
+        bioForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const name = document.getElementById('bioName').value.trim();
+          const content = document.getElementById('bioContent').value.trim();
+          const quote = document.getElementById('bioQuote').value.trim();
+          const msg = document.getElementById('bioFormMsg');
+          if (!name || !content) {
+            msg.textContent = 'Name and biography are required.';
+            return;
+          }
+          // Encrypt fields
+          const entry = {
+            title: CryptoJS.AES.encrypt(name, "ZawadiLegacyKey2025").toString(),
+            content: CryptoJS.AES.encrypt(content, "ZawadiLegacyKey2025").toString(),
+            quote: quote ? CryptoJS.AES.encrypt(quote, "ZawadiLegacyKey2025").toString() : '',
+            author: name,
+            public: true,
+            timestamp: new Date().toLocaleString()
+          };
+          // Save to zawadiIntel
+          const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
+          if (!allIntel['public']) allIntel['public'] = [];
+          allIntel['public'].push(entry);
+          localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
+          msg.textContent = '✅ Biography posted!';
+          bioForm.reset();
+          loadPublicIntel();
+        });
+      }
+    });
+
+    function showRandomIntel() {
+      const publicEntries = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
+      const entries = Object.values(publicEntries).flat().filter(e => e.public);
+      if (entries.length === 0) return;
+
+      const entry = entries[Math.floor(Math.random() * entries.length)];
+      alert(`"${decrypt(entry.title)}"\n\n${decrypt(entry.content)}\n\n— ${entry.author}`);
+    }
+
+    function saveGuestLegacy() {
+      const text = document.getElementById('guestLegacy').value.trim();
+      localStorage.setItem('guestLegacy', text);
+      document.getElementById('guestDisplay').textContent = text;
+    }
+
+    window.onload = () => {
+      loadPublicIntel();
+      const saved = localStorage.getItem('guestLegacy');
+      if (saved) {
+        document.getElementById('guestLegacy').value = saved;
+        document.getElementById('guestDisplay').textContent = saved;
+      }
+    };
+  </script>
+</body>
+</html>
