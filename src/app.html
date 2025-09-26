@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zawadi Intel — Secure Archive</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="js/crypto-vault.js"></script> <!-- 🔐 Secure encryption logic -->
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="button-group">
+    <a href="index.html" class="btn">🏠 Home</a>
+    <a href="app.html" class="btn">🔐 Archive</a>
+    <a href="biography.html" class="btn">📖 Biographies</a>
+    <a href="media.html" class="btn">📺 Media</a>
+    <a href="viewer.html" class="btn">🗂️ Viewer</a>
+    <a href="offline.html" class="btn">📴 Offline</a>
+    <a href="legacy.html" class="btn">🌱 Legacy</a>
+  </nav>
+
+  <!-- Modal Triggers -->
+  <div class="modal-triggers">
+    <button class="btn" id="openLoginModal">🔐 Login</button>
+    <button class="btn" id="openRegisterModal">🆕 Register</button>
+    <button class="btn" id="openProfileModal">👤 Profile</button>
+  </div>
+
+  <!-- 🔐 Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeLoginModal">&times;</span>
+      <h2>Login to Zawadi Intel</h2>
+      <form id="loginForm">
+        <input type="text" id="usernameInput" placeholder="Enter username" required />
+        <input type="password" id="passwordInput" placeholder="Enter password" required />
+        <div class="button-group">
+          <button type="submit">Login</button>
+          <button type="button" id="toRegisterModal">New user? Register</button>
+        </div>
+        <p id="loginError" class="error-text"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- 🆕 Registration Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeRegisterModal">&times;</span>
+      <h2>Create Account</h2>
+      <form id="registerForm">
+        <input type="text" id="newUsername" placeholder="Choose username" required />
+        <input type="password" id="newPassword" placeholder="Choose password" required />
+        <div class="button-group">
+          <button type="submit">Register</button>
+          <button type="button" id="toLoginModal">Back to Login</button>
+        </div>
+        <p id="registerError" class="error-text"></p>
+      </form>
+      <a href="media.html" class="btn">📺 Watch YouTube</a>
+    </div>
+  </div>
+
+  <!-- 👤 Profile Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeProfileModal">&times;</span>
+      <h2>👤 User Profile</h2>
+      <form id="profileFormModal">
+        <label>Display Name:
+          <input type="text" id="profileDisplayNameModal" placeholder="Display Name" />
+        </label>
+        <label>Short Bio:
+          <textarea id="profileBioModal" placeholder="Tell us about yourself..."></textarea>
+        </label>
+        <button type="submit">💾 Save Profile</button>
+        <span id="profileMsgModal"></span>
+      </form>
+      <div id="profileInfoModal"></div>
+    </div>
+  </div>
+
+  <!-- 🧠 Archive Content -->
+
+  <!-- 🧠 Archive Content -->
+  <div id="appContent" class="hidden">
+
+    <h1>Zawadi Intel Archive</h1>
+    <p id="currentUserDisplay"></p>
+
+    <!-- 👤 User Profile Section -->
+    <section id="profileSection" class="profile-card">
+      <h2>👤 User Profile</h2>
+      <form id="profileForm">
+        <label>Display Name:
+          <input type="text" id="profileDisplayName" placeholder="Display Name" />
+        </label>
+        <label>Short Bio:
+          <textarea id="profileBio" placeholder="Tell us about yourself..."></textarea>
+        </label>
+        <button type="submit">💾 Save Profile</button>
+        <span id="profileMsg"></span>
+      </form>
+      <div id="profileInfo"></div>
+    </section>
+
+    <!-- ✍️ Intel Form -->
+    <form id="intelForm">
+      <input type="text" id="title" placeholder="Intel Title" required />
+      <textarea id="content" placeholder="Intel Content" required></textarea>
+      <input type="text" id="tagsInput" placeholder="Tags (comma-separated)" />
+      <label><input type="checkbox" id="makePublic" /> Make public</label>
+      <div class="button-group">
+        <button type="submit">✅ Submit</button>
+        <button type="button" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+        <button type="button" onclick="exportIntel()">📤 Export</button>
+        <button type="button" onclick="logout()">🔓 Logout</button>
+      </div>
+      <p id="entryCount"></p>
+    </form>
+
+    <!-- 🔍 Search Section -->
+    <div class="search-section">
+      <input type="text" id="searchInput" placeholder="🔍 Search Intel" oninput="searchIntel()" />
+    </div>
+
+    <!-- 📚 Intel Display -->
+    <div id="intelList"></div>
+  </div>
+
+  <!-- 🧠 Load app logic after DOM -->
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/decrypt.js"></script> <!-- 🔐 Decryption logic -->
+</body>
+</html>
