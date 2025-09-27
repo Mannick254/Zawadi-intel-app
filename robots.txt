@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mannick254.github.io/Zawadi-intel-app/sitemap.xml
