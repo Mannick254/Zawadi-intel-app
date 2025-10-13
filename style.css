@@ -777,5 +777,128 @@ body {
 
 .home-btn:hover {
   background-color: #005fa3;
+} 
+/* === Base Typography === */
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+  color: #202122;
+  margin: 0;
+  padding: 0;
 }
+
+/* === Layout === */
+header, footer, section {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* === Header === */
+header h1 {
+  font-size: 2rem;
+  border-bottom: 1px solid #a2a9b1;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tagline {
+  font-style: italic;
+  color: #54595d;
+}
+
+/* === Navigation === */
+.top-nav {
+  background-color: #ffffff;
+  border-bottom: 1px solid #a2a9b1;
+  padding: 0.5rem 1rem;
+  text-align: right;
+}
+
+.home-btn {
+  font-size: 0.9rem;
+  color: #3366cc;
+  text-decoration: none;
+}
+
+.home-btn:hover {
+  text-decoration: underline;
+}
+
+/* === Intel Viewer === */
+.intel-card {
+  background-color: #ffffff;
+  border: 1px solid #c8ccd1;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.intel-card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* === About Me === */
+.about-card {
+  background-color: #ffffff;
+  border: 1px solid #c8ccd1;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.about-card textarea {
+  width: 100%;
+  height: 100px;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.button-group button {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+/* === Biography Section === */
+.biography-card, .books-card {
+  background-color: #ffffff;
+  border: 1px solid #c8ccd1;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.biography-card h2, .books-card h2 {
+  font-size: 1.4rem;
+  border-bottom: 1px solid #a2a9b1;
+  padding-bottom: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.bio-text, .books-note {
+  margin-bottom: 1rem;
+}
+
+/* === Books List === */
+.books-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.books-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* === Footer === */
+footer {
+  font-size: 0.85rem;
+  color: #54595d;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid #a2a9b1;
+  background-color: #ffffff;
+}
+
 /* End of style.css */
