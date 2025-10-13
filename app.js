@@ -1,18 +1,3 @@
-// Cleanup: Remove Raila Odinga biography from public entries if present
-function removeRailaOdingaFromPublic() {
-  const key = "ZawadiLegacyKey2025";
-  const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-  if (allIntel['public']) {
-    allIntel['public'] = allIntel['public'].filter(e => {
-      try {
-        return CryptoJS.AES.decrypt(e.title, key).toString(CryptoJS.enc.Utf8) !== "Raila Amolo Odinga";
-      } catch { return true; }
-    });
-    localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
-  }
-}
-// Call cleanup once on load
-removeRailaOdingaFromPublic();
 // ===== Modal Dialog Logic =====
 document.addEventListener('DOMContentLoaded', function() {
   // Modal elements
@@ -111,15 +96,6 @@ function showNotification(message, type = "info") {
 
 let currentUser = localStorage.getItem('currentUser') || null;
 
-if (currentUser) {
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('appContent').classList.remove('hidden');
-  document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
-  loadDraft();
-  revealAllIntel();
-}
-
-
 // 🔐 Encryption handled by crypto-vault.js
 // Functions encrypt(text) and decrypt(cipher) are already loaded
 
@@ -128,11 +104,7 @@ function sanitize(input) {
   return input.replace(/<[^>]*>?/gm, '');
 }
 
-// 🔁 Toggle login/register view
-function toggleRegister() {
-  document.getElementById('loginScreen').classList.toggle('hidden');
-  document.getElementById('registerScreen').classList.toggle('hidden');
-}
+
 
 // 🆕 Register user
 function registerUser() {
@@ -167,14 +139,13 @@ function loginUser() {
     currentUser = username;
     localStorage.setItem('currentUser', username);
 
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('registerScreen').classList.add('hidden');
-  document.getElementById('appContent').classList.remove('hidden');
-  document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
-  loadDraft();
-  revealAllIntel();
-  loadProfile();
-  showNotification('Login successful!', 'success');
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('appContent').classList.remove('hidden');
+    document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
+    loadDraft();
+    revealAllIntel();
+    loadProfile();
+    showNotification('Login successful!', 'success');
   } else {
     error.textContent = "Incorrect username or password.";
     showNotification('Incorrect username or password.', 'error');
@@ -186,7 +157,7 @@ function logout() {
   currentUser = null;
   localStorage.removeItem('currentUser');
   document.getElementById('appContent').classList.add('hidden');
-  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('loginModal').style.display = 'block';
   document.getElementById('currentUserDisplay').textContent = '';
   showNotification('Logged out.', 'info');
 }
@@ -220,6 +191,8 @@ document.getElementById('intelForm').addEventListener('submit', function(e) {
   this.reset();
   revealAllIntel();
   showNotification('Intel submitted!', 'success');
+});
+
 // ===== User Profile Logic =====
 function loadProfile() {
   if (!currentUser) return;
@@ -256,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-});
 
 // 📖 Reveal all entries
 function revealAllIntel() {
@@ -274,7 +246,7 @@ function revealAllIntel() {
         <h3>${decrypt(entry.title)}</h3>
       </div>
       <p>${decrypt(entry.content)}</p>
-      ${entry.tags ? `<div class="intel-tags">${entry.tags.split(',').map(tag => `<span class='tag'>#${tag.trim()}</span>`).join(' ')}</div>` : ''}
+      ${entry.tags ? `<div class="intel-tags">${entry.tags.split(',').map(tag => `<span class="tag">#${tag.trim()}</span>`).join(' ')}</div>` : ''}
       <div class="intel-card-footer">
         <small>${entry.timestamp}</small>
         ${entry.public ? '<span class="public-badge">🌍 Public</span>' : ''}
@@ -339,14 +311,41 @@ function loadDraft() {
     document.getElementById('content').value = draft.content;
   }
 }
+// 🌓 Toggle dark mode
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDark);
+  showNotification(isDark ? 'Dark mode enabled' : 'Light mode enabled', 'info');
+}
+
+// 📤 Export intel as JSON
+function exportIntel() {
+  if (!currentUser) return;
+  const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
+  const userIntel = allIntel[currentUser] || [];
+  const dataStr = JSON.stringify(userIntel, null, 2);
+  const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  const exportFileDefaultName = `zawadi-intel-${currentUser}.json`;
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+  showNotification('Intel exported!', 'success');
+}
+
 // 🔄 On load, check if user is logged in
 window.onload = function() {
   currentUser = localStorage.getItem('currentUser');
   if (currentUser) {
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('appContent').classList.remove('hidden');
-  document.getElementById('currentUserDisplay').textContent = `Logged in as: ${currentUser}`;
-  loadDraft();
-  loadProfile();
+    document.getElementById('appContent').classList.remove('hidden');
+    document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
+    loadDraft();
+    revealAllIntel();
+    loadProfile();
+  }
+  // Apply saved dark mode
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
   }
 };

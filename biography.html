@@ -4,43 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Public Biographies — Zawadi Intel</title>
+  <meta name="description" content="Explore public biographies on Zawadi Intel — shared stories, eternal echoes." />
+  <meta property="og:title" content="Public Biographies — Zawadi Intel" />
+  <meta property="og:description" content="Explore and contribute to legacy stories that live forever." />
+  <meta property="og:image" content="icons/icon-192.png" />
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="decrypt-obfuscated.js"></script> <!-- 🔐 Secure decryption -->
+  <script src="decrypt-obfuscated.js"></script>
 </head>
 <body>
-  <header class="fade-in">
-  <h1>📖 Public Biographies</h1>
-  <p class="tagline">“Shared stories. Eternal echoes.”</p>
-  <nav class="button-group slide-up">
-    <a href="index.html" class="btn">🏠 Home</a>
-    <a href="app.html" class="btn">🔐 Archive</a>
-    <a href="biography.html" class="btn">📖 Biographies</a>
-    <a href="media.html" class="btn">📺 Media</a>
-    <a href="viewer.html" class="btn">🗂️ Viewer</a>
-    <a href="offline.html" class="btn">📴 Offline</a>
-    <a href="legacy.html" class="btn">🌱 Legacy</a>
-    <button onclick="showRandomIntel()" class="btn">🎲 Surprise Me</button>
-  </nav>
-</header>
-<div id="introOverlay">
-  <h2>✨ Welcome to Zawadi Intel</h2>
-  <p>Where every story becomes a legacy.</p>
-</div>
+  <header class="fade-in" style="animation-delay: 0.3s;">
+    <h1>📖 Public Biographies</h1>
+    <p class="tagline">“Shared stories. Eternal echoes.”</p>
+    <nav class="button-group slide-up" style="animation-delay: 0.5s;">
+      <a href="index.html" class="btn" aria-label="Home">🏠 Home</a>
+      <a href="app.html" class="btn" aria-label="Archive">🔐 Archive</a>
+      <a href="biography.html" class="btn" aria-label="Biographies">📖 Biographies</a>
+      <a href="media.html" class="btn" aria-label="Media">📺 Media</a>
+      <a href="viewer.html" class="btn" aria-label="Viewer">🗂️ Viewer</a>
+      <a href="legacy.html" class="btn" aria-label="Legacy">🌱 Legacy</a>
+      <button onclick="showRandomIntel()" class="btn" aria-label="Surprise Me">🎲 Surprise Me</button>
+    </nav>
+  </header>
 
-<section class="video-spotlight slide-up">...</section>
-<section class="write-legacy slide-up">...</section>
-<section class="bio-card fade-in">...</section>
-<section id="publicList" class="slide-up"></section>
-<div id="legacyTip" class="fade-in">
-  💡 Tip: You don’t need an account to write your legacy. Just start typing below.
-</div>
-
+  <div id="introOverlay" class="fade-in" style="animation-delay: 0.6s;">
+    <h2>✨ Welcome to Zawadi Intel</h2>
+    <p>Where every story becomes a legacy.</p>
+  </div>
 
   <!-- 🎥 YouTube Spotlight -->
-  <section class="video-spotlight">
+  <section class="video-spotlight slide-up" style="animation-delay: 0.7s;">
     <h2>🎥 Legacy Spotlight</h2>
     <iframe width="100%" height="315" src="https://www.youtube.com/embed/2O7K-8G2nwU"
       title="Faith Kipyegon Documentary" frameborder="0"
@@ -49,15 +44,15 @@
   </section>
 
   <!-- 📝 Guest Legacy Writer -->
-  <section class="write-legacy">
+  <section class="write-legacy slide-up" style="animation-delay: 0.8s;">
     <h2>📝 Write Your Legacy</h2>
-    <textarea id="guestLegacy" placeholder="Write something about yourself..."></textarea>
-    <button onclick="saveGuestLegacy()">💾 Save Locally</button>
+    <textarea id="guestLegacy" placeholder="Write something about yourself..." aria-label="Guest Legacy Input"></textarea>
+    <button onclick="saveGuestLegacy()" aria-label="Save Legacy Locally">💾 Save Locally</button>
     <div id="guestDisplay" class="legacy-output"></div>
   </section>
 
   <!-- 🔦 Featured Biography -->
-  <section class="bio-card fade-in">
+  <section class="bio-card fade-in" style="animation-delay: 0.9s;">
     <h2>Featured Biography</h2>
     <h3>Faith Chepngetich Kipyegon</h3>
     <p><strong>Born:</strong> January 10, 1994 – Nakuru County, Kenya</p>
@@ -82,121 +77,65 @@
     <p>Faith is the only woman to win three consecutive Olympic golds in the 1500m. Her 2023 record-breaking streak earned her World Athlete of the Year.</p>
   </section>
 
-
   <!-- ✍️ Public Biography Submission -->
-  <section class="bio-submit fade-in">
+  <section class="bio-submit fade-in" style="animation-delay: 1s;">
     <h2>Post Your Biography</h2>
     <form id="bioForm">
-      <input type="text" id="bioName" placeholder="Your Name" required />
-      <textarea id="bioContent" placeholder="Write your biography..." required></textarea>
-      <input type="text" id="bioQuote" placeholder="Favorite Quote (optional)" />
-      <button type="submit">🌍 Post Publicly</button>
+      <input type="text" id="bioName" placeholder="Your Name" required aria-label="Your Name" />
+      <textarea id="bioContent" placeholder="Write your biography..." required aria-label="Biography Content"></textarea>
+      <input type="text" id="bioQuote" placeholder="Favorite Quote (optional)" aria-label="Favorite Quote" />
+      <button type="submit" aria-label="Post Biography">🌍 Post Publicly</button>
       <p id="bioFormMsg"></p>
     </form>
   </section>
 
   <!-- 🔓 Public Entries -->
-  <section id="publicList"></section>
+  <section id="publicList" class="slide-up" style="animation-delay: 1.1s;"></section>
+
+  <div id="legacyTip" class="fade-in" style="animation-delay: 1.2s;">
+    💡 Tip: You don’t need an account to write your legacy. Just start typing below.
+  </div>
 
   <footer>
     <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
 
+  <script src="biography.js"></script>
+
+  <!-- Live Server Reload -->
   <script>
-    function decrypt(cipher) {
-      try {
-        return CryptoJS.AES.decrypt(cipher, "ZawadiLegacyKey2025").toString(CryptoJS.enc.Utf8);
-      } catch {
-        return "[Decryption Failed]";
-      }
-    }
-
-    function loadPublicIntel() {
-      const publicEntries = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-      const list = document.getElementById('publicList');
-      list.innerHTML = '';
-
-      // Collect all public entries from all users and from the 'public' array
-      let allPublic = [];
-      Object.values(publicEntries).forEach(val => {
-        if (Array.isArray(val)) {
-          allPublic = allPublic.concat(val.filter(e => e.public));
-        }
-      });
-
-      // Sort by most recent
-      allPublic.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-      allPublic.forEach(entry => {
-        const div = document.createElement('div');
-        div.className = 'intel-entry';
-        div.innerHTML = `
-          <h3>${decrypt(entry.title)}</h3>
-          <p>${decrypt(entry.content)}</p>
-          ${entry.quote ? `<blockquote class="quote">${decrypt(entry.quote)}</blockquote>` : ''}
-          <small>By ${entry.author} — ${entry.timestamp}</small>
-        `;
-        list.appendChild(div);
-      });
-    }
-    // Handle public biography submission
-    document.addEventListener('DOMContentLoaded', function() {
-      const bioForm = document.getElementById('bioForm');
-      if (bioForm) {
-        bioForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          const name = document.getElementById('bioName').value.trim();
-          const content = document.getElementById('bioContent').value.trim();
-          const quote = document.getElementById('bioQuote').value.trim();
-          const msg = document.getElementById('bioFormMsg');
-          if (!name || !content) {
-            msg.textContent = 'Name and biography are required.';
-            return;
+    if ('WebSocket' in window) {
+      (function () {
+        function refreshCSS() {
+          var sheets = [].slice.call(document.getElementsByTagName("link"));
+          var head = document.getElementsByTagName("head")[0];
+          for (var i = 0; i < sheets.length; ++i) {
+            var elem = sheets[i];
+            var parent = elem.parentElement || head;
+            parent.removeChild(elem);
+            var rel = elem.rel;
+            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+              var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+              elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+            }
+            parent.appendChild(elem);
           }
-          // Encrypt fields
-          const entry = {
-            title: CryptoJS.AES.encrypt(name, "ZawadiLegacyKey2025").toString(),
-            content: CryptoJS.AES.encrypt(content, "ZawadiLegacyKey2025").toString(),
-            quote: quote ? CryptoJS.AES.encrypt(quote, "ZawadiLegacyKey2025").toString() : '',
-            author: name,
-            public: true,
-            timestamp: new Date().toLocaleString()
-          };
-          // Save to zawadiIntel
-          const allIntel = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-          if (!allIntel['public']) allIntel['public'] = [];
-          allIntel['public'].push(entry);
-          localStorage.setItem('zawadiIntel', JSON.stringify(allIntel));
-          msg.textContent = '✅ Biography posted!';
-          bioForm.reset();
-          loadPublicIntel();
-        });
-      }
-    });
-
-    function showRandomIntel() {
-      const publicEntries = JSON.parse(localStorage.getItem('zawadiIntel')) || {};
-      const entries = Object.values(publicEntries).flat().filter(e => e.public);
-      if (entries.length === 0) return;
-
-      const entry = entries[Math.floor(Math.random() * entries.length)];
-      alert(`"${decrypt(entry.title)}"\n\n${decrypt(entry.content)}\n\n— ${entry.author}`);
+        }
+        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+        var address = protocol + window.location.host + window.location.pathname + '/ws';
+        var socket = new WebSocket(address);
+        socket.onmessage = function (msg) {
+          if (msg.data == 'reload') window.location.reload();
+          else if (msg.data == 'refreshcss') refreshCSS();
+        };
+        if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+          console.log('Live reload enabled.');
+          sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+        }
+      })();
+    } else {
+      console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
     }
-
-    function saveGuestLegacy() {
-      const text = document.getElementById('guestLegacy').value.trim();
-      localStorage.setItem('guestLegacy', text);
-      document.getElementById('guestDisplay').textContent = text;
-    }
-
-    window.onload = () => {
-      loadPublicIntel();
-      const saved = localStorage.getItem('guestLegacy');
-      if (saved) {
-        document.getElementById('guestLegacy').value = saved;
-        document.getElementById('guestDisplay').textContent = saved;
-      }
-    };
   </script>
 </body>
 </html>

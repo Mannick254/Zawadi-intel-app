@@ -7,6 +7,7 @@ h1, h2, h3 {
   animation: headingGradientMove 6s ease-in-out infinite, headingPulse 2.5s infinite alternate;
 }
 @keyframes headingGradientMove {
+
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -757,3 +758,24 @@ body {
   margin-top: 1em;
   color: #555;
 }
+.top-nav {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.home-btn {
+  padding: 8px 12px;
+  background-color: #0077cc;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.home-btn:hover {
+  background-color: #005fa3;
+}
+/* End of style.css */
