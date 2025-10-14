@@ -99,9 +99,18 @@ let currentUser = localStorage.getItem('currentUser') || null;
 // 🔐 Encryption handled by crypto-vault.js
 // Functions encrypt(text) and decrypt(cipher) are already loaded
 
-// 🧼 Sanitize input
+// 🧼 Sanitize input (enhanced to match biography.js escapeHTML)
 function sanitize(input) {
-  return input.replace(/<[^>]*>?/gm, '');
+  if (typeof input !== 'string') return input;
+  return input.replace(/[&<>"']/g, function(match) {
+    switch (match) {
+      case '&': return '&amp;';
+      case '<': return '<';
+      case '>': return '>';
+      case '"': return '"';
+      case "'": return '&#039;';
+    }
+  });
 }
 
 

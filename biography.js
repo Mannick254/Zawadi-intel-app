@@ -2,7 +2,7 @@ function decrypt(cipher) {
   try {
     // IMPORTANT: Hardcoded key is INSECURE for production data.
     // This is only for demonstration within the original code's structure.
-    return CryptoJS.AES.decrypt(cipher, "ZawadiLegacyKey2025").toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.decrypt(cipher, "2025Zawadi").toString(CryptoJS.enc.Utf8);
   } catch {
     // Consider logging the error for debugging
     console.error("Decryption Failed:", cipher);
@@ -94,9 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // Encrypt fields
       // IMPORTANT: Hardcoded key and client-side encryption are INSECURE for production data.
       const entry = {
-        title: CryptoJS.AES.encrypt(name, "ZawadiLegacyKey2025").toString(),
-        content: CryptoJS.AES.encrypt(content, "ZawadiLegacyKey2025").toString(),
-        quote: quote ? CryptoJS.AES.encrypt(quote, "ZawadiLegacyKey2025").toString() : '',
+        title: CryptoJS.AES.encrypt(name, "2025Zawadi").toString(),
+        content: CryptoJS.AES.encrypt(content, "2025Zawadi").toString(),
+        quote: quote ? CryptoJS.AES.encrypt(quote, "2025Zawadi").toString() : '',
         author: name, // Storing author unencrypted might be intentional, but consider implications
         public: true,
         timestamp: new Date().toLocaleString()

@@ -703,7 +703,7 @@ footer {
   animation: fadePulse 3s ease-in-out infinite;
 }
 body {
-  background: linear-gradient(135deg, #111, #222);
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
   animation: bgFade 10s ease-in-out infinite alternate;
 }
 
@@ -900,5 +900,66 @@ footer {
   border-top: 1px solid #a2a9b1;
   background-color: #ffffff;
 }
+/* === Books Page Styling === */
+.books-page header, .books-page main, .books-page footer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
 
-/* End of style.css */
+.books-page header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.books-page .tagline {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.books-page section {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.books-page section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.books-page section p {
+  font-size: 1rem;
+  color: #444;
+}
+
+.books-page section a {
+  display: inline-block;
+  margin-top: 0.8rem;
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.books-page section a:hover {
+  text-decoration: underline;
+}
+
+.books-page footer {
+  font-size: 0.9rem;
+  color: #999;
+  margin-top: 4rem;
+}
+.books-page img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
