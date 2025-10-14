@@ -149,6 +149,7 @@ function loginUser() {
     localStorage.setItem('currentUser', username);
 
     document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('modal-triggers').style.display = 'none'; // Hide login/register/profile buttons
     document.getElementById('appContent').classList.remove('hidden');
     document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
     loadDraft();
@@ -166,6 +167,7 @@ function logout() {
   currentUser = null;
   localStorage.removeItem('currentUser');
   document.getElementById('appContent').classList.add('hidden');
+  document.getElementById('modal-triggers').style.display = 'flex'; // Show login/register/profile buttons
   document.getElementById('loginModal').style.display = 'block';
   document.getElementById('currentUserDisplay').textContent = '';
   showNotification('Logged out.', 'info');
@@ -348,10 +350,13 @@ window.onload = function() {
   currentUser = localStorage.getItem('currentUser');
   if (currentUser) {
     document.getElementById('appContent').classList.remove('hidden');
+    document.getElementById('modal-triggers').style.display = 'none'; // Hide buttons if logged in
     document.getElementById('currentUserDisplay').textContent = `👤 Logged in as: ${currentUser}`;
     loadDraft();
     revealAllIntel();
     loadProfile();
+  } else {
+    document.getElementById('modal-triggers').style.display = 'flex'; // Show buttons if not logged in
   }
   // Apply saved dark mode
   if (localStorage.getItem('darkMode') === 'true') {

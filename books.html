@@ -6,6 +6,13 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="books-page">
+  <!-- Persistent User Profile -->
+  <div class="user-profile" id="userProfile">
+    <div class="avatar">👤</div>
+    <div class="name" id="profileName"></div>
+    <div class="bio" id="profileBio"></div>
+  </div>
+
   <header>
     <h1>Books by Nickson Ochieng Okoth</h1>
     <p class="tagline">Stories that guard memory, challenge silence, and honor legacy.</p>
@@ -44,5 +51,16 @@
   <footer>
     <p>&copy; 2025 Nickson Ochieng Okoth | Zawadi Intel Legacy</p>
   </footer>
+
+  <script>
+    // Check for logged-in user and display profile
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      document.getElementById('profileName').textContent = profile.displayName || currentUser;
+      document.getElementById('profileBio').textContent = profile.bio || '';
+      document.getElementById('userProfile').style.display = 'block';
+    }
+  </script>
 </body>
 </html>

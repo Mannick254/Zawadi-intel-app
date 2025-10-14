@@ -28,6 +28,13 @@ x<!DOCTYPE html>
   </style>
 </head>
 <body>
+  <!-- Persistent User Profile -->
+  <div class="user-profile" id="userProfile">
+    <div class="avatar">👤</div>
+    <div class="name" id="profileName"></div>
+    <div class="bio" id="profileBio"></div>
+  </div>
+
   <nav class="top-nav">
     <a href="index.html" class="btn home-btn">🏠 Home</a>
   </nav>
@@ -38,6 +45,17 @@ x<!DOCTYPE html>
   <p>Zawadi Intel is temporarily unavailable.<br>Reconnect to the internet and try again.</p>
   <button class="btn" onclick="location.reload()" style="margin-top:2em;">🔄 Try Again</button>
   <div class="quote">“Even in silence, the archive remembers.”</div>
+
+  <script>
+    // Check for logged-in user and display profile
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      document.getElementById('profileName').textContent = profile.displayName || currentUser;
+      document.getElementById('profileBio').textContent = profile.bio || '';
+      document.getElementById('userProfile').style.display = 'block';
+    }
+  </script>
 </body>
 
 </html>

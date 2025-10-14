@@ -14,6 +14,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
+  <!-- Persistent User Profile -->
+  <div class="user-profile" id="userProfile">
+    <div class="avatar">👤</div>
+    <div class="name" id="profileName"></div>
+    <div class="bio" id="profileBio"></div>
+  </div>
+
   <header class="fade-in" style="animation-delay: 0.3s;">
     <h1>📖 Public Biographies</h1>
     <p class="tagline">“Shared stories. Eternal echoes.”</p>
@@ -94,6 +101,17 @@
   </footer>
 
   <script src="biography.js"></script>
+
+  <script>
+    // Check for logged-in user and display profile
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      document.getElementById('profileName').textContent = profile.displayName || currentUser;
+      document.getElementById('profileBio').textContent = profile.bio || '';
+      document.getElementById('userProfile').style.display = 'block';
+    }
+  </script>
 
   <!-- Live Server Reload -->
   <script>

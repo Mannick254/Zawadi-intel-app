@@ -11,6 +11,13 @@
   <script src="src/js/crypto-vault.js"></script> <!-- 🔐 Secure encryption logic -->
 </head>
 <body>
+  <!-- Persistent User Profile -->
+  <div class="user-profile" id="userProfile">
+    <div class="avatar">👤</div>
+    <div class="name" id="profileName"></div>
+    <div class="bio" id="profileBio"></div>
+  </div>
+
   <!-- Navigation Bar -->
   <nav class="top-nav">
     <a href="index.html" class="btn home-btn">🏠 Home</a>
@@ -123,6 +130,16 @@
 
   <!-- 🧠 Load app logic after DOM -->
   <script src="app.js"></script>
+  <script>
+    // Check for logged-in user and display profile
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      document.getElementById('profileName').textContent = profile.displayName || currentUser;
+      document.getElementById('profileBio').textContent = profile.bio || '';
+      document.getElementById('userProfile').style.display = 'block';
+    }
+  </script>
 </body>
   <script src="src/js/decrypt.js"></script> <!-- 🔐 Obfuscated decryption logic -->
 </html>
