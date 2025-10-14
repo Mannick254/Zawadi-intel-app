@@ -11,6 +11,7 @@
   <script src="js/crypto-vault.js"></script>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle">🌙</button>
   <nav class="button-group">
     <a href="index.html" class="btn">🏠 Home</a>
     <a href="app.html" class="btn">🔐 Archive</a>
@@ -37,6 +38,11 @@
   <!-- 📚 Published Works -->
   <section class="books-gallery">
     <h2>📚 Published Works</h2>
+    <div class="slideshow">
+      <img src="src/emeka-cover.png" class="slide" />
+      <img src="src/zawadi-cover.png" class="slide" />
+      <img src="src/machetes-cover.png" class="slide" />
+    </div>
     <div class="book-row">
       <div class="book-entry">
         <img src="src/emeka-cover.png" alt="Emeka the Chief’s Son cover" />
@@ -85,6 +91,24 @@
 
   <script src="js/main.js"></script>
   <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      themeToggle.classList.toggle('dark-mode', isDark);
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeToggle.textContent = '☀️';
+      themeToggle.classList.add('dark-mode');
+    }
+
     window.onload = () => {
       const rawTitle = localStorage.getItem('fullIntelTitle');
       const rawContent = localStorage.getItem('fullIntelContent');
@@ -110,6 +134,39 @@
       document.getElementById('aboutInput').value = '';
       document.getElementById('aboutDisplay').textContent = '';
     }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    });
+
+    document.querySelectorAll('.intel-card, .about-card, .books-gallery').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Slideshow functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      showSlide(currentSlide);
+    }
+
+    // Auto-slide every 3 seconds
+    setInterval(nextSlide, 3000);
+
+    // Start with first slide
+    showSlide(0);
   </script>
 </body>
 </html>
