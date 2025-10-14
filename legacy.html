@@ -8,29 +8,64 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="crypto-vault.js"></script>
+  <script src="js/crypto-vault.js"></script>
 </head>
 <body>
-  <!-- Persistent User Profile -->
-  <div class="user-profile" id="userProfile">
-    <div class="avatar">👤</div>
-    <div class="name" id="profileName"></div>
-    <div class="bio" id="profileBio"></div>
-  </div>
-
-  <nav class="top-nav">
-    <a href="index.html" class="btn home-btn">🏠 Home</a>
+  <nav class="button-group">
+    <a href="index.html" class="btn">🏠 Home</a>
+    <a href="app.html" class="btn">🔐 Archive</a>
+    <a href="biography.html" class="btn">📖 Biographies</a>
+    <a href="media.html" class="btn">📺 Media</a>
+    <a href="viewer.html" class="btn">🗂️ Viewer</a>
+    <a href="legacy.html" class="btn">🌱 Legacy</a>
   </nav>
 
   <header>
     <h1>📜 Legacy Entry</h1>
     <p class="tagline">“One story. One spark. One legacy.”</p>
+    <div class="button-group">
+      <a href="app.html" class="btn">🔙 Back to Archive</a>
+    </div>
   </header>
 
   <!-- 🔓 Decrypted Intel Viewer -->
   <section class="intel-card" id="viewerCard">
     <h2 id="viewerTitle">Loading title...</h2>
     <p id="viewerContent">Loading content...</p>
+  </section>
+
+  <!-- 📚 Published Works -->
+  <section class="books-gallery">
+    <h2>📚 Published Works</h2>
+    <div class="book-row">
+      <div class="book-entry">
+        <img src="src/emeka-cover.png" alt="Emeka the Chief’s Son cover" />
+        <h3>📘 Emeka the Chief’s Son</h3>
+        <p>A dramatic tale of pride, betrayal, and chaos on a wedding day in Imo State, Nigeria.</p>
+        <a href="https://www.booksie.com/748649-emeka-the-chiefs-son" target="_blank">Read on Booksie</a>
+      </div>
+
+      <div class="book-entry">
+        <img src="src/zawadi-cover.png" alt="Ashes to Ambition cover" />
+        <h3>🔥 Ashes to Ambition</h3>
+        <p>A poetic testament of rebirth, ambition, and the fire that fuels legacy.</p>
+        <a href="https://www.booksie.com/769963-ashes-to-ambition-the-testament-of-zawadi" target="_blank">Read on Booksie</a>
+      </div>
+
+      <div class="book-entry">
+        <img src="src/machetes-cover.png" alt="When the Machetes Came cover" />
+        <h3>🗡️ When the Machetes Came</h3>
+        <p>A haunting reflection on survival, memory, and the silence that followed violence.</p>
+        <a href="https://www.booksie.com/769812-when-the-machetes-came-a-night-we-didnt-die" target="_blank">Read on Booksie</a>
+      </div>
+
+      <div class="book-entry">
+        <img src="src/mahesh-cover.png" alt="Mahesh cover" />
+        <h3>🚶 Mahesh: From Rebellion to Redemption</h3>
+        <p>A cinematic journey of transformation, rebellion, and spiritual awakening.</p>
+        <a href="https://www.booksie.com/747147-the-unstoppable-journey-of-maheshfrom-rebellion-to-redemption" target="_blank">Read on Booksie</a>
+      </div>
+    </div>
   </section>
 
   <!-- 🧠 User-Written About Me Section -->
@@ -44,40 +79,11 @@
     <div id="aboutDisplay" class="about-output"></div>
   </section>
 
-  <!-- 👤 Creator Biography -->
-  <section class="biography-card">
-    <h2>🧬 Creator Biography</h2>
-    <p class="bio-text">
-      Nickson Ochieng Okoth is a visionary creator and Access Control Specialist based in Nairobi, Kenya. He currently works with Rainbow Patriots, safeguarding critical infrastructure and promoting strategic planning in high-risk environments. His role blends technical precision with real-world vigilance, anchoring his legacy in both protection and innovation.
-    </p>
-    <p class="bio-text">
-      Beyond security, Nickson is the architect of Zawadi Intel — a cinematic archive app designed to preserve encrypted stories, poetic transitions, and emotional memory. His creative portfolio, featured on Booksie, explores themes of identity, intimacy, and transformation through short stories, dramatic monologues, and poetic reflections.
-    </p>
-    <p class="bio-text">
-      Learn more at <a href="https://about.me/nicksonochieng" target="_blank">about.me/nicksonochieng</a> or explore his creative work on <a href="https://www.booksie.com/portfolio-view/nickson-ochieng-377142" target="_blank">Booksie</a>.
-    </p>
-  </section>
-
-  <!-- 📚 Published Works -->
-  <section class="books-card">
-    <h2>📚 Published Works</h2>
-    <ul class="books-list">
-      <li>
-        <strong><a href="https://www.booksie.com/552999-musicality" target="_blank">Musicality</a></strong> — A romance-driven narrative exploring emotional tension and personal growth through the lens of marching band culture.
-      </li>
-      <li>
-        <strong><a href="https://www.booksie.com/516551-the-road-to-freedom-chapter-1" target="_blank">The Road to Freedom</a></strong> — A fan fiction piece that dramatizes the struggle for identity and liberation in a high-stakes world.
-      </li>
-    </ul>
-    <p class="books-note">
-      These works reflect Nickson’s expressive storytelling style — blending cinematic emotion, cultural depth, and poetic rhythm.
-    </p>
-  </section>
-
   <footer>
-    <p>&copy; 2025 Zawadi Intel. Legacy preserved by its creator.</p>
+    <p>&copy; 2025 Zawadi Intel. Legacy preserved by its users.</p>
   </footer>
 
+  <script src="js/main.js"></script>
   <script>
     window.onload = () => {
       const rawTitle = localStorage.getItem('fullIntelTitle');
@@ -90,15 +96,6 @@
       if (aboutText) {
         document.getElementById('aboutInput').value = aboutText;
         document.getElementById('aboutDisplay').textContent = aboutText;
-      }
-
-      // Check for logged-in user and display profile
-      const currentUser = localStorage.getItem('currentUser');
-      if (currentUser) {
-        const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-        document.getElementById('profileName').textContent = profile.displayName || currentUser;
-        document.getElementById('profileBio').textContent = profile.bio || '';
-        document.getElementById('userProfile').style.display = 'block';
       }
     };
 

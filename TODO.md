@@ -13,7 +13,7 @@
 - [x] Add `<div class="user-profile">` to `books.html` and add script to check login and display profile.
 - [x] Add `<div class="user-profile">` to `legacy.html` and add script to check login and display profile.
 - [x] Add `<div class="user-profile">` to `media.html` and add script to check login and display profile.
-- [x] Add `<div class="user-profile">` to `viewer.html` and add script to check login and display profile.
+- [x] Merged viewer.html into legacy.html, removed viewer.html references.
 - [x] Add `<div class="user-profile">` to `offline.html` and add script to check login and display profile.
 
 ## 4. Home button with vertical sidebar

@@ -4,7 +4,6 @@ const assets = [
   "index.html",
   "app.html",
   "biography.html",
-  "viewer.html",
   "media.html",
   "legacy.html",
   "offline.html",
