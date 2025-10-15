@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legacy News — Zawadi Intel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle">🌙</button>
+  <nav class="button-group">
+    <a href="index.html" class="btn">🏠 Home</a>
+  </nav>
+
+  <header>
+    <h1>📰 Legacy News</h1>
+    <p class="tagline">“Where stories echo through time.”</p>
+  </header>
+
+  <section class="news-feed">
+    <article class="news-card">
+      <h2>🕊️ Raila Odinga Passes Away at 80</h2>
+      <img src="images/raila-cover.png" alt="Raila Odinga Tribute Cover" class="tribute-image" />
+      <p>Kenya mourns the loss of Raila Odinga, a towering figure in African politics and a champion of democratic reform. He died in India on October 15, 2025, following a cardiac arrest during treatment.</p>
+      <p>His passing sparked nationwide tributes, with thousands gathering in Bondo, Kisumu, and Kibera to honor his legacy. Businesses paused, streets filled with green leaves, and voices rose in remembrance of a leader who shaped generations.</p>
+      <a href="https://www.msn.com/en-xl/africa/kenya/former-prime-minister-raila-odinga-is-dead/ar-AA1OuV0O" target="_blank">Read on MSN</a><br />
+      <a href="https://www.kenyans.co.ke/news/117125-raila-odinga-dies" target="_blank">Read on Kenyans.co.ke</a><br />
+      <a href="https://www.aljazeera.com/news/2025/10/15/kenyan-opposition-leader-raila-odinga-dies-of-heart-attack-in-india-at-80" target="_blank">Read on Al Jazeera</a>
+      <span class="date">October 15, 2025</span>
+    </article>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Zawadi Intel. Legacy preserved by its users.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+      themeToggle.classList.toggle('dark-mode', isDark);
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeToggle.textContent = '☀️';
+      themeToggle.classList.add('dark-mode');
+    }
+  </script>
+</body>
+</html>

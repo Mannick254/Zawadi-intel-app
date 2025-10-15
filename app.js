@@ -42,6 +42,7 @@ function loadProfileModal() {
   document.getElementById('profileDisplayNameModal').value = profile.displayName || '';
   document.getElementById('profileBioModal').value = profile.bio || '';
   updateProfileInfoModal(profile);
+  updateAvatarModal(profile.photo);
 }
 function updateProfileInfoModal(profile) {
   const infoDiv = document.getElementById('profileInfoModal');
@@ -62,9 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!currentUser) return;
       const displayName = document.getElementById('profileDisplayNameModal').value.trim();
       const bio = document.getElementById('profileBioModal').value.trim();
-      const profile = { displayName, bio };
+      const existingProfile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      const profile = { displayName, bio, photo: existingProfile.photo };
       localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
       updateProfileInfoModal(profile);
+      updateAvatarModal(profile.photo);
       showNotification('Profile updated!', 'success');
     });
   }
@@ -211,6 +214,7 @@ function loadProfile() {
   document.getElementById('profileDisplayName').value = profile.displayName || '';
   document.getElementById('profileBio').value = profile.bio || '';
   updateProfileInfo(profile);
+  updateAvatar(profile.photo);
 }
 
 function updateProfileInfo(profile) {
@@ -233,9 +237,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!currentUser) return;
       const displayName = document.getElementById('profileDisplayName').value.trim();
       const bio = document.getElementById('profileBio').value.trim();
-      const profile = { displayName, bio };
+      const existingProfile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      const profile = { displayName, bio, photo: existingProfile.photo };
       localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
       updateProfileInfo(profile);
+      updateAvatar(profile.photo);
       showNotification('Profile updated!', 'success');
     });
   }
@@ -345,6 +351,91 @@ function exportIntel() {
   showNotification('Intel exported!', 'success');
 }
 
+// ===== Photo Upload Functions =====
+function togglePhotoUpload() {
+  const uploadArea = document.getElementById('uploadArea');
+  uploadArea.style.display = uploadArea.style.display === 'none' ? 'block' : 'none';
+}
+
+function togglePhotoUploadModal() {
+  const uploadArea = document.getElementById('uploadAreaModal');
+  uploadArea.style.display = uploadArea.style.display === 'none' ? 'block' : 'none';
+}
+
+function updateAvatar(photo) {
+  const avatar = document.getElementById('profileAvatar');
+  if (photo) {
+    avatar.innerHTML = `<img src="${photo}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+  } else {
+    avatar.innerHTML = '👤';
+  }
+}
+
+function updateAvatarModal(photo) {
+  const avatar = document.getElementById('profileAvatarModal');
+  if (photo) {
+    avatar.innerHTML = `<img src="${photo}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+  } else {
+    avatar.innerHTML = '👤';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Photo upload for main profile
+  const photoUpload = document.getElementById('photoUpload');
+  if (photoUpload) {
+    photoUpload.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const photo = event.target.result;
+          const existingProfile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+          const profile = { ...existingProfile, photo };
+          localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
+          updateAvatar(photo);
+          updatePersistentAvatar(photo);
+          document.getElementById('uploadArea').style.display = 'none';
+          showNotification('Photo uploaded!', 'success');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  // Photo upload for modal profile
+  const photoUploadModal = document.getElementById('photoUploadModal');
+  if (photoUploadModal) {
+    photoUploadModal.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const photo = event.target.result;
+          const existingProfile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+          const profile = { ...existingProfile, photo };
+          localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
+          updateAvatarModal(photo);
+          updatePersistentAvatar(photo);
+          document.getElementById('uploadAreaModal').style.display = 'none';
+          showNotification('Photo uploaded!', 'success');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+});
+
+// ===== Update Persistent Avatar =====
+function updatePersistentAvatar(photo) {
+  const avatar = document.getElementById('persistentAvatar');
+  if (photo) {
+    avatar.innerHTML = `<img src="${photo}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+  } else {
+    avatar.innerHTML = '👤';
+  }
+}
+
 // 🔄 On load, check if user is logged in
 window.onload = function() {
   currentUser = localStorage.getItem('currentUser');
@@ -355,6 +446,12 @@ window.onload = function() {
     loadDraft();
     revealAllIntel();
     loadProfile();
+    // Update persistent profile
+    const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+    document.getElementById('profileName').textContent = profile.displayName || currentUser;
+    document.getElementById('profileBio').textContent = profile.bio || '';
+    updatePersistentAvatar(profile.photo);
+    document.getElementById('userProfile').style.display = 'block';
   } else {
     document.getElementById('modal-triggers').style.display = 'flex'; // Show buttons if not logged in
   }
