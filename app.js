@@ -16,6 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const toRegister = document.getElementById('toRegisterModal');
   const toLogin = document.getElementById('toLoginModal');
 
+  // Shuffle News Functionality
+  const shuffleButton = document.getElementById('shuffleNews');
+  if (shuffleButton) {
+    shuffleButton.addEventListener('click', function() {
+      const newsFeed = document.querySelector('.news-feed');
+      const newsCards = Array.from(newsFeed.querySelectorAll('.news-card'));
+      // Shuffle the array
+      for (let i = newsCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newsCards[i], newsCards[j]] = [newsCards[j], newsCards[i]];
+      }
+      // Re-append shuffled cards
+      newsCards.forEach(card => newsFeed.appendChild(card));
+      showNotification('News shuffled!', 'info');
+    });
+  }
+
   // Open modals
   if (openLogin) openLogin.onclick = () => { loginModal.style.display = 'block'; };
   if (openRegister) openRegister.onclick = () => { registerModal.style.display = 'block'; };

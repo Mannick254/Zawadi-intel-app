@@ -1,25 +1,15 @@
-# TODO: Add Desktop Features - Photo Upload with Transitions
+# TODO: Integrate News into App and Add Navigation/Shuffle
 
-## Steps to Complete
+## Completed Tasks
+- [x] Analyze app.html, news.html, legacy.html structures
+- [x] Create plan for integration
+- [x] Integrate news-feed section from news.html into app.html at the top of appContent
+- [x] Add downward navigation menu below news, linking to legacy.html, news.html, etc.
+- [x] Add shuffle button to news section for randomizing articles
+- [x] Update app.js to handle shuffle functionality
 
-1. **Edit app.html**
-   - Add file input for photo upload in the main profile form (id="profileForm").
-   - Add file input for photo upload in the profile modal form (id="profileFormModal").
-   - Make the avatar div (class="avatar") clickable to toggle visibility of the upload input with smooth transitions.
-   - Ensure upload area hides automatically after upload (Chrome-style behavior).
+## Completed Tasks
+- [x] Improve CSS: Clean up conflicting styles, enhance news-feed, navigation-menu, ensure edge-to-edge layout, add Chrome-like design
 
-2. **Edit app.js**
-   - Add event listener for avatar click to toggle upload input visibility.
-   - Add file input change handler to read selected file, convert to base64, and store in profile data.
-   - Update loadProfile and loadProfileModal functions to display uploaded photo in avatar (fallback to emoji).
-   - Update profile save logic to include photo data.
-
-3. **Edit style.css**
-   - Add CSS transitions (fade-in/fade-out) for the upload area visibility toggle.
-   - Style the file input and upload area for desktop usability.
-
-4. **Test Implementation**
-   - Test photo upload functionality.
-   - Verify smooth transitions on avatar click and after upload.
-   - Check profile display with uploaded photo.
-   - Ensure desktop compatibility (file picker, etc.).
+## Completed Tasks
+- [x] Test integration: Open app.html, verify news first, navigation works, shuffle randomizes, and improved visuals
