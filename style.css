@@ -829,14 +829,20 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  width: 200px;
-  height: 100vh;
-  background: rgba(30,30,40,0.95);
+  width: 250px;
+  height: 100%;
+  background: #222;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
   color: #fff;
   padding: 20px;
   box-shadow: 2px 0 8px rgba(0,0,0,0.2);
   z-index: 999;
   overflow-y: auto;
+}
+
+.sidebar.active {
+  transform: translateX(0);
 }
 
 .sidebar h2 {
@@ -1026,6 +1032,14 @@ footer {
   margin: 2rem 0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   text-align: left;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.books-page section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .books-page section h2 {
@@ -1268,4 +1282,65 @@ body {
 .navigation-menu .btn:hover {
   background: linear-gradient(90deg, #005fa3 0%, #00bcd4 100%);
   transform: translateY(-3px);
+}
+@media (max-width: 600px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 1rem;
+    background: var(--card-bg, #f9f9f9);
+  }
+
+  .sidebar ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .sidebar li {
+    list-style: none;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    background: #eee;
+  }
+}
+.btn {
+  padding: 1rem;
+  font-size: 1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  touch-action: manipulation;
+}
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+#avatarUpload {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+}
+body {
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: 'Segoe UI', sans-serif;
+}
+.user-profile {
+  padding: 1rem;
+  text-align: center;
+}
+
+.user-profile img {
+  max-width: 80px;
+  height: auto;
 }

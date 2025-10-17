@@ -5,11 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zawadi Media</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Noto Sans', 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      background-color: #f9f9f9;
+      color: #222;
+    }
+    .main-header {
+      text-align: center;
+      padding: 2em 1em;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+    .tagline {
+      font-size: 1.2em;
+      color: #666;
+    }
+    nav.top-nav {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      z-index: 1000;
+    }
+    iframe {
+      width: 100%;
+      max-width: 720px;
+      height: 405px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
   <!-- Persistent User Profile -->
   <div class="user-profile" id="userProfile">
-    <div class="avatar">👤</div>
+    <div id="uploadContainer">
+      <input type="file" id="profileUpload" />
+    </div>
+    <img id="profileImage" style="display:none;" />
     <div class="name" id="profileName"></div>
     <div class="bio" id="profileBio"></div>
   </div>
@@ -17,7 +53,7 @@
   <nav class="top-nav">
     <a href="index.html" class="btn home-btn">🏠 Home</a>
   </nav>
-  <header>
+  <header class="main-header">
     <h1>📺 Zawadi Media</h1>
     <p class="tagline">“Watch. Reflect. Archive.”</p>
     <div class="button-group">
@@ -44,6 +80,9 @@
         YouTube video cannot be loaded. Please enable JavaScript or open this page in a regular browser tab.
       </div>
     </noscript>
+    <div class="button-group">
+      <a href="https://citizen.digital/tv" class="btn" target="_blank">📺 Watch Citizen TV</a>
+    </div>
   </section>
 
   <footer>
@@ -57,8 +96,36 @@
       const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
       document.getElementById('profileName').textContent = profile.displayName || currentUser;
       document.getElementById('profileBio').textContent = profile.bio || '';
+      if (profile.avatar) {
+        const img = document.getElementById('profileImage');
+        img.src = profile.avatar;
+        img.style.display = 'block';
+        document.getElementById('uploadContainer').style.display = 'none';
+      }
       document.getElementById('userProfile').style.display = 'block';
     }
+
+    // Profile upload functionality
+    document.getElementById('profileUpload').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.getElementById('profileImage');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          document.getElementById('uploadContainer').style.display = 'none';
+          // Save to localStorage
+          const currentUser = localStorage.getItem('currentUser');
+          if (currentUser) {
+            const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+            profile.avatar = e.target.result;
+            localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
   </script>
 </body>
 </html>

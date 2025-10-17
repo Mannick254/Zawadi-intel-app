@@ -9,6 +9,11 @@
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="src/js/crypto-vault.js"></script> <!-- 🔐 Secure encryption logic -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
 </head>
 <body>
   <!-- Persistent User Profile -->

@@ -8,13 +8,75 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <style>
+    body {
+      font-family: 'Noto Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f9f9f9;
+      color: #222;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      font-weight: 600;
+      margin-top: 1.5em;
+    }
+    .main-header {
+      background: #fff;
+      padding: 1em 2em;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    .logo {
+      font-size: 2em;
+      font-weight: bold;
+      color: #0077cc;
+    }
+    .tagline {
+      font-size: 1.1em;
+      color: #666;
+    }
+    .top-nav {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      padding: 1em;
+      z-index: 1000;
+    }
+    .top-nav a {
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 500;
+    }
+    .top-nav a:hover {
+      text-decoration: underline;
+    }
+    .media-player iframe {
+      width: 100%;
+      max-width: 720px;
+      height: 405px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    body.light-mode {
+      background-color: #fff;
+      color: #222;
+    }
+  </style>
 </head>
 <body>
-  <button class="theme-toggle" id="themeToggle">🌙</button>
+  <button class="toggle-sidebar">☰ Menu</button>
+  <button onclick="toggleTheme()">🌓 Toggle Theme</button>
   <!-- Persistent User Profile -->
   <div class="user-profile" id="userProfile">
-    <div class="avatar" id="profileAvatar">👤</div>
-    <input type="file" id="avatarUpload" accept="image/*" />
+    <div id="uploadContainer">
+      <input type="file" id="profileUpload" />
+    </div>
+    <img id="profileImage" style="display:none;" />
     <div class="name" id="profileName"></div>
     <div class="bio" id="profileBio"></div>
   </div>
@@ -32,35 +94,34 @@
     </ul>
   </div>
 
-  <header>
-    <h1>📜 Zawadi Intel</h1>
-    <p class="tagline">“Every entry is a seed of memory. Every login, a step toward legacy.”</p>
-    <div class="button-group">
-      <a href="app.html" class="btn">🔐 Enter the Archive</a>
-      <a href="biography.html" class="btn">📖 View Public Biographies</a>
-    </div>
+  <header class="main-header">
+    <div class="logo">📺 Zawadi Intel</div>
+    <p class="tagline">Watch. Reflect. Archive.</p>
   </header>
+  <nav class="top-nav">
+    <a href="index.html">🏠 Home</a>
+    <a href="news.html">📰 News</a>
+    <a href="books.html">📚 Books</a>
+  </nav>
+  <div class="button-group">
+    <a href="app.html" class="btn">🔐 Enter the Archive</a>
+    <a href="biography.html" class="btn">📖 View Public Biographies</a>
+  </div>
   <footer>
     <p>&copy; 2025 Zawadi Intel. Built by Nickson Ochieng Okoth.</p>
   </footer>
   <script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      themeToggle.textContent = isDark ? '☀️' : '🌙';
-      themeToggle.classList.toggle('dark-mode', isDark);
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-      themeToggle.textContent = '☀️';
-      themeToggle.classList.add('dark-mode');
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
     }
+
+    // Sidebar toggle functionality
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.querySelector('.toggle-sidebar');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
 
     window.onload = () => {
       setTimeout(() => {
@@ -74,24 +135,29 @@
         document.getElementById('profileName').textContent = profile.displayName || currentUser;
         document.getElementById('profileBio').textContent = profile.bio || '';
         if (profile.avatar) {
-          document.getElementById('profileAvatar').innerHTML = `<img src="${profile.avatar}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">`;
+          const img = document.getElementById('profileImage');
+          img.src = profile.avatar;
+          img.style.display = 'block';
+          document.getElementById('uploadContainer').style.display = 'none';
         }
         document.getElementById('userProfile').style.display = 'block';
       }
 
-      // Avatar upload functionality
-      document.getElementById('avatarUpload').addEventListener('change', (event) => {
-        const file = event.target.files[0];
+      // Profile upload functionality
+      document.getElementById('profileUpload').addEventListener('change', function () {
+        const file = this.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = (e) => {
-            const avatarData = e.target.result;
-            document.getElementById('profileAvatar').innerHTML = `<img src="${avatarData}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">`;
+          reader.onload = function (e) {
+            const img = document.getElementById('profileImage');
+            img.src = e.target.result;
+            img.style.display = 'block';
+            document.getElementById('uploadContainer').style.display = 'none';
             // Save to localStorage
             const currentUser = localStorage.getItem('currentUser');
             if (currentUser) {
               const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-              profile.avatar = avatarData;
+              profile.avatar = e.target.result;
               localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
             }
           };
