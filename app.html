@@ -3,192 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zawadi Intel — Secure Archive</title>
+  <title>Zawadi Intel App — Secure Archive</title>
+  <meta name="description" content="Secure access to Zawadi Intel’s cinematic archive, story submission tools, and encrypted vault." />
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="src/js/crypto-vault.js"></script> <!-- 🔐 Secure encryption logic -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+  <script src="src/js/crypto-vault.js"></script>
 </head>
 <body>
-  <!-- Persistent User Profile -->
-  <div class="user-profile" id="userProfile">
-    <div class="avatar" id="persistentAvatar">👤</div>
-    <div class="name" id="profileName"></div>
-    <div class="bio" id="profileBio"></div>
-  </div>
-
-  <!-- Navigation Bar -->
+  <!-- � Top Navigation -->
   <nav class="top-nav">
-    <a href="index.html" class="btn home-btn">🏠 Home</a>
+    <div class="logo">🔐 Zawadi App</div>
+    <div class="main-links">
+      <div class="home-menu">
+        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
+        <div class="home-dropdown" id="homeDropdown">
+          <a href="index.html">Home</a>
+          <a href="biography.html">Biographies</a>
+          <a href="media.html">Media</a>
+          <a href="sport.html">Sports</a>
+          <a href="books.html">Books</a>
+          <a href="news.html#global-section">Global</a>
+          <a href="news.html#middle-east">Middle East</a>
+        </div>
+      </div>
+      <a href="news.html" class="top-link">News</a>
+    </div>
+    <div class="utility">
+      <a href="books.html" class="top-link">Books</a>
+      <div id="userAuth" class="user-auth"></div>
+    </div>
   </nav>
 
-  <!-- Modal Triggers -->
-  <div class="modal-triggers">
-    <button class="btn" id="openLoginModal">🔐 Login</button>
-    <button class="btn" id="openRegisterModal">🆕 Register</button>
-    <button class="btn" id="openProfileModal">👤 Profile</button>
-  </div>
+  <!-- 👤 Welcome Section -->
+  <section class="welcome">
+    <h1 id="welcomeTitle">Welcome back to Zawadi Intel</h1>
+    <p id="welcomeMessage">Your archive, your stories, your voice.</p>
+  </section>
 
-  <!-- 🔐 Login Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeLoginModal">&times;</span>
-      <h2>Login to Zawadi Intel</h2>
-      <input type="text" id="usernameInput" placeholder="Enter username" />
-      <input type="password" id="passwordInput" placeholder="Enter password" />
-      <div class="button-group">
-        <button type="button" onclick="loginUser()">Login</button>
-        <button type="button" id="toRegisterModal">New user? Register</button>
+  <!-- 🧠 Zawadi Pulse Spotlight -->
+  <section class="pulse-spotlight">
+    <h2>🎤 Zawadi Pulse: Artist Connections</h2>
+    <p>Explore how Sheebah, Lutalo, Vinka, Peace Eve, and Spice Diana shape Uganda’s musical legacy.</p>
+    <div class="artist-grid">
+      <!-- Reuse artist cards from index.html or load dynamically -->
+      <div class="artist-card">
+        <img src="images/Sheeber.png" alt="Sheebah Karungi" class="bio-photo" />
+        <h3>Sheebah Karungi</h3>
+        <a href="biography.html#sheebah-karungi">📖 Read Bio</a>
       </div>
-      <p id="loginError" class="error-text"></p>
+      <!-- Repeat for others -->
     </div>
-  </div>
+  </section>
 
-  <!-- 🆕 Registration Modal -->
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeRegisterModal">&times;</span>
-      <h2>Create Account</h2>
-      <input type="text" id="newUsername" placeholder="Choose username" />
-      <input type="password" id="newPassword" placeholder="Choose password" />
-      <div class="button-group">
-        <button type="button" onclick="registerUser()">Register</button>
-        <button type="button" id="toLoginModal">Back to Login</button>
-      </div>
-      <p id="registerError" class="error-text"></p>
-      <a href="media.html" class="btn">📺 Watch YouTube</a>
-    </div>
-  </div>
-
-  <!-- 👤 Profile Modal -->
-  <div id="profileModal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeProfileModal">&times;</span>
-      <h2>👤 User Profile</h2>
-      <div class="avatar-upload">
-        <div class="avatar" id="profileAvatarModal" onclick="togglePhotoUploadModal()">👤</div>
-        <input type="file" id="photoUploadModal" accept="image/*" style="display: none;" />
-        <div class="upload-area" id="uploadAreaModal" style="display: none;">
-          <label for="photoUploadModal" class="upload-label">📸 Choose Photo</label>
-        </div>
-      </div>
-      <form id="profileFormModal">
-        <label>Display Name:
-          <input type="text" id="profileDisplayNameModal" placeholder="Display Name" />
-        </label>
-        <label>Short Bio:
-          <textarea id="profileBioModal" placeholder="Tell us about yourself..."></textarea>
-        </label>
-        <button type="submit">💾 Save Profile</button>
-        <span id="profileMsgModal"></span>
-      </form>
-      <div id="profileInfoModal"></div>
-    </div>
-  </div>
-
-  <!-- 🧠 Archive Content -->
-
-  <!-- 🧠 Archive Content -->
-  <div id="appContent" class="hidden">
-
-    <!-- 📰 News Feed Section -->
-    <section class="news-feed">
-      <h1>📰 Legacy News</h1>
-      <p class="tagline">“Where stories echo through time.”</p>
-      <button id="shuffleNews" class="btn">🔀 Shuffle News</button>
-      <article class="news-card" data-id="1">
-        <h2>🕊️ Raila Odinga Passes Away at 80</h2>
-        <img src="images/raila-cover.png" alt="Raila Odinga Tribute Cover" class="tribute-image" />
-        <p>Kenya mourns the loss of Raila Odinga, a towering figure in African politics and a champion of democratic reform. He died in India on October 15, 2025, following a cardiac arrest during treatment.</p>
-        <p>His passing sparked nationwide tributes, with thousands gathering in Bondo, Kisumu, and Kibera to honor his legacy. Businesses paused, streets filled with green leaves, and voices rose in remembrance of a leader who shaped generations.</p>
-        <a href="https://www.msn.com/en-xl/africa/kenya/former-prime-minister-raila-odinga-is-dead/ar-AA1OuV0O" target="_blank">Read on MSN</a><br />
-        <a href="https://www.kenyans.co.ke/news/117125-raila-odinga-dies" target="_blank">Read on Kenyans.co.ke</a><br />
-        <a href="https://www.aljazeera.com/news/2025/10/15/kenyan-opposition-leader-raila-odinga-dies-of-heart-attack-in-india-at-80" target="_blank">Read on Al Jazeera</a>
-        <span class="date">October 15, 2025</span>
-      </article>
-      <!-- Add more news cards here if needed -->
-    </section>
-
-    <!-- 📍 Navigation Menu -->
-    <nav class="navigation-menu">
-      <h2>📍 Explore Zawadi Intel</h2>
-      <ul>
-        <li><a href="legacy.html" class="btn">🌱 Legacy</a></li>
-        <li><a href="news.html" class="btn">📰 News</a></li>
-        <li><a href="biography.html" class="btn">📖 Biographies</a></li>
-        <li><a href="media.html" class="btn">📺 Media</a></li>
-        <li><a href="viewer.html" class="btn">🗂️ Viewer</a></li>
-      </ul>
-    </nav>
-
-    <h1>Zawadi Intel Archive</h1>
-    <p id="currentUserDisplay"></p>
-
-    <!-- 👤 User Profile Section -->
-    <section id="profileSection" class="profile-card">
-      <h2>👤 User Profile</h2>
-      <div class="avatar-upload">
-        <div class="avatar" id="profileAvatar" onclick="togglePhotoUpload()">👤</div>
-        <input type="file" id="photoUpload" accept="image/*" style="display: none;" />
-        <div class="upload-area" id="uploadArea" style="display: none;">
-          <label for="photoUpload" class="upload-label">📸 Choose Photo</label>
-        </div>
-      </div>
-      <form id="profileForm">
-        <label>Display Name:
-          <input type="text" id="profileDisplayName" placeholder="Display Name" />
-        </label>
-        <label>Short Bio:
-          <textarea id="profileBio" placeholder="Tell us about yourself..."></textarea>
-        </label>
-        <button type="submit">💾 Save Profile</button>
-        <span id="profileMsg"></span>
-      </form>
-      <div id="profileInfo"></div>
-    </section>
-
-    <!-- ✍️ Intel Form -->
+  <!-- ✍️ Story Submission Form -->
+  <section class="story-form">
+    <h2>📝 Submit Your Story</h2>
     <form id="intelForm">
-      <input type="text" id="title" placeholder="Intel Title" required />
-      <textarea id="content" placeholder="Intel Content" required></textarea>
+      <input type="text" id="title" placeholder="Story Title" required />
+      <textarea id="content" placeholder="Your story..." required></textarea>
       <input type="text" id="tagsInput" placeholder="Tags (comma-separated)" />
       <label><input type="checkbox" id="makePublic" /> Make public</label>
-      <div class="button-group">
-        <button type="submit">✅ Submit</button>
-        <button type="button" onclick="toggleDarkMode()">🌓 Dark Mode</button>
-        <button type="button" onclick="exportIntel()">📤 Export</button>
-        <button type="button" onclick="logout()">🔓 Logout</button>
-      </div>
-      <p id="entryCount"></p>
+      <button type="submit">✅ Submit</button>
     </form>
+  </section>
 
-    <!-- 🔍 Search Section -->
-    <div class="search-section">
-      <input type="text" id="searchInput" placeholder="🔍 Search Intel" oninput="searchIntel()" />
-    </div>
-
-    <!-- 📚 Intel Display -->
+  <!-- 🔍 Search Archive -->
+  <section class="search-section">
+    <input type="text" id="searchInput" placeholder="🔍 Search Archive" oninput="searchIntel()" />
     <div id="intelList"></div>
-  </div>
+  </section>
 
-  <!-- 🧠 Load app logic after DOM -->
+  <!-- 👤 Profile & Vault -->
+  <section class="profile-card">
+    <h2>👤 Your Profile</h2>
+    <form id="profileForm">
+      <input type="text" id="profileDisplayName" placeholder="Display Name" />
+      <textarea id="profileBio" placeholder="Short Bio"></textarea>
+      <button type="submit">💾 Save Profile</button>
+    </form>
+    <div id="profileInfo"></div>
+  </section>
+
+  <!-- 🔐 Encryption Vault -->
+  <section class="vault">
+    <h2>🔐 Encrypted Vault</h2>
+    <p>Securely store private notes and drafts.</p>
+    <!-- Add vault logic from crypto-vault.js -->
+  </section>
+
   <script src="app.js"></script>
-  <script>
-    // Check for logged-in user and display profile
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-      document.getElementById('profileName').textContent = profile.displayName || currentUser;
-      document.getElementById('profileBio').textContent = profile.bio || '';
-      document.getElementById('userProfile').style.display = 'block';
-    }
-  </script>
+  <footer>
+    <p>&copy; 2025 Zawadi Intel. Built by MANNICK.</p>
+  </footer>
 </body>
-  <script src="src/js/decrypt.js"></script> <!-- 🔐 Obfuscated decryption logic -->
 </html>

@@ -1,0 +1,233 @@
+/* Global Font and Text Styling */
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #222;
+  background-color: #fdfdfd;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  color: #1a1a1a;
+}
+
+h2 {
+  font-size: 1.6rem;
+  color: #b03a2e;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+a {
+  color: #b03a2e;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  color: #922b21;
+  text-decoration: underline;
+}
+
+figcaption,
+small {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Top Navigation Bar */
+#top-bar {
+  background-color: #1a1a1a;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+#top-bar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f1c40f;
+  text-decoration: none;
+}
+
+#top-bar nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+#top-bar nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+#top-bar nav a:hover {
+  color: #f1c40f;
+}
+
+#top-bar .search-icon {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+#top-bar .search-icon:hover {
+  color: #f1c40f;
+}
+
+/* Responsive Top Bar */
+@media screen and (max-width: 768px) {
+  #top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  #top-bar nav {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Middle East Container */
+#middle-east {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fdfdfd;
+  color: #222;
+}
+
+/* Conflict Zone Articles */
+.conflict-zone {
+  background-color: #fff;
+  border-left: none;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.conflict-zone:hover {
+  transform: scale(1.02);
+}
+
+.conflict-zone h2 {
+  font-size: 1.6rem;
+  color: #b03a2e;
+  margin-bottom: 0.75rem;
+}
+
+.conflict-zone p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* Region-Specific Styling (disabled borders) */
+.palestine,
+.syria,
+.jordan,
+.iran,
+.lebanon {
+  border-left: none;
+}
+
+/* Figure and Caption */
+figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* Toggle Buttons (optional) */
+button[data-toggle] {
+  background-color: #b03a2e;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  margin: 0.5rem 0.5rem 1rem 0;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+button[data-toggle]:hover {
+  background-color: #922b21;
+}
+
+/* Responsive Layout */
+@media screen and (max-width: 768px) {
+  #middle-east {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .conflict-zone {
+    padding: 1rem;
+  }
+
+  .conflict-zone h2 {
+    font-size: 1.3rem;
+  }
+
+  .conflict-zone p {
+    font-size: 0.95rem;
+  }
+
+  figcaption {
+    font-size: 0.8rem;
+  }
+}
+
+/* Conflict Zone Images */
+.conflict-zone img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 1rem 0;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Hidden Class for JS Toggle */
+.hidden {
+  display: none !important;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}

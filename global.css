@@ -1,0 +1,160 @@
+/* Global News Container */
+#global-news {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  color: #222;
+}
+
+/* Conflict Zones */
+.conflict-zone {
+  background-color: #fff;
+  border-left: 6px solid #c0392b;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.conflict-zone:hover {
+  transform: scale(1.02);
+}
+
+.conflict-zone h2 {
+  font-size: 1.4rem;
+  color: #c0392b;
+  margin-bottom: 0.5rem;
+}
+
+.conflict-zone p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Tribute Zone */
+.tribute-zone {
+  background-color: #fef6f0;
+  border-left: 6px solid #8e44ad;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.tribute-zone h2 {
+  font-size: 1.4rem;
+  color: #8e44ad;
+  margin-bottom: 0.5rem;
+}
+
+.tribute-zone p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Feature Story */
+.feature-story {
+  background-color: #ffffff;
+  border-left: 6px solid #2c3e50;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.feature-story h1 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.feature-story h2 {
+  font-size: 1.3rem;
+  color: #34495e;
+  margin-top: 1.5rem;
+}
+
+.feature-story p,
+.feature-story ul {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.feature-story ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.feature-story .source-links {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Trending Movie */
+.trending-movie {
+  background-color: #1e1e2f;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.trending-movie h2 {
+  font-size: 1.6rem;
+  color: #f39c12;
+  margin-bottom: 1rem;
+}
+
+.trending-movie p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Figure and Caption */
+figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Responsive Layout */
+@media screen and (max-width: 768px) {
+  #global-news {
+    padding: 1rem;
+  }
+
+  .conflict-zone,
+  .trending-movie,
+  .tribute-zone,
+  .feature-story {
+    padding: 1rem;
+  }
+
+  .conflict-zone h2,
+  .trending-movie h2,
+  .tribute-zone h2,
+  .feature-story h1 {
+    font-size: 1.2rem;
+  }
+
+  .conflict-zone p,
+  .trending-movie p,
+  .tribute-zone p,
+  .feature-story p {
+    font-size: 0.95rem;
+  }
+
+  .feature-story h2 {
+    font-size: 1.1rem;
+  }
+
+  figcaption {
+    font-size: 0.8rem;
+  }
+}

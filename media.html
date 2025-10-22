@@ -3,129 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zawadi Media</title>
+  <title>Media — Zawadi Intel</title>
+  <meta name="description" content="Explore African multimedia stories, interviews, and cultural archives curated with cinematic clarity." />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: 'Noto Sans', 'Helvetica Neue', sans-serif;
-      font-size: 16px;
-      line-height: 1.7;
-      background-color: #f9f9f9;
-      color: #222;
-    }
-    .main-header {
-      text-align: center;
-      padding: 2em 1em;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-    }
-    .tagline {
-      font-size: 1.2em;
-      color: #666;
-    }
-    nav.top-nav {
-      position: sticky;
-      top: 0;
-      background: #fff;
-      border-bottom: 1px solid #ccc;
-      z-index: 1000;
-    }
-    iframe {
-      width: 100%;
-      max-width: 720px;
-      height: 405px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-  </style>
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
 </head>
 <body>
-  <!-- Persistent User Profile -->
-  <div class="user-profile" id="userProfile">
-    <div id="uploadContainer">
-      <input type="file" id="profileUpload" />
-    </div>
-    <img id="profileImage" style="display:none;" />
-    <div class="name" id="profileName"></div>
-    <div class="bio" id="profileBio"></div>
-  </div>
-
+  <!-- 🔝 Top Navigation -->
   <nav class="top-nav">
-    <a href="index.html" class="btn home-btn">🏠 Home</a>
-  </nav>
-  <header class="main-header">
-    <h1>📺 Zawadi Media</h1>
-    <p class="tagline">“Watch. Reflect. Archive.”</p>
-    <div class="button-group">
-      <a href="app.html" class="btn">🔙 Back to Archive</a>
-    </div>
-  </header>
-
-  <section class="media-player">
-    <h2>🎥 Featured YouTube</h2>
-    <iframe
-      width="100%"
-      height="315"
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-      title="YouTube player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-      referrerpolicy="strict-origin-when-cross-origin"
-      loading="lazy"
-      sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
-    ></iframe>
-    <noscript>
-      <div style="color:#fff; background:#222; padding:1em; border-radius:10px; margin-top:1em;">
-        YouTube video cannot be loaded. Please enable JavaScript or open this page in a regular browser tab.
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <div class="home-menu">
+        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
+        <div class="home-dropdown" id="homeDropdown">
+          <a href="index.html">Home</a>
+          <a href="biography.html">Biographies</a>
+          <a href="sport.html">Sports</a>
+          <a href="news.html#global-section">Global</a>
+          <a href="news.html#middle-east">Middle East</a>
+          <a href="app.html">Archive</a>
+        </div>
       </div>
-    </noscript>
-    <div class="button-group">
-      <a href="https://citizen.digital/tv" class="btn" target="_blank">📺 Watch Citizen TV</a>
+      <a href="news.html" class="top-link">News</a>
     </div>
-  </section>
+    <div class="utility">
+      <a href="books.html" class="top-link">Books</a>
+      <div id="userAuth" class="user-auth"></div>
+    </div>
+  </nav>
 
+  <!-- 📺 Media Gallery -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+        <section class="media-gallery">
+      <div class="media-card">
+        <h2>🎙️ Interview: Ngũgĩ wa Thiong’o on Language & Liberation</h2>
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/samplevideo" title="Ngũgĩ Interview" frameborder="0" allowfullscreen></iframe>
+        <p>Renowned author Ngũgĩ wa Thiong’o discusses the power of African languages in storytelling and resistance.</p>
+      </div>
+
+      <div class="media-card">
+        <h2>📻 Audio: Voices from Kibera</h2>
+        <audio controls>
+          <source src="audio/kibera-voices.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+        <p>A community-led oral history project capturing everyday life in Nairobi’s Kibera neighborhood.</p>
+      </div>
+
+      <div class="media-card">
+        <h2>🌍 External Feature: African Women in Film</h2>
+        <p>Explore the rise of African women filmmakers and their impact on global cinema.</p>
+        <a href="https://www.awdf.org/african-women-in-film/" target="_blank">Visit AWDF</a>
+      </div>
+        </section>
+      </div>
+
+      <div class="aj-centre">
+        <div class="centre-module"><h3>Featured Media</h3><ul><li><a href="media.html">Interviews</a></li><li><a href="media.html">Audio Stories</a></li></ul></div>
+      </div>
+
+      <aside class="aj-sidebar">
+        <div class="sidebar-module"><h3>Quick Links</h3><ul><li><a href="media.html">Latest Videos</a></li><li><a href="media.html">Audio Archive</a></li></ul></div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- 🔻 Footer -->
   <footer>
-    <p>&copy; 2025 Zawadi Intel. Media wing by Nickson Ochieng Okoth.</p>
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
   </footer>
-
-  <script>
-    // Check for logged-in user and display profile
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-      document.getElementById('profileName').textContent = profile.displayName || currentUser;
-      document.getElementById('profileBio').textContent = profile.bio || '';
-      if (profile.avatar) {
-        const img = document.getElementById('profileImage');
-        img.src = profile.avatar;
-        img.style.display = 'block';
-        document.getElementById('uploadContainer').style.display = 'none';
-      }
-      document.getElementById('userProfile').style.display = 'block';
-    }
-
-    // Profile upload functionality
-    document.getElementById('profileUpload').addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const img = document.getElementById('profileImage');
-          img.src = e.target.result;
-          img.style.display = 'block';
-          document.getElementById('uploadContainer').style.display = 'none';
-          // Save to localStorage
-          const currentUser = localStorage.getItem('currentUser');
-          if (currentUser) {
-            const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-            profile.avatar = e.target.result;
-            localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
-          }
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  </script>
 </body>
 </html>
+

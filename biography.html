@@ -3,150 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Public Biographies — Zawadi Intel</title>
-  <meta name="description" content="Explore public biographies on Zawadi Intel — shared stories, eternal echoes." />
-  <meta property="og:title" content="Public Biographies — Zawadi Intel" />
-  <meta property="og:description" content="Explore and contribute to legacy stories that live forever." />
-  <meta property="og:image" content="icons/icon-192.png" />
+  <title>Biographies — Zawadi Intel</title>
+  <meta name="description" content="Explore African biographies curated with cinematic clarity and Wikipedia-style storytelling." />
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-  <!-- Persistent User Profile -->
-  <div class="user-profile" id="userProfile">
-    <div class="avatar">👤</div>
-    <div class="name" id="profileName"></div>
-    <div class="bio" id="profileBio"></div>
-  </div>
+  <!-- 🔝 Top Navigation -->
+  <nav class="top-nav">
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <div class="home-menu">
+        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
+        <div class="home-dropdown" id="homeDropdown">
+          <a href="index.html">Home</a>
+          <a href="sport.html">Sports</a>
+          <a href="media.html">Media</a>
+          <a href="news.html#global-section">Global</a>
+          <a href="news.html#middle-east">Middle East</a>
+          <a href="app.html">Archive</a>
+        </div>
+      </div>
+      <a href="books.html" class="top-link">Books</a>
+      <a href="news.html" class="top-link">News</a>
+    </div>
+    <div class="utility">
+      <div id="userAuth" class="user-auth"></div>
+    </div>
+  </nav>
+  <!-- 🧾 Biography Entry -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+        <section class="bio-container">
+    <section>
+      <!-- Main content (70%) -->
+       <section class="bio-entry">
+      <i>Every name carries a story. At Zawadi Intel, we honor the voices that have shaped Africa’s cultural, political, and artistic legacy. These biographies are more than timelines — they are echoes of resilience, creativity, and transformation.Whether celebrated on global stages or remembered in local whispers, each individual featured here has contributed to the continent’s evolving narrative. Explore their journeys, and discover how memory becomes heritage. </i>
+      
+      <h2>Sheebah Karungi</h2>
+      <img src="images/Sheeber.png" alt="SHEEBER KARUNGI" class="bio-photo" />
+      
+      <p>Sheebah Karungi is one of Uganda’s most dynamic and influential female artists. Born in Kawempe, Kampala, she began her creative journey as a dancer with the Obsessions group before transitioning into music. Her early performances were marked by bold choreography and a fearless attitude, setting the stage for a career that would redefine Ugandan pop culture.</p>
 
-  <header class="fade-in" style="animation-delay: 0.3s;">
-    <h1>📖 Public Biographies</h1>
-    <p class="tagline">“Shared stories. Eternal echoes.”</p>
-    <nav class="top-nav">
-      <a href="index.html" class="btn home-btn">🏠 Home</a>
-    </nav>
-  </header>
+      <p>Her breakthrough came with the hit “Ice Cream,” a song that blended Luganda lyrics with Afrobeat rhythms and playful sensuality. Sheebah’s music quickly became a staple in clubs, radio stations, and youth gatherings across East Africa. Her ability to fuse local language with global sound made her relatable and aspirational.</p>
 
-  <div id="introOverlay" class="fade-in" style="animation-delay: 0.6s;">
-    <h2>✨ Welcome to Zawadi Intel</h2>
-    <p>Where every story becomes a legacy.</p>
-  </div>
+      <p>Sheebah sings primarily in Luganda, using everyday expressions and slang that resonate deeply with her audience. Her lyrics often explore themes of independence, self-worth, nightlife, and female empowerment. She positions herself not just as an entertainer, but as a voice for women navigating modern Ugandan society.</p>
 
-  <!-- 🎥 YouTube Spotlight -->
-  <section class="video-spotlight slide-up" style="animation-delay: 0.7s;">
-    <h2>🎥 Legacy Spotlight</h2>
-    <iframe width="100%" height="315" src="https://www.youtube.com/embed/2O7K-8G2nwU"
-      title="Faith Kipyegon Documentary" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen></iframe>
-  </section>
+      <p>Beyond music, Sheebah is a fashion icon and entrepreneur. Her style — often edgy, glamorous, and unapologetic — has influenced a generation of fans. She launched her own brand, Sheebah Establishment, which includes fashion, cosmetics, and lifestyle products, reinforcing her image as a multifaceted creator.</p>
 
-  <!-- 📝 Guest Legacy Writer -->
-  <section class="write-legacy slide-up" style="animation-delay: 0.8s;">
-    <h2>📝 Write Your Legacy</h2>
-    <textarea id="guestLegacy" placeholder="Write something about yourself..." aria-label="Guest Legacy Input"></textarea>
-    <button onclick="saveGuestLegacy()" aria-label="Save Legacy Locally">💾 Save Locally</button>
-    <div id="guestDisplay" class="legacy-output"></div>
-  </section>
+      <p>Her performances are theatrical and high-energy, often featuring elaborate costumes and choreography. Sheebah’s stage presence is magnetic, and she’s known for commanding attention whether she’s performing at a local festival or an international showcase.</p>
 
-  <!-- 🔦 Featured Biography -->
-  <section class="bio-card fade-in" style="animation-delay: 0.9s;">
-    <h2>Featured Biography</h2>
-    <h3>Faith Chepngetich Kipyegon</h3>
-    <p><strong>Born:</strong> January 10, 1994 – Nakuru County, Kenya</p>
-    <p><strong>Nickname:</strong> The Smiling Destroyer</p>
-    <p><strong>Specialty:</strong> 1500m, 5000m</p>
-    <p><strong>Legacy Quote:</strong> <em>“I run with faith, not fear.”</em></p>
+      <p>Despite criticism from conservative circles, Sheebah remains unapologetically herself. Her journey reflects resilience, reinvention, and the power of staying true to one’s voice — especially when that voice speaks in Luganda.</p>
 
-    <h4>🏆 Career Highlights</h4>
-    <ul>
-      <li>3× Olympic Gold (1500m): Rio 2016, Tokyo 2020, Paris 2024</li>
-      <li>5× World Champion (1500m & 5000m)</li>
-      <li>World Records: 1500m, Mile, 3000m</li>
-    </ul>
+      <a href="https://en.wikipedia.org/wiki/Sheebah_Karungi" target="_blank" class="read-more">📖 Read full biography</a>
+        </section>
+      </div>
 
-    <h4>🌱 Early Life</h4>
-    <p>Raised in Keringet, Nakuru County, Faith ran barefoot until age 15. Her breakout came in 2010 at the World Cross Country Championships.</p>
+      <div class="aj-centre">
+        <div class="centre-module"><h3>Featured Biographies</h3><ul><li><a href="biography.html">Artists</a></li></ul></div>
+      </div>
 
-    <h4>👩‍👧 Personal Life</h4>
-    <p>Married to Olympic bronze medalist Timothy Kitum. Mother to Alyn Chepkor Kiprono. Resides in Eldoret, Kenya.</p>
+      <aside class="aj-sidebar">
+        <div class="sidebar-module"><h3>Explore</h3><ul><li><a href="books.html">Books</a></li></ul></div>
+      </aside>
+    </section>
+  </main>
+    <section class="bio-entry">
+      <h2>David Lutalo</h2>
+      <img src="images/Lutalo.png" alt="DAVID LUTALO" class="bio-photo" />
+      <p>David Lutalo is one of Uganda’s most respected and consistent musicians, known for his poetic lyrics and deep connection to everyday life. Born in Luweero District, Lutalo began his music journey with a passion for storytelling and a voice that carried both emotion and wisdom. His breakout hit “Kapapaala” introduced him as a unique voice in Ugandan music — one that didn’t rely on flashy production but on lyrical strength and cultural resonance.</p>
 
-    <h4>🕊️ Legacy Impact</h4>
-    <p>Faith is the only woman to win three consecutive Olympic golds in the 1500m. Her 2023 record-breaking streak earned her World Athlete of the Year.</p>
-  </section>
+      <p>Lutalo sings primarily in Luganda, and his songs reflect the rhythms and realities of Ugandan society. He often draws from traditional kadongo kamu — a genre rooted in folk storytelling — and blends it with modern Afro-pop. This fusion allows him to reach both rural and urban audiences, bridging generational gaps through music that feels familiar yet fresh.</p>
 
-  <!-- ✍️ Public Biography Submission -->
-  <section class="bio-submit fade-in" style="animation-delay: 1s;">
-    <h2>Post Your Biography</h2>
-    <form id="bioForm">
-      <input type="text" id="bioName" placeholder="Your Name" required aria-label="Your Name" />
-      <textarea id="bioContent" placeholder="Write your biography..." required aria-label="Biography Content"></textarea>
-      <input type="text" id="bioQuote" placeholder="Favorite Quote (optional)" aria-label="Favorite Quote" />
-      <button type="submit" aria-label="Post Biography">🌍 Post Publicly</button>
-      <p id="bioFormMsg"></p>
-    </form>
-  </section>
+      <p>His lyrics are rich with metaphor, proverbs, and everyday observations. Whether singing about love, heartbreak, or social issues, Lutalo’s music carries a sense of authenticity that resonates deeply with listeners. He avoids sensationalism, choosing instead to focus on sincerity and emotional clarity. This has earned him a loyal fan base across Uganda and beyond.</p>
 
-  <!-- 🔓 Public Entries -->
-  <section id="publicList" class="slide-up" style="animation-delay: 1.1s;"></section>
+      <p>Unlike many pop artists, Lutalo maintains creative control over his work. He writes and produces much of his own music, ensuring that his sound remains consistent and true to his vision. His albums often feature minimalistic instrumentation, allowing his voice and message to take center stage. This approach has made him a favorite among music critics and cultural scholars.</p>
 
-  <div id="legacyTip" class="fade-in" style="animation-delay: 1.2s;">
-    💡 Tip: You don’t need an account to write your legacy. Just start typing below.
-  </div>
+      <p>David Lutalo is also known for his humility and grounded personality. Despite his fame, he remains connected to his roots, frequently performing at local events and supporting community initiatives. His music is not just entertainment — it’s a reflection of Ugandan life, values, and resilience.</p>
+
+      <p>Through his career, Lutalo has shown that success doesn’t require abandoning one’s language or culture. By singing in Luganda and staying true to traditional storytelling, he has built a legacy that honors Uganda’s musical heritage while embracing modern expression.</p>
+
+      <a href="https://en.wikipedia.org/wiki/David_Lutalo" target="_blank" class="read-more">📖 Read full biography</a>
+    </section>
+    <section class="bio-entry">
+      <h2>Vinka (Veronica Lugya)</h2>
+      <img src="images/Vinka.png" alt="VINKA" class="bio-photo" />
+      <p>Vinka, born Veronica Lugya, is a Ugandan pop and dancehall artist whose rise to fame reflects both talent and tenacity. Before stepping into the spotlight, she worked as a music manager at Swangz Avenue, one of Uganda’s leading record labels. Her transition from managing artists to becoming one herself was unexpected but powerful — a move that reshaped her career and the Ugandan music scene.</p>
+
+      <p>Her debut single “Stylo” introduced her as a bold and confident performer, but it was “Chips Na Ketchup” that cemented her status as a hitmaker. Vinka’s music is energetic, urban, and unapologetically Ugandan. She sings in Luganda, English, and street slang, creating songs that resonate with youth culture and everyday life in Kampala.</p>
+
+      <p>Vinka’s style is defined by catchy hooks, rhythmic beats, and a playful attitude. Her lyrics often explore themes of love, independence, and self-expression, delivered with humor and flair. She’s known for her consistency — famously releasing a new song every month for a full year — and for her ability to stay relevant in a fast-moving industry.</p>
+
+      <p>Her fashion sense is bold and trendsetting, often blending streetwear with high-glam looks. Vinka’s visuals are polished and vibrant, reflecting her brand as a modern Ugandan pop star. She’s also a skilled dancer, and her performances are known for their energy and choreography.</p>
+
+      <p>Vinka’s journey is a testament to reinvention. From working behind the scenes to commanding the stage, she has shown that talent and vision can break boundaries. Her music connects with fans not just through sound, but through attitude — she represents a generation that’s proud, expressive, and rooted in local identity.</p>
+
+      <p>By singing in Luganda and embracing Ugandan slang, Vinka proves that local language can be a source of power and pride. Her success is not just musical — it’s cultural, showing that authenticity and ambition can coexist in the spotlight.</p>
+
+      <a href="https://en.wikipedia.org/wiki/Vinka_(musician)" target="_blank" class="read-more">📖 Read full biography</a>
+    </section>
+    <section class="bio-entry">
+      <h2>Peace Eve (Ava Peace)</h2>
+      <img src="images/E Peace.png" alt="PEACE EVE" class="bio-photo" />
+      <p>Peace Eve, also known as Ava Peace, is a rising Ugandan singer whose music blends Afro-pop, dancehall, and gospel influences. She represents a new generation of artists who are deeply rooted in local culture while embracing modern sound. Her voice is smooth and expressive, and her songs often carry messages of hope, love, and resilience.</p>
+
+      <p>Born and raised in Uganda, Peace Eve began her music journey with a passion for storytelling and vocal performance. She sings in Luganda and English, using her lyrics to reflect everyday experiences and emotional truths. Her music is both uplifting and grounded, making her a favorite among youth and community audiences.</p>
+
+      <p>Peace Eve’s breakthrough came through collaborations with established producers and artists, including her mentorship under Jeff Kiwa. Her early singles showcased her vocal range and ability to connect with listeners through heartfelt lyrics and catchy melodies. She quickly gained recognition for her authenticity and stage presence.</p>
+
+      <p>Her style is modest yet vibrant, often blending traditional Ugandan fashion with contemporary flair. Peace Eve’s visuals are clean and culturally resonant, reinforcing her identity as a proud Ugandan artist. She frequently performs at cultural events, school tours, and youth festivals, using music as a tool for empowerment.</p>
+
+      <p>Beyond entertainment, Peace Eve sees music as a platform for healing and community building. Her songs often touch on themes of forgiveness, unity, and spiritual growth. She’s known for engaging with fans directly, sharing personal reflections and encouraging dialogue around mental health and self-worth.</p>
+
+      <p>Peace Eve’s rise in the Ugandan music scene is a testament to the power of language and cultural pride. By singing in Luganda and staying true to her roots, she’s building a legacy that honors tradition while inspiring the future. Her journey is just beginning, but her impact is already being felt across the region.</p>
+
+      <a href="https://www.howwe.ug/AvaPeace" target="_blank" class="read-more">📖 Read full biography</a>
+    </section>
+    <section class="bio-entry">
+      <h2>Spice Diana</h2>
+      <img src="images/Spice.png" alt="SPICE DIANA" class="bio-photo" />
+      <p>Spice Diana, born Namukwaya Hajara Diana, is one of Uganda’s most celebrated female artists. Her journey began in the classrooms of Makerere University, where she studied Industrial Arts before fully committing to music. This academic background gave her a unique perspective on creativity and presentation, which she now channels into her music and branding.</p>
+
+      <p>Her breakout hit “Onsanula” introduced her as a fresh voice in Uganda’s Afrobeat and R&B scene. Singing in Luganda, English, and Runyankole, Spice Diana quickly gained attention for her melodic hooks and relatable lyrics. Her music often explores themes of love, fame, heartbreak, and resilience — delivered with emotional clarity and rhythmic flair.</p>
+
+      <p>Spice Diana’s style is glamorous and expressive. She’s known for her colorful fashion, elaborate music videos, and bold stage performances. Her visuals often blend traditional Ugandan aesthetics with modern pop culture, creating a look that’s both rooted and global. She’s a trendsetter, frequently appearing in fashion columns and entertainment blogs.</p>
+
+      <p>Her collaborations span across East Africa, including work with artists from Kenya, Tanzania, and Rwanda. These partnerships have helped her expand her reach while maintaining her identity. Spice Diana’s ability to switch between languages and genres makes her music accessible to diverse audiences without losing its Ugandan soul.</p>
+
+      <p>Beyond music, she’s active in philanthropy and youth empowerment. She’s spoken openly about her struggles and triumphs, using her platform to inspire young women to pursue their dreams. Her interviews and public appearances often highlight the importance of education, self-confidence, and cultural pride.</p>
+
+      <p>Spice Diana’s success is a reflection of her versatility and vision. By singing in local languages and embracing her heritage, she has built a brand that resonates across borders. Her journey from student to superstar is one of determination, creativity, and the power of staying true to one’s voice.</p>
+
+      <a href="https://en.wikipedia.org/wiki/Spice_Diana" target="_blank" class="read-more">📖 Read full biography</a>
+    </section>
+    </section>
+
+      <!-- 🔗 Related Profiles -->
+      <section class="related-profiles">
+        <h3>Explore More</h3>
+        <ul>
+          <li><a href="#">Nelson Mandela</a></li>
+          <li><a href="#">Chinua Achebe</a></li>
+          <li><a href="#">Ngũgĩ wa Thiong’o</a></li>
+        </ul>
+      </section>
+    </section>
+
+
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs"></script>
 
   <footer>
-    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
   </footer>
-
-  <script src="biography.js"></script>
-
-  <script>
-    // Check for logged-in user and display profile
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-      document.getElementById('profileName').textContent = profile.displayName || currentUser;
-      document.getElementById('profileBio').textContent = profile.bio || '';
-      document.getElementById('userProfile').style.display = 'block';
-    }
-  </script>
-
-  <!-- Live Server Reload -->
-  <script>
-    if ('WebSocket' in window) {
-      (function () {
-        function refreshCSS() {
-          var sheets = [].slice.call(document.getElementsByTagName("link"));
-          var head = document.getElementsByTagName("head")[0];
-          for (var i = 0; i < sheets.length; ++i) {
-            var elem = sheets[i];
-            var parent = elem.parentElement || head;
-            parent.removeChild(elem);
-            var rel = elem.rel;
-            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-              var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-              elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-            }
-            parent.appendChild(elem);
-          }
-        }
-        var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-        var address = protocol + window.location.host + window.location.pathname + '/ws';
-        var socket = new WebSocket(address);
-        socket.onmessage = function (msg) {
-          if (msg.data == 'reload') window.location.reload();
-          else if (msg.data == 'refreshcss') refreshCSS();
-        };
-        if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-          console.log('Live reload enabled.');
-          sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-        }
-      })();
-    } else {
-      console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-    }
-  </script>
 </body>
 </html>

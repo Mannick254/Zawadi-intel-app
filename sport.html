@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zawadi Intel — Sports Archive</title>
+  <meta name="description" content="Explore African sports stories, athlete biographies, and cultural moments through a cinematic lens." />
+  <meta name="keywords" content="Zawadi Intel, African sports, athlete stories, sports archive, Mannick254" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="icons/avatar-default.png" type="image/png" />
+</head>
+<body>
+  
+  </div>
+  <!-- 🔝 Top Navigation -->
+  <nav class="top-nav">
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="home-menu" style="position:relative;">
+      <button class="home-btn" onclick="(function(){var d=document.getElementById('homeDropdown'); d.style.display = d.style.display === 'block' ? 'none' : 'block';})();">🏠 Home ▾</button>
+      <div id="homeDropdown" style="display:none; position:absolute; left:0; background:#fff; border:1px solid #ccc; padding:0.5rem; z-index:1000; min-width:180px;">
+        <a href="index.html" style="display:block; padding:0.25rem 0;">Home</a>
+        <a href="biography.html" style="display:block; padding:0.25rem 0;">Biographies</a>
+        <a href="media.html" style="display:block; padding:0.25rem 0;">Media</a>
+        <a href="books.html" style="display:block; padding:0.25rem 0;">Books</a>
+  <a href="news.html#global-section" style="display:block; padding:0.25rem 0;">Global</a>
+  <a href="news.html#middle-east" style="display:block; padding:0.25rem 0;">Middle East</a>
+      </div>
+    </div>
+    <a href="books.html" class="top-link">Books</a>
+    <a href="news.html" class="top-link">News</a>
+      </ul>
+    <div class="user-profile" id="userProfile">
+        <!-- compact auth/login (used across pages) -->
+        <div id="userAuth" class="user-auth">
+          <button id="openLoginBtn" onclick="document.getElementById('authModal').style.display='block'">Login</button>
+          <div id="authModal" style="display:none;">
+            <form id="loginForm">
+              <input type="text" id="username" placeholder="Username" required />
+              <input type="password" id="password" placeholder="Password" required />
+              <button type="submit">Login</button>
+              <p id="loginError" class="error"></p>
+              <p class="register-link">Not registered? <a href="#" onclick="showRegister(); return false;">Register</a></p>
+            </form>
+            <form id="registerForm" style="display:none;">
+              <input type="text" id="newUsername" placeholder="New Username" required />
+              <input type="password" id="newPassword" placeholder="New Password" required />
+              <button type="submit">Register</button>
+              <p class="login-link">Already registered? <a href="#" onclick="showLogin(); return false;">Login</a></p>
+            </form>
+            <div id="userDetails" style="display:none;">
+              <p>Welcome, <span id="displayName"></span></p>
+              <button onclick="logout()">Logout</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Upload & Crop Section -->
+    <div id="uploadSection" style="display:none;">
+      <label for="profileUpload">Upload Profile Image</label>
+      <input type="file" id="profileUpload" accept="image/*" />
+      <div id="cropContainer" style="display:none;">
+        <img id="cropImage" />
+        <button onclick="cropImage()">Crop & Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+  </nav>
+
+  <!-- 🏆 Hero Section -->
+  <header class="hero">
+    <h1>Sports Stories That Move Us</h1>
+    <p class="tagline">“From village pitches to global podiums — every athlete has a legacy worth archiving.”</p>
+    <div class="button-group">
+      <a href="#featured" class="btn">🏅 Featured Athletes</a>
+      <a href="#moments" class="btn">📸 Iconic Moments</a>
+    </div>
+  </header>
+
+  <section class="sports">
+  <h2>🏅 Zawadi Sports</h2>
+  <p>Explore legendary African athletes, historic matches, and sporting milestones.</p>
+  <ul class="sports-links">
+    <li><a href="sport.html#football">⚽ Football</a></li>
+    <li><a href="sport.html#athletics">🏃 Athletics</a></li>
+    <li><a href="sport.html#legacy">🌍 Legacy Icons</a></li>
+  </ul>
+</section>
+
+
+  <!-- 🧠 Featured Athletes -->
+  <section id="featured" class="features">
+    <div class="feature-card">⚽ Rising Stars</div>
+    <div class="feature-card">🏀 Legends of the Court</div>
+    <div class="feature-card">🥊 Fighters & Champions</div>
+    <div class="feature-card">🏃‍♂️ Track & Field Icons</div>
+  </section>
+
+  <!-- 📍 Iconic Moments -->
+  <section id="moments" class="channels">
+    <h2>Iconic Sports Moments</h2>
+    <ul>
+      <li><a href="#">Kenya’s Olympic Triumphs</a></li>
+      <li><a href="#">Historic AFCON Highlights</a></li>
+      <li><a href="#">Youth Games & Local Heroes</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+</body>
+</html>

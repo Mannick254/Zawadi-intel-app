@@ -3,57 +3,176 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Legacy News — Zawadi Intel</title>
+  <title>News — Zawadi Intel</title>
+  <meta name="description" content="Latest African stories, public figures, and cultural updates curated with clarity and respect." />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="news.css" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
 </head>
 <body>
-  <button class="theme-toggle" id="themeToggle">🌙</button>
-  <nav class="button-group">
-    <a href="index.html" class="btn">🏠 Home</a>
+  <!-- 🔝 Top Navigation -->
+  <nav class="top-nav">
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <div class="home-menu">
+        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
+        <div class="home-dropdown" id="homeDropdown">
+          <a href="index.html">Home</a>
+          <a href="biography.html">Biographies</a>
+          <a href="media.html">Media</a>
+          <a href="sport.html">Sports</a>
+          <a href="news.html#global-section">Global</a>
+          <a href="news.html#middle-east">Middle East</a>
+          <a href="app.html">Archive</a>
+        </div>
+      </div>
+      <a href="news.html" class="top-link">News</a>
+    </div>
+    <div class="utility">
+      <a href="books.html" class="top-link">Books</a>
+      <div id="userAuth" class="user-auth"></div>
+    </div>
   </nav>
 
-  <header>
-    <h1>📰 Legacy News</h1>
-    <p class="tagline">“Where stories echo through time.”</p>
-  </header>
+    <!-- 📰 News Feed -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+        <section class="news-feed">
+      <article class="news-card">
+        <h2>🕊️ Raila Odinga Passes Away at 80</h2>
+        <img src="images/raila-cover.png" alt="Raila Odinga" class="bio-photo" />
+        <p>Kenya mourns the passing of Raila Odinga, a key figure in African politics and democratic reform. He died in India on October 15, 2025, following cardiac arrest during treatment.</p>
+        <p>Thousands gathered in Bondo, Kisumu, and Kibera to honor his legacy. Streets filled with green leaves and songs of remembrance echoed across the nation.</p>
+        <p><strong>Sources:</strong></p>
+        <ul>
+          <li><a href="https://www.msn.com/en-xl/africa/kenya/former-prime-minister-raila-odinga-is-dead/ar-AA1OuV0O" target="_blank">MSN Africa</a></li>
+          <li><a href="https://www.kenyans.co.ke/news/117125-raila-odinga-dies" target="_blank">Kenyans.co.ke</a></li>
+          <li><a href="https://www.aljazeera.com/news/2025/10/15/kenyan-opposition-leader-raila-odinga-dies-of-heart-attack-in-india-at-80" target="_blank">Al Jazeera</a></li>
+        </ul>
+        <span class="date">October 15, 2025</span>
+      </article>
 
-  <section class="news-feed">
-    <article class="news-card">
-      <h2>🕊️ Raila Odinga Passes Away at 80</h2>
-      <img src="images/raila-cover.png" alt="Raila Odinga Tribute Cover" class="tribute-image" />
-      <p>Kenya mourns the loss of Raila Odinga, a towering figure in African politics and a champion of democratic reform. He died in India on October 15, 2025, following a cardiac arrest during treatment.</p>
-      <p>His passing sparked nationwide tributes, with thousands gathering in Bondo, Kisumu, and Kibera to honor his legacy. Businesses paused, streets filled with green leaves, and voices rose in remembrance of a leader who shaped generations.</p>
-      <a href="https://www.msn.com/en-xl/africa/kenya/former-prime-minister-raila-odinga-is-dead/ar-AA1OuV0O" target="_blank">Read on MSN</a><br />
-      <a href="https://www.kenyans.co.ke/news/117125-raila-odinga-dies" target="_blank">Read on Kenyans.co.ke</a><br />
-      <a href="https://www.aljazeera.com/news/2025/10/15/kenyan-opposition-leader-raila-odinga-dies-of-heart-attack-in-india-at-80" target="_blank">Read on Al Jazeera</a>
-      <span class="date">October 15, 2025</span>
-    </article>
-  </section>
+      <article class="news-card">
+        <h2>🗣️ From Critic to Champion: Atwoli’s Endorsement of Ruto</h2>
+        <p>In a dramatic shift, COTU Secretary General Francis Atwoli has endorsed President William Ruto for a full 10-year leadership term. Once a fierce critic, Atwoli now praises Ruto’s work ethic, strategic governance, and ability to unify Kenya’s political landscape.</p>
+        <p>He cited Ruto’s commitment to economic reforms and grassroots engagement as key reasons for his support. The endorsement has sparked debate across political circles and may influence future electoral dynamics.</p>
+        <span class="date">October 17, 2025</span>
+      </article>
+      
+      <!-- ===== Global stories merged in from global.html ===== -->
+      <section id="global-section" class="news-card global-section">
+      <article id="china-taiwan" class="news-card conflict-zone">
+        <h2>🌏 Asia: China–Taiwan Tensions</h2>
+        <p>Taiwan’s Ministry of National Defense reported over 370 Chinese military aircraft and naval vessels operating near its airspace in October. One PLA aircraft crossed the median line of the Taiwan Strait, prompting Taiwan to deploy combat jets and missile systems.</p>
+      </article>
 
+      <article id="ukraine-russia" class="news-card conflict-zone">
+        <h2>🇺🇦 Ukraine–Russia War</h2>
+        <p>Ukraine’s forces struck Russia’s Orenburg gas plant and Novokuybyshevsk oil refinery, causing major fires. Meanwhile tensions flared in Washington as leaders clashed over territorial concessions and diplomatic strategy.</p>
+      </article>
+
+      <article id="russia-nato" class="news-card conflict-zone">
+        <h2>🛡️ Russia–NATO Escalation</h2>
+        <p>NATO aircraft conducted surveillance missions near Russia’s border in response to recent airspace violations. Regional militaries increased readiness amid heightened rhetoric.</p>
+      </article>
+
+      <article id="russia-ukraine-full" class="news-card conflict-zone">
+        <h2>🇷🇺 Russia–Ukraine: Strategic Bombing Explained</h2>
+        <figure>
+          <img src="images/russia-air defense.png" alt="Russia S-500 and Iskander-M systems" loading="lazy" />
+          <figcaption><i>Russia’s upgraded S-500 and Iskander-M systems</i></figcaption>
+        </figure>
+        <p>Russia continues its aerial assault on Ukraine despite NATO support, targeting infrastructure and energy nodes. The conflict has reshaped regional diplomacy and military planning.</p>
+      </article>
+
+      <article id="raila-farewell" class="news-card tribute-zone">
+        <h2>🇰🇪 Raila Odinga: Kenya’s Final Goodbye</h2>
+        <figure>
+          <img src="images/baba.png" alt="Raila Odinga Farewell Ceremony" loading="lazy" />
+          <figcaption><i>State funeral held in Bondo with military honors</i></figcaption>
+        </figure>
+        <p>Kenya bid farewell to Rt. Hon. Raila Odinga in a state ceremony attended by thousands. Leaders from across Africa paid tribute to his legacy of democracy and reform.</p>
+      </article>
+
+      <section class="news-card trending-movie">
+        <h2>🎬 Trending Movie: <em>The Last Horizon</em></h2>
+        <figure>
+          <img src="images/last-horizon.png" alt="The Last Horizon movie poster" loading="lazy" />
+          <figcaption><i>Haunting sci-fi drama exploring humanity’s final mission</i></figcaption>
+        </figure>
+        <p>October’s most anticipated release, <strong>The Last Horizon</strong>, blends stunning visuals with emotional depth. Streaming now across major platforms.</p>
+      </section>
+      </section>
+      <!-- ===== end merged global stories ===== -->
+      
+  <!-- ===== Middle East section (merged) ===== -->
+  <section id="middle-east" class="news-card middle-east-section">
+        <h2>Middle East — Focus</h2>
+        <article class="conflict-zone">
+          <h3>Gaza War: Why Israel Bombed Gaza</h3>
+          <figure>
+            <img src="images/gaza-bombing.jpg" alt="Gaza City after Israeli airstrikes" loading="lazy" />
+            <figcaption><i>Gaza under bombardment by Israeli airstrikes</i></figcaption>
+          </figure>
+          <p>On October 7, 2023, Hamas launched a surprise cross-border attack, killing over 1,200 Israelis and taking hostages. Israel responded with airstrikes targeting Gaza’s infrastructure, claiming self-defense.</p>
+        </article>
+
+        <article class="conflict-zone">
+          <h3>Gaza: Genocide Allegations and Global Response</h3>
+          <p>International lawyers and UN rapporteurs have accused Israel of committing acts that may constitute genocide in Gaza. The debate over accountability continues.</p>
+        </article>
+
+        <article class="conflict-zone">
+          <h3>Syria: Civil War and Foreign Influence</h3>
+          <p>Syria’s civil war remains a complex battleground of regional and global powers with ongoing humanitarian crises.</p>
+        </article>
+
+        <article class="conflict-zone">
+          <h3>Jordan: Border Tensions and Refugee Pressure</h3>
+          <p>Jordan faces mounting pressure from refugees and border tensions that challenge its stability.</p>
+        </article>
+
+        <article class="conflict-zone">
+          <h3>Iran: Nuclear Tensions and Proxy Wars</h3>
+          <p>Iran’s enrichment program and regional proxy networks continue to shape Middle East geopolitics.</p>
+        </article>
+
+        <article class="conflict-zone">
+          <h3>Lebanon: Hezbollah and Political Paralysis</h3>
+          <p>Lebanon remains politically paralyzed with Hezbollah at the center of power and regional tensions rising.</p>
+        </article>
+      </section>
+      <!-- ===== end Middle East section ===== -->
+    </section>
+      </div>
+
+      <div class="aj-centre">
+        <div class="centre-module"><h3>Top Analysis</h3><ul><li><a href="news.html">Investigations</a></li></ul></div>
+      </div>
+
+      <aside class="aj-sidebar">
+        <div class="sidebar-module">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="biography.html">Artist Biographies</a></li>
+            <li><a href="media.html">Multimedia Archive</a></li>
+            <li><a href="books.html">Books &amp; Literature</a></li>
+            <li><a href="news.html">Latest News</a></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- 🔻 Footer -->
   <footer>
-    <p>&copy; 2025 Zawadi Intel. Legacy preserved by its users.</p>
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
   </footer>
 
-  <script src="js/main.js"></script>
-  <script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      themeToggle.textContent = isDark ? '☀️' : '🌙';
-      themeToggle.classList.toggle('dark-mode', isDark);
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.body.classList.add('dark-mode');
-      themeToggle.textContent = '☀️';
-      themeToggle.classList.add('dark-mode');
-    }
-  </script>
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs"></script>
+  <script src="global.js"></script>
+  <script src="middleeast.js"></script>
 </body>
 </html>

@@ -269,6 +269,8 @@ window.addEventListener('online', function() {
   localStorage.removeItem('zawadiQueuedIntel');
   revealAllIntel();
   showNotification('Queued biographies have been saved now that you are online.', 'success');
+});
+
 // ===== User Profile Logic =====
 function loadProfile() {
   if (!currentUser) return;
@@ -277,6 +279,10 @@ function loadProfile() {
   document.getElementById('profileBio').value = profile.bio || '';
   document.getElementById('profileThemeColor').value = profile.themeColor || '#00bcd4';
   updateProfileInfo(profile);
+  // Load avatar
+  const avatar = profile.avatar || '👤';
+  document.getElementById('profileAvatar').innerHTML = avatar.startsWith('data:') ? `<img src="${avatar}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;">` : avatar;
+  document.getElementById('profileAvatarModal').innerHTML = avatar.startsWith('data:') ? `<img src="${avatar}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;">` : avatar;
   // Chrome-style card update
   document.getElementById('chromeProfileName').textContent = profile.displayName ? `👤 ${profile.displayName}` : '👤 User Profile';
   document.querySelector('.chrome-profile-card').style.setProperty('--chrome-theme', profile.themeColor || '#00bcd4');
@@ -303,7 +309,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const displayName = document.getElementById('profileDisplayName').value.trim();
       const bio = document.getElementById('profileBio').value.trim();
       const themeColor = document.getElementById('profileThemeColor').value || '#00bcd4';
-      const profile = { displayName, bio, themeColor };
+      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+      profile.displayName = displayName;
+      profile.bio = bio;
+      profile.themeColor = themeColor;
       localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
       updateProfileInfo(profile);
       document.getElementById('chromeProfileName').textContent = displayName ? `👤 ${displayName}` : '👤 User Profile';
@@ -318,6 +327,110 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Photo Upload and Cropping Logic
+let cropImage = null;
+let cropCanvas = null;
+let cropCtx = null;
+let cropStartX = 0, cropStartY = 0, cropEndX = 100, cropEndY = 100;
+
+function togglePhotoUpload() {
+  document.getElementById('photoUpload').click();
+}
+
+function togglePhotoUploadModal() {
+  document.getElementById('photoUploadModal').click();
+}
+
+function handlePhotoUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    cropImage = new Image();
+    cropImage.onload = function() {
+      document.getElementById('cropModal').style.display = 'block';
+      cropCanvas = document.getElementById('cropCanvas');
+      cropCtx = cropCanvas.getContext('2d');
+      cropCanvas.width = 400;
+      cropCanvas.height = 400;
+      const scale = Math.min(cropCanvas.width / cropImage.width, cropCanvas.height / cropImage.height);
+      const scaledWidth = cropImage.width * scale;
+      const scaledHeight = cropImage.height * scale;
+      const x = (cropCanvas.width - scaledWidth) / 2;
+      const y = (cropCanvas.height - scaledHeight) / 2;
+      cropCtx.drawImage(cropImage, x, y, scaledWidth, scaledHeight);
+      // Draw initial crop rectangle
+      drawCropRect();
+    };
+    cropImage.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function drawCropRect() {
+  if (!cropCtx) return;
+  cropCtx.clearRect(0, 0, cropCanvas.width, cropCanvas.height);
+  const scale = Math.min(cropCanvas.width / cropImage.width, cropCanvas.height / cropImage.height);
+  const scaledWidth = cropImage.width * scale;
+  const scaledHeight = cropImage.height * scale;
+  const x = (cropCanvas.width - scaledWidth) / 2;
+  const y = (cropCanvas.height - scaledHeight) / 2;
+  cropCtx.drawImage(cropImage, x, y, scaledWidth, scaledHeight);
+  cropCtx.strokeStyle = 'red';
+  cropCtx.lineWidth = 2;
+  cropCtx.strokeRect(cropStartX, cropStartY, cropEndX - cropStartX, cropEndY - cropStartY);
+}
+
+cropCanvas.addEventListener('mousedown', function(e) {
+  const rect = cropCanvas.getBoundingClientRect();
+  cropStartX = e.clientX - rect.left;
+  cropStartY = e.clientY - rect.top;
+  cropEndX = cropStartX;
+  cropEndY = cropStartY;
+  drawCropRect();
+});
+
+cropCanvas.addEventListener('mousemove', function(e) {
+  if (e.buttons !== 1) return;
+  const rect = cropCanvas.getBoundingClientRect();
+  cropEndX = e.clientX - rect.left;
+  cropEndY = e.clientY - rect.top;
+  drawCropRect();
+});
+
+document.getElementById('cropBtn').addEventListener('click', function() {
+  if (!cropImage || !cropCtx) return;
+  const scale = Math.min(cropCanvas.width / cropImage.width, cropCanvas.height / cropImage.height);
+  const scaledWidth = cropImage.width * scale;
+  const scaledHeight = cropImage.height * scale;
+  const x = (cropCanvas.width - scaledWidth) / 2;
+  const y = (cropCanvas.height - scaledHeight) / 2;
+  const cropWidth = Math.abs(cropEndX - cropStartX);
+  const cropHeight = Math.abs(cropEndY - cropStartY);
+  const cropX = Math.min(cropStartX, cropEndX) - x;
+  const cropY = Math.min(cropStartY, cropEndY) - y;
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCanvas.width = cropWidth;
+  tempCanvas.height = cropHeight;
+  tempCtx.drawImage(cropImage, cropX / scale, cropY / scale, cropWidth / scale, cropHeight / scale, 0, 0, cropWidth, cropHeight);
+  const croppedDataURL = tempCanvas.toDataURL('image/png');
+  // Save to profile
+  const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+  profile.avatar = croppedDataURL;
+  localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profile));
+  loadProfile();
+  document.getElementById('cropModal').style.display = 'none';
+  showNotification('Avatar updated!', 'success');
+});
+
+document.getElementById('cancelCropBtn').addEventListener('click', function() {
+  document.getElementById('cropModal').style.display = 'none';
+});
+
+document.getElementById('closeCropModal').addEventListener('click', function() {
+  document.getElementById('cropModal').style.display = 'none';
 });
 
 // 📖 Reveal all entries

@@ -3,154 +3,149 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Books by Nickson Ochieng Okoth | Zawadi Intel</title>
+  <title>Books by Mannick | Zawadi Intel</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <style>
-    /* aljazeera-light.css */
-    body {
-      background-color: #f9f9f9;
-      color: #222;
-      font-family: 'Noto Sans', 'Helvetica Neue', sans-serif;
-      line-height: 1.7;
-      margin: 0;
-      padding: 0;
+    .book-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
     }
 
-    h1, h2, h3 {
-      color: #111;
-      font-weight: 600;
-      margin-top: 1em;
+    .book-card {
+      flex: 1 1 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 16px;
+      background-color: #fff;
     }
 
-    a {
+    .book-card img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .book-card h2 {
+      margin-top: 0;
+    }
+
+    .book-card a {
+      display: inline-block;
+      margin-top: 10px;
       color: #0077cc;
       text-decoration: none;
     }
 
-    a:hover {
+    .book-card a:hover {
       text-decoration: underline;
-    }
-
-    .book-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 1em;
-      margin-bottom: 1em;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* Add to your CSS */
-    .dark-mode {
-      background-color: #111;
-      color: #eee;
-    }
-    .dark-mode .book-card {
-      background: #222;
-      border-color: #444;
-    }
-
-    #progressBar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background: #0077cc;
-      width: 0%;
-      z-index: 999;
     }
   </style>
 </head>
-<body class="books-page">
-  <!-- Persistent User Profile -->
-  <div class="user-profile" id="userProfile">
-    <div class="avatar">👤</div>
-    <div class="name" id="profileName"></div>
-    <div class="bio" id="profileBio"></div>
-  </div>
-
+<body></body>
   <nav class="top-nav">
-    <a href="index.html" class="btn home-btn">🏠 Home</a>
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <div class="home-menu">
+        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
+        <div class="home-dropdown" id="homeDropdown">
+          <a href="index.html">Home</a>
+          <a href="biography.html">Biographies</a>
+          <a href="media.html">Media</a>
+          <a href="sport.html">Sports</a>
+          <a href="news.html#global-section">Global</a>
+          <a href="news.html#middle-east">Middle East</a>
+          <a href="app.html">Archive</a>
+        </div>
+      </div>
+      <a href="books.html" class="top-link">Books</a>
+      <a href="news.html" class="top-link">News</a>
+    </div>
+    <div class="utility">
+      <div id="userAuth" class="user-auth"></div>
+    </div>
   </nav>
 
-  <button onclick="toggleTheme()">🌓 Toggle Mode</button>
-  <div id="progressBar"></div>
+          <!-- Login Form -->
+          <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required />
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="submit">Login</button>
+            <p id="loginError" class="error"></p>
+            <p class="register-link">Not registered? <a href="#" onclick="showRegister()">Register</a></p>
+          </form>
+
+          <!-- Registration Form -->
+          <form id="registerForm" style="display:none;">
+            <input type="text" id="newUsername" placeholder="New Username" required />
+            <input type="password" id="newPassword" placeholder="New Password" required />
+            <button type="submit">Register</button>
+            <p class="login-link">Already registered? <a href="#" onclick="showLogin()">Login</a></p>
+          </form>
+
+          <!-- User Details -->
+          <div id="userDetails" style="display:none;">
+            <p>Welcome, <span id="displayName"></span></p>
+            <button onclick="logout()">Logout</button>
+          </div>
+
+          <!-- Upload & Crop Section -->
+          <div id="uploadSection" style="display:none;">
+            <label for="profileUpload">Upload Profile Image</label>
+            <input type="file" id="profileUpload" accept="image/*" />
+            <div id="cropContainer" style="display:none;">
+              <img id="cropImage" />
+              <button onclick="cropImage()">Crop & Save</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </nav>
 
   <header>
-    <h1>Books by Nickson Ochieng Okoth</h1>
-    <p class="tagline">Stories that guard memory, challenge silence, and honor legacy.</p>
+  <h1>Books by Mannick</h1>
+    <p>Complete summaries of published works.</p>
   </header>
 
-  <main>
+  <main class="book-row">
     <section class="book-card">
-      <h2>📘 Emeka the Chief’s Son</h2>
-      <img src="images/emeka-cover.png" alt="Emeka the Chief’s Son cover" />
-      <p>A dramatic tale of pride, betrayal, and chaos on a wedding day in Imo State, Nigeria.</p>
+      <h2>Emeka the Chief’s Son</h2>
+      <img src="images/emeka-cover.png" alt="Emeka cover" />
+      <p>Set in Imo State, Nigeria, this story follows Emeka, a proud son of a respected chief, whose wedding day spirals into chaos. As family secrets unravel and betrayal surfaces, Emeka must confront the weight of tradition, pride, and personal truth. The narrative explores cultural expectations, generational conflict, and the fragile balance between honor and happiness.</p>
       <a href="https://www.booksie.com/748649-emeka-the-chiefs-son" target="_blank">Read on Booksie</a>
     </section>
 
+        <!-- compact auth/login (used across pages) -->
+        <div id="userAuth" class="user-auth">
+          <button id="openLoginBtn" onclick="document.getElementById('authModal').style.display='block'">Login</button>
+          <div id="authModal" style="display:none;">
+            <form id="loginForm">
+              <input type="text" id="username" placeholder="Username" required />
+              <input type="password" id="password" placeholder="Password" required />
+              <button type="submit">Login</button>
+              <p id="loginError" class="error"></p>
+              <p class="register-link">Not registered? <a href="#" onclick="showRegister(); return false;">Register</a></p>
+            </form>
+          </div>
+        </div>
     <section class="book-card">
-      <h2>🔥 Ashes to Ambition: The Testament of Zawadi</h2>
-      <img src="images/zawadi-cover.png" alt="Ashes to Ambition cover" />
-      <p>A poetic testament of rebirth, ambition, and the fire that fuels legacy.</p>
-      <a href="https://www.booksie.com/769963-ashes-to-ambition-the-testament-of-zawadi" target="_blank">Read on Booksie</a>
-    </section>
-
-    <section class="book-card">
-      <h2>🗡️ When the Machetes Came: A Night We Didn’t Die</h2>
-      <img src="images/machetes-cover.png" alt="When the Machetes Came cover" />
-      <p>A haunting reflection on survival, memory, and the silence that followed violence.</p>
-      <a href="https://www.booksie.com/769812-when-the-machetes-came-a-night-we-didnt-die" target="_blank">Read on Booksie</a>
-    </section>
-
-    <section class="book-card">
-      <h2>🚶 The Unstoppable Journey of Mahesh: From Rebellion to Redemption</h2>
+      <h2>The Unstoppable Journey of Mahesh</h2>
       <img src="images/mahesh-cover.png" alt="Mahesh cover" />
-      <p>A cinematic journey of transformation, rebellion, and spiritual awakening.</p>
+      <p>Mahesh’s journey begins in rebellion and ends in redemption. This story follows his transformation from a defiant youth to a spiritually awakened man. Along the way, he confronts betrayal, loss, and the search for meaning. The book is a portrait of growth, forgiveness, and the power of inner change — a journey that challenges silence and honors truth.</p>
       <a href="https://www.booksie.com/747147-the-unstoppable-journey-of-maheshfrom-rebellion-to-redemption" target="_blank">Read on Booksie</a>
     </section>
   </main>
 
+  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs"></script>
+
   <footer>
-    <p>&copy; 2025 Nickson Ochieng Okoth | Zawadi Intel Legacy</p>
+    <p>&copy; 2025 Mannick | Zawadi Intel</p>
   </footer>
-
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('dark-mode');
-    }
-
-    window.onscroll = function() {
-      const scroll = document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (scroll / height) * 100;
-      document.getElementById('progressBar').style.width = scrolled + "%";
-    };
-
-    // Check for logged-in user and display profile
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      const profile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-      document.getElementById('profileName').textContent = profile.displayName || currentUser;
-      document.getElementById('profileBio').textContent = profile.bio || '';
-      document.getElementById('userProfile').style.display = 'block';
-    }
-
-    // Fade-in animation for sections
-    const sections = document.querySelectorAll('.books-page section');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    sections.forEach(section => {
-      observer.observe(section);
-    });
-  </script>
 </body>
 </html>

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Sheebah Karungi",
+    "image": "images/Sheeber.png",
+    "bio": "Bold Ugandan artist known for empowering lyrics and dancehall energy.",
+    "link": "biography.html#sheebah-karungi"
+  },
+  {
+    "name": "David Lutalo",
+    "image": "images/Lutalo.png",
+    "bio": "Singer-songwriter rooted in Luganda storytelling and kadongo kamu traditions.",
+    "link": "biography.html#david-lutalo"
+  },
+  {
+    "name": "Vinka (Veronica Lugya)",
+    "image": "images/Vinka.png",
+    "bio": "Pop and dancehall artist blending Afrobeat with urban pop and streetwise lyrics.",
+    "link": "biography.html#vinka"
+  },
+  {
+    "name": "Peace Eve (Ava Peace)",
+    "image": "images/E Peace.png",
+    "bio": "Rising singer combining Afro-pop, dancehall, and gospel influences with community-focused storytelling.",
+    "link": "biography.html#peace-eve"
+  },
+  {
+    "name": "Spice Diana",
+    "image": "images/Spice.png",
+    "bio": "A celebrated Ugandan artist known for melodic hooks and cultural influence.",
+    "link": "biography.html#spice-diana"
+  }
+]
