@@ -3,98 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zawadi Intel App — Secure Archive</title>
-  <meta name="description" content="Secure access to Zawadi Intel’s cinematic archive, story submission tools, and encrypted vault." />
-  <link rel="stylesheet" href="style.css" />
+  <title>Archive — Zawadi Intel</title>
+  <meta name="description" content="Search and explore all stories, profiles, media, and books published on Zawadi Intel." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-  <script src="src/js/crypto-vault.js"></script>
 </head>
 <body>
-  <!-- � Top Navigation -->
+
+  <!-- 🔝 Navigation -->
   <nav class="top-nav">
-    <div class="logo">🔐 Zawadi App</div>
+    <div class="logo">📜 Zawadi Intel</div>
     <div class="main-links">
-      <div class="home-menu">
-        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
-        <div class="home-dropdown" id="homeDropdown">
-          <a href="index.html">Home</a>
-          <a href="biography.html">Biographies</a>
-          <a href="media.html">Media</a>
-          <a href="sport.html">Sports</a>
-          <a href="books.html">Books</a>
-          <a href="news.html#global-section">Global</a>
-          <a href="news.html#middle-east">Middle East</a>
-        </div>
-      </div>
-      <a href="news.html" class="top-link">News</a>
-    </div>
-    <div class="utility">
-      <a href="books.html" class="top-link">Books</a>
-      <div id="userAuth" class="user-auth"></div>
+      <a href="index.html">Home</a>
+      <a href="global.html">Global</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="media.html">Media</a>
+      <a href="books.html">Books</a>
     </div>
   </nav>
 
-  <!-- 👤 Welcome Section -->
-  <section class="welcome">
-    <h1 id="welcomeTitle">Welcome back to Zawadi Intel</h1>
-    <p id="welcomeMessage">Your archive, your stories, your voice.</p>
-  </section>
+  <!-- 🗂️ Page Banner -->
+  <header class="page-banner">
+    <h1>📁 Archive</h1>
+    <p>Search and explore every story, profile, and feature published on Zawadi Intel.</p>
+    <form class="search-bar">
+      <input type="text" placeholder="Search by keyword, region, or author..." />
+      <button type="submit">Search</button>
+    </form>
+  </header>
 
-  <!-- 🧠 Zawadi Pulse Spotlight -->
-  <section class="pulse-spotlight">
-    <h2>🎤 Zawadi Pulse: Artist Connections</h2>
-    <p>Explore how Sheebah, Lutalo, Vinka, Peace Eve, and Spice Diana shape Uganda’s musical legacy.</p>
-    <div class="artist-grid">
-      <!-- Reuse artist cards from index.html or load dynamically -->
-      <div class="artist-card">
-        <img src="images/Sheeber.png" alt="Sheebah Karungi" class="bio-photo" />
-        <h3>Sheebah Karungi</h3>
-        <a href="biography.html#sheebah-karungi">📖 Read Bio</a>
+  <!-- 📁 Archive Grid -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+
+        <article class="story-card">
+          <h2>🇵🇸 Gaza Ceasefire Holds — But Barely</h2>
+          <p>Despite deadly Israeli raids, U.S. officials say the Gaza truce is “exceeding expectations.”</p>
+          <a href="global.html#middle-east-focus">Read More</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🇺🇦 Ukraine Strikes Russian Oil Sites</h2>
+          <p>Ukraine’s forces hit key Russian refineries, triggering massive fires. Trump urges a freeze on front lines.</p>
+          <a href="global.html#ukraine-russia">Full Report</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🇰🇪 Raila Odinga — The Architect of Reform</h2>
+          <p>From prison to parliament, Raila Odinga’s journey shaped Kenya’s democratic evolution.</p>
+          <a href="biography.html">View Profile</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📸 Gaza in Ruins — A Photo Essay</h2>
+          <p>Images from Rafah and Khan Younis reveal the scale of destruction and resilience amid war.</p>
+          <a href="media.html">View Gallery</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📝 The Weight of Silence</h2>
+          <p>A poetic meditation on grief, masculinity, and quiet revolutions. By Nickson Ochieng Okoth.</p>
+          <a href="books.html">Read on Booksie</a>
+        </article>
+
       </div>
-      <!-- Repeat for others -->
-    </div>
-  </section>
 
-  <!-- ✍️ Story Submission Form -->
-  <section class="story-form">
-    <h2>📝 Submit Your Story</h2>
-    <form id="intelForm">
-      <input type="text" id="title" placeholder="Story Title" required />
-      <textarea id="content" placeholder="Your story..." required></textarea>
-      <input type="text" id="tagsInput" placeholder="Tags (comma-separated)" />
-      <label><input type="checkbox" id="makePublic" /> Make public</label>
-      <button type="submit">✅ Submit</button>
-    </form>
-  </section>
+      <!-- 📌 Sidebar -->
+      <aside class="aj-sidebar">
+        <div class="sidebar-module">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="global.html">Global Conflict</a></li>
+            <li><a href="africa.html">African Affairs</a></li>
+            <li><a href="biography.html">Profiles</a></li>
+            <li><a href="media.html">Multimedia</a></li>
+            <li><a href="books.html">Literature</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-module">
+          <h3>Recent Highlights</h3>
+          <ul>
+            <li><a href="#">Sudan Ceasefire Collapse</a></li>
+            <li><a href="#">Iran Nuclear Brinkmanship</a></li>
+            <li><a href="#">Nigeria Youth Protests</a></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
 
-  <!-- 🔍 Search Archive -->
-  <section class="search-section">
-    <input type="text" id="searchInput" placeholder="🔍 Search Archive" oninput="searchIntel()" />
-    <div id="intelList"></div>
-  </section>
-
-  <!-- 👤 Profile & Vault -->
-  <section class="profile-card">
-    <h2>👤 Your Profile</h2>
-    <form id="profileForm">
-      <input type="text" id="profileDisplayName" placeholder="Display Name" />
-      <textarea id="profileBio" placeholder="Short Bio"></textarea>
-      <button type="submit">💾 Save Profile</button>
-    </form>
-    <div id="profileInfo"></div>
-  </section>
-
-  <!-- 🔐 Encryption Vault -->
-  <section class="vault">
-    <h2>🔐 Encrypted Vault</h2>
-    <p>Securely store private notes and drafts.</p>
-    <!-- Add vault logic from crypto-vault.js -->
-  </section>
-
-  <script src="app.js"></script>
-  <footer>
-    <p>&copy; 2025 Zawadi Intel. Built by MANNICK.</p>
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>

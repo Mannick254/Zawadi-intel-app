@@ -3,77 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Media — Zawadi Intel</title>
-  <meta name="description" content="Explore African multimedia stories, interviews, and cultural archives curated with cinematic clarity." />
-  <link rel="stylesheet" href="style.css" />
+  <title>Multimedia — Zawadi Intel</title>
+  <meta name="description" content="Photo essays, documentaries, and audio stories that bring global events to life." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
 </head>
 <body>
-  <!-- 🔝 Top Navigation -->
+
+  <!-- 🔝 Navigation -->
   <nav class="top-nav">
     <div class="logo">📜 Zawadi Intel</div>
     <div class="main-links">
-      <div class="home-menu">
-        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
-        <div class="home-dropdown" id="homeDropdown">
-          <a href="index.html">Home</a>
-          <a href="biography.html">Biographies</a>
-          <a href="sport.html">Sports</a>
-          <a href="news.html#global-section">Global</a>
-          <a href="news.html#middle-east">Middle East</a>
-          <a href="app.html">Archive</a>
-        </div>
-      </div>
-      <a href="news.html" class="top-link">News</a>
-    </div>
-    <div class="utility">
-      <a href="books.html" class="top-link">Books</a>
-      <div id="userAuth" class="user-auth"></div>
+      <a href="index.html">Home</a>
+      <a href="global.html">Global</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="books.html">Books</a>
+      <a href="app.html">Archive</a>
     </div>
   </nav>
 
-  <!-- 📺 Media Gallery -->
+  <!-- 🖼️ Page Banner -->
+  <header class="page-banner">
+    <h1>🎥 Multimedia Archive</h1>
+    <p>Visual storytelling from the frontlines — curated for clarity, emotion, and impact.</p>
+  </header>
+
+  <!-- 🖼️ Media Grid -->
   <main class="aj-container">
     <section class="aj-grid">
       <div class="aj-main">
-        <section class="media-gallery">
-      <div class="media-card">
-        <h2>🎙️ Interview: Ngũgĩ wa Thiong’o on Language & Liberation</h2>
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/samplevideo" title="Ngũgĩ Interview" frameborder="0" allowfullscreen></iframe>
-        <p>Renowned author Ngũgĩ wa Thiong’o discusses the power of African languages in storytelling and resistance.</p>
+
+        <article class="story-card">
+          <h2>📸 Gaza in Ruins — A Photo Essay</h2>
+          <p>Images from Rafah and Khan Younis reveal the scale of destruction and resilience amid war.</p>
+          <a href="#">View Gallery</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🎧 Voices from Tigray — Audio Dispatch</h2>
+          <p>Survivors share their stories of displacement, hope, and resistance in Ethiopia’s northern region.</p>
+          <a href="#">Listen Now</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🎬 The Last Horizon — Behind the Scenes</h2>
+          <p>Go inside the making of October’s most haunting sci-fi drama. Interviews with cast and crew.</p>
+          <a href="#">Watch Feature</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📸 Sudan’s Exodus — Visual Report</h2>
+          <p>Photojournalists document the refugee surge along the Chad border after ceasefire collapse.</p>
+          <a href="#">Explore Images</a>
+        </article>
+
       </div>
 
-      <div class="media-card">
-        <h2>📻 Audio: Voices from Kibera</h2>
-        <audio controls>
-          <source src="audio/kibera-voices.mp3" type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-        <p>A community-led oral history project capturing everyday life in Nairobi’s Kibera neighborhood.</p>
-      </div>
-
-      <div class="media-card">
-        <h2>🌍 External Feature: African Women in Film</h2>
-        <p>Explore the rise of African women filmmakers and their impact on global cinema.</p>
-        <a href="https://www.awdf.org/african-women-in-film/" target="_blank">Visit AWDF</a>
-      </div>
-        </section>
-      </div>
-
-      <div class="aj-centre">
-        <div class="centre-module"><h3>Featured Media</h3><ul><li><a href="media.html">Interviews</a></li><li><a href="media.html">Audio Stories</a></li></ul></div>
-      </div>
-
+      <!-- 📌 Sidebar -->
       <aside class="aj-sidebar">
-        <div class="sidebar-module"><h3>Quick Links</h3><ul><li><a href="media.html">Latest Videos</a></li><li><a href="media.html">Audio Archive</a></li></ul></div>
+        <div class="sidebar-module">
+          <h3>Explore More</h3>
+          <ul>
+            <li><a href="biography.html">Profiles & Biographies</a></li>
+            <li><a href="books.html">Literature & Essays</a></li>
+            <li><a href="app.html">Search Archive</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-module">
+          <h3>Featured Formats</h3>
+          <ul>
+            <li><a href="#">Photo Essays</a></li>
+            <li><a href="#">Documentaries</a></li>
+            <li><a href="#">Audio Dispatches</a></li>
+          </ul>
+        </div>
       </aside>
     </section>
   </main>
 
   <!-- 🔻 Footer -->
-  <footer>
-    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
-

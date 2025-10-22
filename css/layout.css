@@ -1,0 +1,74 @@
+/* layout.css */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #003366;
+  color: white;
+  padding: 0.8em 1.2em;
+}
+
+.top-nav .logo {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.top-nav .main-links a {
+  margin-left: 1em;
+  color: white;
+  font-weight: 500;
+}
+
+.hero-banner {
+  background: #004080;
+  color: white;
+  padding: 2em;
+  text-align: center;
+}
+
+.hero-banner .cta-btn {
+  display: inline-block;
+  margin-top: 1em;
+  padding: 0.6em 1.2em;
+  background: #ffcc00;
+  color: #003366;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.page-banner {
+  background: #ddd;
+  padding: 1.5em;
+  text-align: center;
+}
+
+.aj-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1em;
+}
+
+.aj-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.aj-main {
+  flex: 3;
+}
+
+.aj-sidebar {
+  flex: 1;
+}
+
+.story-card,
+.conflict-zone,
+.tribute-zone,
+.trending-movie {
+  background: white;
+  padding: 1em;
+  margin-bottom: 1.5em;
+  border-left: 4px solid #006699;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

@@ -3,149 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Books by Mannick | Zawadi Intel</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Books — Zawadi Intel</title>
+  <meta name="description" content="Essays, poetry, and fiction by Nickson Ochieng Okoth. Literature that challenges, heals, and inspires." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
-  <style>
-    .book-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-      justify-content: center;
-    }
-
-    .book-card {
-      flex: 1 1 400px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 16px;
-      background-color: #fff;
-    }
-
-    .book-card img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-    }
-
-    .book-card h2 {
-      margin-top: 0;
-    }
-
-    .book-card a {
-      display: inline-block;
-      margin-top: 10px;
-      color: #0077cc;
-      text-decoration: none;
-    }
-
-    .book-card a:hover {
-      text-decoration: underline;
-    }
-  </style>
 </head>
-<body></body>
+<body>
+
+  <!-- 🔝 Navigation -->
   <nav class="top-nav">
     <div class="logo">📜 Zawadi Intel</div>
     <div class="main-links">
-      <div class="home-menu">
-        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
-        <div class="home-dropdown" id="homeDropdown">
-          <a href="index.html">Home</a>
-          <a href="biography.html">Biographies</a>
-          <a href="media.html">Media</a>
-          <a href="sport.html">Sports</a>
-          <a href="news.html#global-section">Global</a>
-          <a href="news.html#middle-east">Middle East</a>
-          <a href="app.html">Archive</a>
-        </div>
-      </div>
-      <a href="books.html" class="top-link">Books</a>
-      <a href="news.html" class="top-link">News</a>
-    </div>
-    <div class="utility">
-      <div id="userAuth" class="user-auth"></div>
+      <a href="index.html">Home</a>
+      <a href="global.html">Global</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="media.html">Media</a>
+      <a href="app.html">Archive</a>
     </div>
   </nav>
 
-          <!-- Login Form -->
-          <form id="loginForm">
-            <input type="text" id="username" placeholder="Username" required />
-            <input type="password" id="password" placeholder="Password" required />
-            <button type="submit">Login</button>
-            <p id="loginError" class="error"></p>
-            <p class="register-link">Not registered? <a href="#" onclick="showRegister()">Register</a></p>
-          </form>
-
-          <!-- Registration Form -->
-          <form id="registerForm" style="display:none;">
-            <input type="text" id="newUsername" placeholder="New Username" required />
-            <input type="password" id="newPassword" placeholder="New Password" required />
-            <button type="submit">Register</button>
-            <p class="login-link">Already registered? <a href="#" onclick="showLogin()">Login</a></p>
-          </form>
-
-          <!-- User Details -->
-          <div id="userDetails" style="display:none;">
-            <p>Welcome, <span id="displayName"></span></p>
-            <button onclick="logout()">Logout</button>
-          </div>
-
-          <!-- Upload & Crop Section -->
-          <div id="uploadSection" style="display:none;">
-            <label for="profileUpload">Upload Profile Image</label>
-            <input type="file" id="profileUpload" accept="image/*" />
-            <div id="cropContainer" style="display:none;">
-              <img id="cropImage" />
-              <button onclick="cropImage()">Crop & Save</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <header>
-  <h1>Books by Mannick</h1>
-    <p>Complete summaries of published works.</p>
+  <!-- 📘 Page Banner -->
+  <header class="page-banner">
+    <h1>📚 Books & Literature</h1>
+    <p>Poetry, essays, and fiction by Nickson Ochieng Okoth — exploring memory, resistance, and identity.</p>
   </header>
 
-  <main class="book-row">
-    <section class="book-card">
-      <h2>Emeka the Chief’s Son</h2>
-      <img src="images/emeka-cover.png" alt="Emeka cover" />
-      <p>Set in Imo State, Nigeria, this story follows Emeka, a proud son of a respected chief, whose wedding day spirals into chaos. As family secrets unravel and betrayal surfaces, Emeka must confront the weight of tradition, pride, and personal truth. The narrative explores cultural expectations, generational conflict, and the fragile balance between honor and happiness.</p>
-      <a href="https://www.booksie.com/748649-emeka-the-chiefs-son" target="_blank">Read on Booksie</a>
-    </section>
+  <!-- 📖 Book Grid -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
 
-        <!-- compact auth/login (used across pages) -->
-        <div id="userAuth" class="user-auth">
-          <button id="openLoginBtn" onclick="document.getElementById('authModal').style.display='block'">Login</button>
-          <div id="authModal" style="display:none;">
-            <form id="loginForm">
-              <input type="text" id="username" placeholder="Username" required />
-              <input type="password" id="password" placeholder="Password" required />
-              <button type="submit">Login</button>
-              <p id="loginError" class="error"></p>
-              <p class="register-link">Not registered? <a href="#" onclick="showRegister(); return false;">Register</a></p>
-            </form>
-          </div>
+        <article class="story-card">
+          <h2>📝 The Weight of Silence</h2>
+          <p>A poetic meditation on grief, masculinity, and the quiet revolutions of everyday life.</p>
+          <a href="#">Read on Booksie</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🌍 Letters to a Dying Republic</h2>
+          <p>Political essays from Nairobi — confronting corruption, hope, and the myth of independence.</p>
+          <a href="#">Explore Chapters</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🎭 The Boy Who Spoke in Rain</h2>
+          <p>A coming-of-age novella set in Kisumu, where language becomes both exile and home.</p>
+          <a href="#">Preview Story</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🔥 Fire Beneath the Soil</h2>
+          <p>Short stories of resistance, betrayal, and rebirth — from rural Kenya to global exile.</p>
+          <a href="#">Read Selections</a>
+        </article>
+
+      </div>
+
+      <!-- 📌 Sidebar -->
+      <aside class="aj-sidebar">
+        <div class="sidebar-module">
+          <h3>Explore More</h3>
+          <ul>
+            <li><a href="biography.html">Author Profile</a></li>
+            <li><a href="media.html">Multimedia Archive</a></li>
+            <li><a href="app.html">Search Archive</a></li>
+          </ul>
         </div>
-    <section class="book-card">
-      <h2>The Unstoppable Journey of Mahesh</h2>
-      <img src="images/mahesh-cover.png" alt="Mahesh cover" />
-      <p>Mahesh’s journey begins in rebellion and ends in redemption. This story follows his transformation from a defiant youth to a spiritually awakened man. Along the way, he confronts betrayal, loss, and the search for meaning. The book is a portrait of growth, forgiveness, and the power of inner change — a journey that challenges silence and honors truth.</p>
-      <a href="https://www.booksie.com/747147-the-unstoppable-journey-of-maheshfrom-rebellion-to-redemption" target="_blank">Read on Booksie</a>
+        <div class="sidebar-module">
+          <h3>Genres</h3>
+          <ul>
+            <li><a href="#">Poetry</a></li>
+            <li><a href="#">Essays</a></li>
+            <li><a href="#">Fiction</a></li>
+          </ul>
+        </div>
+      </aside>
     </section>
   </main>
 
-  <script src="app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/cropperjs"></script>
-
-  <footer>
-    <p>&copy; 2025 Mannick | Zawadi Intel</p>
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>

@@ -3,40 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zawadi Intel — African Story Archive</title>
-  <meta name="description" content="Explore African and global stories that honor voices, empower communities, and inspire change." />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="global.css" />
+  <title>Zawadi Intel — Home</title>
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: sans-serif;
-    }
-
-    h1, h2, h3 {
-      text-align: center;
-    }
-
-    .btn {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.5rem 1rem;
-      background-color: #0077cc;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #333;
-      color: #fff;
-    }
-  </style>
 </head>
 <body>
 
@@ -44,255 +16,91 @@
   <nav class="top-nav">
     <div class="logo">📜 Zawadi Intel</div>
     <div class="main-links">
-      <div class="home-menu">
-        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
-        <div class="home-dropdown" id="homeDropdown">
-          <a href="index.html">Home</a>
-          <a href="biography.html">Biographies</a>
-          <a href="media.html">Media</a>
-          <a href="sport.html">Sports</a>
-          <a href="news.html#global-section">Global</a>
-          <a href="news.html#middle-east">Middle East</a>
-          <a href="app.html">Archive</a>
-          <a href="offline.html">Offline</a>
-        </div>
-      </div>
-      <a href="news.html" class="top-link">News</a>
-    </div>
-    <div class="utility">
-      <a href="books.html" class="top-link">Books</a>
-      <div id="userAuth" class="user-auth"></div>
+      <a href="global.html">Global</a>
+      <a href="middle-east.html">Middle East</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="media.html">Media</a>
+      <a href="books.html">Books</a>
+      <a href="app.html">Archive</a>
     </div>
   </nav>
 
-  <!-- 🔲 Main Layout (news-style multi-column) -->
+  <!-- 📰 Hero Banner -->
+  <header class="hero-banner">
+    <h1>Breaking Stories That Shape Our World</h1>
+    <p>From Gaza’s fragile ceasefire to Ukraine’s strategic strikes — explore the headlines that matter.</p>
+    <a href="global.html" class="cta-btn">Explore Global Coverage</a>
+  </header>
+
+  <!-- 🗞️ Main Grid -->
   <main class="aj-container">
-    <!-- Hero / Lead -->
-    <section class="aj-hero">
-      <article class="hero-article">
-
-  <img src="images/Lutalo.png" alt="Featured" class="hero-image" loading="lazy" />
-  <div class="hero-body">
-    <h1 class="hero-title">
-      <a href="https://www.youtube.com/watch?v=gdvYKQvOS3c" target="_blank" rel="noopener">
-        Lutalo: “Red Tomato” — Sounding the City with Rhythm and Memory
-      </a>
-    </h1>
-    <p class="hero-excerpt">
-      David Lutalo returns with “Red Tomato,” a vibrant Ugandan anthem blending traditional melodies and urban storytelling. His music continues to document daily life with lyrical depth and cultural pride.
-    </p>
-    <a href="biography.html" class="btn">Read full coverage</a>
-  </div>
-</article>
-  
- 
-  
-
     <section class="aj-grid">
       <div class="aj-main">
-        <div class="article-grid">
-          <!-- Article cards — replace with real content or generate dynamically -->
-          <article class="article-card">
-            <img src="images/zawadi-cover.png" alt="Zawadi project" loading="lazy" />
-            <h2><a href="news.html">Zawadi Archive: Preserving Oral Histories</a></h2>
-            <p class="meta">Culture / Archive — 3h ago</p>
-            <p class="excerpt">An initiative to digitise personal stories and recordings from elders across the region, making them accessible for researchers and communities.</p>
-          </article>
 
-    <article class="article-card">
-   <figure>        
-  <img src="images/russia-air defense.png" alt="Russia-Ukraine conflict" loading="lazy" />
-  <figcaption><i>Russia upgraded S-500 and Iskander-M air defense</i></figcaption>
-  </figure>
-  <h2>
-    <a href="https://www.dw.com/en/why-russia-is-stepping-up-attacks-on-ukraine/a-73254218" target="_blank" rel="noopener">
-      Why Russia Continues Bombing Ukraine Despite NATO Support
-    </a>
-  </h2>
-  <p class="meta">Geopolitics — 20 Oct 2025</p>
-  <p class="excerpt">
-    Russia has intensified its bombing campaign across Ukraine, targeting cities like Odessa and Kyiv. Despite NATO aid, Moscow aims to destabilize Ukraine, prevent NATO expansion, and pressure Western resolve through relentless aerial assaults and strategic disruption.
-  </p>
-</article>
-       
+        <!-- 🔥 Top Story -->
+        <article class="story-card">
+          <h2>🇵🇸 Gaza Ceasefire Holds — But Barely</h2>
+          <p>Despite deadly Israeli raids, U.S. officials say the Gaza truce is “exceeding expectations.”</p>
+          <a href="middle-east.html">Read More</a>
+        </article>
 
-      
+        <section class="feature-article">
+  <h2>🇺🇦 Ukraine Strikes Russian Oil Sites</h2>
+  <img src="images/ukraine.png" alt="Ukraine drone strike on Russian refinery" />
+  <p class="byline">By Zawadi Intel Editorial Desk — October 22, 2025</p>
 
-<article id="gaza-bombing" class="conflict-zone palestine">
-  <h2>🇵🇸 Gaza War: Why Israel Bombed Gaza</h2>
-  <p>
-    On October 7, 2023, Hamas launched a surprise cross-border attack into southern Israel, killing over 1,200 civilians and soldiers, and taking dozens hostage. The assault, described by Israeli officials as the deadliest in decades, triggered an immediate and forceful response. Within hours, Israel began a sustained bombing campaign across Gaza, targeting what it claimed were Hamas command centers, rocket launch sites, and tunnel networks.
-  </p>
-  <p>
-    The Israeli government framed its actions as self-defense under international law, invoking Article 51 of the UN Charter. However, critics argued that the scale and intensity of the airstrikes far exceeded proportional retaliation. Hospitals, schools, refugee camps, and residential towers were among the sites hit. By mid-2025, the UN estimated over 30,000 Palestinians had been killed, with more than 70% being women and children.
-  </p>
-  <p>
-    Israel’s military strategy focused on degrading Hamas’s infrastructure, but also aimed to pressure the group politically. The use of F-35 fighter jets, precision-guided munitions, and bunker-busting bombs signaled a shift toward high-tech warfare. Meanwhile, Gaza’s civilian population bore the brunt of the destruction, with entire neighborhoods reduced to rubble and basic services collapsing.
-  </p>
-  <p>
-    Ceasefire negotiations mediated by Egypt, Qatar, and the UN repeatedly stalled. Israel demanded the unconditional release of hostages and the dismantling of Hamas’s military wing, while Hamas insisted on lifting the blockade and international recognition. The breakdown of talks in January 2025 led to renewed bombardments, including strikes on Rafah and Khan Younis.
-  </p>
-  <p>
-    International reactions were polarized. Western allies like the U.S. and UK supported Israel’s right to defend itself, while countries such as South Africa, Brazil, and Malaysia condemned the bombings as collective punishment. Massive protests erupted globally, with demonstrators calling for sanctions, arms embargoes, and war crimes investigations.
-  </p>
-  <p>
-    As of October 2025, a fragile ceasefire holds, but the scars of war remain deep. Gaza’s reconstruction is slow, humanitarian aid is limited, and political reconciliation between Palestinian factions is elusive. The question of why Israel bombed Gaza continues to echo — not just in diplomatic circles, but in the lives of millions affected by the conflict.
-  </p>
-</article>
+  <p>In one of the most daring operations of the war, Ukrainian forces launched a series of drone strikes targeting Russian oil infrastructure deep inside enemy territory. The attack ignited massive fires across multiple refineries, sending plumes of black smoke into the night sky and triggering emergency responses from Russian firefighters.</p>
+
+  <p>The image above, captured moments after the strike, shows two responders battling flames at a refinery near Belgorod. One firefighter, clad in yellow gear marked “АЗДУМА,” directs a jet of water toward a burning storage tank. The other, in black protective gear, grips the hose with grim determination as flames engulf the industrial complex behind them.</p>
+
+  <p>U.S. officials have called for restraint, while former President Trump urged a “freeze on the front lines” to prevent further escalation. NATO surveillance flights have intensified along the eastern corridor, and diplomatic channels remain tense as Moscow vows retaliation.</p>
+
+  <p>Military analysts say the strikes were aimed at crippling Russia’s fuel supply chain ahead of winter. Ukrainian officials have not commented publicly, but sources close to Kyiv suggest the operation was coordinated with Western intelligence.</p>
+
+  <p>As the war enters its third year, the battlefield is no longer confined to trenches and towns — it now includes the economic arteries that fuel conflict. This strike marks a turning point in Ukraine’s strategy: precision, disruption, and psychological warfare.</p>
+
+  <a href="global.html#ukraine-russia" class="cta-btn">Explore Full Coverage</a>
+</section>
 
 
+        <!-- 🎬 Featured Media -->
+        <article class="story-card">
+          <h2>🎬 The Last Horizon — Humanity’s Final Voyage</h2>
+          <p>October’s most haunting sci-fi release follows a doomed mission to colonize a distant planet.</p>
+          <a href="media.html">Watch Trailer</a>
+        </article>
 
-<article class="article-card">
-  <img src="images/railafarewell.jpeg" alt="Raila Odinga Farewell Ceremony" loading="lazy" />
-  <h2>
-    <a href="https://www.standardmedia.co.ke/national/article/2001532169/end-of-an-era-lights-dim-as-raila-odinga-buried-photos" target="_blank" rel="noopener">
-      Raila Odinga: End of an Era — Kenya Bids Farewell
-    </a>
-  </h2>
-  <p class="meta">National Tribute — 19 Oct 2025</p>
-  <p class="excerpt">
-    Thousands gathered in Bondo to honor Rt. Hon. Raila Odinga, Kenya’s revered opposition leader. His casket, draped in the national flag, was laid to rest at his father’s homestead after a state funeral with military honors, church service, and tributes from global dignitaries.
-  </p>
-</article>
-
-
-
-         <article class="article-card">
-  <img src="images/Vinka.png" alt="Musician Vinka" loading="lazy" />
-  <h2><a href="news.html">Vinka Unleashes “La La La”</a></h2>
-  <p class="meta">Arts & Culture — 9 Oct 2025</p>
-  <p class="excerpt">
-    Vinka’s new single “La La La” delivers a bold dancehall vibe with catchy melodies and confident energy. Produced by Nessim Pan Production, it marks a fresh chapter in her sonic evolution.
-  </p>
-</article>
- 
-    
-
-    <article class="article-card">
-  <img src="images/mahesh-cover.png" alt="Entrepreneur Mahesh" loading="lazy" class="profileBio" />
-  <h2>
-    <a href="https://www.booksie.com/747147-the-unstoppable-journey-of-maheshfrom-rebellion-to-redemption" target="_blank" rel="noopener">
-      Mahesh: The Unstoppable Journey — From Rebellion to Redemption
-    </a>
-  </h2>
-  <p class="meta">Memoir & Transformation — 20 Oct 2025</p>
-  <p class="excerpt">
-    In this powerful memoir, Mahesh shares his transformation from a defiant youth to a spiritually awakened man. Through betrayal, loss, and forgiveness, he discovers the strength to confront silence and honor truth. A story of growth, resilience, and inner change.
-  </p>
-</article>
-  
-
-
-      <div class="aj-centre">
-        <div class="centre-module">
-        <h3>In Depth</h3>
-<ul>
-  <li>
-    <a href="https://www.msn.com/en-xl/africa/top-stories/safaricom-sim-swap-fraud-investigations-up-327pc/ar-AA1O9UBQ" target="_blank" rel="noopener">
-      Investigation: Safaricom SIM Swap Fraud Surges 327%
-    </a>
-  </li>
-  <li><a href="news.html">Analysis: Regional Economies in Transition</a></li>
-  <li><a href="news.html">Features from the Field: Voices from Turkana</a></li>
-</ul>
-
-        <div class="centre-module">
-          <h3>Explainers</h3>
-          <ul>
-            <li><a href="news.html">What you need to know about the summit</a></li>
-            <li><a href="news.html">How community radio supports democracy</a></li>
-          </ul>
-        </div>
       </div>
 
+      <!-- 📌 Sidebar -->
       <aside class="aj-sidebar">
         <div class="sidebar-module">
-          <h3>Top Stories</h3>
-          <ul class="top-stories">
-            <li><a href="news.html">Breaking: Major developments in regional talks</a></li>
-            <li><a href="news.html">Opinion: The future of local journalism</a></li>
-            <li><a href="news.html">Feature: Young innovators changing communities</a></li>
+          <h3>Trending Topics</h3>
+          <ul>
+            <li><a href="global.html#china-taiwan">China–Taiwan Tensions</a></li>
+            <li><a href="global.html#russia-nato">Russia–NATO Escalation</a></li>
+            <li><a href="middle-east.html#iran">Iran Nuclear Crisis</a></li>
+            <li><a href="africa.html#kenya">Kenya’s Political Transition</a></li>
           </ul>
         </div>
-
         <div class="sidebar-module">
-          <h3>Latest Videos</h3>
-<ul>
-  <li>
-    <a href="https://www.youtube.com/watch?v=j9WVdhXAS4c" target="_blank" rel="noopener">
-      Solutions Journalism: How Africa's Stories Can Drive Change
-    </a>
-  </li>
-  <li>
-    <a href="https://www.youtube.com/watch?v=-3IyXdiDv-s" target="_blank" rel="noopener">
-      New Media Conference: Shaping Africa's Future
-    </a>
-  </li>
-  <li>
-    <a href="https://www.youtube.com/watch?v=Z5v5RAKYJ0c" target="_blank" rel="noopener">
-      WHO Africa Briefing: Viral Outbreak in Kasai Province
-    </a>
-  </li>
-  <li>
-    <a href="https://www.youtube.com/watch?v=ogD6BgawkfA" target="_blank" rel="noopener">
-      From Coups to Elections: Where Is African Democracy Headed?
-    </a>
-  </li>
-  <li>
-    <a href="https://www.youtube.com/watch?v=AEU7zYbP2iM" target="_blank" rel="noopener">
-      Unwrap Africa — 19 October 2025 Edition
-    </a>
-  </li>
-  <li>
-    <a href="https://www.youtube.com/watch?v=MdHVUiU0T1s" target="_blank" rel="noopener">
-      African Business World Prepares for Fourth Summit
-    </a>
-  </li>
-  <li>
-    <a href="https://www.youtube.com/watch?v=_PFgIfMm6x4" target="_blank" rel="noopener">
-      Senegal Releases Report on French Colonial Massacre
-    </a>
-  </li>
-</ul>
-
-
-        <div class="sidebar-module">
-          <h3>Explore</h3>
+          <h3>Quick Links</h3>
           <ul>
-            <li><a href="biography.html">Biographies</a></li>
-            <li><a href="books.html">Books</a></li>
-            <li><a href="app.html">Archive</a></li>
+            <li><a href="biography.html">Artist Biographies</a></li>
+            <li><a href="books.html">Literature & Essays</a></li>
+            <li><a href="app.html">Search Archive</a></li>
           </ul>
         </div>
       </aside>
     </section>
   </main>
-  <script src="js/index-feed.js" defer></script>
 
   <!-- 🔻 Footer -->
-  <footer>
-    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
 
-  <script src="app.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      loadSection('asia-europe-news', 'global.html');
-      loadSection('african-sports', 'sport.html');
-      // climate.html and middleeast.html are not present in the repo; fallback to news.html
-      const safeLoad = (id, url) => {
-        try {
-          loadSection(id, url);
-        } catch (e) {
-          console.warn('Failed to load', url, '— falling back to news.html', e);
-          try { loadSection(id, 'news.html'); } catch (err) { console.warn('Fallback failed', err); }
-        }
-      };
-      safeLoad('african-climate', 'climate.html');
-      safeLoad('middle-east-news', 'middleeast.html');
-      loadBiographiesFromJSON('data/biographies.json', 'featured-biographies');
-      loadSection('latest-news', 'news.html');
-    });
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>

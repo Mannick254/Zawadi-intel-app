@@ -4,130 +4,125 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Global News — Zawadi Intel</title>
-  <meta name="description" content="Latest global stories that empower communities. Covering the world's most feared, loved, and unpredictable events." />
-  <meta property="og:title" content="Global News — Zawadi Intel" />
-  <meta property="og:description" content="Latest global stories that empower communities." />
-  <meta property="og:image" content="icons/icon-192.png" />
-  <meta property="og:type" content="website" />
+  <meta name="description" content="Global and Middle East stories that empower communities. Covering the world's most feared, loved, and unpredictable events." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="global.css" />
 </head>
 <body>
 
-  <!-- � Top Navigation -->
+  <!-- 🔝 Navigation -->
   <nav class="top-nav">
     <div class="logo">📜 Zawadi Intel</div>
     <div class="main-links">
-      <div class="home-menu">
-        <button class="home-btn" onclick="(function(el){el.nextElementSibling.style.display = el.nextElementSibling.style.display === 'block' ? 'none' : 'block';})(this)">🏠 Home ▾</button>
-        <div class="home-dropdown" id="homeDropdown">
-          <a href="index.html">Home</a>
-          <a href="biography.html">Biographies</a>
-          <a href="media.html">Media</a>
-          <a href="sport.html">Sports</a>
-          <a href="news.html#middle-east">Middle East</a>
-          <a href="app.html">Archive</a>
-        </div>
-      </div>
-      <a href="news.html" class="top-link">News</a>
-      <a href="pulse.html" class="top-link">Zawadi Pulse</a>
-    </div>
-    <div class="utility">
-      <div id="userAuth" class="user-auth"></div>
+      <a href="index.html">Home</a>
+      <a href="biography.html">Biographies</a>
+      <a href="media.html">Media</a>
+      <a href="books.html">Books</a>
+      <a href="app.html">Archive</a>
     </div>
   </nav>
-  <!-- 🌍 Global News -->
-  <main class="aj-container" role="main">
+
+  <!-- 📰 Page Banner -->
+  <header class="page-banner">
+    <h1>🌍 Global News</h1>
+    <p>Conflict, diplomacy, and cultural memory — curated for clarity and impact.</p>
+  </header>
+
+  <!-- 🗺️ Main Grid -->
+  <main class="aj-container">
     <section class="aj-grid">
       <div class="aj-main">
-        <!-- existing global content -->
 
-    <article id="china-taiwan" class="conflict-zone">
-      <h2>🌏 Asia: China–Taiwan Tensions</h2>
-      <p>
-        Taiwan’s Ministry of National Defense reported over 370 Chinese military aircraft and naval vessels operating near its airspace in October. One PLA aircraft crossed the median line of the Taiwan Strait, prompting Taiwan to deploy combat jets and missile systems. President William Lai pledged to accelerate the “T-Dome” air defense system and increase defense spending to 5% of GDP by 2030.
-      </p>
-    </article>
+        <!-- Conflict Zones -->
+        <article class="conflict-zone">
+          <h2>🇺🇦 Ukraine–Russia War</h2>
+          <p>Ukraine strikes Russian oil sites. Trump urges a freeze on front lines. NATO surveillance intensifies.</p>
+        </article>
 
-    <article id="ukraine-russia" class="conflict-zone">
-      <h2>🇺🇦 Ukraine–Russia War</h2>
-      <p>
-        Ukraine’s forces struck Russia’s Orenburg gas plant and Novokuybyshevsk oil refinery, causing major fires. Russia’s combat losses now exceed 1.1 million personnel. Meanwhile, tensions flared in Washington as President Zelensky and President Trump clashed over territorial concessions, with Trump urging a freeze of the current front lines.
-      </p>
-    </article>
+        <article class="conflict-zone">
+          <h2>🌏 China–Taiwan Tensions</h2>
+          <p>370+ Chinese aircraft near Taiwan. Taiwan deploys jets and missile systems. Tensions rise in the Strait.</p>
+        </article>
 
-    <article id="russia-nato" class="conflict-zone">
-      <h2>🛡️ Russia–NATO Escalation</h2>
-      <p>
-        NATO aircraft conducted a 12-hour surveillance mission near Russia’s border, supported by the U.S. Air Force, in response to recent airspace violations. Russia accused NATO Chief Mark Rutte of “war propaganda” over remarks about F-35 jets and Patriot systems. Lithuania has begun military preparations amid rising regional tensions.
-      </p>
-    </article>
+        <article class="conflict-zone">
+          <h2>🇵🇸 Gaza: Ceasefire and Genocide Debate</h2>
+          <p>Israel’s airstrikes spark global protests. UN reports 30,000+ deaths. ICC reviews war crime allegations.</p>
+        </article>
 
-    <article id="russia-usa" class="conflict-zone">
-      <h2>🇷🇺 Russia–USA Relations</h2>
-      <p>
-        Foreign Minister Lavrov rejected U.S. proposals to pressure China into nuclear talks, calling it “unthinkable.” President Trump and President Putin plan to meet in Budapest to discuss ending the Ukraine war. A proposed undersea tunnel linking Alaska and Russia has sparked debate over future cooperation.
-      </p>
-    </article>
+        <article class="conflict-zone">
+          <h2>🇮🇷 Iran: Nuclear Brinkmanship</h2>
+          <p>Enrichment hits 90%. Israel threatens strikes. Vienna talks collapse. Protests erupt in Tehran.</p>
+        </article>
 
-    <article id="russia-ukraine-full" class="conflict-zone">
-      <h2>🇷🇺 Russia–Ukraine: Strategic Bombing Explained</h2>
-      <figure>
-        <img src="images/russia-air defense.png" alt="Russia S-500 and Iskander-M systems" loading="lazy" />
-        <figcaption><i>Russia’s upgraded S-500 and Iskander-M systems deployed near Ukrainian border</i></figcaption>
-      </figure>
-      <p>
-        Russia continues its aerial assault on Ukraine despite NATO support, aiming to destabilize infrastructure and morale. Precision strikes using Iskander-M missiles and S-500 defense systems have targeted energy grids, hospitals, and rail stations. Ukraine’s counterattacks on Russian oil depots and gas plants signal a deepening conflict.
-      </p>
-      <p>
-        President Zelenskyy has urged for long-range weapons and tighter sanctions, while Russia accuses NATO of escalating tensions. The war’s fourth year marks a turning point in global diplomacy and regional resilience.
-      </p>
-    </article>
+        <article class="conflict-zone">
+          <h2>🇸🇾 Syria: Proxy War and Humanitarian Collapse</h2>
+          <p>Assad holds urban centers. Russia, Iran, Turkey, and U.S. back rival factions. Cholera hits refugee camps.</p>
+        </article>
 
-    <article id="raila-farewell" class="tribute-zone">
-      <h2>🇰🇪 Raila Odinga: Kenya’s Final Goodbye</h2>
-      <figure>
-        <img src="images/baba.png" alt="Raila Odinga Farewell Ceremony" loading="lazy" />
-        <figcaption><i> "Ai generated" State funeral held in Bondo with military honors and national tributes</i></figcaption>
-      </figure>
-      <p>
-        Kenya bid farewell to Rt. Hon. Raila Odinga in a state ceremony attended by thousands. His casket, draped in the national flag, was laid to rest beside his father’s homestead. Leaders from across Africa paid tribute to his legacy of democracy, resistance, and reform.
-      </p>
-      <p>
-        The farewell marked the end of an era, with cultural performances, military salutes, and a call to preserve his vision for a united Kenya.
-      </p>
-    </article>
+        <article class="conflict-zone">
+          <h2>🛡️ Russia–NATO Escalation</h2>
+          <p>NATO jets fly near Russian border. Lithuania mobilizes. Rutte accused of “war propaganda”.</p>
+        </article>
 
-    <section class="trending-movie">
-      <h2>🎬 Trending Movie: <em>The Last Horizon</em></h2>
-      <figure>
-        <img src="images/last-horizon.png" alt="The Last Horizon movie poster" loading="lazy" />
-        <figcaption><i>A haunting sci-fi drama exploring humanity’s final mission to colonize a distant planet</i></figcaption>
-      </figure>
-      <p>
-        October’s most anticipated release, <strong>The Last Horizon</strong>, blends stunning visuals with emotional depth. As Earth collapses, a crew embarks on a journey to preserve civilization — but not all will survive. Streaming now across major platforms.
-      </p>
-    </section>
+        <article class="conflict-zone">
+          <h2>🇷🇺 Russia–USA Relations</h2>
+          <p>Lavrov rejects U.S. nuclear proposals. Trump and Putin plan Budapest summit. Undersea tunnel debated.</p>
+        </article>
+
+        <!-- 🌍 Africa Focus -->
+<section id="africa-focus" class="aj-region">
+  <h2>🌍 Africa Focus</h2>
+
+  <article class="conflict-zone">
+    <h3>🇰🇪 Kenya: Raila Odinga’s Legacy and Transition</h3>
+    <img src="images/railafarewell.png" alt="Raila Odinga's state funeral" />
+    <p>Kenya bids farewell to Raila Odinga in a state ceremony. His vision for unity and reform remains central to the nation’s political future.</p>
+  </article>
+
+  <article class="conflict-zone">
+    <h3>🇳🇬 Nigeria: Youth Protests and Economic Reform</h3>
+    <p>Thousands protest fuel hikes and currency devaluation. President Tinubu faces pressure to deliver on job creation and anti-corruption pledges.</p>
+  </article>
+
+  <article class="conflict-zone">
+    <h3>🇪🇹 Ethiopia: Tigray Peace Talks Resume</h3>
+    <p>Talks between Tigrayan leaders and Addis Ababa resume in Nairobi. Aid agencies warn of famine risk as access remains restricted.</p>
+  </article>
+
+  <article class="conflict-zone">
+    <h3>🇿🇦 South Africa: Energy Crisis and Post-Election Tensions</h3>
+    <p>Load shedding intensifies as coalition talks stall. ANC faces backlash over corruption and service delivery failures.</p>
+  </article>
+
+  <article class="conflict-zone">
+    <h3>🇨🇩 DRC: Mineral Conflict and Regional Diplomacy</h3>
+    <p>Clashes erupt near Goma over cobalt mining rights. Rwanda and Uganda accused of backing rebel militias. AU calls for restraint.</p>
+  </article>
+
+  <article class="conflict-zone">
+    <h3>🇸🇩 Sudan: Ceasefire Collapse and Refugee Surge</h3>
+    <p>Fighting resumes in Khartoum despite ceasefire pledges. Over 1 million displaced. UN warns of regional spillover.</p>
+  </article>
+</section>
+
+
+        <!-- 🎬 Trending Feature -->
+        <section class="trending-movie">
+          <h2>🎬 Trending: <em>The Last Horizon</em></h2>
+          <p>Haunting sci-fi drama explores humanity’s final mission to colonize a distant planet. Streaming now.</p>
+        </section>
+
+        <!-- 🇰🇪 Tribute -->
+        <article class="tribute-zone">
+          <h2>🇰🇪 Raila Odinga: Kenya’s Final Goodbye</h2>
+          <p>Thousands gather in Bondo to honor Raila Odinga. A state funeral marks the end of an era in African democracy.</p>
+        </article>
 
       </div>
 
-      <div class="aj-centre">
-        <div class="centre-module">
-          <h3>Global Briefing</h3>
-          <ul>
-            <li><a href="news.html">Top global analysis</a></li>
-            <li><a href="news.html">Regional dossiers</a></li>
-          </ul>
-        </div>
-        <div class="centre-module">
-          <h3>Explainers</h3>
-          <ul>
-            <li><a href="news.html">What’s happening in Europe</a></li>
-          </ul>
-        </div>
-      </div>
-
+      <!-- 📌 Sidebar -->
       <aside class="aj-sidebar">
         <div class="sidebar-module">
           <h3>Quick Links</h3>
@@ -135,7 +130,15 @@
             <li><a href="biography.html">Artist Biographies</a></li>
             <li><a href="media.html">Multimedia Archive</a></li>
             <li><a href="books.html">Books &amp; Literature</a></li>
-            <li><a href="news.html">Latest News</a></li>
+            <li><a href="app.html">Search Archive</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-module">
+          <h3>October Highlights</h3>
+          <ul>
+            <li><a href="#">Global Hunger Crisis</a></li>
+            <li><a href="#">IMF: Global Economy in Flux</a></li>
+            <li><a href="#">India’s Diwali & Defense Updates</a></li>
           </ul>
         </div>
       </aside>
@@ -144,9 +147,9 @@
 
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
-    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
 
-  <script src="global.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
