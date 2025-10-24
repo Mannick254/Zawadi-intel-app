@@ -22,8 +22,16 @@
       <a href="biography.html">Biographies</a>
       <a href="media.html">Media</a>
       <a href="app.html">Archive</a>
+      <a href="profile.html">Profile</a>
     </div>
   </nav>
+
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-button" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
 
   <!-- 📘 Page Banner -->
   <header class="page-banner">
@@ -58,6 +66,34 @@
           <h2>🔥 Fire Beneath the Soil</h2>
           <p>Short stories of resistance, betrayal, and rebirth — from rural Kenya to global exile.</p>
           <a href="#">Read Selections</a>
+        </article>
+
+        <article class="story-card">
+          <h2>👑 Emeka: The Chief’s Son</h2>
+          <img src="images/emeka-cover.png" alt="Cover of Emeka: The Chief’s Son" class="aj-grid" />
+          <p>A tale of tradition, betrayal, and destiny — Emeka must choose between legacy and freedom.</p>
+          <a href="https://www.booksie.com/748649-emeka-the-chiefs-son" target="_blank">Read More</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🕊️ Ashes to Ambition: The Testament of Zawadi</h2>
+          <img src="images/zawadi-cover.png" alt="Cover of Ashes to Ambition: The Testament of Zawadi" class="aj-grid" />
+          <p>From ruin to resolve — Zawadi’s journey is a poetic manifesto of survival and vision.</p>
+          <a href="https://www.booksie.com/769963-ashes-to-ambition-the-testament-of-zawadi" target="_blank">Read More</a>
+        </article>
+
+        <article class="story-card">
+          <img src="images/machetes-cover.png" alt="Cover of When the Machetes Came: A Night We Didn’t Die" />
+          <h2>🌒 When the Machetes Came: A Night We Didn’t Die</h2>
+          <p>A haunting narrative of survival and memory — where silence becomes testimony.</p>
+          <a href="https://www.booksie.com/769812-when-the-machetes-came-a-night-we-didnt-die" target="_blank">Read More</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🚀 The Unstoppable Journey of Mahesh: From Rebellion to Redemption</h2>
+          <img src="images/mahesh-cover.png" alt="Cover of The Unstoppable Journey of Mahesh: From Rebellion to Redemption" class="aj-grid" />
+          <p>Mahesh’s transformation from exile to empowerment — a story of grit, grace, and global resonance.</p>
+          <a href="https://www.booksie.com/747147-the-unstoppable-journey-of-maheshfrom-rebellion-to-redemption" target="_blank">Read More</a>
         </article>
 
       </div>

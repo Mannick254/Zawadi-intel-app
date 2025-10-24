@@ -49,17 +49,39 @@
 }
 
 .aj-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2em;
+  /* three-column layout: two content columns (inside .aj-main) + sidebar */
+  display: grid;
+  grid-template-columns: 1fr 320px; /* main content area + sidebar */
+  gap: 2rem;
+  align-items: start;
 }
 
 .aj-main {
-  flex: 3;
+  /* inside the main area, create two equal columns for story cards */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.aj-main .feature-article,
+.aj-main .feature-article.side-by-side {
+  /* make feature articles span both columns */
+  grid-column: 1 / -1;
 }
 
 .aj-sidebar {
-  flex: 1;
+  /* sidebar stays single column */
+  align-self: start;
+}
+
+/* Responsive: collapse to single column on small screens */
+@media (max-width: 900px) {
+  .aj-grid {
+    grid-template-columns: 1fr;
+  }
+  .aj-main {
+    grid-template-columns: 1fr;
+  }
 }
 
 .story-card,
@@ -69,6 +91,6 @@
   background: white;
   padding: 1em;
   margin-bottom: 1.5em;
-  border-left: 4px solid #006699;
+  border-left: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }

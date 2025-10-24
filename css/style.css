@@ -1,10 +1,10 @@
 /* style.css */
 body {
   margin: 0;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background-color: #f9f9f9;
-  color: #222;
-  line-height: 1.6;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #111;
+  line-height: 1.5;
 }
 
 a {
@@ -27,6 +27,11 @@ h1, h2, h3 {
   font-weight: 600;
 }
 
+/* Headlines scaled to feel like a news-site column */
+h1 { font-size: 1.8rem; line-height: 1.15; margin-bottom: 0.4rem; }
+h2 { font-size: 1.1rem; line-height: 1.25; margin-bottom: 0.4rem; }
+h3 { font-size: 1rem; }
+
 ul {
   padding-left: 1.2em;
 }
@@ -40,24 +45,65 @@ footer {
 .feature-article.side-by-side {
   display: flex;
   flex-wrap: wrap;
-  gap: 2em;
-  margin-bottom: 2em;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
   align-items: flex-start;
 }
 
 .feature-article .text-block {
   flex: 2;
-  min-width: 300px;
+  min-width: 280px;
 }
 
 .feature-article .image-block {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
 }
 
 .feature-article .image-block img {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  height: 220px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+#story-modal h2 { margin-top: 0; }
+
+/* Story card tweaks */
+.story-card { padding: 14px; margin-bottom: 1.2rem; border-left: 0; border-bottom: none; border-radius: 2px; }
+.story-card h2 { margin: 0 0 6px 0; font-size: 1.05rem; }
+.story-card p { margin: 0 0 8px 0; color: #333; }
+.story-card img { width: 100%; height: 170px; object-fit: cover; border-radius: 3px; display:block; }
+
+/* Sidebar module spacing */
+.sidebar-module { background: transparent; padding: 0; margin-bottom: 1rem; }
+.sidebar-module h3 { font-size: 0.95rem; margin-bottom: 0.6rem; }
+
+/* Feature article headline larger */
+.feature-article h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+/* Mobile install banner */
+#install-banner {
+  display: none; /* shown only when beforeinstallprompt fires */
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 18px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 10px 12px;
+  border-radius: 8px;
+  align-items: center;
+  gap: 10px;
+  z-index: 2000;
+  display: flex;
+}
+#install-banner .install-text { flex: 1; text-align: left; }
+#install-banner button { border: none; background: #0077cc; color: #fff; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+#install-banner .close-btn { background: transparent; color: #666; padding: 6px; border-radius: 6px; }
+
+@media (min-width: 900px) {
+  #install-banner { display: none !important; }
 }

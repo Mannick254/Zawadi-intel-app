@@ -22,8 +22,15 @@
       <a href="media.html">Media</a>
       <a href="books.html">Books</a>
       <a href="app.html">Archive</a>
+      <a href="profile.html">Profile</a>
     </div>
   </nav>
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-button" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
 
   <!-- 📰 Page Banner -->
   <header class="page-banner">

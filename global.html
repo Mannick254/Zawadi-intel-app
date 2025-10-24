@@ -21,8 +21,15 @@
       <a href="media.html">Media</a>
       <a href="books.html">Books</a>
       <a href="app.html">Archive</a>
+      <a href="profile.html">Profile</a>
     </div>
   </nav>
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-button" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
 
   <!-- 📰 Page Banner -->
   <header class="page-banner">
@@ -36,6 +43,21 @@
       <div class="aj-main">
 
         <!-- Conflict Zones -->
+
+        <!-- 🇺🇦 Ukraine–Russia War Update -->
+<article class="story-card collapsible">
+  <h2 onclick="toggleStory(this)">🇺🇦 Ukraine Downs 333 Drones in Overnight Barrage</h2>
+  <div class="story-content" style="display:none;">
+    <p><strong>Date:</strong> October 24, 2025</p>
+    <p>Russia launched a massive overnight assault on Ukraine, deploying <strong>405 drones and 28 missiles</strong> targeting energy infrastructure. Ukraine’s air force responded with precision, downing <strong>333 drones and 16 missiles</strong> — one of the largest interceptions to date.</p>
+    <p>Russian strikes killed six civilians, including two children, and triggered nationwide power outages. Moscow claims the attacks were retaliation for Ukrainian strikes on Russian civilian targets.</p>
+    <p>Russia also announced the capture of <strong>Pavlivka (Zaporizhia)</strong> and <strong>Ivanivka (Dnipropetrovsk)</strong>, though analysts say gains are minimal.</p>
+    <p>Diplomatic tensions escalated as Russia reiterated its conditions for ending the war: Ukraine must adopt a <strong>non-aligned, nuclear-free status</strong>, undergo <strong>demilitarization and “denazification”</strong>, and guarantee rights for Russian speakers and the Orthodox Church.</p>
+    <p>Ukraine’s President Zelenskyy has requested <strong>25 Patriot systems</strong> from the U.S., while Trump and Putin continue backchannel talks after the canceled summit.</p>
+    <a href="global.html#ukraine-russia" class="cta-btn">Explore Full Coverage</a>
+  </div>
+</article>
+
         <article class="conflict-zone">
           <h2>🇺🇦 Ukraine–Russia War</h2>
           <p>Ukraine strikes Russian oil sites. Trump urges a freeze on front lines. NATO surveillance intensifies.</p>
@@ -53,6 +75,7 @@
 
         <article class="conflict-zone">
           <h2>🇮🇷 Iran: Nuclear Brinkmanship</h2>
+          <img src="images/iran1.jpg" alt="Iran nuclear facility" />
           <p>Enrichment hits 90%. Israel threatens strikes. Vienna talks collapse. Protests erupt in Tehran.</p>
         </article>
 
@@ -106,6 +129,33 @@
     <p>Fighting resumes in Khartoum despite ceasefire pledges. Over 1 million displaced. UN warns of regional spillover.</p>
   </article>
 </section>
+ 
+<!-- 📰 Latest Middle East Stories — October 24, 2025 -->
+<section class="feature-article">
+  <h2>📰 Latest Middle East Headlines</h2>
+
+  <ul class="story-list">
+    <li><a href="https://www.aljazeera.com/news/2025/10/24/displaced-palestinians-shelter-in-graveyards" target="_blank"><u>Displaced Palestinians Shelter in Graveyards Amid Ceasefire</u></a></li>
+
+    <li><a href="https://www.ndtv.com/world-news/iran-welcomes-conditional-release-of-mahdieh-esfandiari-in-france-4539211" target="_blank"><u>Iran Welcomes Conditional Release of Citizen in France</u></a></li>
+
+    <li><a href="https://www.timesofisrael.com/netanyahu-confirms-identification-of-two-hostage-bodies" target="_blank"><u>Israel Identifies Two More Hostage Bodies as VP Vance Visits</u></a></li>
+
+    <li><a href="https://www.aljazeera.com/news/2025/10/24/israeli-airstrikes-hit-southern-lebanon" target="_blank"><u>Israeli Airstrikes Hit Southern Lebanon Overnight</u></a></li>
+
+    <li><a href="https://www.reuters.com/world/middle-east/iran-accelerates-nuclear-enrichment-at-natanz-2025-10-24/" target="_blank"><u>Iran Accelerates Nuclear Enrichment at Natanz and Fordow</u></a></li>
+
+    <li><a href="https://www.bbc.com/news/world-middle-east-67212345" target="_blank"><u>Syria’s Civil War Reignites with Drone Strikes Near Aleppo</u></a></li>
+
+    <li><a href="https://www.aljazeera.com/news/2025/10/24/rsf-drones-target-khartoum-for-third-day" target="_blank"><u>RSF Drones Target Khartoum for Third Consecutive Day</u></a></li>
+
+    <li><a href="https://www.middleeasteye.net/news/gaza-funerals-held-unidentified-bodies-returned-israel" target="_blank"><u>Gaza Funerals Held for Unidentified Bodies Returned by Israel</u></a></li>
+
+    <li><a href="https://gulfnews.com/uae/education/tunisian-twins-win-arab-reading-challenge-2025-1.1698123456789" target="_blank"><u>Tunisian Twins Crowned at Arab Reading Challenge in Dubai</u></a></li>
+
+    <li><a href="https://www.fifa.com/news/afghan-womens-refugee-team-relocated-to-morocco" target="_blank"><u>Afghan Women’s Refugee Team Relocated to Morocco for FIFA Tournament</u></a></li>
+  </ul>
+</section>
 
 
         <!-- 🎬 Trending Feature -->
@@ -151,5 +201,13 @@
   </footer>
 
   <script src="main.js"></script>
+  <script>
+  function toggleStory(header) {
+    const content = header.nextElementSibling;
+    const isVisible = content.style.display === "block";
+    content.style.display = isVisible ? "none" : "block";
+  }
+</script>
+
 </body>
 </html>

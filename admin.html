@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin — Zawadi</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main style="max-width:980px;margin:24px auto;padding:12px">
+      <h1>Admin Dashboard</h1>
+      <p id="admin-warn" style="color:#b33"></p>
+      <section style="background:#fff;padding:12px;border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
+        <h2>Login Counts</h2>
+        <div>Total logins (server): <strong id="total-server">—</strong></div>
+        <div>Total logins (local fallback): <strong id="total-local">—</strong></div>
+        <div>Recent logins:</div>
+        <ul id="recent-list"></ul>
+      </section>
+      <p style="margin-top:18px">
+        <a href="index.html">Home</a> |
+        <a href="global.html">Global</a> |
+        <a href="middle-east.html">Middle East</a> |
+        <a href="africa.html">Africa</a> |
+        <a href="biography.html">Biographies</a> |
+        <a href="media.html">Media</a> |
+        <a href="books.html">Books</a> |
+        <a href="app.html">Archive</a> |
+        <a href="profile.html">Profile</a> |
+        <a href="/">Back to site</a>
+      </p>
+    </main>
+    <script>
+      async function fetchStats() {
+        const warn = document.getElementById('admin-warn');
+        try {
+          const res = await fetch('/api/stats');
+          if (!res.ok) throw new Error('no server');
+          const data = await res.json();
+          document.getElementById('total-server').textContent = data.total || 0;
+          warn.textContent = '';
+          const list = document.getElementById('recent-list');
+          list.innerHTML = '';
+          (data.recent || []).forEach(r => {
+            const li = document.createElement('li');
+            li.textContent = `${new Date(r.ts).toLocaleString()} — ${r.username}`;
+            list.appendChild(li);
+          });
+        } catch (e) {
+          warn.textContent = 'Server not available — showing local fallback counts.';
+          document.getElementById('total-server').textContent = 'n/a';
+          const local = parseInt(localStorage.getItem('zawadi_global_count_v1') || '0', 10);
+          document.getElementById('total-local').textContent = local;
+          const list = document.getElementById('recent-list');
+          list.innerHTML = '';
+        }
+      }
+      fetchStats();
+    </script>
+  </body>
+  </html>

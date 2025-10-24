@@ -23,8 +23,17 @@
       <a href="media.html">Media</a>
       <a href="books.html">Books</a>
       <a href="app.html">Archive</a>
+      <a href="profile.html">Profile</a>
+      <button id="install-button" onclick="installApp()" style="display: none;">Install App</button>
     </div>
   </nav>
+
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-button" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
 
   <!-- 📰 Hero Banner -->
   <header class="hero-banner">
@@ -38,7 +47,24 @@
     <section class="aj-grid">
       <div class="aj-main">
 
-        <!-- 🔥 Top Story -->
+<!-- 🔥 Top Story -->
+        <article class="story-card collapsible">
+  <h2 onclick="toggleStory(this)" style="text-decoration: underline;">
+    💰 Deal Collapses — Ukraine May Receive $140 Billion in Frozen Russian Assets
+  </h2>
+   <video width="100%" controls>
+    <source src="videos/ukraine2.mp4" type="video/mp4" />
+
+  <div class="story-content" style="display:none;">
+    <p><strong>Date:</strong> October 24, 2025</p>
+    <p>A major international deal to redirect frozen Russian assets has collapsed, opening the door for Ukraine to receive <strong>$140 billion</strong> in direct transfers. These funds, frozen across Europe and North America since 2022, were initially earmarked for a joint reconstruction fund.</p>
+    <p>Legal hurdles and political pressure derailed negotiations, prompting Western governments to consider bypassing Russia and allocating the assets directly to Kyiv. Ukraine’s finance ministry called the move “a historic moment of justice.”</p>
+    <p>Russia condemned the development as “economic warfare” and threatened retaliatory seizures and legal action. Analysts say this marks a shift in the financial front of the war — from containment to active resource reallocation.</p>
+    <a href="https://www.msn.com/en-us/news/world/ukraine-russia-war-latest-deal-collapses-to-hand-kyiv-140bn-in-frozen-russian-assets/ar-AA1P0yJk?ocid=BingNewsSerp" target="_blank" class="cta-btn">Read Full Story</a>
+  </div>
+</article>
+
+        
         <article class="story-card">
           <h2>🇵🇸 Gaza Ceasefire Holds — But Barely</h2>
           <p>Despite deadly Israeli raids, U.S. officials say the Gaza truce is “exceeding expectations.”</p>
@@ -61,6 +87,33 @@
   <p>As the war enters its third year, the battlefield is no longer confined to trenches and towns — it now includes the economic arteries that fuel conflict. This strike marks a turning point in Ukraine’s strategy: precision, disruption, and psychological warfare.</p>
 
   <a href="global.html#ukraine-russia" class="cta-btn">Explore Full Coverage</a>
+</section>
+
+<!-- 📰 Latest Middle East Stories — October 24, 2025 -->
+<section class="feature-article">
+  <h2>📰 Latest Middle East Headlines</h2>
+
+  <ul class="story-list">
+    <li><a href="https://www.aljazeera.com/news/2025/10/24/displaced-palestinians-shelter-in-graveyards" target="_blank"><u>Displaced Palestinians Shelter in Graveyards Amid Ceasefire</u></a></li>
+
+    <li><a href="https://www.ndtv.com/world-news/iran-welcomes-conditional-release-of-mahdieh-esfandiari-in-france-4539211" target="_blank"><u>Iran Welcomes Conditional Release of Citizen in France</u></a></li>
+
+    <li><a href="https://www.timesofisrael.com/netanyahu-confirms-identification-of-two-hostage-bodies" target="_blank"><u>Israel Identifies Two More Hostage Bodies as VP Vance Visits</u></a></li>
+
+    <li><a href="https://www.aljazeera.com/news/2025/10/24/israeli-airstrikes-hit-southern-lebanon" target="_blank"><u>Israeli Airstrikes Hit Southern Lebanon Overnight</u></a></li>
+
+    <li><a href="https://www.reuters.com/world/middle-east/iran-accelerates-nuclear-enrichment-at-natanz-2025-10-24/" target="_blank"><u>Iran Accelerates Nuclear Enrichment at Natanz and Fordow</u></a></li>
+
+    <li><a href="https://www.bbc.com/news/world-middle-east-67212345" target="_blank"><u>Syria’s Civil War Reignites with Drone Strikes Near Aleppo</u></a></li>
+
+    <li><a href="https://www.aljazeera.com/news/2025/10/24/rsf-drones-target-khartoum-for-third-day" target="_blank"><u>RSF Drones Target Khartoum for Third Consecutive Day</u></a></li>
+
+    <li><a href="https://www.middleeasteye.net/news/gaza-funerals-held-unidentified-bodies-returned-israel" target="_blank"><u>Gaza Funerals Held for Unidentified Bodies Returned by Israel</u></a></li>
+
+    <li><a href="https://gulfnews.com/uae/education/tunisian-twins-win-arab-reading-challenge-2025-1.1698123456789" target="_blank"><u>Tunisian Twins Crowned at Arab Reading Challenge in Dubai</u></a></li>
+
+    <li><a href="https://www.fifa.com/news/afghan-womens-refugee-team-relocated-to-morocco" target="_blank"><u>Afghan Women’s Refugee Team Relocated to Morocco for FIFA Tournament</u></a></li>
+  </ul>
 </section>
 
 
@@ -102,5 +155,13 @@
   </footer>
 
   <script src="main.js"></script>
+ <script>
+  function toggleStory(header) {
+    const content = header.nextElementSibling;
+    const isVisible = content.style.display === "block";
+    content.style.display = isVisible ? "none" : "block";
+  }
+</script>
+ 
 </body>
 </html>
