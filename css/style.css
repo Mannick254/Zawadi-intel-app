@@ -1,47 +1,6 @@
-/* style.css */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f7f7f7;
-  color: #111;
-  line-height: 1.5;
-}
+/* style.css – component-specific styles only */
 
-a {
-  color: #006699;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-h1, h2, h3 {
-  margin-top: 0;
-  font-weight: 600;
-}
-
-/* Headlines scaled to feel like a news-site column */
-h1 { font-size: 1.8rem; line-height: 1.15; margin-bottom: 0.4rem; }
-h2 { font-size: 1.1rem; line-height: 1.25; margin-bottom: 0.4rem; }
-h3 { font-size: 1rem; }
-
-ul {
-  padding-left: 1.2em;
-}
-
-footer {
-  text-align: center;
-  padding: 1em;
-  background: #eee;
-  font-size: 0.9em;
-}
+/* Feature article layout */
 .feature-article.side-by-side {
   display: flex;
   flex-wrap: wrap;
@@ -68,16 +27,26 @@ footer {
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
-#story-modal h2 { margin-top: 0; }
-
 /* Story card tweaks */
-.story-card { padding: 14px; margin-bottom: 1.2rem; border-left: 0; border-bottom: none; border-radius: 2px; }
+.story-card {
+  padding: 14px;
+  margin-bottom: 1.2rem;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
 .story-card h2 { margin: 0 0 6px 0; font-size: 1.05rem; }
-.story-card p { margin: 0 0 8px 0; color: #333; }
-.story-card img { width: 100%; height: 170px; object-fit: cover; border-radius: 3px; display:block; }
+.story-card p { margin: 0 0 8px 0; }
+.story-card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 3px;
+  display: block;
+}
 
 /* Sidebar module spacing */
-.sidebar-module { background: transparent; padding: 0; margin-bottom: 1rem; }
+.sidebar-module { margin-bottom: 1rem; }
 .sidebar-module h3 { font-size: 0.95rem; margin-bottom: 0.6rem; }
 
 /* Feature article headline larger */
@@ -101,9 +70,70 @@ footer {
   display: flex;
 }
 #install-banner .install-text { flex: 1; text-align: left; }
-#install-banner button { border: none; background: #0077cc; color: #fff; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
-#install-banner .close-btn { background: transparent; color: #666; padding: 6px; border-radius: 6px; }
+#install-banner button {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#install-banner .close-btn {
+  background: transparent;
+  padding: 6px;
+  border-radius: 6px;
+}
 
 @media (min-width: 900px) {
   #install-banner { display: none !important; }
 }
+
+/* Recommendations / Related stories */
+.recommendations {
+  margin-top: 1.8rem;
+  border-top: 2px solid #e6e6e6;
+  padding-top: 1rem;
+}
+
+.recommendations h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.recommendation-item {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.recommendation-item img {
+  width: 90px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex-shrink: 0;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.recommendation-item .text { flex: 1; }
+
+.recommendation-item .text h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem 0;
+  line-height: 1.3;
+}
+
+.recommendation-item .meta {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .recommendation-item { flex-direction: column; }
+  .recommendation-item img {
+    width: 100%;
+    height: 160px;
+  }
+                }
