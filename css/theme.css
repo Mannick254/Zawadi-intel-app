@@ -1,96 +1,123 @@
-/* layout.css */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #003366;
-  color: white;
-  padding: 0.8em 1.2em;
+/* theme.css — East African Editorial Tone */
+
+/* Typography */
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #1a1a1a;
+  background-color: #fdfdfd;
 }
 
-.top-nav .logo {
-  font-size: 1.2em;
-  font-weight: bold;
+h1, h2, h3, h4 {
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  color: #002b45;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin-bottom: 1em;
+  font-size: 1em;
+}
+
+/* Color Palette */
+:root {
+  --headline-dark: #002b45;
+  --accent-red: #b30000;
+  --accent-blue: #005580;
+  --neutral-light: #f5f5f5;
+  --neutral-mid: #e0e0e0;
+  --text-light: #ffffff;
+  --text-dark: #1a1a1a;
+}
+
+/* Navigation Theme */
+.top-nav {
+  background-color: var(--headline-dark);
+  color: var(--text-light);
+  border-bottom: 2px solid var(--accent-blue);
 }
 
 .top-nav .main-links a {
-  margin-left: 1em;
-  color: white;
+  color: var(--text-light);
   font-weight: 500;
+  text-decoration: none;
 }
 
+.top-nav .main-links a:hover {
+  text-decoration: underline;
+}
+
+/* Hero Banner */
 .hero-banner {
-  background: #004080;
-  color: white;
-  padding: 2em;
-  text-align: center;
+  background-color: var(--accent-blue);
+  color: var(--text-light);
 }
 
 .hero-banner .cta-btn {
-  display: inline-block;
-  margin-top: 1em;
-  padding: 0.6em 1.2em;
-  background: #ffcc00;
-  color: #003366;
+  background-color: var(--accent-red);
+  color: var(--text-light);
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: 0;
+  text-transform: uppercase;
+  padding: 0.6em 1.2em;
+  text-decoration: none;
+  transition: background 0.3s ease;
 }
 
+.hero-banner .cta-btn:hover {
+  background-color: #990000;
+}
+
+/* Page Banner */
 .page-banner {
-  background: #ddd;
-  padding: 1.5em;
-  text-align: center;
+  background-color: var(--neutral-mid);
+  color: var(--headline-dark);
+  font-weight: 600;
+  font-size: 1.1em;
 }
 
-.aj-container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 1em;
-}
-
-.aj-grid {
-  /* three-column layout: two content columns (inside .aj-main) + sidebar */
-  display: grid;
-  grid-template-columns: 1fr 320px; /* main content area + sidebar */
-  gap: 2rem;
-  align-items: start;
-}
-
-.aj-main {
-  /* inside the main area, create two equal columns for story cards */
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-
-.aj-main .feature-article,
-.aj-main .feature-article.side-by-side {
-  /* make feature articles span both columns */
-  grid-column: 1 / -1;
-}
-
-.aj-sidebar {
-  /* sidebar stays single column */
-  align-self: start;
-}
-
-/* Responsive: collapse to single column on small screens */
-@media (max-width: 900px) {
-  .aj-grid {
-    grid-template-columns: 1fr;
-  }
-  .aj-main {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* Cards and Zones */
 .story-card,
 .conflict-zone,
 .tribute-zone,
 .trending-movie {
-  background: white;
+  background-color: white;
+  color: var(--text-dark);
+  border-left: 4px solid var(--accent-blue);
   padding: 1em;
   margin-bottom: 1.5em;
-  border-left: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
 }
+
+.story-card:hover,
+.conflict-zone:hover,
+.tribute-zone:hover,
+.trending-movie:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+/* Sidebar Theme */
+.aj-sidebar {
+  background-color: #ffffff;
+  padding: 1em;
+  border-left: 2px solid var(--neutral-mid);
+}
+
+/* Responsive Typography */
+@media (max-width: 600px) {
+  body {
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 1.6em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+  }
