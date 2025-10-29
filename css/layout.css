@@ -1,4 +1,22 @@
 /* layout.css */
+
+/* Base styles */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 17px;
+  }
+}
+
+/* Top navigation */
 .top-nav {
   display: flex;
   justify-content: space-between;
@@ -17,8 +35,10 @@
   margin-left: 1em;
   color: white;
   font-weight: 500;
+  text-decoration: none;
 }
 
+/* Hero banner */
 .hero-banner {
   background: #004080;
   color: white;
@@ -34,31 +54,40 @@
   color: #003366;
   font-weight: bold;
   border-radius: 4px;
+  text-decoration: none;
 }
 
+/* Page banner */
 .page-banner {
   background: #ddd;
   padding: 1.5em;
   text-align: center;
 }
 
+/* Container */
 .aj-container {
-  /* slightly narrower container like Al-Jazeera for tighter columns */
   max-width: 1100px;
+  width: 100%;
   margin: auto;
   padding: 0.85em 1em;
+  box-sizing: border-box;
 }
 
+@media (max-width: 600px) {
+  .aj-container {
+    padding: 1em 1.2em;
+  }
+}
+
+/* Grid layout */
 .aj-grid {
-  /* three-column layout: two content columns (inside .aj-main) + sidebar */
   display: grid;
-  grid-template-columns: 1fr 300px; /* main content area + sidebar */
+  grid-template-columns: 1fr 300px;
   gap: 1.5rem;
   align-items: start;
 }
 
 .aj-main {
-  /* inside the main area, create two columns for story cards */
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
@@ -66,26 +95,26 @@
 
 .aj-main .feature-article,
 .aj-main .feature-article.side-by-side {
-  /* make feature articles span both columns */
   grid-column: 1 / -1;
   margin-bottom: 1.25rem;
 }
 
 .aj-sidebar {
-  /* sidebar stays single column */
   align-self: start;
 }
 
-/* Responsive: collapse to single column on small screens */
+/* Responsive collapse */
 @media (max-width: 900px) {
   .aj-grid {
     grid-template-columns: 1fr;
   }
+
   .aj-main {
     grid-template-columns: 1fr;
   }
 }
 
+/* Story cards and zones */
 .story-card,
 .conflict-zone,
 .tribute-zone,
