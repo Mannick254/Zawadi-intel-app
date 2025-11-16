@@ -134,6 +134,12 @@ a:hover {
     display: flex;
   }
 }
+    .aj-grid {
+      display: block; /* or use flex with flex-direction: column; */
+    }
+    .aj-main, .aj-sidebar {
+      width: 100%;
+    }
 
 /* Buttons */
 button {

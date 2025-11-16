@@ -180,22 +180,34 @@ function createAuthUi() {
   document.body.appendChild(modal);
 
   // events
-  document.getElementById('zawadi-login').addEventListener('click', () => {
+  document.getElementById('zawadi-login').addEventListener('click', async () => {
     const u = document.getElementById('zawadi-username').value.trim();
     const p = document.getElementById('zawadi-password').value;
-    const r = loginUser(u, p);
     const msg = document.getElementById('zawadi-msg');
-    if (!r.ok) { msg.textContent = r.message; return; }
-    msg.textContent = 'Logged in';
-    toggleAuthModal(false);
+    msg.textContent = '';
+    try {
+      const r = await loginUser(u, p);
+      if (!r || !r.ok) { msg.textContent = r && r.message ? r.message : 'Login failed'; return; }
+      msg.style.color = 'green';
+      msg.textContent = 'Logged in';
+      toggleAuthModal(false);
+    } catch (e) {
+      msg.textContent = 'Login error';
+    }
   });
-  document.getElementById('zawadi-register').addEventListener('click', () => {
+  document.getElementById('zawadi-register').addEventListener('click', async () => {
     const u = document.getElementById('zawadi-username').value.trim();
     const p = document.getElementById('zawadi-password').value;
-    const r = registerUser(u, p);
     const msg = document.getElementById('zawadi-msg');
-    if (!r.ok) { msg.textContent = r.message; return; }
-    msg.textContent = 'Registered. You can now login.';
+    msg.textContent = '';
+    try {
+      const r = await registerUser(u, p);
+      if (!r || !r.ok) { msg.textContent = r && r.message ? r.message : 'Registration failed'; return; }
+      msg.style.color = 'green';
+      msg.textContent = 'Registered. You can now login.';
+    } catch (e) {
+      msg.textContent = 'Registration error';
+    }
   });
   document.getElementById('zawadi-close').addEventListener('click', () => toggleAuthModal(false));
   document.getElementById('zawadi-logout').addEventListener('click', () => { logoutUser(); toggleAuthModal(false); });
