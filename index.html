@@ -48,6 +48,7 @@
       <li><a href="media.html">Media</a></li>
       <li><a href="books.html">Books</a></li>
       <li><a href="app.html">Archive</a></li>
+      <li><button id="enable-notifications" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1rem;">🔔 Notifications</button></li>
     </ul>
   </nav>
 
@@ -167,5 +168,25 @@
 
   <!-- ⚡ Performance -->
   <script src="main.js" defer></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/service-worker.js")
+          .then(reg => console.log("Service Worker registered:", reg))
+          .catch(err => console.log("Service Worker registration failed:", err));
+      }
+
+      function askNotificationPermission() {
+        if ("Notification" in window && "serviceWorker" in navigator) {
+          Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+              console.log("Notification permission granted.");
+            } else {
+              console.log("Notification permission denied.");
+            }
+          });
+        }
+      }
+      askNotificationPermission();
+    </script>
 </body>
 </html>

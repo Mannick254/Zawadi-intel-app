@@ -579,5 +579,60 @@ Array.from(document.querySelectorAll('#install-banner button, button#install-but
   });
 });
 
+// --- Push Notification Subscription ---
+async function subscribeUser() {
+  if ("serviceWorker" in navigator) {
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const subscription = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: "<YOUR_PUBLIC_VAPID_KEY>"
+      });
+      console.log("User subscribed:", JSON.stringify(subscription));
+      // Send subscription to your server to store
+      await fetch("/save-subscription", {
+        method: "POST",
+        body: JSON.stringify(subscription),
+        headers: { "Content-Type": "application/json" }
+      });
+    } catch (error) {
+      console.error("Push subscription failed:", error);
+    }
+  }
+}
+
+// Enable notifications button
+document.addEventListener("DOMContentLoaded", () => {
+  const enableNotificationsBtn = document.getElementById("enable-notifications");
+  if (enableNotificationsBtn) {
+    enableNotificationsBtn.addEventListener("click", async () => {
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        const reg = await navigator.serviceWorker.ready;
+        try {
+          const subscription = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: "<YOUR_PUBLIC_VAPID_KEY>"
+          });
+          console.log("User subscribed:", JSON.stringify(subscription));
+
+          // Send subscription to your backend
+          await fetch("/save-subscription", {
+            method: "POST",
+            body: JSON.stringify(subscription),
+            headers: { "Content-Type": "application/json" }
+          });
+
+          alert("Notifications enabled! You'll now get Zawadi Intel updates.");
+        } catch (err) {
+          console.error("Subscription failed:", err);
+          alert("Could not enable notifications.");
+        }
+      } else {
+        alert("Push notifications are not supported in this browser.");
+      }
+    });
+  }
+});
+
 
 

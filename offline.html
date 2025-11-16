@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zawadi Intel — Offline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #111;
+      color: #fff;
+      padding: 2rem;
+    }
+    .offline-container {
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-bottom: 1.5rem;
+    }
+    .retry-btn {
+      background: #e63946;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <h1>📡 You're Offline</h1>
+    <p>Zawadi Intel is still here. You can read cached stories, or reconnect to see the latest updates.</p>
+    <button class="retry-btn" onclick="window.location.reload();">Retry Connection</button>
+  </div>
+</body>
+</html>
