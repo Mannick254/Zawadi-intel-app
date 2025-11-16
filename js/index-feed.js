@@ -5,11 +5,19 @@
       if (!res.ok) throw new Error('Failed to load news.json');
       const data = await res.json();
 
+      // Filter out expired stories
+      const now = new Date();
+      const filteredData = data.filter(item => {
+        if (!item.expire) return true; // If no expire date, include it
+        const expire = new Date(item.expire);
+        return expire >= now;
+      });
+
       const grid = document.querySelector('.article-grid');
       if (!grid) return;
       grid.innerHTML = '';
 
-      data.forEach(item => {
+      filteredData.forEach(item => {
         const art = document.createElement('article');
         art.className = 'article-card';
         art.innerHTML = `
@@ -31,10 +39,19 @@
       const res = await fetch('data/news.json');
       if (!res.ok) throw new Error('Failed to load news.json');
       const data = await res.json();
+
+      // Filter out expired stories
+      const now = new Date();
+      const filteredData = data.filter(item => {
+        if (!item.expire) return true; // If no expire date, include it
+        const expire = new Date(item.expire);
+        return expire >= now;
+      });
+
       const list = document.querySelector('.top-stories');
       if (!list) return;
       list.innerHTML = '';
-      data.slice(0,5).forEach(i => {
+      filteredData.slice(0,5).forEach(i => {
         const li = document.createElement('li');
         li.innerHTML = `<a href="${i.url}">${i.title}</a>`;
         list.appendChild(li);
@@ -50,10 +67,19 @@
       const res = await fetch('data/news.json');
       if (!res.ok) throw new Error('Failed to load news.json');
       const data = await res.json();
+
+      // Filter out expired stories
+      const now = new Date();
+      const filteredData = data.filter(item => {
+        if (!item.expire) return true; // If no expire date, include it
+        const expire = new Date(item.expire);
+        return expire >= now;
+      });
+
       const modules = document.querySelectorAll('.centre-module');
       if (!modules || modules.length === 0) return;
       modules.forEach((mod, idx) => {
-        const item = data[ idx ] || data[ idx % data.length ];
+        const item = filteredData[ idx ] || filteredData[ idx % filteredData.length ];
         mod.innerHTML = `\
           <h3>${mod.querySelector('h3')?.textContent || 'In Depth'}</h3>\
           <a href="${item.url}"><strong>${item.title}</strong></a>\

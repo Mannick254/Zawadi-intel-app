@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Africa — Zawadi Intel</title>
-  <meta name="description" content="Profiles of African changemakers, visionaries, and cultural icons across the continent." />
+  <title>Zawadi Intel — Home</title>
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/theme.css" />
@@ -15,91 +15,270 @@
   <!-- 🔝 Navigation -->
   <nav class="top-nav">
     <div class="logo">📜 Zawadi Intel</div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu">☰</button>
     <div class="main-links">
       <a href="index.html">Home</a>
       <a href="global.html">Global</a>
-      <a href="africa.html" class="active">Africa</a>
+      <a href="africa.html">Africa</a>
       <a href="media.html">Media</a>
       <a href="books.html">Books</a>
       <a href="app.html">Archive</a>
       <a href="profile.html">Profile</a>
+      <button id="install-button" onclick="installApp()" style="display: none;">Install App</button>
     </div>
   </nav>
 
-  <!-- Install banner (mobile) -->
-  <div id="install-banner" role="dialog" aria-live="polite">
-    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
-    <button id="install-button" onclick="installApp()" style="display:none;">Install</button>
+  <!-- 📲 Chrome-style Install Banner -->
+  <div id="install-banner" role="dialog" aria-live="polite" style="display:none;">
+    <div class="install-text">Get Zawadi Intel on your home screen for faster access.</div>
+    <button id="install-now">Install</button>
     <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
   </div>
 
-  <!-- 🌍 Page Banner -->
-  <header class="page-banner">
-    <h1>🌍 Africa</h1>
-    <p>Profiles of resistance, innovation, and cultural power across the continent — from past to present.</p>
-  </header>
-
-  <!-- 🧩 Story Grid -->
+  <!-- 🗺️ Main Grid -->
   <main class="aj-container">
     <section class="aj-grid">
       <div class="aj-main">
 
-        <!-- 🧠 Story Cards -->
-        <article class="story-card"><h2>🇬🇭 Kwame Nkrumah — Pan-African Visionary</h2><p>Ghana’s first president championed African unity and anti-colonial resistance.</p></article>
-        <article class="story-card"><h2>🇪🇹 Meles Zenawi — Ethiopian Strategist</h2><p>Rebel turned reformer, Zenawi reshaped Ethiopia’s regional influence.</p></article>
-        <article class="story-card"><h2>🇰🇪 Wangari Maathai — Green Warrior</h2><p>Nobel laureate who fused environmentalism with women’s rights and civic resistance.</p></article>
-        <article class="story-card"><h2>🇿🇦 Steve Biko — Black Consciousness Flame</h2><p>His philosophy ignited youth resistance against apartheid’s psychological chains.</p></article>
-        <article class="story-card"><h2>🇳🇬 Fela Kuti — Afrobeat Revolutionary</h2><p>Music as protest, rhythm as resistance — Fela’s legacy is sonic defiance.</p></article>
-        <article class="story-card"><h2>🇸🇳 Léopold Sédar Senghor — Poet-President</h2><p>Blended Negritude with governance, elevating African identity through verse and policy.</p></article>
-        <article class="story-card"><h2>🇨🇩 Patrice Lumumba — Martyr of Independence</h2><p>His assassination became a symbol of neocolonial betrayal and African defiance.</p></article>
-        <article class="story-card"><h2>🇲🇿 Samora Machel — Mozambique’s Firebrand</h2><p>Led liberation with charisma and vision, forging a new socialist path.</p></article>
-        <article class="story-card"><h2>🇿🇼 Thomas Mapfumo — Chimurenga Sound</h2><p>Used traditional music to challenge colonial and post-colonial oppression.</p></article>
-        <article class="story-card"><h2>🇺🇬 Idi Amin — Controversial Strongman</h2><p>Ruled with brutality and spectacle, leaving a complex legacy of fear and fascination.</p></article>
-        <article class="story-card"><h2>🇹🇿 Julius Nyerere — Philosopher of Ujamaa</h2><p>Promoted African socialism rooted in community and dignity.</p></article>
-        <article class="story-card"><h2>🇲🇱 Amadou Hampâté Bâ — Keeper of Oral Wisdom</h2><p>Preserved Africa’s oral traditions and spiritual heritage with poetic grace.</p></article>
-        <article class="story-card"><h2>🇪🇬 Nawal El Saadawi — Feminist Firebrand</h2><p>Challenged patriarchy and religious orthodoxy with fearless writing.</p></articl>
-                   <article class="story-card"><h2>🇪🇷 Isaias Afwerki — Eritrean Enigma</h2><p>Led with defiance and isolation, shaping Eritrea’s identity through resistance and control.</p></article>
-        <article class="story-card"><h2>🇨🇲 Paul Biya — Cameroon’s Silent Strategist</h2><p>One of Africa’s longest-serving presidents, navigating power through quiet endurance and political maneuvering.</p></article>
-        <article class="story-card"><h2>🇲🇱 Modibo Keïta — Mali’s Socialist Pioneer</h2><p>Fought for independence and built a vision of African socialism rooted in dignity and unity.</p></article>
-        <article class="story-card"><h2>🇸🇿 King Mswati III — Monarch of Modernity</h2><p>Rules Eswatini with tradition and controversy, balancing royal legacy with global scrutiny.</p></article>
-        <article class="story-card"><h2>🇩🇿 Houari Boumédiène — Algeria’s Revolutionary Technocrat</h2><p>Blended military strength with modernization, reshaping Algeria’s post-colonial trajectory.</p></article>
-        <article class="story-card"><h2>🇱🇾 Muammar Gaddafi — The Libyan Puzzle</h2><p>Visionary or tyrant? Gaddafi’s rule defied easy categorization, leaving a legacy of ambition and chaos.</p></article>
-        <article class="story-card"><h2>🇸🇳 Cheikh Anta Diop — Historian of African Glory</h2><p>Reclaimed Africa’s ancient contributions to civilization through scholarship and cultural pride.</p></article>
-        <article class="story-card"><h2>🇳🇬 Ngozi Okonjo-Iweala — Global Economic Voice</h2><p>From Nigeria’s finance ministry to WTO leadership, she champions equity and reform in global trade.</p></article>
-        <article class="story-card"><h2>🇰🇪 Lupita Nyong’o — Cinematic Trailblazer</h2><p>Her performances and advocacy elevate African narratives in Hollywood and beyond.</p></article>
-        <article class="story-card"><h2>🇿🇦 Nelson Mandela — Icon of Reconciliation</h2><p>From prisoner to president, Mandela’s legacy is a beacon of justice and forgiveness.</p></article>
+        <!-- 🇰🇪 Kenya Headlines - Latest -->
+        <h2 style="grid-column: 1 / -1; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #006699;">🇰🇪 Kenya Headlines</h2>
+
+        <!-- Kenya — Full Stories (replicated from index) -->
+        <article id="nps-recruitment" class="story-card">
+          <h2>👮 NPS confirms November 17 recruitment</h2>
+          <p>The National Police Service (NPS) has announced a nationwide recruitment drive scheduled for November 17, 2025, aiming to enlist 10,000 new constables. This exercise is part of Kenya’s broader effort to strengthen law enforcement capacity amid rising security challenges.</p>
+          <p>Recruitment will be conducted in all 47 counties, with designated centers ensuring accessibility for applicants from diverse regions. The NPS has emphasized transparency, merit, and inclusivity, promising equal opportunity regardless of background.</p>
+          <p>The drive comes at a time when Kenya faces increasing urban crime, border insecurity, and cyber threats. Expanding the police force is seen as a proactive measure to address these evolving challenges.</p>
+          <p>Critics, however, caution that recruitment alone will not solve systemic issues such as corruption, poor training, and inadequate resources. They argue that reforms in accountability and community policing are equally vital.</p>
+          <p>The government has pledged to modernize training facilities and integrate technology into policing, including digital forensics and surveillance systems. This aligns with Kenya’s Vision 2030 security goals.</p>
+          <p>For young Kenyans, the recruitment offers not just employment but also a chance to serve the nation. The exercise is expected to attract tens of thousands of applicants, underscoring the demand for stable jobs in a competitive economy.</p>
+          <p><small>2025-11-17</small></p>
+          <a href="#nps-recruitment">Read More</a>
+        </article>
+
+        <article id="ruto-growth-plan" class="story-card">
+          <h2>🇰🇪 President Ruto defends Kenya’s growth plan</h2>
+          <p>President William Ruto recently defended his administration’s economic blueprint, urging Kenyans to reject negativity and embrace optimism about the country’s future. He criticized leaders who spread doubt, framing them as obstacles to progress.</p>
+          <p>Ruto’s plan emphasizes agriculture modernization, affordable housing, and digital transformation. He argues these pillars will create jobs and lift millions out of poverty.</p>
+          <p>The president’s remarks come amid public skepticism over rising living costs, fuel prices, and taxation. Many citizens question whether the growth plan truly addresses everyday struggles.</p>
+          <p>Supporters highlight infrastructure projects and increased foreign investment as evidence of momentum. Ruto’s government has secured partnerships with global financiers, particularly in renewable energy and ICT.</p>
+          <p>Opposition leaders counter that debt levels are unsustainable and accuse the government of prioritizing elite interests over grassroots needs.</p>
+          <p>The debate reflects Kenya’s broader political culture, where optimism and skepticism collide. Ruto’s defense signals his determination to rally public confidence, even as economic realities test his promises.</p>
+          <p><small>2025-11-09</small></p>
+          <a href="#ruto-growth-plan">Read More</a>
+        </article>
+
+        <article id="museveni-threats" class="story-card">
+          <h2>🌊 Kenya downplays Museveni’s ‘war’ threats</h2>
+          <p>Uganda’s President Yoweri Museveni recently warned of potential conflict over access to the Indian Ocean, sparking diplomatic tension. Kenya’s Foreign Affairs Ministry quickly dismissed the remarks, calling them exaggerated and unnecessary.</p>
+          <p>Museveni’s comments stem from Uganda’s reliance on Kenyan ports for trade. Frustrations over tariffs and logistics have occasionally strained relations between the two nations.</p>
+          <p>Kenya’s response emphasized regional cooperation under the East African Community (EAC), stressing that disputes should be resolved through dialogue, not threats.</p>
+          <p>Analysts note that Museveni’s rhetoric may be aimed at domestic audiences, projecting strength amid economic challenges at home.</p>
+          <p>Kenya, meanwhile, seeks to maintain stability in its trade corridors, especially as it invests heavily in port modernization and infrastructure.</p>
+          <p>The incident highlights the delicate balance of regional diplomacy, where economic interdependence often collides with nationalist rhetoric.</p>
+          <p><small>2025-11-13</small></p>
+          <a href="#museveni-threats">Read More</a>
+        </article>
+
+        <article id="iran-meth-case" class="story-card">
+          <h2>⚖️ Six Iranians held in meth trafficking case</h2>
+          <p>Kenyan authorities have detained six Iranian nationals linked to a major methamphetamine trafficking case at Kilindini Harbour. The suspects were arrested after a container shipment raised red flags during inspection.</p>
+          <p>Investigators believe the drugs were destined for international markets, with Kenya serving as a transit hub. The bust underscores the country’s growing role in global narcotics networks.</p>
+          <p>The court extended custody to allow deeper investigations, citing the complexity of transnational crime.</p>
+          <p>Kenya’s Anti-Narcotics Unit has intensified operations, but challenges remain due to porous borders and sophisticated smuggling tactics.</p>
+          <p>The case has diplomatic implications, as Iran may push for consular access and fair treatment of its citizens.</p>
+          <p>For Kenya, the arrests signal both vulnerability and vigilance — a reminder that global crime syndicates increasingly exploit East Africa’s strategic location.</p>
+          <p><small>2025-11-15</small></p>
+          <a href="#iran-meth-case">Read More</a>
+        </article>
+
+        <article id="kenyan-mothers-saudi" class="story-card">
+          <h2>👩‍👧 Kenyan mothers stranded in Saudi Arabia</h2>
+          <p>Dozens of Kenyan women and their children are stranded in Saudi Arabia, facing legal and social limbo. Many migrated for domestic work but encountered exploitation, contract breaches, and abuse.</p>
+          <p>Reports indicate that some mothers lack valid documentation, complicating their ability to return home. Children born abroad face statelessness.</p>
+          <p>The Kenyan government has pledged urgent intervention, working with Saudi authorities to resolve cases.</p>
+          <p>Advocacy groups argue that Kenya must strengthen labor migration policies, ensuring better protection for citizens abroad.</p>
+          <p>The crisis exposes the darker side of labor export, where promises of opportunity often lead to vulnerability.</p>
+          <p>For affected families, the ordeal is both emotional and economic, highlighting the need for systemic reforms in foreign employment practices.</p>
+          <p><small>2025-11-14</small></p>
+          <a href="#kenyan-mothers-saudi">Read More</a>
+        </article>
+
+        <article id="nakuru-industrial-parks" class="story-card">
+          <h2>🏭 Nakuru bets on industrial parks</h2>
+          <p>Nakuru County is investing in industrial parks to boost manufacturing and create jobs.</p>
+          <p>The initiative aligns with Kenya’s push for regional economic hubs beyond Nairobi.</p>
+          <p>Industrial parks will host agro-processing, textiles, and light manufacturing.</p>
+          <p>Officials believe this will attract investors and reduce reliance on imports.</p>
+          <p>Challenges include infrastructure gaps and energy costs.</p>
+          <p>If successful, Nakuru could become a model for county-led industrialization.</p>
+          <p><small>2025-11-01</small></p>
+          <a href="#nakuru-industrial-parks">Read More</a>
+        </article>
+
+        <article id="gen-z-politics" class="story-card">
+          <h2>🗳️ Gen Z set to shape politics</h2>
+          <p>A recent survey shows Kenya’s Generation Z voters are increasingly influential, favoring leaders like Fred Matiang’i and Babu Owino.</p>
+          <p>Gen Z’s priorities include transparency, digital governance, and job creation.</p>
+          <p>Their activism is visible on social media, where they mobilize around issues like taxation and education.</p>
+          <p>Political parties are adjusting strategies to appeal to younger voters, recognizing their growing numbers.</p>
+          <p>Critics caution that online enthusiasm may not always translate into voter turnout.</p>
+          <p>Nonetheless, Gen Z represents a transformative force, reshaping Kenya’s political landscape with fresh demands and expectations.</p>
+          <p><small>2025-11-01</small></p>
+          <a href="#gen-z-politics">Read More</a>
+        </article>
+
+        <article id="breast-cancer-screening" class="story-card">
+          <h2>💉 Breast cancer screening urged</h2>
+          <p>Health experts in Kenya are calling for regular breast cancer screening as cases rise nationwide.</p>
+          <p>Breast cancer is now one of the leading causes of death among women, with late diagnosis a major factor.</p>
+          <p>Campaigns emphasize awareness, affordable screening, and destigmatization of cancer care.</p>
+          <p>The government has pledged to expand oncology centers, but rural areas remain underserved.</p>
+          <p>NGOs are stepping in with mobile clinics and community outreach programs.</p>
+          <p>The push reflects a broader shift toward preventive healthcare, aiming to save lives through early detection.</p>
+          <p><small>2025-11-01</small></p>
+          <a href="#breast-cancer-screening">Read More</a>
+        </article>
+
+        <article id="dpworld-ecitizen" class="story-card">
+          <h2>💼 DP World partners with eCitizen</h2>
+          <p>Kenya has partnered with DP World to integrate customs clearance into the eCitizen platform.</p>
+          <p>The move aims to streamline trade, reduce corruption, and improve efficiency.</p>
+          <p>Traders will benefit from faster clearance times and reduced paperwork.</p>
+          <p>The partnership reflects Kenya’s ambition to digitize governance and logistics.</p>
+          <p>Critics warn of data privacy concerns and the need for robust cybersecurity.</p>
+          <p>Overall, the deal positions Kenya as a regional leader in digital trade facilitation.</p>
+          <p><small>2025-09-22</small></p>
+          <a href="#dpworld-ecitizen">Read More</a>
+        </article>
+
+        <article id="rent-dispute-case" class="story-card">
+          <h2>⚖️ Court dismisses rent dispute case</h2>
+          <p>A Kenyan court has dismissed a woman’s attempt to deny her husband Sh258,000 in rent payments.</p>
+          <p>The case revolved around property ownership and marital obligations.</p>
+          <p>Judges ruled that contractual agreements must be honored regardless of personal disputes.</p>
+          <p>Analysts note the case reflects rising property disputes amid urbanization.</p>
+          <p>For ordinary Kenyans, it underscores the importance of clear contracts and legal literacy.</p>
+          <p><small>2025-11-14</small></p>
+          <a href="#rent-dispute-case">Read More</a>
+        </article>
+
+        <!-- 🌍 Africa Headlines -->
+        <h2 style="grid-column: 1 / -1; margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #006699;">🌍 African Affairs</h2>
+
+        <section class="main-story">
+
+          <article>
+            <h2>Kenya’s Economy Shows Signs of Recovery</h2>
+            <p>After years of economic turbulence, Kenya is finally showing signs of a resilient rebound. The agricultural sector, long the backbone of rural livelihoods, is experiencing renewed vigor thanks to government subsidies and digital extension services. Meanwhile, Nairobi’s financial district is buzzing with optimism as tech-driven startups attract foreign investment. Analysts point to a steady rise in GDP, improved export performance, and a narrowing trade deficit as indicators of a broader economic recovery. For many Kenyans, this shift is not just statistical—it’s personal. “We’re finally seeing hope return to the marketplace,” says Mary Wanjiku, a trader in Gikomba.</p>
+          </article>
+
+          <article>
+            <h2>Education Reforms Aim to Modernize Curriculum</h2>
+            <p>In classrooms across Kenya, a quiet revolution is underway. The Ministry of Education has rolled out a refined Competency-Based Curriculum (CBC), aiming to equip learners with practical skills and global relevance. Teachers are undergoing intensive retraining, and digital learning tools are being introduced in both urban and rural schools. “We want our children to be creators, not just consumers,” said Education CS Ezekiel Machogu during a recent policy briefing. The reforms also include inclusive education for learners with disabilities, and a renewed focus on STEM subjects to prepare youth for the future economy.</p>
+          </article>
+
+          <article>
+            <h2>Healthcare Expansion Targets Rural Communities</h2>
+            <p>In Turkana, Garissa, and parts of Western Kenya, mobile clinics are bringing healthcare to communities that once relied on distant hospitals. The Ministry of Health has launched a rural health initiative that includes telemedicine pilots, maternal care outreach, and emergency response units. “We’re not just building hospitals—we’re building trust,” said Health CS Susan Nakhumicha. The expansion also includes partnerships with NGOs and county governments to address chronic illnesses and improve vaccination rates. For residents like Amina Hassan in Wajir, the arrival of a mobile health unit meant her child could receive treatment without a 200km journey.</p>
+          </article>
+
+          <article>
+            <h2>Major Infrastructure Projects Transform Transport</h2>
+            <p>Kenya’s transport landscape is changing fast. The Nairobi Expressway has become a symbol of modern mobility, slashing commute times and showcasing public-private collaboration. In Mombasa, port upgrades are improving cargo flow, while new bypasses in Kisumu and Eldoret are easing urban congestion. Rural road rehabilitation is also underway, connecting farmers to markets and children to schools. “Infrastructure is not just concrete—it’s opportunity,” said Transport CS Kipchumba Murkomen. These projects are part of Vision 2030’s broader ambition to make Kenya a regional logistics hub.</p>
+          </article>
+
+          <article>
+            <h2>Kenya Invests in Renewable Energy</h2>
+            <p>From the winds of Marsabit to the sun-soaked plains of Garissa, Kenya is harnessing nature to power its future. The Lake Turkana Wind Project continues to feed clean energy into the national grid, while solar mini-grids are lighting up off-grid communities. Geothermal expansion in Olkaria is positioning Kenya as a leader in sustainable energy. “We’re not just going green—we’re going smart,” said Energy PS Alex Wachira. The government’s push includes incentives for private sector investment and a roadmap to phase out fossil fuel dependency by 2040.</p>
+          </article>
+
+          <article>
+            <h2>Tourism Sector Rebounds with New Attractions</h2>
+            <p>After a pandemic-induced slump, Kenya’s tourism industry is roaring back. Maasai Mara is welcoming record numbers of visitors, while Lamu’s cultural festivals are drawing global attention. The Kenya Tourism Board has launched digital campaigns targeting millennials and eco-tourists. “We’re showcasing Kenya’s soul,” said KTB CEO June Chepkemei. Community-based tourism is also gaining traction, with local guides offering immersive experiences in Samburu, Kisii, and Taita. The sector’s revival is not just economic—it’s cultural, reaffirming Kenya’s place as a top African destination.</p>
+          </article>
+
+          <article>
+            <h2>Nairobi Emerges as Tech Innovation Hub</h2>
+            <p>In the heart of Nairobi’s Kilimani and Westlands districts, co-working spaces hum with innovation. Startups in fintech, agritech, and AI are solving local problems with global potential. The iHub, Nailab, and other incubators are mentoring young entrepreneurs, while venture capital flows from Silicon Valley and Dubai. “Kenya is no longer just consuming tech—we’re creating it,” said tech investor Sam Gichuru. Government initiatives like Ajira Digital and the Konza Technopolis are laying the groundwork for a digital economy that includes everyone—from coders to content creators.</p>
+          </article>
+
+          <article>
+            <h2>Farmers Adopt Modern Techniques to Boost Yields</h2>
+            <p>In Kericho, Embu, and Bungoma, farmers are embracing digital tools to transform agriculture. Apps like DigiFarm and iShamba provide weather forecasts, market prices, and crop advice. Irrigation systems and drought-resistant seeds are helping smallholders adapt to climate change. “We’re farming smarter, not harder,” said Joseph Otieno, a maize farmer in Siaya. Government extension officers are also using tablets to track yields and offer real-time support. The result: higher productivity, better incomes, and a new generation of tech-savvy farmers.</p>
+          </article>
+
+          <article>
+            <h2>Security Agencies Enhance Border Patrols</h2>
+            <p>Kenya’s borders are getting smarter. Surveillance drones, biometric systems, and upgraded patrol units are being deployed to curb smuggling and cross-border crime. The Kenya Defence Forces and National Police Service are collaborating on intelligence sharing and rapid response. “Security is not just about force—it’s about foresight,” said Interior CS Kithure Kindiki. Community policing programs are also being revived, with local leaders playing a role in early warning systems. In Mandera and Busia, residents report improved safety and trust in law enforcement.</p>
+          </article>
+
+          <article>
+            <h2>Cultural Festivals Celebrate Kenya’s Diversity</h2>
+            <p>From the Lake Turkana Cultural Festival to Nairobi’s Koroga Festival, Kenya’s cultural calendar is alive with rhythm and color. Artists, dancers, and storytellers are reclaiming indigenous languages and traditions. The Ministry of Sports, Culture, and Heritage is funding grassroots initiatives and supporting creative industries. “Culture is our compass,” said CS Ababu Namwamba. In Kisumu, Luo musicians are blending traditional instruments with modern beats, while in Mombasa, Swahili poetry is finding new audiences. These festivals are more than entertainment—they’re expressions of identity, unity, and pride.</p>
+          </article>
+
+          <footer>
+            <h2>Conclusion: A Nation in Motion</h2>
+            <p>Kenya’s renewal is not confined to boardrooms or policy papers—it’s unfolding in classrooms, clinics, farms, and festivals. These ten sectors reflect a country that is resilient, ambitious, and deeply rooted in its identity. As citizens innovate, leaders adapt, and communities rise, Kenya is crafting a new chapter—one of possibility, pride, and progress. Blessed Hots TV will continue to spotlight these stories, amplifying the voices and visions shaping Africa’s future.</p>
+          </footer>
+        </section>
+
+        <section class="africa-preview">
+          <h2>🌍 Africa</h2>
+          <ul class="headline-list">
+            <li data-expiry="2025-11-13"><a href="africa.html#story1">Kwame Nkrumah — Pan-African Visionary</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story2">Wangari Maathai — Green Warrior</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story3">Steve Biko — Black Consciousness Flame</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story4">Fela Kuti — Afrobeat Revolutionary</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story5">Patrice Lumumba — Martyr of Independence</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story6">Julius Nyerere — Philosopher of Ujamaa</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story7">Ngozi Okonjo-Iweala — Global Economic Voice</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story8">Lupita Nyong’o — Cinematic Trailblazer</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story9">Nelson Mandela — Icon of Reconciliation</a></li>
+            <li data-expiry="2025-11-13"><a href="africa.html#story10">Cheikh Anta Diop — Historian of African Glory</a></li>
+          </ul>
+        </section>
 
       </div>
-
-      <!-- 📌 Sidebar -->
-      <aside class="aj-sidebar">
-        <div class="sidebar-module">
-          <h3>Explore More</h3>
-          <ul>
-            <li><a href="biographies.html">Biographies</a></li>
-            <li><a href="media.html">Multimedia Archive</a></li>
-            <li><a href="books.html">Literature & Essays</a></li>
-            <li><a href="app.html">Search Archive</a></li>
-          </ul>
-        </div>
-        <div class="sidebar-module">
-          <h3>Featured Regions</h3>
-          <ul>
-            <li><a href="#">East Africa</a></li>
-            <li><a href="#">West Africa</a></li>
-            <li><a href="#">Southern Africa</a></li>
-          </ul>
-        </div>
-      </aside>
     </section>
   </main>
+
+  <!-- 🕒 Expiry Script -->
+  <script>
+    const today = new Date();
+    document.querySelectorAll('[data-expiry]').forEach(item => {
+      const expiry = new Date(item.getAttribute('data-expiry'));
+      if (today > expiry) {
+        item.style.display = 'none';
+      }
+    });
+  </script>
+
+  <!-- 📲 Install Prompt Logic -->
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('install-banner').style.display = 'block';
+    });
+
+    document.getElementById('install-button').addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choiceResult => {
+          document.getElementById('install-banner').style.display = 'none';
+          deferredPrompt = null;
+        });
+      }
+    });
+  </script>
 
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
     <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
   </footer>
 
-  <script src="main.js"></script>
 </body>
 </html>
- 

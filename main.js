@@ -29,179 +29,81 @@ if (navToggle) {
   });
 }
 
-// Install prompt for mobile devices
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent the mini-infobar from appearing on mobile
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-  // Update UI to notify the user they can install the PWA
-  showInstallButton();
-  // If the browser does not support beforeinstallprompt, show a local fallback on mobile
-  setTimeout(() => {
-    tryShowInstallFallback();
-  }, 700);
-});
-
-window.addEventListener('appinstalled', (evt) => {
-  // Log install to analytics
-  console.log('PWA was installed');
-  // Hide the install button
-  hideInstallButton();
-  // Hide banner if present
-  hideInstallBanner();
-  // If the browser does not support beforeinstallprompt, show a local fallback on mobile
-  setTimeout(() => {
-    tryShowInstallFallback();
-  }, 700);
-});
-
-function showInstallButton() {
-  const installButton = document.getElementById('install-button');
-  if (installButton) {
-    installButton.style.display = 'inline-block';
-  }
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'flex';
-}
-
-// --- Install fallback helpers ---
-function isIos() {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !/windows/i.test(navigator.userAgent);
-}
-
-function isAndroid() {
-  return /android/i.test(navigator.userAgent);
-}
-
-function tryShowInstallFallback() {
-  // If we have the native beforeinstallprompt flow available, don't show fallback
-  var supportsPrompt = ('onbeforeinstallprompt' in window) || (typeof window.BeforeInstallPromptEvent !== 'undefined');
-  // If already installed (display-mode standalone or navigator.standalone), skip
-  var isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
-  isStandalone = isStandalone || (navigator.standalone === true);
-
-  if (supportsPrompt || isStandalone) return;
-
-  // Only show fallback on mobile devices
-  if (!isIos() && !isAndroid()) return;
-
-  var banner = document.getElementById('install-banner');
-  if (!banner) return;
-
-  var textEl = banner.querySelector('.install-text');
-  var installBtn = document.getElementById('install-button');
-
-  if (isIos()) {
-    // iOS: instruct to use Share -> Add to Home Screen
-    if (textEl) textEl.innerHTML = 'To install this site: tap the Share button (▴) in Safari and choose "Add to Home Screen".';
-  } else if (isAndroid()) {
-    if (textEl) textEl.innerHTML = 'To install: open the browser menu (⋮) and choose "Add to Home screen".';
-  }
-
-  // Hide the programmatic install button (not supported) and show banner
-  if (installBtn) installBtn.style.display = 'none';
-  banner.style.display = 'flex';
-}
-
-function hideInstallButton() {
-  const installButton = document.getElementById('install-button');
-  if (installButton) {
-    installButton.style.display = 'none';
-  }
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'none';
-}
-
-function hideInstallBanner() {
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'none';
-}
-
-function installApp() {
-  // Hide the app provided install promotion
-  hideInstallButton();
-  hideInstallBanner();
-  // Show the install prompt
-  deferredPrompt.prompt();
-  // Wait for the user to respond to the prompt
-  deferredPrompt.userChoice.then((choiceResult) => {
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
-    }
-    deferredPrompt = null;
-  });
-}
-
-// --- Simple client-side auth and login-tracking ---
+// --- Server-side auth with token-based sessions ---
 // Admin credentials: Nickson / Zawadi@123
-const AUTH_USERS_KEY = 'zawadi_users_v1';
-const CURRENT_USER_KEY = 'zawadi_current_user_v1';
+const AUTH_TOKEN_KEY = 'zawadi_auth_token_v1';
 const GLOBAL_COUNT_KEY = 'zawadi_global_count_v1';
 
-function getUsers() {
+async function verifyToken(token) {
   try {
-    return JSON.parse(localStorage.getItem(AUTH_USERS_KEY) || '{}');
+    const resp = await fetch('/api/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      return data.ok ? data : null;
+    }
+  } catch (e) {}
+  return null;
+}
+
+// Hide expired story cards based on data-expire attribute
+document.addEventListener("DOMContentLoaded", () => {
+  const now = new Date();
+
+  document.querySelectorAll(".story-card").forEach(card => {
+    const expireDate = new Date(card.dataset.expire);
+    if (expireDate < now) {
+      card.style.display = "none";
+    }
+  });
+});
+
+async function registerUser(username, password) {
+  try {
+    const resp = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await resp.json();
+    return data;
   } catch (e) {
-    return {};
+    return { ok: false, message: 'Server error' };
   }
 }
 
-function saveUsers(users) {
-  localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
-}
-
-function hashPw(pw) {
-  // lightweight obfuscation - not a replacement for server-side hashing
-  return btoa(pw);
-}
-
-// Ensure admin exists
-(function ensureAdmin() {
-  const users = getUsers();
-  if (!users['Nickson']) {
-    users['Nickson'] = { password: hashPw('Zawadi@123'), isAdmin: true };
-    saveUsers(users);
+async function loginUser(username, password) {
+  try {
+    const resp = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+      updateAuthUi();
+      // record login globally
+      recordLogin(username).catch(() => {});
+    }
+    return data;
+  } catch (e) {
+    return { ok: false, message: 'Server error' };
   }
-})();
-
-function registerUser(username, password) {
-  if (!username || !password) return { ok: false, message: 'Username and password required' };
-  const users = getUsers();
-  if (users[username]) return { ok: false, message: 'User already exists' };
-  users[username] = { password: hashPw(password), isAdmin: false, createdAt: Date.now() };
-  saveUsers(users);
-  return { ok: true };
-}
-
-function loginUser(username, password) {
-  const users = getUsers();
-  const u = users[username];
-  if (!u) return { ok: false, message: 'User not found. Please register.' };
-  if (u.password !== hashPw(password)) return { ok: false, message: 'Invalid password' };
-  const current = { username: username, isAdmin: !!u.isAdmin, loggedAt: Date.now() };
-  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(current));
-  // record login globally (try server, fallback to localStorage)
-  recordLogin(username).catch(() => {});
-  updateAuthUi();
-  return { ok: true };
 }
 
 function logoutUser() {
-  localStorage.removeItem(CURRENT_USER_KEY);
+  localStorage.removeItem(AUTH_TOKEN_KEY);
   updateAuthUi();
 }
 
-function getCurrentUser() {
-  try {
-    return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
-  } catch (e) {
-    return null;
-  }
+async function getCurrentUser() {
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token) return null;
+  return await verifyToken(token);
 }
 
 async function recordLogin(username) {
@@ -308,12 +210,12 @@ function toggleAuthModal(show) {
   m.style.display = show ? 'block' : 'none';
 }
 
-function updateAuthUi() {
+async function updateAuthUi() {
   const btn = document.getElementById('zawadi-auth-button');
   const status = document.getElementById('zawadi-status');
   const logout = document.getElementById('zawadi-logout');
   const adminBtn = document.getElementById('zawadi-admin');
-  const current = getCurrentUser();
+  const current = await getCurrentUser();
   if (current) {
     if (btn) btn.textContent = current.username;
     if (status) status.textContent = `Signed in as ${current.username}`;
@@ -398,21 +300,100 @@ function setupStoryModal() {
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideModal(); });
   }
 
-  function showModal(html, title) {
+  function showModal(html, title, sourceUrl) {
     createModalIfNeeded();
     const modal = document.getElementById('story-modal');
     const body = document.getElementById('story-modal-body');
     if (!modal || !body) return;
     // set content
     body.innerHTML = '';
+
+    // Build a toolbar with source / actions
+    const toolbar = document.createElement('div');
+    toolbar.className = 'modal-article';
+    const tbar = document.createElement('div');
+    tbar.className = 'modal-toolbar';
+
+    const metaSpan = document.createElement('div');
+    metaSpan.className = 'meta';
+    metaSpan.textContent = sourceUrl ? sourceUrl.replace(/^https?:\/\//, '') : '';
+
+    const actions = document.createElement('div');
+
+    const openBtn = document.createElement('button');
+    openBtn.className = 'open-link';
+    openBtn.textContent = 'Open original';
+    openBtn.addEventListener('click', () => { if (sourceUrl) window.open(sourceUrl, '_blank'); });
+
+    const copyBtn = document.createElement('button');
+    copyBtn.textContent = 'Copy link';
+    copyBtn.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard && sourceUrl) await navigator.clipboard.writeText(sourceUrl);
+        else prompt('Copy link', sourceUrl || location.href);
+      } catch (e) { prompt('Copy link', sourceUrl || location.href); }
+    });
+
+    actions.appendChild(openBtn);
+    actions.appendChild(copyBtn);
+    tbar.appendChild(metaSpan);
+    tbar.appendChild(actions);
+    toolbar.appendChild(tbar);
+
+    // Article container with Al-Jazeera style: headline, meta, lead, body
+    const article = document.createElement('article');
+    article.className = 'modal-article';
+
+    // Title
     if (title) {
-      const h = document.createElement('h2');
+      const h = document.createElement('h1');
       h.textContent = title;
-      body.appendChild(h);
+      article.appendChild(h);
     }
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = html;
-    body.appendChild(wrapper);
+
+    // Parse the html and extract ONLY the first <article> element to avoid showing the whole page
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const articleEl = tempDiv.querySelector('article');
+    let cleanHtml = html;
+    
+    if (articleEl) {
+      // Found an article element; use only its innerHTML
+      cleanHtml = articleEl.innerHTML;
+    } else {
+      // No article found; try to extract just the content without parent wrappers
+      // Remove common page wrapper elements
+      const mainContent = tempDiv.querySelector('main, .aj-main, .content, [role="main"]');
+      if (mainContent) {
+        cleanHtml = mainContent.innerHTML;
+      }
+      // As a last resort, use the first significant content block
+      const firstSection = tempDiv.querySelector('section, .section, [role="region"]');
+      if (firstSection) {
+        cleanHtml = firstSection.innerHTML;
+      }
+    }
+
+    // attach cleaned html into a body wrapper and attempt to extract a lead paragraph
+    const bodyWrapper = document.createElement('div');
+    bodyWrapper.className = 'modal-body';
+    bodyWrapper.innerHTML = cleanHtml;
+
+    // If first child paragraph looks like a lead, promote it
+    const firstP = bodyWrapper.querySelector('p');
+    if (firstP) {
+      const lead = document.createElement('p');
+      lead.className = 'lead';
+      lead.textContent = firstP.textContent;
+      // remove the promoted paragraph from bodyWrapper to avoid duplication
+      firstP.parentNode && firstP.parentNode.removeChild(firstP);
+      article.appendChild(lead);
+    }
+
+    article.appendChild(bodyWrapper);
+    toolbar.appendChild(article);
+
+    body.appendChild(toolbar);
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
@@ -424,43 +405,110 @@ function setupStoryModal() {
   }
 
   // Extract content from fetched document: look for fragment ID, then sensible article selectors
+  // IMPORTANT: always return ONLY the inner HTML of the first <article> element to avoid showing multiple articles
   function extractArticleFromDoc(doc, fragmentId) {
+    let targetArticle = null;
+    
+    // If fragmentId is provided, find that specific article by id
     if (fragmentId) {
       const el = doc.getElementById(fragmentId);
-      if (el) return { html: el.innerHTML, title: el.querySelector('h1,h2,h3') ? (el.querySelector('h1,h2,h3').textContent || '') : '' };
+      if (el && el.tagName && el.tagName.toLowerCase() === 'article') {
+        targetArticle = el;
+      } else if (el) {
+        // If the element is a parent, find the first <article> child
+        targetArticle = el.querySelector('article');
+      }
+      if (!targetArticle) {
+        console.debug('[story-modal] fragment article not found in fetched doc:', fragmentId);
+      }
     }
-    // common selectors to try
-    const selectors = ['.feature-article', 'article.story-card', 'article', '.story-card', '.feature'];
-    for (const sel of selectors) {
-      const el = doc.querySelector(sel);
-      if (el) return { html: el.innerHTML, title: el.querySelector('h1,h2,h3') ? (el.querySelector('h1,h2,h3').textContent || '') : '' };
+    
+    // If no fragment found, try common selectors to find the first article
+    if (!targetArticle) {
+      const selectors = ['article.story-card', 'article', '.feature-article', '.story-card', '.feature'];
+      for (const sel of selectors) {
+        targetArticle = doc.querySelector(sel);
+        if (targetArticle) break;
+      }
     }
+    
+    // If we found an article, extract ONLY its inner HTML (not the article tag itself, just contents)
+    if (targetArticle) {
+      const title = targetArticle.querySelector('h1,h2,h3') ? (targetArticle.querySelector('h1,h2,h3').textContent || '') : '';
+      // Return only the article's inner content, stripping all outer wrappers
+      return { html: targetArticle.innerHTML, title: title };
+    }
+    
+    console.debug('[story-modal] no article found in fetched doc');
     return null;
   }
 
   // Click handler (delegated)
+  // Track modal open state to avoid re-entrant handling
+  let _storyModalOpen = false;
+
+  // Auto-open if the page loads with a hash (useful for testing and deep-linking)
+  try {
+    if (location && location.hash) {
+      const fragOnLoad = location.hash.slice(1);
+      // open after a short delay so DOM has fully initialized
+      window.addEventListener('DOMContentLoaded', () => {
+        try {
+          const elOnLoad = document.getElementById(fragOnLoad);
+          if (elOnLoad) {
+            console.debug('[story-modal] auto-opening fragment on load:', fragOnLoad);
+            _storyModalOpen = true;
+            const titleText = elOnLoad.querySelector('h1,h2,h3') ? (elOnLoad.querySelector('h1,h2,h3').textContent || '') : document.title;
+            const source = location.href;
+            // ensure the modal exists and then show
+            setTimeout(() => { showModal(elOnLoad.innerHTML, titleText, source); _storyModalOpen = false; }, 60);
+          }
+        } catch (e) { /* ignore auto-open errors */ }
+      });
+    }
+  } catch (e) { /* ignore */ }
+
   document.addEventListener('click', function (e) {
     const a = e.target.closest && e.target.closest('a.story-title-link');
     if (!a) return;
+    // Prevent duplicate handling while modal content is being prepared
+    if (_storyModalOpen) return;
+
     // Only handle same-origin links
     try {
       const href = a.getAttribute('href');
       if (!href) return;
-      // If it's an in-page anchor on the same document
+
+      // prefer the id of the nearest .story-card in the current document when available
+      const localCard = a.closest && a.closest('.story-card');
+      const preferredFragment = (localCard && localCard.id) ? localCard.id : null;
+
+      // If it's an in-page anchor on the same document, open that specific element
       if (href.startsWith('#')) {
-        const el = document.getElementById(href.slice(1));
+        const frag = preferredFragment || href.slice(1);
+        const el = document.getElementById(frag);
         if (el) {
           e.preventDefault();
-          showModal(el.innerHTML, el.querySelector('h1,h2,h3') ? (el.querySelector('h1,h2,h3').textContent || '') : a.textContent);
+          _storyModalOpen = true;
+          const titleText = el.querySelector('h1,h2,h3') ? (el.querySelector('h1,h2,h3').textContent || '') : a.textContent;
+          const source = location.href.split('#')[0] + '#' + frag;
+          console.debug('[story-modal] opening in-page fragment', frag, 'source:', source);
+          showModal(el.innerHTML, titleText, source);
+          _storyModalOpen = false;
           return;
         }
       }
+
       const url = new URL(href, location.href);
       // only handle same-origin
       if (url.origin !== location.origin) return;
 
       e.preventDefault();
-      const fragment = url.hash ? url.hash.slice(1) : null;
+      const fragmentFromHref = url.hash ? url.hash.slice(1) : null;
+      // prefer the local card id as the fragment when present to ensure we open exactly the clicked story
+      const fragment = preferredFragment || fragmentFromHref || null;
+
+      _storyModalOpen = true;
       // fetch the target page and extract the article
       fetch(url.pathname + url.search).then(resp => {
         if (!resp.ok) throw new Error('Fetch failed');
@@ -470,7 +518,8 @@ function setupStoryModal() {
         const doc = parser.parseFromString(text, 'text/html');
         const found = extractArticleFromDoc(doc, fragment);
         if (found) {
-          showModal(found.html, found.title || a.textContent.trim());
+          console.debug('[story-modal] fetched and extracted fragment:', fragment, 'title:', found.title);
+          showModal(found.html, found.title || a.textContent.trim(), url.href + (fragment ? ('#' + fragment) : ''));
         } else {
           // fallback: open the link normally
           window.location.href = href;
@@ -478,7 +527,7 @@ function setupStoryModal() {
       }).catch(err => {
         console.warn('Could not load story inline, falling back to navigation', err);
         window.location.href = href;
-      });
+      }).finally(() => { _storyModalOpen = false; });
     } catch (err) {
       // ignore and allow default
       console.warn('story modal handler error', err);
@@ -490,131 +539,33 @@ function setupStoryModal() {
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupStoryModal);
 else setupStoryModal();
 
-// --- Page shuffle on refresh or after 1 minute ---
-(function setupPageShuffle() {
-  // list of site pages to shuffle between (relative to site root)
-  const pages = [
-    '/index.html', '/news.html', '/global.html', '/africa.html', '/media.html',
-    '/biography.html', '/books.html', '/app.html', '/offline.html', '/sport.html'
-  ];
+// Additional install prompt script
+let deferredPrompt;
 
-  function currentPage() {
-    const p = location.pathname;
-    // normalize: if path ends with /, treat as /index.html
-    if (p === '/' || p === '') return '/index.html';
-    return p;
-  }
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-banner').style.display = 'block';
+});
 
-  function pickRandomPage() {
-    const cur = currentPage();
-    const candidates = pages.filter(p => p !== cur && p !== '/admin.html');
-    if (candidates.length === 0) return null;
-    return candidates[Math.floor(Math.random() * candidates.length)];
-  }
-
-  // Shuffle story cards on the current page by reordering their DOM nodes
-  // This preserves event listeners and avoids duplicating IDs
-  function shuffleStories() {
-    try {
-      const cards = Array.from(document.querySelectorAll('.story-card'));
-      if (!cards || cards.length < 2) return;
-
-      // Group cards by their immediate parent so we shuffle within containers
-      const groups = new Map();
-      cards.forEach(card => {
-        const parent = card.parentElement;
-        if (!groups.has(parent)) groups.set(parent, []);
-        groups.get(parent).push(card);
-      });
-
-      // For each group, perform an in-place Fisher-Yates shuffle of the nodes
-      let total = 0;
-      groups.forEach((nodes, parent) => {
-        if (!nodes || nodes.length < 2) return;
-        total += nodes.length;
-        const shuffled = nodes.slice();
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          const tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp;
+// Attach install prompt to any install buttons (banner button or header/install buttons). Use querySelectorAll
+Array.from(document.querySelectorAll('#install-banner button, button#install-button')).forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
         }
-        // Append nodes in shuffled order; appendChild moves existing nodes
-        shuffled.forEach(node => parent.appendChild(node));
+        deferredPrompt = null;
+        const banner = document.getElementById('install-banner');
+        if (banner) banner.style.display = 'none';
       });
-
-      console.log('Shuffled', total, 'stories (by reordering nodes)');
-    } catch (e) {
-      console.warn('shuffleStories failed', e);
     }
-  }
+  });
+});
 
-  // Detect reload (modern and legacy)
-  function isReload() {
-    try {
-      const nav = window.performance.getEntriesByType && window.performance.getEntriesByType('navigation');
-      if (nav && nav.length && nav[0].type) return nav[0].type === 'reload';
-      if (performance && performance.navigation) return performance.navigation.type === 1;
-    } catch (e) {}
-    return false;
-  }
 
-  // If user wants to disable shuffling for this session
-  function shuffleDisabled() { return sessionStorage.getItem('zawadi_shuffle_off') === '1'; }
-
-  // Perform immediate story shuffle on reload
-  if (isReload() && !shuffleDisabled()) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', shuffleStories);
-    } else {
-      shuffleStories();
-    }
-    return;
-  }
-
-  // Otherwise set a 60s timer to shuffle
-  if (!shuffleDisabled()) {
-    var shuffleSeconds = 60;
-    var banner = document.createElement('div');
-    banner.id = 'shuffle-banner';
-    banner.style.position = 'fixed';
-    banner.style.left = '12px';
-    banner.style.right = '12px';
-    banner.style.bottom = '80px';
-    banner.style.background = 'rgba(0,0,0,0.75)';
-    banner.style.color = '#fff';
-    banner.style.padding = '8px 10px';
-    banner.style.borderRadius = '8px';
-    banner.style.display = 'flex';
-    banner.style.justifyContent = 'space-between';
-    banner.style.alignItems = 'center';
-    banner.style.zIndex = 2200;
-    // show a non-numeric message (hide the visible seconds count)
-    banner.innerHTML = `<div id="shuffle-text">Shuffling page soon</div><div style="display:flex;gap:8px"><button id="shuffle-cancel" style="background:#777;color:#fff;border:none;padding:6px;border-radius:6px;">Cancel</button><button id="shuffle-now" style="background:#1a73e8;color:#fff;border:none;padding:6px;border-radius:6px;">Now</button></div>`;
-    document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(banner); });
-
-    var remaining = shuffleSeconds;
-    // keep the internal countdown but do not update the visible text
-    var countdownInterval = setInterval(() => {
-      remaining -= 1;
-      if (remaining <= 0) {
-        clearInterval(countdownInterval);
-        shuffleStories();
-      }
-    }, 1000);
-
-    // Cancel and Now handlers
-    document.addEventListener('click', function (e) {
-      if (!e.target) return;
-      if (e.target.id === 'shuffle-cancel') {
-        clearInterval(countdownInterval);
-        var b = document.getElementById('shuffle-banner'); if (b) b.remove();
-        sessionStorage.setItem('zawadi_shuffle_off', '1');
-      }
-      if (e.target.id === 'shuffle-now') {
-        clearInterval(countdownInterval);
-        var b = document.getElementById('shuffle-banner'); if (b) b.remove();
-        shuffleStories();
-      }
-    });
-  }
-})();
 

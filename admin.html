@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
+      📜 Zawadi Intel
+    </div>
+    <ul class="main-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="global.html">Global</a></li>
+      <li><a href="middle-east.html">Middle East</a></li>
+      <li><a href="africa.html">Africa</a></li>
+      <li><a href="biography.html">Biographies</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="app.html">Archive</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+
     <main style="max-width:980px;margin:24px auto;padding:12px">
       <h1>Admin Dashboard</h1>
       <p id="admin-warn" style="color:#b33"></p>
@@ -30,7 +49,74 @@
         <a href="/">Back to site</a>
       </p>
     </main>
+    <script src="main.js" defer></script>
+    <section id="admin-actions" style="max-width:980px;margin:8px auto;padding:12px;display:none">
+      <h2>Admin Actions</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="refresh-stats">Refresh Stats</button>
+        <button id="clear-local">Clear Local Counts</button>
+        <button id="export-recent">Export Recent Logins</button>
+      </div>
+      <p style="margin-top:8px;color:var(--muted);font-size:0.95rem">Only visible to signed-in admins.</p>
+    </section>
+
+    <!-- Inline admin login (if not signed in) -->
+    <section id="admin-login" style="max-width:980px;margin:8px auto;padding:12px;background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+      <h2>Admin Sign In</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input id="admin-username" placeholder="Username" style="padding:8px;border:1px solid #ddd;border-radius:4px;" />
+        <input id="admin-password" type="password" placeholder="Password" style="padding:8px;border:1px solid #ddd;border-radius:4px;" />
+        <button id="admin-login-btn">Sign In</button>
+      </div>
+      <div id="admin-login-msg" style="color:#b33;margin-top:8px"></div>
+    </section>
+
     <script>
+      // Ensure admin.html requires an admin user before exposing actions
+      async function initAdmin() {
+        const warn = document.getElementById('admin-warn');
+        try {
+          // getCurrentUser is defined in main.js and returns null if not signed in
+          const current = await getCurrentUser();
+          if (!current || !current.isAdmin) {
+            warn.textContent = 'Admin access required. Please sign in with an admin account.';
+            // ensure login section is visible
+            const loginSection = document.getElementById('admin-login');
+            if (loginSection) loginSection.style.display = 'block';
+            return;
+          }
+          // hide login and show admin actions
+          const loginSection = document.getElementById('admin-login');
+          if (loginSection) loginSection.style.display = 'none';
+          document.getElementById('admin-actions').style.display = 'block';
+        } catch (e) {
+          console.warn('Admin check failed', e);
+          warn.textContent = 'Unable to verify admin status.';
+        }
+
+        // wire buttons
+        document.getElementById('refresh-stats').addEventListener('click', fetchStats);
+        document.getElementById('clear-local').addEventListener('click', () => {
+          if (!confirm('Clear local login count? This cannot be undone.')) return;
+          localStorage.removeItem('zawadi_global_count_v1');
+          document.getElementById('total-local').textContent = '0';
+        });
+        document.getElementById('export-recent').addEventListener('click', () => {
+          // Try to fetch server recent list, otherwise export local placeholder
+          fetch('/api/stats').then(r => r.ok ? r.json() : Promise.reject()).then(data => {
+            const csv = (data.recent || []).map(r => `${new Date(r.ts).toISOString()},${r.username}`).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'recent-logins.csv'; a.click();
+            URL.revokeObjectURL(url);
+          }).catch(() => {
+            alert('No server data available to export.');
+          });
+        });
+      }
+
+      // existing fetchStats function
       async function fetchStats() {
         const warn = document.getElementById('admin-warn');
         try {
@@ -56,6 +142,34 @@
         }
       }
       fetchStats();
+      // initialize admin UI (checks current user and shows admin actions if allowed)
+      initAdmin();
+
+      // Admin inline login handler
+      document.getElementById('admin-login-btn').addEventListener('click', async () => {
+        const u = document.getElementById('admin-username').value.trim();
+        const p = document.getElementById('admin-password').value;
+        const msg = document.getElementById('admin-login-msg');
+        msg.textContent = '';
+        if (!u || !p) { msg.textContent = 'Enter username and password.'; return; }
+        try {
+          const resp = await loginUser(u, p);
+          if (!resp || !resp.ok) {
+            msg.textContent = resp && resp.message ? resp.message : 'Login failed';
+            return;
+          }
+          msg.style.color = 'green';
+          msg.textContent = 'Signed in successfully.';
+          // Re-init admin UI now that we are signed in
+          await initAdmin();
+          // hide the inline login form after successful sign-in
+          const loginSectionAfter = document.getElementById('admin-login');
+          if (loginSectionAfter) loginSectionAfter.style.display = 'none';
+        } catch (e) {
+          console.warn('Admin login error', e);
+          msg.textContent = 'Login error';
+        }
+      });
     </script>
   </body>
   </html>

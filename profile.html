@@ -27,6 +27,20 @@
       margin: 1em auto;
       display: block;
     }
+    .avatar-initials {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: #006699;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin: 1em auto;
+      border: 4px solid #004d80;
+    }
     .upload-section {
       text-align: center;
       margin: 1em 0;
@@ -80,7 +94,7 @@
   <!-- Install banner (mobile) -->
   <div id="install-banner" role="dialog" aria-live="polite">
     <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
-    <button id="install-button" onclick="installApp()" style="display:none;">Install</button>
+    <button id="install-now" onclick="installApp()" style="display:none;">Install</button>
     <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
   </div>
 
@@ -94,7 +108,9 @@
   <main class="aj-container">
     <div class="profile-container">
       <h2>Welcome, <span id="username-display">Guest</span></h2>
-      <img id="profile-photo" class="profile-photo" src="images/baba.png" alt="Profile Photo" />
+      <div id="avatar-container">
+        <img id="profile-photo" class="profile-photo" src="images/baba.png" alt="Profile Photo" />
+      </div>
 
       <div class="upload-section">
         <input type="file" id="photo-input" accept="image/*" />
@@ -132,10 +148,25 @@
       document.getElementById('username-display').textContent = currentUser.username;
     }
 
-    // Load saved profile photo
+    // Function to generate initials avatar
+    function generateInitialsAvatar(username) {
+      const initials = username.split(' ').map(word => word.charAt(0).toUpperCase()).join('').slice(0, 2);
+      const avatarDiv = document.createElement('div');
+      avatarDiv.className = 'avatar-initials';
+      avatarDiv.textContent = initials;
+      return avatarDiv;
+    }
+
+    // Load saved profile photo or show initials avatar
     const savedPhoto = localStorage.getItem('zawadi_profile_photo');
+    const avatarContainer = document.getElementById('avatar-container');
     if (savedPhoto) {
       document.getElementById('profile-photo').src = savedPhoto;
+    } else if (currentUser && currentUser.username) {
+      // Show initials avatar if no photo and user is logged in
+      const initialsAvatar = generateInitialsAvatar(currentUser.username);
+      avatarContainer.innerHTML = '';
+      avatarContainer.appendChild(initialsAvatar);
     }
 
     // Upload button
@@ -181,7 +212,9 @@
     document.getElementById('crop-save').addEventListener('click', () => {
       // For simplicity, save the entire canvas as cropped (user can adjust by re-uploading)
       const croppedDataURL = canvas.toDataURL('image/png');
-      document.getElementById('profile-photo').src = croppedDataURL;
+      // Replace initials avatar with image if it exists
+      const avatarContainer = document.getElementById('avatar-container');
+      avatarContainer.innerHTML = `<img id="profile-photo" class="profile-photo" src="${croppedDataURL}" alt="Profile Photo" />`;
       localStorage.setItem('zawadi_profile_photo', croppedDataURL);
       document.querySelector('.crop-section').style.display = 'none';
       document.querySelector('.upload-section').style.display = 'block';

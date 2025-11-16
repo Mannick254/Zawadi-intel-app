@@ -1,170 +1,34 @@
-<<<<<<< HEAD
-/* layout.css — CitizenTV-inspired */
+/* theme.css — Three-Column Layout */
 
-:root {
-  --primary-color: #d71920; /* Citizen TV red */
-  --accent-color: #ffcc00;
-  --nav-bg: #003366;
-  --hero-bg: #004080;
-  --page-bg: #ddd;
-  --card-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-/* Top Navigation */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--nav-bg);
-  color: white;
-  padding: 0.8em 1.2em;
-  box-shadow: var(--card-shadow);
-}
-
-.top-nav .logo {
-  font-size: 1.4em;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
-
-.top-nav .main-links a {
-  margin-left: 1em;
-  color: white;
-  font-weight: 600;
-  text-transform: uppercase;
-  transition: color 0.3s ease;
-}
-
-.top-nav .main-links a:hover {
-  color: var(--accent-color);
-=======
-/* theme.css — East African Editorial Tone */
-
-/* Typography */
-body {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 17px;
-  line-height: 1.7;
-  color: #1a1a1a;
-  background-color: #fdfdfd;
-}
-
-h1, h2, h3, h4 {
-  font-family: 'Georgia', serif;
-  font-weight: 600;
-  color: #002b45;
-  margin-top: 1.2em;
-  margin-bottom: 0.5em;
-}
-
-p {
-  margin-bottom: 1em;
-  font-size: 1em;
-}
-
-/* Color Palette */
-:root {
-  --headline-dark: #002b45;
-  --accent-red: #b30000;
-  --accent-blue: #005580;
-  --neutral-light: #f5f5f5;
-  --neutral-mid: #e0e0e0;
-  --text-light: #ffffff;
-  --text-dark: #1a1a1a;
-}
-
-/* Navigation Theme */
-.top-nav {
-  background-color: var(--headline-dark);
-  color: var(--text-light);
-  border-bottom: 2px solid var(--accent-blue);
-}
-
-.top-nav .main-links a {
-  color: var(--text-light);
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.top-nav .main-links a:hover {
-  text-decoration: underline;
->>>>>>> 84b91814a2b39a5039a549d3a7a6a8d2d0e21928
-}
-
-/* Hero Banner */
-.hero-banner {
-<<<<<<< HEAD
-  background: var(--hero-bg);
-  color: white;
-  padding: 2.5em 1em;
-  text-align: center;
-  background-image: url('/images/hero-bg.jpg'); /* Optional */
-  background-size: cover;
-  background-position: center;
-}
-
-.hero-banner h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5em;
-}
-
-.hero-banner .cta-btn {
-  display: inline-block;
-  margin-top: 1em;
-  padding: 0.7em 1.4em;
-  background: var(--accent-color);
-  color: var(--nav-bg);
-  font-weight: bold;
-  border-radius: 4px;
-  text-transform: uppercase;
-  box-shadow: var(--card-shadow);
-}
-
-/* Page Banner */
-.page-banner {
-  background: var(--page-bg);
-  padding: 1.5em;
-  text-align: center;
-  font-weight: 600;
-  font-size: 1.2em;
-  color: #333;
-}
-
-/* Container */
 .aj-container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: auto;
-  padding: 1em;
+  padding: 0.85em 1em;
 }
 
-/* Grid Layout */
 .aj-grid {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 2rem;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
   align-items: start;
 }
 
 .aj-main {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
 }
 
 .aj-main .feature-article,
 .aj-main .feature-article.side-by-side {
   grid-column: 1 / -1;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--primary-color);
+  margin-bottom: 1.25rem;
 }
 
-/* Sidebar */
 .aj-sidebar {
   align-self: start;
 }
 
-/* Responsive Layout */
 @media (max-width: 900px) {
   .aj-grid {
     grid-template-columns: 1fr;
@@ -174,85 +38,13 @@ p {
   }
 }
 
-/* Story Cards */
-=======
-  background-color: var(--accent-blue);
-  color: var(--text-light);
+/* Mirror mobile rules here for any pages using theme.css */
+@media (max-width: 768px) {
+  .aj-container { padding: 0.6rem 0.75rem; }
+  .aj-grid { grid-template-columns: 1fr !important; gap: 1rem; }
+  .aj-main { grid-template-columns: 1fr !important; gap: 0.9rem; }
+  .aj-sidebar { grid-column: 1 / -1; order: 2; }
+  .aj-main { order: 1; }
+  .aj-main .feature-article, .aj-main .feature-article.side-by-side { grid-column: 1 / -1; }
+  .story-card { width: 100%; }
 }
-
-.hero-banner .cta-btn {
-  background-color: var(--accent-red);
-  color: var(--text-light);
-  font-weight: bold;
-  border-radius: 0;
-  text-transform: uppercase;
-  padding: 0.6em 1.2em;
-  text-decoration: none;
-  transition: background 0.3s ease;
-}
-
-.hero-banner .cta-btn:hover {
-  background-color: #990000;
-}
-
-/* Page Banner */
-.page-banner {
-  background-color: var(--neutral-mid);
-  color: var(--headline-dark);
-  font-weight: 600;
-  font-size: 1.1em;
-}
-
-/* Cards and Zones */
->>>>>>> 84b91814a2b39a5039a549d3a7a6a8d2d0e21928
-.story-card,
-.conflict-zone,
-.tribute-zone,
-.trending-movie {
-  background-color: white;
-  color: var(--text-dark);
-  border-left: 4px solid var(--accent-blue);
-  padding: 1em;
-  margin-bottom: 1.5em;
-<<<<<<< HEAD
-  border-left: 4px solid var(--primary-color);
-  box-shadow: var(--card-shadow);
-  transition: transform 0.3s ease;
-}
-
-.story-card:hover {
-  transform: translateY(-4px);
-=======
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: box-shadow 0.3s ease;
->>>>>>> 84b91814a2b39a5039a549d3a7a6a8d2d0e21928
-}
-
-.story-card:hover,
-.conflict-zone:hover,
-.tribute-zone:hover,
-.trending-movie:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-}
-
-/* Sidebar Theme */
-.aj-sidebar {
-  background-color: #ffffff;
-  padding: 1em;
-  border-left: 2px solid var(--neutral-mid);
-}
-
-/* Responsive Typography */
-@media (max-width: 600px) {
-  body {
-    font-size: 18px;
-  }
-
-  h1 {
-    font-size: 1.6em;
-  }
-
-  h2 {
-    font-size: 1.4em;
-  }
-  }
