@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zawadi Intel — Home</title>
 
   <!-- 🔍 SEO & Metadata -->
@@ -15,7 +15,7 @@
   <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
   <meta property="og:description" content="Global news, African voices, cinematic archives." />
   <meta property="og:image" content="icons/icon-192.png" />
-  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app//" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- 🎨 Styles -->
@@ -28,7 +28,7 @@
   <meta name="theme-color" content="#000000" />
 
   <!-- 🔒 Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
 
   <!-- 🖼️ Favicon -->
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
@@ -36,21 +36,28 @@
 <body>
 
   <!-- 🔝 Navigation -->
-  <nav class="top-nav" aria-label="Main Navigation">
-    <div class="logo">
-      <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
-      📜 Zawadi Intel
-    </div>
-    <ul class="main-links">
-      <li><a href="global.html">Global</a></li>
-      <li><a href="africa.html">Africa</a></li>
-      <li><a href="biography.html">Biographies</a></li>
-      <li><a href="media.html">Media</a></li>
-      <li><a href="books.html">Books</a></li>
-      <li><a href="app.html">Archive</a></li>
-      <li><button id="enable-notifications" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1rem;">🔔 Notifications</button></li>
-    </ul>
-  </nav>
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="logo">
+    <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
+    <span class="brand">📜 Zawadi Intel</span>
+  </div>
+  <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+  <ul class="main-links">
+    <li><a href="global.html">Global</a></li>
+    <li><a href="articles/africa.html">Africa</a></li>
+    <li><a href="biography.html">Biographies</a></li>
+    <li><a href="media.html">Media</a></li>
+    <li><a href="books.html">Books</a></li>
+    <li><a href="app.html">Archive</a></li>
+    <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+  </ul>
+</nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+<div class="breaking-news">
+  <ul id="newsTicker"></ul>
+</div>
+
 
   <!-- 📰 Hero Banner -->
   <header class="hero-banner">
@@ -59,81 +66,231 @@
     <a href="global.html" class="cta-btn">Explore Global Coverage</a>
   </header>
 
+  <!-- 🔍 Search Bar -->
+  <section class="search-bar">
+    <form>
+      <input type="text" placeholder="Search stories..." aria-label="Search stories">
+      <button type="submit" class="btn">Search</button>
+    </form>
+  </section>
+
+<!-- 🗞️ Main Grid -->
+<main class="aj-container">
+  <section class="aj-grid">
+    <div class="aj-main">
+
+      <!-- Kenya Trending News Section -->
+
+  <article class="story-card">
+    <a href="articles/kenya-gdp.html">
+      <img src="images/kenya-gdp.png" alt="Kenya GDP Milestone" class="Photos" />
+      <h2>Kenya’s GDP hits Sh11 trillion milestone</h2>
+      <p>Kenya’s economy shows resilience despite global shocks...</p>
+    </a>
+  </article>
+
+  <article  class="story-card">
+    <a href="articles/raila-bodyguard.html">
+      <h2>Raila Odinga’s bodyguard Maurice Ogeta stuns Kenyans</h2>
+      <img src="images/raila-bodyguard.jpeg" alt="Raila Bodyguard" class="Photos" />
+      <p>Photos of his apartment investment wow social media...</p>
+    </a>
+  </article>
+
+  <article>
+    <a href="articles/bishop-kiengei.html">
+      <h2>Bishop Kiengei sparks debate with warning on relationships</h2>
+      <p>His sermon ignites national conversation on cultural norms...</p>
+    </a>
+  </article>
+
+  <article>
+    <a href="articles/ruto-wedding.html">
+      <h2>Ruto and Wetang’ula attend Noordin Haji’s son’s glamorous wedding</h2>
+      <p>Political leaders gather for a high‑profile family event...</p>
+    </a>
+  </article>
+
+  <article  class="story-card">
+    <a href="articles/aids-day.html">
+      <img src="images/aids-day.jpg" alt="World AIDS Day" class="Photos" />
+      <h2>World AIDS Day: Govt targets vs reality for youth living with HIV</h2>
+      <p>Kenya reviews progress on HIV prevention and treatment...</p>
+    </a>
+  </article>
+
+  <article>
+  <a href="articles/kisii-airbus.html">
+    <h2>Kisii exclusive: Travel chaos fears ease after Airbus software fix</h2>
+    <p>Air travel stabilizes after weeks of delays...</p>
+  </a>
+</article>
+
+
+  <article>
+    <a href="articles/genz-politics.html">
+      <h2>Gen Z survey shows youth shaping Kenya’s political future</h2>
+      <p>Young voters emerge as a decisive force in 2027 elections...</p>
+    </a>
+  </article>
+
+  <article class="story-card">
+    <a href="articles/nakuru-industry.html">
+      <h2>Nakuru County optimistic industrial parks will grow economy</h2>
+      <p>New investments promise jobs and regional growth...</p>
+    </a>
+  </article>
+
+  <article  class="story-card">
+    <a href="articles/uda-odm.html">
+      <h2>Grand coalition talks: UDA and ODM eye 2027 partnership</h2>
+      <p>Political realignment could reshape Kenya’s future...</p>
+    </a>
+  </article>
+
+  <article  class="story-card">
+    <a href="articles/haiti-mission.html">
+      <h2>Kenya’s Haiti peace mission faces reckoning</h2>
+      <p>Questions arise over Kenya’s global peacekeeping role...</p>
+    </a>
+  </article>
+</section>
+
+
+      <!-- 🇿🇦 South Africa Trade -->
+      <article class="story-card">
+        <h2>🇿🇦 South Africa Resilient Amid Global Trade Shifts</h2>
+        <p>Minister Parks Tau says SA benefits from trade agreements covering 90 countries despite disruptions.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#sa-trade">Read More</a>
+      </article>
+
+      <!-- ✝️ Catholic Bishops -->
+      <article class="story-card">
+        <h2>✝️ Catholic Bishops in Southern Africa Welcome G20 Resolutions</h2>
+        <p>SACBC praises commitments to debt sustainability, global justice, and inclusive development.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#g20-bishops">Read More</a>
+      </article>
+
+      <!-- 🌱 Green Economy -->
+      <article class="story-card">
+        <h2>🌱 Africa Targets $5bn Green Economy Projects</h2>
+        <p>AGES summit highlights urgent investment into Africa’s climate‑resilient future.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#green-economy">Read More</a>
+      </article>
+
+      <!-- 🌍 COP30 -->
+      <article class="story-card">
+        <h2>🌍 COP30 Diplomacy in Action</h2>
+        <p>Climate talks in Belém push for tangible signals to ignite urgent climate action.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="global.html#cop30-diplomacy">Read More</a>
+      </article>
+
+      <!-- 💰 Debt Debate -->
+      <article class="story-card">
+        <h2>💰 G20 Debt Debate Shifts to UN</h2>
+        <p>Analysts argue the G20 has failed on debt relief, urging UN intervention.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="global.html#debt-un">Read More</a>
+      </article>
+
+      <!-- ⚔️ Sahel Instability -->
+      <article class="story-card">
+        <h2>⚔️ Sahel Instability Intensifies</h2>
+        <p>Mali records spike in foreign kidnappings by jihadist groups amid regional unrest.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#sahel-instability">Read More</a>
+      </article>
+
+      <!-- 🔥 Algeria Wildfires -->
+      <article class="story-card">
+        <h2>🔥 Algeria Battles 22 Wildfires</h2>
+        <p>Severe drought sparks widespread fires across northern provinces.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#algeria-fires">Read More</a>
+      </article>
+
+      <!-- ⚒️ DRC Cobalt -->
+      <article class="story-card">
+        <h2>⚒️ DRC Produces Traceable Cobalt</h2>
+        <p>First 1,000 tonnes of artisanal cobalt signals reform in mining sector.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#drc-cobalt">Read More</a>
+      </article>
+
+      <!-- 🕊️ Sudan Ceasefire -->
+      <article class="story-card">
+        <h2>🕊️ Sudan’s RSF Accepts Ceasefire Framework</h2>
+        <p>US‑proposed humanitarian truce gains traction in Sudan.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#sudan-ceasefire">Read More</a>
+      </article>
+
+      <!-- 🤝 DRC Peace -->
+      <article class="story-card">
+        <h2>🤝 DRC and M23 Sign Doha Peace Framework</h2>
+        <p>Landmark agreement aims to stabilize eastern Congo.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#drc-peace">Read More</a>
+      </article>
+
+      <!-- 🚨 Cholera -->
+      <article class="story-card">
+        <h2>🚨 Africa Faces Worst Cholera Outbreak in 25 Years</h2>
+        <p>Angola and Burundi hardest hit as outbreak spreads regionally.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#cholera">Read More</a>
+      </article>
+
+      <!-- ✈️ Palestinians -->
+      <article class="story-card">
+        <h2>✈️ South Africa Allows 153 Palestinians to Disembark</h2>
+        <p>Passengers stranded for 12 hours finally released after ordeal.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#palestinians">Read More</a>
+      </article>
+
+      <!-- 🛂 Ivory Coast -->
+      <article class="story-card">
+        <h2>🛂 Ivory Coast Boosts Border Defence</h2>
+        <p>Authorities reinforce security after unusual refugee flows from Mali.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#ivorycoast">Read More</a>
+      </article>
+
+      <!-- ⚖️ Tunisia Crackdown -->
+      <article class="story-card">
+        <h2>⚖️ Rights Groups Decry Tunisia Crackdown</h2>
+        <p>Amnesty and HRW warn of declining civil liberties.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="africa.html#tunisia">Read More</a>
+      </article>
+
+      <!-- 🌐 G20 Innovation -->
+      <article class="story-card">
+        <h2>🌐 G20 Innovation Platform Opens New Opportunities</h2>
+        <p>Johannesburg summit launches new initiative for global cooperation.</p>
+        <time datetime="2025-11-22">2025-11-22</time>
+        <a href="global.html#g20-innovation">Read More</a>
+      </article>
+
+    </div>
+
+    <!-- 📌 Sidebar -->
+    <aside class="aj-sidebar">
+      <!-- existing sidebar modules -->
+    </aside>
+  </section>
+</main>
+
   <!-- 🗞️ Main Grid -->
   <main class="aj-container">
     <section class="aj-grid">
       <div class="aj-main">
-
-        <!-- 🇰🇪 Kenyan Stories -->
-        <article id="nps-recruitment" class="story-card">
-          <h2>👮 NPS confirms November 17 recruitment</h2>
-          <p>The National Police Service will run a one-day drive to recruit 10,000 constables across all counties.</p>
-          <time datetime="2025-11-17">2025-11-17</time>
-          <a href="africa.html#nps-recruitment">Read More</a>
-        </article>
-
-        <article id="ruto-growth-plan" class="story-card">
-          <h2>🇰🇪 President Ruto defends Kenya’s growth plan</h2>
-          <p>President Ruto reiterated his economic blueprint—focusing on agriculture, housing and digital transformation—asking Kenyans for patience and optimism.</p>
-          <time datetime="2025-11-09">2025-11-09</time>
-          <a href="africa.html#ruto-growth-plan">Read More</a>
-        </article>
-
-        <article id="museveni-threats" class="story-card">
-          <h2>🌊 Kenya downplays Museveni’s ‘war’ threats</h2>
-          <p>Kenya dismissed President Museveni’s warning about access to the Indian Ocean as exaggerated, urging diplomatic dialogue.</p>
-          <time datetime="2025-11-13">2025-11-13</time>
-          <a href="africa.html#museveni-threats">Read More</a>
-        </article>
-
-        <article id="iran-meth-case" class="story-card">
-          <h2>⚖️ Six Iranians held in meth trafficking case</h2>
-          <p>Six Iranian nationals have been detained in connection with a major meth bust at Kilindini Harbour, authorities say.</p>
-          <time datetime="2025-11-15">2025-11-15</time>
-          <a href="africa.html#iran-meth-case">Read More</a>
-        </article>
-
-        <article id="kenyan-mothers-saudi" class="story-card">
-          <h2>👩‍👧 Kenyan mothers stranded in Saudi Arabia</h2>
-          <p>Dozens of Kenyan women and children await government intervention in Saudi Arabia after reports of exploitation and documentation issues.</p>
-          <time datetime="2025-11-14">2025-11-14</time>
-          <a href="africa.html#kenyan-mothers-saudi">Read More</a>
-        </article>
-
-        <article id="nakuru-industrial-parks" class="story-card">
-          <h2>🏭 Nakuru bets on industrial parks</h2>
-          <p>Nakuru County plans industrial parks to spur manufacturing and jobs, aiming to attract agro-processing and light industry.</p>
-          <time datetime="2025-11-01">2025-11-01</time>
-          <a href="africa.html#nakuru-industrial-parks">Read More</a>
-        </article>
-
-        <article id="gen-z-politics" class="story-card">
-          <h2>🗳️ Gen Z set to shape politics</h2>
-          <p>Survey shows Gen Z is increasingly influential, prioritizing transparency, digital governance, and jobs.</p>
-          <time datetime="2025-11-01">2025-11-01</time>
-          <a href="africa.html#gen-z-politics">Read More</a>
-        </article>
-
-        <article id="breast-cancer-screening" class="story-card">
-          <h2>💉 Breast cancer screening urged</h2>
-          <p>Health experts urge regular breast cancer screening as cases rise and late diagnosis remains a key problem.</p>
-          <time datetime="2025-11-01">2025-11-01</time>
-          <a href="africa.html#breast-cancer-screening">Read More</a>
-        </article>
-
-        <article id="dpworld-ecitizen" class="story-card">
-          <h2>💼 DP World partners with eCitizen</h2>
-          <p>Kenya and DP World will integrate customs clearance into eCitizen to streamline trade and reduce paperwork.</p>
-          <time datetime="2025-09-22">2025-09-22</time>
-          <a href="africa.html#dpworld-ecitizen">Read More</a>
-        </article>
-
-        <article id="rent-dispute-case" class="story-card">
-          <h2>⚖️ Court dismisses rent dispute case</h2>
-          <p>Woman’s attempt to deny her husband Sh258,000 in rent was rejected by court, which upheld contractual obligations.</p>
-          <time datetime="2025-11-14">2025-11-14</time>
-          <a href="africa.html#rent-dispute-case">Read More</a>
-        </article>
+        <!-- Existing story cards here -->
       </div>
 
       <!-- 📌 Sidebar -->
@@ -141,11 +298,11 @@
         <div class="sidebar-module">
           <h3>Trending Topics</h3>
           <ul>
-            <li><a href="global.html">Sudan Crisis</a></li>
-            <li><a href="global.html">Tech Stock Recovery</a></li>
-            <li><a href="global.html">Global Food Security</a></li>
-            <li><a href="africa.html">Kenya-South Africa Relations</a></li>
-            <li><a href="africa.html">African Sports</a></li>
+            <li><a href="global.html#g20-africa">Africa hosts G20 Summit</a></li>
+            <li><a href="africa.html#cholera-outbreak">Cholera Outbreak</a></li>
+            <li><a href="global.html#ukraine-peace">Ukraine Peace Plan</a></li>
+            <li><a href="africa.html#nigeria-abduction">Nigeria School Abductions</a></li>
+            <li><a href="global.html#cop30">COP30 Agrifood Financing</a></li>
           </ul>
         </div>
         <div class="sidebar-module">
@@ -161,6 +318,7 @@
     </section>
   </main>
 
+
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
     <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
@@ -168,25 +326,56 @@
 
   <!-- ⚡ Performance -->
   <script src="main.js" defer></script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service-worker.js")
-          .then(reg => console.log("Service Worker registered:", reg))
-          .catch(err => console.log("Service Worker registration failed:", err));
-      }
+  <script>
+    // Example using NewsAPI (replace YOUR_API_KEY)
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
 
-      function askNotificationPermission() {
-        if ("Notification" in window && "serviceWorker" in navigator) {
-          Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-              console.log("Notification permission granted.");
-            } else {
-              console.log("Notification permission denied.");
-            }
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
           });
+        } else {
+          // Fallback if API fails
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
         }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
       }
-      askNotificationPermission();
-    </script>
+    }
+
+    // Run on page load
+    loadNews();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,225 @@
+/* CSS for News Articles Page */
+.top-nav .main-links a:hover, .notif-btn:hover {
+  text-decoration: underline;
+}
+
+.breaking-news {
+  background: linear-gradient(90deg, #c00, #900);
+  color: #fff;
+  padding: 0.5rem;
+  overflow: hidden;
+  position: relative;
+}
+.breaking-news::before {
+  content: "🚨 BREAKING NEWS";
+  font-weight: bold;
+  margin-right: 1rem;
+}
+.breaking-news ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  animation: ticker 20s linear infinite;
+}
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+article {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  line-height: 1.6;
+  font-family: 'Georgia', serif;
+}
+article h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 2px solid #c00;
+  padding-bottom: 0.5rem;
+}
+.byline {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-style: italic;
+}
+article img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+article img:hover {
+  transform: scale(1.02);
+}
+article p {
+  margin-bottom: 1.2rem;
+  text-align: justify;
+  color: #333;
+}
+article p:first-of-type {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+article a {
+  color: #c00;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+article a:hover {
+  color: #900;
+  text-decoration: underline;
+}
+
+/* 🌟 Hero Banner */
+.hero {
+  position: relative;
+  text-align: center;
+  color: white;
+  margin: 1.5rem 0;
+}
+.hero img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+}
+
+/* 📊 Data Highlights */
+.data-highlights {
+  background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+  padding: 1.5rem;
+  border-left: 5px solid #007acc;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+}
+.data-highlights ul {
+  list-style: none;
+  padding: 0;
+}
+.data-highlights li {
+  margin: 0.5rem 0;
+  font-weight: bold;
+  color: #005a99;
+}
+
+/* 💬 Quote */
+blockquote {
+  font-size: 1.3rem;
+  font-style: italic;
+  background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
+  padding: 1.5rem;
+  border-left: 5px solid #c00;
+  margin: 2rem 0;
+  border-radius: 0 8px 8px 0;
+  position: relative;
+}
+blockquote::before {
+  content: "“";
+  font-size: 3rem;
+  color: #c00;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+}
+
+/* 📢 Call to Action */
+.cta {
+  text-align: center;
+  margin: 2rem 0;
+}
+.cta button {
+  background: linear-gradient(135deg, #c00, #900);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.cta button:hover {
+  background: linear-gradient(135deg, #900, #600);
+  transform: translateY(-2px);
+}
+
+/* 📚 Related Articles */
+.related {
+  background: linear-gradient(135deg, #fafafa, #f0f0f0);
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  margin-top: 2rem;
+  border-radius: 8px;
+}
+.related h3 {
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1.2rem;
+}
+.related ul {
+  list-style: none;
+  padding: 0;
+}
+.related li {
+  margin: 0.5rem 0;
+}
+.related a {
+  color: #007acc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.related a:hover {
+  color: #005a99;
+  text-decoration: underline;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #0a0f01, #1a1f11);
+  color: #ffffff;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  article {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  article h1 {
+    font-size: 2rem;
+  }
+  .breaking-news ul {
+    gap: 1rem;
+    animation-duration: 15s;
+  }
+  .hero img {
+    height: 200px;
+  }
+}

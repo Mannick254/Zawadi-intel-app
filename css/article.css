@@ -1,0 +1,247 @@
+/* CSS for Article Pages */
+
+/* Global Styles */
+body {
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Navigation */
+.top-nav {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  margin-right: 0.5rem;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.main-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1.5rem;
+}
+
+.main-links li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.main-links li a:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.notif-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.notif-btn:hover {
+  background: #c0392b;
+}
+
+/* Breaking News Ticker */
+.breaking-news {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+  color: #fff;
+  padding: 0.75rem 2rem;
+  overflow: hidden;
+  position: relative;
+  font-weight: bold;
+}
+
+.breaking-news::before {
+  content: "🚨 BREAKING NEWS";
+  margin-right: 1rem;
+  font-size: 1.1rem;
+}
+
+.breaking-news ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 3rem;
+  animation: ticker 25s linear infinite;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Article Content */
+article {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+article h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 3px solid #e74c3c;
+  padding-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.byline {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-style: italic;
+  border-top: 1px solid #ecf0f1;
+  padding-top: 1rem;
+}
+
+article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 2rem 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+article img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+article p {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+
+article p:first-of-type {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+article a {
+  color: #e74c3c;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+article a:hover {
+  color: #c0392b;
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: #ecf0f1;
+  margin-top: 3rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .top-nav {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .main-links {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .main-links {
+    display: none;
+  }
+
+  .main-links.active {
+    display: flex;
+  }
+
+  article {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  article h1 {
+    font-size: 2.2rem;
+  }
+
+  .breaking-news ul {
+    gap: 2rem;
+    animation-duration: 20s;
+  }
+
+  .breaking-news {
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  article h1 {
+    font-size: 1.8rem;
+  }
+
+  article p {
+    font-size: 1rem;
+  }
+
+  .byline {
+    font-size: 1rem;
+  }
+}

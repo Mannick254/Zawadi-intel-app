@@ -1,50 +1,86 @@
-/* layout.css — Three-Column Layout */
-
+/* ===========================
+   Layout Container
+   =========================== */
 .aj-container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
-  padding: 0.85em 1em;
+  padding: 1rem;
 }
 
+/* ===========================
+   Grid Layout
+   =========================== */
 .aj-grid {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 1.5rem;
+  grid-template-columns: 2fr 1fr; /* main + sidebar */
+  gap: 2rem;
   align-items: start;
 }
 
+/* ===========================
+   Main Content Grid
+   =========================== */
 .aj-main {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
+/* Featured article spans full width */
 .aj-main .feature-article,
 .aj-main .feature-article.side-by-side {
   grid-column: 1 / -1;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
+/* ===========================
+   Sidebar
+   =========================== */
 .aj-sidebar {
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: sticky;
+  top: 1rem; /* keeps sidebar visible while scrolling */
 }
 
-@media (max-width: 900px) {
+/* ===========================
+   Story Card Alignment
+   =========================== */
+.story-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===========================
+   Responsive Layout
+   =========================== */
+@media (max-width: 992px) {
   .aj-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .aj-sidebar {
+    position: static; /* disable sticky on smaller screens */
+    order: 2;
   }
   .aj-main {
+    order: 1;
     grid-template-columns: 1fr;
   }
 }
 
-/* Stronger mobile rules to ensure single-column reading experience */
 @media (max-width: 768px) {
-  .aj-container { padding: 0.6rem 0.75rem; }
+  .aj-container { padding: 0.75rem; }
   .aj-grid { grid-template-columns: 1fr !important; gap: 1rem; }
-  .aj-main { grid-template-columns: 1fr !important; gap: 0.9rem; }
-  .aj-sidebar { grid-column: 1 / -1; order: 2; }
-  .aj-main { order: 1; }
-  .aj-main .feature-article, .aj-main .feature-article.side-by-side { grid-column: 1 / -1; }
+  .aj-main { grid-template-columns: 1fr !important; gap: 1rem; }
+  .aj-main .feature-article, 
+  .aj-main .feature-article.side-by-side { grid-column: 1 / -1; }
   .story-card { width: 100%; }
 }

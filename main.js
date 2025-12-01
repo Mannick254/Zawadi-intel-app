@@ -21,13 +21,13 @@ if (searchForm) {
   });
 }
 
-// Optional: Mobile nav toggle (if added later)
-const navToggle = document.querySelector('.nav-toggle');
-if (navToggle) {
-  navToggle.addEventListener('click', () => {
-    document.querySelector('.main-links').classList.toggle('open');
-  });
-}
+// Toggle mobile menu
+const menuToggle = document.querySelector(".menu-toggle");
+const mainLinks = document.querySelector(".main-links");
+
+menuToggle.addEventListener("click", () => {
+  mainLinks.classList.toggle("show");
+});
 
 // --- Server-side auth with token-based sessions ---
 // Admin credentials: Nickson / Zawadi@123
@@ -601,37 +601,9 @@ async function subscribeUser() {
   }
 }
 
-// Enable notifications button
-document.addEventListener("DOMContentLoaded", () => {
-  const enableNotificationsBtn = document.getElementById("enable-notifications");
-  if (enableNotificationsBtn) {
-    enableNotificationsBtn.addEventListener("click", async () => {
-      if ("serviceWorker" in navigator && "PushManager" in window) {
-        const reg = await navigator.serviceWorker.ready;
-        try {
-          const subscription = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: "<YOUR_PUBLIC_VAPID_KEY>"
-          });
-          console.log("User subscribed:", JSON.stringify(subscription));
-
-          // Send subscription to your backend
-          await fetch("/save-subscription", {
-            method: "POST",
-            body: JSON.stringify(subscription),
-            headers: { "Content-Type": "application/json" }
-          });
-
-          alert("Notifications enabled! You'll now get Zawadi Intel updates.");
-        } catch (err) {
-          console.error("Subscription failed:", err);
-          alert("Could not enable notifications.");
-        }
-      } else {
-        alert("Push notifications are not supported in this browser.");
-      }
-    });
-  }
+// Notifications button (placeholder)
+document.getElementById("enable-notifications").addEventListener("click", () => {
+  alert("Notifications feature coming soon!");
 });
 
 

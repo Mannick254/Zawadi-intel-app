@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — Nakuru County Optimistic Industrial Parks Will Grow Economy</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
+  <link rel="canonical" href="https://zawadiintel.com/" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta property="og:description" content="Global news, African voices, cinematic archives." />
+  <meta property="og:image" content="icons/icon-192.png" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/theme.css" />
+
+  <!-- 📱 PWA -->
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- 🔒 Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" href="../icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="logo">
+    <img src="../icons/icon-192.png" alt="Zawadi Intel logo" />
+    <span class="brand">📜 Zawadi Intel</span>
+  </div>
+  <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+  <ul class="main-links">
+    <li><a href="../global.html">Global</a></li>
+    <li><a href="../africa.html">Africa</a></li>
+    <li><a href="../biography.html">Biographies</a></li>
+    <li><a href="../media.html">Media</a></li>
+    <li><a href="../books.html">Books</a></li>
+    <li><a href="../app.html">Archive</a></li>
+    <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+  </ul>
+</nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+<div class="breaking-news">
+  <ul id="newsTicker"></ul>
+</div>
+
+<article>
+  <h1>Nakuru County optimistic industrial parks will grow economy</h1>
+  <p class="byline">By Zawadi Intel Staff | Nov 30, 2025</p>
+  <img src="../images/nakuru-industry.png" alt="Nakuru Industry" />
+
+  <p>Nakuru County officials have expressed renewed optimism that the region’s newly launched industrial parks will catalyze economic transformation. With strategic backing from both county and national governments, the initiative is expected to attract investors, create jobs, and boost local manufacturing.</p>
+
+  <p>Governor Susan Kihika highlighted the parks’ potential during a recent development forum, citing Nakuru’s central location, transport infrastructure, and skilled labor pool as key advantages. “We are positioning Nakuru as a regional hub for agro-processing, textiles, and light manufacturing,” she said.</p>
+
+  <p>The county has already secured partnerships with private sector players and international development agencies. Construction is underway on two flagship parks in Salgaa and Njoro, with plans to expand to Gilgil and Naivasha. Officials estimate that over 15,000 direct and indirect jobs will be created in the first phase.</p>
+
+  <p>Local entrepreneurs have welcomed the move, saying it will reduce reliance on Nairobi and Mombasa for industrial services. “This is a game-changer for small businesses in Nakuru,” said Mercy Wanjiru, a youth-led agribusiness founder. “We’ll finally have access to processing facilities and export channels right here.”</p>
+
+  <p>However, experts caution that success will depend on consistent policy support, reliable utilities, and inclusive planning. Past industrial projects in Kenya have stalled due to land disputes, power outages, and lack of community engagement. Nakuru leaders say they’ve learned from those lessons and are prioritizing transparency and sustainability.</p>
+
+  <p>As construction progresses, Nakuru’s industrial parks are being watched closely as a model for county-led economic development. If successful, they could inspire similar initiatives across Kenya, helping decentralize growth and empower regional economies beyond the capital.</p>
+
+  <p><a href="../index.html">⬅ Back to Homepage</a></p>
+</article>
+
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance -->
+  <script src="../main.js" defer></script>
+  <script>
+    // Example using NewsAPI (replace YOUR_API_KEY)
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          // Fallback if API fails
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+
+    // Run on page load
+    loadNews();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
