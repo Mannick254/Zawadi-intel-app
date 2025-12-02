@@ -2,329 +2,327 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global News — Zawadi Intel</title>
-  <meta name="description" content="Global and Middle East stories that empower communities. Covering the world's most feared, loved, and unpredictable events." />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — Home</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
+  <link rel="canonical" href="https://zawadiintel.com/" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta property="og:description" content="Global news, African voices, cinematic archives." />
+  <meta property="og:image" content="icons/icon-192.png" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/theme.css" />
+
+  <!-- 📱 PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- 🔒 Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self';" />
+
+  <!-- 🖼️ Favicon -->
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
 </head>
 <body>
 
   <!-- 🔝 Navigation -->
-  <nav class="top-nav">
-    <div class="logo">📜 Zawadi Intel</div>
-    <div class="main-links">
-      <a href="index.html">Home</a>
-      <a href="biography.html">Biographies</a>
-      <a href="media.html">Media</a>
-      <a href="books.html">Books</a>
-      <a href="app.html">Archive</a>
-      <a href="profile.html">Profile</a>
-    </div>
-  </nav>
-  <!-- Install banner (mobile) -->
-  <div id="install-banner" role="dialog" aria-live="polite">
-    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
-    <button id="install-now" onclick="installApp()" style="display:none;">Install</button>
-    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="logo">
+    <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
+    <span class="brand">📜 Zawadi Intel</span>
+  </div>
+  <ul class="main-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="global.html">Global</a></li>
+    <li><a href="articles/africa.html">Africa</a></li>
+    <li><a href="middle-east.html">Middle East</a></li>
+    <li><a href="biography.html">Biographies</a></li>
+    <li><a href="media.html">Media</a></li>
+    <li><a href="books.html">Books</a></li>
+    <li><a href="app.html">Archive</a></li>
+    <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+  </ul>
+</nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+  <div class="breaking-news">
+    <ul id="newsTicker"></ul>
   </div>
 
-  <!-- 📰 Page Banner -->
-  <header class="page-banner">
-    <h1>🌍 Global News</h1>
-    <p>Conflict, diplomacy, and cultural memory — curated for clarity and impact.</p>
+  <!-- 📰 Hero Banner -->
+  <header class="hero-banner">
+    <h1>Global Stories</h1>
+    <p>International news and perspectives shaping our world.</p>
   </header>
 
-  <!-- 🗺️ Main Grid -->
-  <main class="aj-container">
-    <section class="aj-grid">
-      <div class="aj-main">
+  <!-- 🔍 Search Bar -->
+  <section class="search-bar">
+    <form>
+      <input type="text" placeholder="Search global stories..." aria-label="Search global stories">
+      <button type="submit" class="btn">Search</button>
+    </form>
+  </section>
 
-        <!-- Global Section -->
-        <h2 style="grid-column: 1 / -1; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #006699;">🌍 Global News</h2>
+<!-- 🗞️ Main Grid -->
+<main class="aj-container">
+  <section class="aj-grid">
+    <div class="aj-main">
+    <!-- Story Card 1 -->
+    <div class="story-card">
+      <img src="images/global-climate.jpg" alt="Climate Summit">
+      <h2>World Leaders Gather for Climate Summit</h2>
+      <p>Global powers unite to accelerate action on climate change and renewable energy...</p>
+      <a href="articles/world-leaders-gather-for-climate-summit.html">Read more</a>
+    </div>
 
-        <!-- Sudan -->
-        <article class="story-card">
-          <h2>US presses UAE as Europe demands global action</h2>
-          <p>Secretary of State Marco Rubio urged UAE to help end hostilities in Sudan. RSF paramilitary accused of mass killings.</p>
-          <p><small>2025-11-15</small></p>
-          <a href="#sudan-details">Read More</a>
-        </article>
+    <!-- Story Card 2 -->
+    <div class="story-card">
+      <img src="images/global2.jpg" alt="Space Exploration">
+      <h2>New Era of Space Exploration</h2>
+      <p>International collaborations push boundaries with missions to Mars and beyond...</p>
+      <a href="articles/new-era-of-space-exploration.html">Read more</a>
+    </div>
 
-        <!-- Zambia -->
-        <article class="story-card">
-          <h2>EIB Global and ZICB unveil €30M agriculture facility</h2>
-          <p>Funds to support SMEs in agri-food value chains, boosting smallholder producer financing.</p>
-          <p><strong>Context:</strong> Agriculture is Zambia's backbone; smallholders lack financing.</p>
-          <p><strong>Impact:</strong> Boosts food security, rural employment, and export competitiveness.</p>
-          <p><small>2025-11-16</small></p>
-          <a href="#zambia-details">Read More</a>
-        </article>
+    <!-- Story Card 3 -->
+    <div class="story-card">
+      <img src="images/global3.jpg" alt="AI Regulation">
+      <h2>Global Debate on AI Regulation</h2>
+      <p>Governments and tech leaders discuss ethical frameworks for artificial intelligence...</p>
+      <a href="articles/global-debate-on-ai-regulation.html">Read more</a>
+    </div>
 
-        <!-- Climate -->
-        <article class="story-card">
-          <h2>Extreme floods slash global rice yields</h2>
-          <p>Stanford study shows flooding kills rice plants within a week, threatening food security for billions.</p>
-          <p><strong>Context:</strong> Rice is staple for half the world; climate change worsens floods.</p>
-          <p><strong>Impact:</strong> Threatens food security and raises import prices globally.</p>
-          <p><small>2025-11-16</small></p>
-          <a href="#climate-details">Read More</a>
-        </article>
+    <!-- Story Card 4 -->
+    <div class="story-card">
+      <img src="images/global4.jpg" alt="Economic Growth">
+      <h2>Emerging Economies Drive Global Growth</h2>
+      <p>Asia and Africa lead the charge in reshaping global trade and investment...</p>
+      <a href="articles/emerging-economies-drive-global-growth.html">Read more</a>
+    </div>
 
-        <!-- US Section -->
-        <h2 style="grid-column: 1 / -1; margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #006699;">🇺🇸 United States</h2>
+    <!-- Story Card 5 -->
+    <div class="story-card">
+      <img src="images/global5.jpg" alt="Health Innovation">
+      <h2>Breakthroughs in Global Health</h2>
+      <p>New vaccines and digital health tools transform medical access worldwide...</p>
+      <a href="articles/breakthroughs-in-global-health.html">Read more</a>
+    </div>
 
-        <!-- Markets -->
-        <article class="story-card">
-          <h2>Nasdaq rebounds after sharp sell-off</h2>
-          <p>Tech stocks stabilized after worst session in a month. Nvidia and Oracle recovered losses.</p>
-          <p><strong>Context:</strong> Investors panicked over Fed uncertainty; bargain-hunting lifted market.</p>
-          <p><strong>Impact:</strong> Volatility remains high; tech drives sentiment.</p>
-          <p><small>2025-11-14</small></p>
-          <a href="#markets-details">Read More</a>
-        </article>
+    <!-- Story Card 6 -->
+    <div class="story-card">
+      <img src="images/global6.jpg" alt="Cultural Exchange">
+      <h2>Global Festivals Celebrate Diversity</h2>
+      <p>From Rio to Tokyo, cultural events highlight unity through art and music...</p>
+      <a href="articles/global-festivals-celebrate-diversity.html">Read more</a>
+    </div>
 
-        <!-- Finance -->
-        <article class="story-card">
-          <h2>Meltdown fears as rate cut hopes fade</h2>
-          <p>Markets re-price Fed decision; US shutdown delays key economic data.</p>
-          <p><strong>Context:</strong> Investors rely on inflation/jobs data; uncertainty grows without it.</p>
-          <p><strong>Impact:</strong> Could trigger volatility and weaken investor confidence.</p>
-          <p><small>2025-11-14</small></p>
-          <a href="#finance-details">Read More</a>
-        </article>
+    <!-- Story Card 7 -->
+    <div class="story-card">
+      <img src="images/global7.jpg" alt="Tech Startups">
+      <h2>Tech Startups Reshape Global Markets</h2>
+      <p>Innovators from Silicon Valley to Bangalore redefine industries with bold ideas...</p>
+      <a href="articles/tech-startups-reshape-global-markets.html">Read more</a>
+    </div>
 
-        <!-- Caribbean -->
-        <article class="story-card">
-          <h2>US confirms deadly attack under 'Operation Southern Spear'</h2>
-          <p>Nearly 80 killed in drug-trafficking crackdown near Venezuela. USS Gerald R. Ford deployed.</p>
-          <p><strong>Context:</strong> Caribbean is a cocaine transit hub; US escalates military role.</p>
-          <p><strong>Impact:</strong> Signals US willingness to use force against organized crime.</p>
-          <p><small>2025-11-15</small></p>
-          <a href="#caribbean-details">Read More</a>
-        </article>
+    <!-- Story Card 8 -->
+    <div class="story-card">
+      <img src="images/global8.jpg" alt="Education Reform">
+      <h2>Global Push for Education Reform</h2>
+      <p>Countries invest in digital classrooms and inclusive learning models...</p>
+      <a href="article8.html">Read more</a>
+    </div>
 
-        <!-- Legacy Conflict Stories Section -->
-        <h2 style="grid-column: 1 / -1; margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #006699;">📊 Regional Conflicts</h2>
+    <!-- Story Card 9 -->
+    <div class="story-card">
+      <img src="images/global9.jpg" alt="Peace Talks">
+      <h2>Historic Peace Talks Begin</h2>
+      <p>Diplomats work to resolve conflicts and foster global stability...</p>
+      <a href="article9.html">Read more</a>
+    </div>
 
-        <!-- Conflict Zones -->
+    <!-- Story Card 10 -->
+    <div class="story-card">
+      <img src="images/global10.jpg" alt="Sports Unity">
+      <h2>Sports Unite Nations</h2>
+      <p>International tournaments showcase resilience and teamwork across borders...</p>
+      <a href="article10.html">Read more</a>
+    </div>
 
-        <!-- 🇺🇦 Ukraine–Russia War Update -->
-<article class="story-card collapsible">
-  <h2 onclick="toggleStory(this)">🇺🇦 Ukraine Downs 333 Drones in Overnight Barrage</h2>
-  <div class="story-content" style="display:none;">
-    <p><strong>Date:</strong> October 24, 2025</p>
-    <p>Russia launched a massive overnight assault on Ukraine, deploying <strong>405 drones and 28 missiles</strong> targeting energy infrastructure. Ukraine’s air force responded with precision, downing <strong>333 drones and 16 missiles</strong> — one of the largest interceptions to date.</p>
-    <p>Russian strikes killed six civilians, including two children, and triggered nationwide power outages. Moscow claims the attacks were retaliation for Ukrainian strikes on Russian civilian targets.</p>
-    <p>Russia also announced the capture of <strong>Pavlivka (Zaporizhia)</strong> and <strong>Ivanivka (Dnipropetrovsk)</strong>, though analysts say gains are minimal.</p>
-    <p>Diplomatic tensions escalated as Russia reiterated its conditions for ending the war: Ukraine must adopt a <strong>non-aligned, nuclear-free status</strong>, undergo <strong>demilitarization and “denazification”</strong>, and guarantee rights for Russian speakers and the Orthodox Church.</p>
-    <p>Ukraine’s President Zelenskyy has requested <strong>25 Patriot systems</strong> from the U.S., while Trump and Putin continue backchannel talks after the canceled summit.</p>
-    <a href="global.html#ukraine-russia" class="cta-btn">Explore Full Coverage</a>
-  </div>
-</article>
+    <!-- Story Card 11 -->
+    <div class="story-card">
+      <img src="images/global11.jpg" alt="Digital Economy">
+      <h2>Digital Economy Expands Worldwide</h2>
+      <p>E-commerce and fintech reshape consumer habits and financial systems...</p>
+      <a href="article11.html">Read more</a>
+    </div>
 
-  <article class="conflict-zone">
-  <h2>🔥 Sudan’s Collapsing State</h2>
-  <p>RSF seizes El-Fasher. Hospitals bombed. UN calls for ceasefire. Darfur descends into chaos[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://news.un.org/en/story/2025/10/1166184?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=1&citationId=2 "WION").</p>
-</article>
+    <!-- Story Card 12 -->
+    <div class="story-card">
+      <img src="images/global12.jpg" alt="Migration Trends">
+      <h2>Global Migration Trends Shift</h2>
+      <p>New policies and opportunities redefine migration flows across continents...</p>
+      <a href="article12.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>💣 Gaza–Israel Crisis</h2>
-  <p>Ceasefire frays. Hostage remains exchanged. 68,000 dead. Trump proposes international force, Israel rejects Turkish troops[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.aljazeera.com/news/liveblog/2025/10/26/live-israeli-attacks-across-gaza-threaten-ceasefire-one-palestinian-dead?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=3&citationId=4 "Gulf Today").</p>
-</article>
+    <!-- Story Card 13 -->
+    <div class="story-card">
+      <img src="images/global13.jpg" alt="Food Security">
+      <h2>Global Efforts on Food Security</h2>
+      <p>Innovations in agriculture aim to feed a growing population sustainably...</p>
+      <a href="article13.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>⚔️ Ukraine–Russia Stalemate</h2>
-  <p>218 clashes in 24 hours. Pokrovsk hit hardest. U.S. warns Putin over cruise missile test. Drone strikes reach Moscow[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.ukrinform.net/rubric-ato/4052244-war-update-ukrainian-forces-face-218-combat-clashes-over-past-day-pokrovsk-sector-hit-hardest.html?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=5&citationId=6 "The Independent").</p>
-</article>
+    <!-- Story Card 14 -->
+    <div class="story-card">
+      <img src="images/global14.jpg" alt="Cybersecurity">
+      <h2>Cybersecurity Becomes Global Priority</h2>
+      <p>Nations collaborate to protect infrastructure and personal data...</p>
+      <a href="article14.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🧨 India–Pakistan Flashpoint</h2>
-  <p>India launches Exercise Trishul near Sir Creek. Pakistan restricts airspace. Ceasefire remains fragile[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.news18.com/india/india-issues-notam-alert-for-tri-services-exercise-along-pakistan-border-from-oct-30-ws-l-9657145.html?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=7&citationId=8 "Mathrubhumi English").</p>
-</article>
+    <!-- Story Card 15 -->
+    <div class="story-card">
+      <img src="images/global15.jpg" alt="Tourism Recovery">
+      <h2>Tourism Industry Rebounds</h2>
+      <p>Destinations worldwide welcome travelers with sustainable initiatives...</p>
+      <a href="article15.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🌪️ Eastern DRC Turmoil</h2>
-  <p>M23 rebels clash with government forces. Migration documents invalidated. Peace talks stall despite UN optimism[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://africanarguments.org/2025/10/crisis-in-eastern-drc-the-congolese-government-and-m23-rebels-in-a-standoff-over-migration/?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=9&citationId=10 "UN News").</p>
-</article>
+    <!-- Story Card 16 -->
+    <div class="story-card">
+      <img src="images/global16.jpg" alt="Innovation Hubs">
+      <h2>Global Innovation Hubs Thrive</h2>
+      <p>Cities invest in research and development to attract talent...</p>
+      <a href="article16.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🕊️ Sahel Region Fragmentation</h2>
-  <p>4 million displaced. Coup regimes split from ECOWAS. Climate and jihadist violence destabilize Mali, Niger, Burkina Faso[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.usip.org/publications/2024/10/sahel-coup-regimes-split-ecowas-risks-instability-coastal-west-africa?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=11&citationId=12 "UN News").</p>
-</article>
+    <!-- Story Card 17 -->
+    <div class="story-card">
+      <img src="images/global17.jpg" alt="Ocean Conservation">
+      <h2>Global Ocean Conservation Efforts</h2>
+      <p>Marine reserves and awareness campaigns protect biodiversity...</p>
+      <a href="article17.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🚨 U.S. Domestic Unrest</h2>
-  <p>‘No Kings’ protests erupt nationwide. 2,500 rallies. 36 arrested. Trump faces backlash over immigration and militarization[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.usatoday.com/story/news/politics/2025/10/16/no-kings-protests-trump-what-to-know/86694507007/?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=13&citationId=14 "Wikipedia").</p>
-</article>
+    <!-- Story Card 18 -->
+    <div class="story-card">
+      <img src="images/global18.jpg" alt="Energy Transition">
+      <h2>Energy Transition Gains Momentum</h2>
+      <p>Countries shift from fossil fuels to renewable sources...</p>
+      <a href="article18.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🌍 Congo–Uganda Border Tensions</h2>
-  <p>M23 fuels war economy. Rebel zones depend on Ugandan and Rwandan trade. Bunagana reopening fails to restart commerce[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.monitor.co.ug/uganda/news/national/uganda-drc-border-trade-remains-stalled-despite-bunagana-reopening-5142662?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=15&citationId=16 "ZAWYA").</p>
-</article>
+    <!-- Story Card 19 -->
+    <div class="story-card">
+      <img src="images/global19.jpg" alt="Human Rights">
+      <h2>Global Human Rights Advocacy</h2>
+      <p>Activists push for equality and justice across continents...</p>
+      <a href="article19.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🧱 West Bank Escalation</h2>
-  <p>Settlers attack olive harvesters. Elderly woman hospitalized. UN warns of “skyrocketing” violence. IDF detains 45[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.democracynow.org/2025/10/22/headlines/israeli_forces_detain_45_people_in_the_west_bank_as_un_warns_about_settler_violence?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=17&citationId=18 "Palestine Chronicle").</p>
-</article>
+    <!-- Story Card 20 -->
+    <div class="story-card">
+      <img src="images/global20.jpg" alt="Future of Work">
+      <h2>Future of Work Goes Global</h2>
+      <p>Remote work and AI redefine employment landscapes worldwide...</p>
+      <a href="article20.html">Read more</a>
+    </div>
 
-<article class="conflict-zone">
-  <h2>🛰️ Taiwan Strait Maneuvers</h2>
-  <p>229 PLA aircraft detected. Median line breached. U.S. deepens military drills. Australia protests Chinese flare incident[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://www.taipeitimes.com/News/front/archives/2025/10/28/2003846212?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054&citationId=19&citationId=20 "Swarajya").</p>
-                                                                                                                                                                                                            </article>      
-
-        <article class="conflict-zone">
-          <h2>🇺🇦 Ukraine–Russia War</h2>
-          <p>Ukraine strikes Russian oil sites. Trump urges a freeze on front lines. NATO surveillance intensifies.</p>
-        </article>
-
-        <article class="conflict-zone">
-          <h2>🌏 China–Taiwan Tensions</h2>
-          <p>370+ Chinese aircraft near Taiwan. Taiwan deploys jets and missile systems. Tensions rise in the Strait.</p>
-        </article>
-
-        <article class="conflict-zone">
-          <h2>🇵🇸 Gaza: Ceasefire and Genocide Debate</h2>
-          <p>Israel’s airstrikes spark global protests. UN reports 30,000+ deaths. ICC reviews war crime allegations.</p>
-        </article>
-
-        <article class="conflict-zone">
-          <h2>🇮🇷 Iran: Nuclear Brinkmanship</h2>
-          <img src="images/iran1.jpg" alt="Iran nuclear facility" />
-          <p>Enrichment hits 90%. Israel threatens strikes. Vienna talks collapse. Protests erupt in Tehran.</p>
-        </article>
-
-        <article class="conflict-zone">
-          <h2>🇸🇾 Syria: Proxy War and Humanitarian Collapse</h2>
-          <p>Assad holds urban centers. Russia, Iran, Turkey, and U.S. back rival factions. Cholera hits refugee camps.</p>
-        </article>
-
-        <article class="conflict-zone">
-          <h2>🛡️ Russia–NATO Escalation</h2>
-          <p>NATO jets fly near Russian border. Lithuania mobilizes. Rutte accused of “war propaganda”.</p>
-        </article>
-
-        <article class="conflict-zone">
-          <h2>🇷🇺 Russia–USA Relations</h2>
-          <p>Lavrov rejects U.S. nuclear proposals. Trump and Putin plan Budapest summit. Undersea tunnel debated.</p>
-        </article>
-
-        <!-- 🌍 Africa Focus -->
-<section id="africa-focus" class="aj-region">
-  <h2>🌍 Africa Focus</h2>
-
-  <article class="conflict-zone">
-    <h3>🇰🇪 Kenya: Raila Odinga’s Legacy and Transition</h3>
-    <img src="images/railafarewell.png" alt="Raila Odinga's state funeral" />
-    <p>Kenya bids farewell to Raila Odinga in a state ceremony. His vision for unity and reform remains central to the nation’s political future.</p>
-  </article>
-
-  <article class="conflict-zone">
-    <h3>🇳🇬 Nigeria: Youth Protests and Economic Reform</h3>
-    <p>Thousands protest fuel hikes and currency devaluation. President Tinubu faces pressure to deliver on job creation and anti-corruption pledges.</p>
-  </article>
-
-  <article class="conflict-zone">
-    <h3>🇪🇹 Ethiopia: Tigray Peace Talks Resume</h3>
-    <p>Talks between Tigrayan leaders and Addis Ababa resume in Nairobi. Aid agencies warn of famine risk as access remains restricted.</p>
-  </article>
-
-  <article class="conflict-zone">
-    <h3>🇿🇦 South Africa: Energy Crisis and Post-Election Tensions</h3>
-    <p>Load shedding intensifies as coalition talks stall. ANC faces backlash over corruption and service delivery failures.</p>
-  </article>
-
-  <article class="conflict-zone">
-    <h3>🇨🇩 DRC: Mineral Conflict and Regional Diplomacy</h3>
-    <p>Clashes erupt near Goma over cobalt mining rights. Rwanda and Uganda accused of backing rebel militias. AU calls for restraint.</p>
-  </article>
-
-  <article class="conflict-zone">
-    <h3>🇸🇩 Sudan: Ceasefire Collapse and Refugee Surge</h3>
-    <p>Fighting resumes in Khartoum despite ceasefire pledges. Over 1 million displaced. UN warns of regional spillover.</p>
-  </article>
-</section>
- 
-<!-- 📰 Latest Middle East Stories — October 24, 2025 -->
-<section class="feature-article">
-  <h2>📰 Latest Middle East Headlines</h2>
-
-  <ul class="story-list">
-    <li><a href="https://www.aljazeera.com/news/2025/10/24/displaced-palestinians-shelter-in-graveyards" target="_blank"><u>Displaced Palestinians Shelter in Graveyards Amid Ceasefire</u></a></li>
-
-    <li><a href="https://www.ndtv.com/world-news/iran-welcomes-conditional-release-of-mahdieh-esfandiari-in-france-4539211" target="_blank"><u>Iran Welcomes Conditional Release of Citizen in France</u></a></li>
-
-    <li><a href="https://www.timesofisrael.com/netanyahu-confirms-identification-of-two-hostage-bodies" target="_blank"><u>Israel Identifies Two More Hostage Bodies as VP Vance Visits</u></a></li>
-
-    <li><a href="https://www.aljazeera.com/news/2025/10/24/israeli-airstrikes-hit-southern-lebanon" target="_blank"><u>Israeli Airstrikes Hit Southern Lebanon Overnight</u></a></li>
-
-    <li><a href="https://www.reuters.com/world/middle-east/iran-accelerates-nuclear-enrichment-at-natanz-2025-10-24/" target="_blank"><u>Iran Accelerates Nuclear Enrichment at Natanz and Fordow</u></a></li>
-
-    <li><a href="https://www.bbc.com/news/world-middle-east-67212345" target="_blank"><u>Syria’s Civil War Reignites with Drone Strikes Near Aleppo</u></a></li>
-
-    <li><a href="https://www.aljazeera.com/news/2025/10/24/rsf-drones-target-khartoum-for-third-day" target="_blank"><u>RSF Drones Target Khartoum for Third Consecutive Day</u></a></li>
-
-    <li><a href="https://www.middleeasteye.net/news/gaza-funerals-held-unidentified-bodies-returned-israel" target="_blank"><u>Gaza Funerals Held for Unidentified Bodies Returned by Israel</u></a></li>
-
-    <li><a href="https://gulfnews.com/uae/education/tunisian-twins-win-arab-reading-challenge-2025-1.1698123456789" target="_blank"><u>Tunisian Twins Crowned at Arab Reading Challenge in Dubai</u></a></li>
-
-    <li><a href="https://www.fifa.com/news/afghan-womens-refugee-team-relocated-to-morocco" target="_blank"><u>Afghan Women’s Refugee Team Relocated to Morocco for FIFA Tournament</u></a></li>
-  </ul>
-</section>
-
-
-        <!-- 🎬 Trending Feature -->
-        <section class="trending-movie">
-          <h2>🎬 Trending: <em>The Last Horizon</em></h2>
-          <p>Haunting sci-fi drama explores humanity’s final mission to colonize a distant planet. Streaming now.</p>
-        </section>
-
-        <!-- 🇰🇪 Tribute -->
-        <article class="tribute-zone">
-          <h2>🇰🇪 Raila Odinga: Kenya’s Final Goodbye</h2>
-          <p>Thousands gather in Bondo to honor Raila Odinga. A state funeral marks the end of an era in African democracy.</p>
-        </article>
-
+    <!-- 📌 Sidebar -->
+    <aside class="aj-sidebar">
+      <div class="sidebar-module">
+        <h3>Trending Topics</h3>
+        <ul>
+          <li><a href="#climate-summit">Climate Summit</a></li>
+          <li><a href="#space-exploration">Space Exploration</a></li>
+          <li><a href="#ai-regulation">AI Regulation</a></li>
+          <li><a href="#economic-growth">Economic Growth</a></li>
+          <li><a href="#global-health">Global Health</a></li>
+        </ul>
       </div>
+      <div class="sidebar-module">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="../biography.html">Profiles</a></li>
+          <li><a href="../media.html">Multimedia</a></li>
+          <li><a href="../books.html">Literature</a></li>
+          <li><a href="../app.html">Archive</a></li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+</main>
 
-      <!-- 📌 Sidebar -->
-      <aside class="aj-sidebar">
-        <div class="sidebar-module">
-          <h3>Quick Links</h3>
-          <ul>
-            <li><a href="biography.html">Artist Biographies</a></li>
-            <li><a href="media.html">Multimedia Archive</a></li>
-            <li><a href="books.html">Books &amp; Literature</a></li>
-            <li><a href="app.html">Search Archive</a></li>
-          </ul>
-        </div>
-        <div class="sidebar-module">
-          <h3>October Highlights</h3>
-          <ul>
-            <li><a href="#">Global Hunger Crisis</a></li>
-            <li><a href="#">IMF: Global Economy in Flux</a></li>
-            <li><a href="#">India’s Diwali & Defense Updates</a></li>
-          </ul>
-        </div>
-      </aside>
-    </section>
-  </main>
+ <!-- Back link -->
+  <p><a href="../index.html">⬅ Back to Homepage</a></p>
+</article>
 
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
-    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
   </footer>
 
-  <script src="main.js"></script>
+  <!-- ⚡ Performance -->
+  <script src="../main.js" defer></script>
   <script>
-  function toggleStory(header) {
-    const content = header.nextElementSibling;
-    const isVisible = content.style.display === "block";
-    content.style.display = isVisible ? "none" : "block";
-  }
-</script>
+    // Example using NewsAPI (replace YOUR_API_KEY)
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
 
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          // Fallback if API fails
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+
+    // Run on page load
+    loadNews();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

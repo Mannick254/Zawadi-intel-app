@@ -93,7 +93,7 @@
   <!-- 📢 Call to Action -->
   <section class="cta">
     <h3>What’s Your Take?</h3>
-    <button>🗣️ Join the Discussion</button>
+    <button onclick="joinDiscussion()">🗣️ Join the Discussion</button>
   </section>
 
   <!-- Back link -->
@@ -107,4 +107,11 @@
     
     <!-- ⚡ Performance -->
     <script src="../main.js" defer></script>
+    <script>
+      function joinDiscussion() {
+        window.open('https://twitter.com/intent/tweet?text=What%20are%20your%20thoughts%20on%20Kenya%E2%80%99s%20Haiti%20peace%20mission?%20' + encodeURIComponent(window.location.href), '_blank');
+      }
+    </script>
+</body>
+</html>
    

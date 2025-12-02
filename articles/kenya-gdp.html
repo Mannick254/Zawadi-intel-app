@@ -35,12 +35,12 @@
   </div>
   <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
   <ul class="main-links">
-    <li><a href="global.html">Global</a></li>
-    <li><a href="africa.html">Africa</a></li>
-    <li><a href="biography.html">Biographies</a></li>
-    <li><a href="media.html">Media</a></li>
-    <li><a href="books.html">Books</a></li>
-    <li><a href="app.html">Archive</a></li>
+    <li><a href="../global.html">Global</a></li>
+    <li><a href="../africa.html">Africa</a></li>
+    <li><a href="../biography.html">Biographies</a></li>
+    <li><a href="../media.html">Media</a></li>
+    <li><a href="../books.html">Books</a></li>
+    <li><a href="../app.html">Archive</a></li>
     <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
   </ul>
 </nav>
@@ -95,7 +95,7 @@
   <!-- 📢 Call to Action -->
   <section class="cta">
     <h3>Join the Conversation</h3>
-    <button>📢 Share Your Voice</button>
+    <button onclick="sharePage()">📢 Share Your Voice</button>
   </section>
 
   <!-- 📚 Related Articles -->
@@ -170,6 +170,22 @@
         });
       }
     });
+
+    function sharePage() {
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          text: 'Check out this article on Kenya’s GDP milestone!',
+          url: window.location.href
+        }).catch(console.error);
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          alert('Link copied to clipboard!');
+        }).catch(() => {
+          alert('Share this link: ' + window.location.href);
+        });
+      }
+    }
   </script>
 </body>
 </html>

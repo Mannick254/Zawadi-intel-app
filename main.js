@@ -8,6 +8,31 @@ document.querySelectorAll('.home-btn').forEach(button => {
   });
 });
 
+// Toggle News dropdown
+const newsBtn = document.querySelector('.news-btn');
+const newsDropdown = document.querySelector('.news-dropdown');
+
+if (newsBtn && newsDropdown) {
+  newsBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    newsDropdown.classList.toggle('show');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!newsBtn.contains(e.target) && !newsDropdown.contains(e.target)) {
+      newsDropdown.classList.remove('show');
+    }
+  });
+
+  // Close dropdown when a link is clicked
+  newsDropdown.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      newsDropdown.classList.remove('show');
+    }
+  });
+}
+
 // Basic search bar functionality (logs query)
 const searchForm = document.querySelector('.search-bar');
 if (searchForm) {
@@ -29,21 +54,48 @@ menuToggle.addEventListener("click", () => {
   mainLinks.classList.toggle("show");
 });
 
+// Hide menu when a link is clicked
+mainLinks.addEventListener("click", (e) => {
+  if (e.target.tagName === "A") {
+    mainLinks.classList.remove("show");
+  }
+});
+
+// Hide menu when clicking outside
+document.addEventListener("click", (e) => {
+  if (!menuToggle.contains(e.target) && !mainLinks.contains(e.target) && mainLinks.classList.contains("show")) {
+    mainLinks.classList.remove("show");
+  }
+});
+
 // --- Server-side auth with token-based sessions ---
 // Admin credentials: Nickson / Zawadi@123
 const AUTH_TOKEN_KEY = 'zawadi_auth_token_v1';
 const GLOBAL_COUNT_KEY = 'zawadi_global_count_v1';
 
 async function verifyToken(token) {
+  // Try server first
   try {
     const resp = await fetch('/api/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })
     });
-    if (resp.ok) {
-      const data = await resp.json();
-      return data.ok ? data : null;
+    const result = await resp.json();
+    if (resp.ok && result.ok) return result;
+  } catch (e) {
+    // continue to fallback
+  }
+  // Client-side fallback: decode token
+  try {
+    const decoded = atob(token);
+    const [username, ts] = decoded.split(':');
+    if (username && ts) {
+      const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
+      const user = users[username];
+      if (user) {
+        return { ok: true, username, isAdmin: user.isAdmin };
+      }
     }
   } catch (e) {}
   return null;
@@ -62,37 +114,54 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function registerUser(username, password) {
+  // Try server first
   try {
     const resp = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
-    const data = await resp.json();
-    return data;
+    const result = await resp.json();
+    if (resp.ok) return result;
   } catch (e) {
-    return { ok: false, message: 'Server error' };
+    // continue to fallback
   }
+  // Client-side fallback: store users in localStorage
+  const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
+  if (users[username]) return { ok: false, message: 'User already exists' };
+  users[username] = { password: btoa(password), isAdmin: false, createdAt: Date.now() }; // Simple base64 encoding (not secure, for demo only)
+  localStorage.setItem('zawadi_users', JSON.stringify(users));
+  return { ok: true };
 }
 
 async function loginUser(username, password) {
+  // Try server first
   try {
     const resp = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
-    const data = await resp.json();
-    if (data.ok) {
-      localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+    const result = await resp.json();
+    if (resp.ok) {
+      localStorage.setItem(AUTH_TOKEN_KEY, result.token);
       updateAuthUi();
-      // record login globally
       recordLogin(username).catch(() => {});
+      return result;
     }
-    return data;
   } catch (e) {
-    return { ok: false, message: 'Server error' };
+    // continue to fallback
   }
+  // Client-side fallback: check localStorage
+  const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
+  const user = users[username];
+  if (!user || atob(user.password) !== password) return { ok: false, message: 'Invalid credentials' };
+  const token = btoa(username + ':' + Date.now()); // Simple token
+  localStorage.setItem(AUTH_TOKEN_KEY, token);
+  updateAuthUi();
+  // record login globally
+  recordLogin(username).catch(() => {});
+  return { ok: true, token, isAdmin: user.isAdmin };
 }
 
 function logoutUser() {
@@ -605,6 +674,77 @@ async function subscribeUser() {
 document.getElementById("enable-notifications").addEventListener("click", () => {
   alert("Notifications feature coming soon!");
 });
+
+// Missing functions for onclick handlers
+function installApp() {
+  alert("Install feature coming soon!");
+}
+
+function calc() {
+  const num1 = parseFloat(document.getElementById('num1').value) || 0;
+  const num2 = parseFloat(document.getElementById('num2').value) || 0;
+  const result = num1 + num2;
+  document.getElementById('calc-result').textContent = `Result: ${result}`;
+}
+
+function saveNotes() {
+  const notes = document.getElementById('notes').value;
+  localStorage.setItem('offline-notes', notes);
+  document.getElementById('notes-status').textContent = 'Notes saved!';
+  setTimeout(() => {
+    document.getElementById('notes-status').textContent = '';
+  }, 2000);
+}
+
+function play(button) {
+  // Simple tic-tac-toe logic
+  if (button.textContent === '') {
+    button.textContent = 'X';
+    // Basic AI: random empty cell
+    const buttons = Array.from(document.querySelectorAll('#tic-tac-toe button'));
+    const empty = buttons.filter(b => b.textContent === '');
+    if (empty.length > 0) {
+      const random = empty[Math.floor(Math.random() * empty.length)];
+      random.textContent = 'O';
+    }
+  }
+}
+
+function toggleStory(element) {
+  const story = element.parentElement;
+  const content = story.querySelector('.text-block');
+  if (content) {
+    content.style.display = content.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function supportUkraine() {
+  window.open('https://www.unicef.org/emergencies/ukraine-crisis', '_blank');
+}
+
+function sharePage() {
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard!');
+  }
+}
+
+function joinDiscussion() {
+  alert('Discussion feature coming soon!');
+}
+
+function learnCybersecurity() {
+  window.open('https://www.cisa.gov/secure-our-world', '_blank');
+}
+
+function findTestingCenter() {
+  window.open('https://www.who.int/health-topics/hiv-aids', '_blank');
+}
 
 
 

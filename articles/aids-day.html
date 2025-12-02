@@ -111,7 +111,7 @@
 <!-- 📢 Call to Action -->
 <section class="cta">
   <h3>Get Tested Today</h3>
-  <button>🩸 Find a Testing Center</button>
+  <button onclick="findTestingCenter()">🩸 Find a Testing Center</button>
 </section>
 
 <!-- 📚 Related Articles -->
@@ -190,6 +190,10 @@
         });
       }
     });
+
+    function findTestingCenter() {
+      window.open('https://www.google.com/maps/search/HIV+testing+centers+near+me', '_blank');
+    }
   </script>
 </body>
 </html>

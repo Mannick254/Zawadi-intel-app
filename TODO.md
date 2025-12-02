@@ -1,11 +1,9 @@
-# TODO: Update Articles to Include Home Features
+# Navigation Button Fixes in Articles
 
-- [x] Update aids-day.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update bishop-kiengei.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update genz-politics.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update kenya-gdp.html: Add footer and scripts (nav and ticker already present).
-- [x] Update kisii-airbus.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update nakuru-industry.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update raila-bodyguard.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update ruto-wedding.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
-- [x] Update uda-odm.html: Add nav, breaking news ticker, footer, and scripts while keeping article content.
+## Completed Tasks
+- [x] Update navigation links in articles/kenya-gdp.html to use "../" for root files.
+- [x] Update related links in articles/world-leaders-gather-for-climate-summit.html to use "../" for root files.
+- [x] Update related links in articles/ukraine-energy.html to use "../" for root files.
+
+## Followup Steps
+- [ ] Verify links work correctly after changes.
