@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — Amazon AI Chip</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Amazon unveils a new AI chip to rival Nvidia, intensifying competition in cloud and AI hardware." />
+  <meta name="keywords" content="Amazon, AI Chip, Nvidia, Cloud Computing, Hardware, Zawadi Intel" />
+  <link rel="canonical" href="https://zawadiintel.com/articles/amazon-ai-chip.html" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="Amazon unveils new AI chip to rival Nvidia" />
+  <meta property="og:description" content="Amazon introduces a powerful AI chip, intensifying competition in cloud and AI hardware." />
+  <meta property="og:image" content="../images/chip.jpg" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/articles/amazon-ai-chip.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/articles.css" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="../icons/icon-192.png" alt="Zawadi Intel logo" />
+      <span class="brand">📜 Zawadi Intel</span>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+    <ul class="main-links">
+      <li><a href="../global.html">Global</a></li>
+      <li><a href="../articles/africa.html">Africa</a></li>
+      <li><a href="../biography.html">Biographies</a></li>
+      <li><a href="../media.html">Media</a></li>
+      <li><a href="../books.html">Books</a></li>
+      <li><a href="../app.html">Archive</a></li>
+      <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+    </ul>
+  </nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+  <div class="breaking-news">
+    <ul id="newsTicker"></ul>
+  </div>
+
+  <!-- 📰 Article -->
+  <article>
+    <h1>Amazon unveils new AI chip to rival Nvidia</h1>
+    <p class="byline">By Zawadi Intel Staff | Dec 3, 2025</p>
+    <img src="../images/chip.jpg" alt="Amazon AI Chip" />
+
+    <!-- 🌟 Hero Banner -->
+    <section class="hero">
+      <img src="../images/amazon-data-center.jpg" alt="Amazon Data Center" />
+      <div class="hero-text">
+        <h2>Amazon’s AI Hardware Leap</h2>
+        <p>Challenging Nvidia’s dominance in the AI chip market.</p>
+      </div>
+    </section>
+
+    <p>Amazon has unveiled a new artificial intelligence chip designed to rival Nvidia’s dominance in the AI hardware market. The chip, developed under Amazon Web Services (AWS), promises faster performance and lower costs for enterprises deploying machine learning at scale.</p>
+
+    <p>The announcement signals intensifying competition in cloud infrastructure, as Amazon positions itself against Nvidia’s GPUs and Google’s TPUs. Analysts suggest this move could reshape the AI ecosystem by offering businesses more options for training and deploying models.</p>
+
+    <!-- 📊 Data Highlights -->
+    <section class="data-highlights">
+      <h3>Key Features</h3>
+      <ul>
+        <li>⚡ High-performance AI processing optimized for AWS workloads</li>
+        <li>💰 Lower cost compared to Nvidia GPUs</li>
+        <li>🌐 Integration with Amazon’s cloud ecosystem</li>
+        <li>📈 Potential disruption in enterprise AI adoption</li>
+      </ul>
+    </section>
+
+    <blockquote>
+      “This chip is designed to democratize AI by making it faster and more affordable.”
+    </blockquote>
+
+    <p>Industry experts believe Amazon’s entry into the AI chip race could accelerate innovation while challenging Nvidia’s market share. The competition is expected to benefit startups, researchers, and enterprises seeking scalable AI solutions.</p>
+
+    <!-- 📚 Related Articles -->
+    <aside class="related">
+      <h3>Related Stories</h3>
+      <ul>
+        <li><a href="kenya-politics.html">Kenya Politics: Raila–Ruto Deal</a></li>
+        <li><a href="siaya-doctors.html">Siaya Doctors Strike</a></li>
+        <li><a href="bahati-family.html">Bahati’s Family Search</a></li>
+      </ul>
+    </aside>
+
+    <!-- Back link -->
+    <p><a href="../index.html">⬅ Back to Homepage</a></p>
+  </article>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance Scripts -->
+  <script src="../main.js" defer></script>
+  <script>
+    // Breaking news ticker
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+    loadNews();
+
+    // Notifications
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

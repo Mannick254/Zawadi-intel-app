@@ -1,9 +1,6 @@
-# Navigation Button Fixes in Articles
+# TODO: Implement Toggle Button for Mobile Navigation
 
-## Completed Tasks
-- [x] Update navigation links in articles/kenya-gdp.html to use "../" for root files.
-- [x] Update related links in articles/world-leaders-gather-for-climate-summit.html to use "../" for root files.
-- [x] Update related links in articles/ukraine-energy.html to use "../" for root files.
-
-## Followup Steps
-- [ ] Verify links work correctly after changes.
+- [x] Add toggle button to navigation in index.html
+- [x] Update JavaScript to use correct class selector
+- [ ] Test toggle functionality on mobile devices
+- [ ] Ensure button hides menu when clicked outside or on link click

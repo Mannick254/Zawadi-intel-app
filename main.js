@@ -47,26 +47,28 @@ if (searchForm) {
 }
 
 // Toggle mobile menu
-const menuToggle = document.querySelector(".menu-toggle");
+const menuToggle = document.querySelector(".nav-toggle");
 const mainLinks = document.querySelector(".main-links");
 
-menuToggle.addEventListener("click", () => {
-  mainLinks.classList.toggle("show");
-});
+if (menuToggle && mainLinks) {
+  menuToggle.addEventListener("click", () => {
+    mainLinks.classList.toggle("show");
+  });
 
-// Hide menu when a link is clicked
-mainLinks.addEventListener("click", (e) => {
-  if (e.target.tagName === "A") {
-    mainLinks.classList.remove("show");
-  }
-});
+  // Hide menu when a link is clicked
+  mainLinks.addEventListener("click", (e) => {
+    if (e.target.tagName === "A") {
+      mainLinks.classList.remove("show");
+    }
+  });
 
-// Hide menu when clicking outside
-document.addEventListener("click", (e) => {
-  if (!menuToggle.contains(e.target) && !mainLinks.contains(e.target) && mainLinks.classList.contains("show")) {
-    mainLinks.classList.remove("show");
-  }
-});
+  // Hide menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!menuToggle.contains(e.target) && !mainLinks.contains(e.target) && mainLinks.classList.contains("show")) {
+      mainLinks.classList.remove("show");
+    }
+  });
+}
 
 // --- Server-side auth with token-based sessions ---
 // Admin credentials: Nickson / Zawadi@123
