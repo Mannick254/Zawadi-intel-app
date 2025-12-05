@@ -1,6 +1,4 @@
-# TODO: Implement Toggle Button for Mobile Navigation
+# TODO: Improve Story Cards and Articles CSS
 
-- [x] Add toggle button to navigation in index.html
-- [x] Update JavaScript to use correct class selector
-- [ ] Test toggle functionality on mobile devices
-- [ ] Ensure button hides menu when clicked outside or on link click
+- [x] Simplify .story-card: Remove gradients, colorful borders, and excessive animations. Keep subtle shadows and minimal hover effects.
+- [x] Enhance .modal-article: Improve layout for better readability and structure, focusing on spacing and content focus.
