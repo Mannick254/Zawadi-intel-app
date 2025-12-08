@@ -1,4 +1,51 @@
 /* ===========================
+   Three Column Layout
+   =========================== */
+.three-column-layout {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.global-column {
+  flex: 0 0 calc(40% - 20px);
+  padding: 10px;
+}
+
+.african-column {
+  flex: 0 0 calc(35% - 20px);
+  padding: 10px;
+}
+
+.local-column {
+  flex: 0 0 calc(25% - 20px);
+  padding: 10px;
+}
+
+/* Responsive adjustments for three-column layout */
+@media (max-width: 992px) {
+  .three-column-layout {
+    flex-direction: column;
+  }
+  .global-column,
+  .african-column,
+  .local-column {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .three-column-layout {
+    gap: 5px;
+  }
+  .global-column,
+  .african-column,
+  .local-column {
+    padding: 5px;
+  }
+}
+
+/* ===========================
    Global Reset & Base Styles
    =========================== */
 * {

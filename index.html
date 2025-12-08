@@ -41,6 +41,7 @@
     <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
     <span class="brand">📜 Zawadi Intel</span>
   </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">☰</button>
   <ul class="main-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="global.html">Global</a></li>
@@ -73,19 +74,62 @@
     </form>
   </section>
 
-  <main class="aj-container">
-  <section class="aj-grid">
-    <div class="aj-main">
+  <!-- 📰 News Ticker -->
+  <section class="news-ticker">
+    <ul id="newsTicker"></ul>
+  </section>
 
-      <!-- 🌍 Global Trending News -->
+  <main class="aj-container">
+  <section class="three-column-layout">
+    <div class="global-column">
+      <h2>News Today</h2>
+      <blockquote>"The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt</blockquote>
+
       <section class="global-news">
-        <article class="story-card">
-          <a href="articles/kenya-politics.html">
-            <h2>Oburu Oginga urges Ruto to honor Raila deal before 2027</h2>
-            <img src="images/politics1.jpg" alt="Kenya Politics" />
-            <p>Oburu Oginga calls on President Ruto to fully implement the 10-point Raila agreement...</p>
-          </a>
-        </article>
+
+
+
+  <!-- 🌍 Middle East -->
+  <article class="story-card">
+    <a href="articles/middle-east-security.html">
+      <h2>Red Sea tensions rise after U.S. Navy warship misfires on jets</h2>
+      <img src="images/middleeast1.jpg" alt="Middle East Security" />
+      <p>A defense mishap sparks debate over military readiness in the volatile Red Sea corridor...</p>
+    </a>
+  </article>
+
+  <article class="story-card">
+    <a href="articles/middle-east-energy.html">
+      <h2>OPEC+ signals production cuts amid global demand uncertainty</h2>
+      <img src="images/middleeast2.jpg" alt="Middle East Energy" />
+      <p>Oil producers weigh new strategies as markets brace for 2026 economic shifts...</p>
+    </a>
+  </article>
+
+  <!-- 🌍 Global -->
+  <article class="story-card">
+    <a href="articles/global-un.html">
+      <h2>UNEA-7 opens in Nairobi with urgent climate agenda</h2>
+      <img src="images/global1.jpg" alt="Global UN Summit" />
+      <p>Over 170 countries gather to debate solutions for climate change, biodiversity loss, and pollution...</p>
+    </a>
+  </article>
+
+  <article class="story-card">
+    <a href="articles/global-aid.html">
+      <h2>UN cuts humanitarian appeal to $23bn amid donor fatigue</h2>
+      <img src="images/global2.jpg" alt="Global Aid" />
+      <p>Millions risk losing lifesaving assistance as funding gaps widen worldwide...</p>
+    </a>
+  </article>
+
+  <article class="story-card">
+    <a href="articles/global-ai.html">
+      <h2>India launches inclusive AI mission for the Global South</h2>
+      <img src="images/global3.jpg" alt="Global AI" />
+      <p>New initiative aims to build equitable AI ecosystems across developing nations...</p>
+    </a>
+  </article>
 
         <article class="story-card">
           <a href="articles/amazon-ai-chip.html">
@@ -94,11 +138,7 @@
             <p>Amazon introduces a powerful AI chip, intensifying competition in cloud and AI hardware...</p>
           </a>
         </article>
-      </section>
-
-      <section>
-        <h2>Global Trending News</h2>
-        <div class="news-list">
+    
           <article class="story-card">
             <a href="global.html#us-economy">
               <h2>🇺🇸 US Economy Shows Resilience Amid Global Uncertainty</h2>
@@ -114,21 +154,8 @@
             <p>China unveils breakthroughs in AI and renewable energy technologies.</p>
             <time datetime="2025-11-22">2025-11-22</time>
           </article>
-        </div>
-      </section>
-      
+        
   
-
-      <!-- More Global News Articles -->
-      <article class="story-card">
-        <a href="articles/bahati-family.html">
-          <h2>Bahati searches for woman claiming to be his mother</h2>
-          <img src="images/bahati1.jpg" alt="Bahati Family Story" />
-          <p>Musician Bahati reveals he is seeking a woman who claims to be his biological mother...</p>
-        </a>
-      </article>
-      
-
       <article class="story-card">
         <a href="articles/pdiddy-netflix.html">
           <h2>P Diddy’s lawyers respond to Netflix docuseries by 50 Cent</h2>
@@ -136,16 +163,6 @@
           <p>Sean 'P Diddy' Combs’ legal team reacts to Netflix docuseries revisiting controversies...</p>
         </a>
       </article>
-      
-
-      <article class="story-card">
-        <a href="articles/siaya-doctors.html">
-          <h2>Siaya doctors down tools after alleged threats from county staff</h2>
-          <img src="images/siaya.jpg" alt="Siaya Doctors Strike" />
-          <p>Doctors in Siaya County strike after claiming they were threatened by county staff...</p>
-        </a>
-      </article>
-      
 
       <article class="story-card">
         <a href="articles/middleeast-drones.html">
@@ -179,45 +196,7 @@
         </a>
       </article>
 
-      <article class="story-card">
-        <a href="articles/eac-fgm-law.html">
-          <h2>Kenya backs regional law to eliminate FGM in East Africa</h2>
-          <img src="images/fgm.jpg" alt="East Africa FGM Law" />
-          <p>Proposed EAC bill seeks to harmonize penalties and enforcement against cross-border FGM practices...</p>
-        </a>
-      </article>
 
-      <article class="story-card">
-        <a href="articles/eastafrica-instability.html">
-          <h2>East Africa overtakes Sahel in youth uprising risk</h2>
-          <img src="images/protests.jpg" alt="East Africa Instability" />
-          <p>New report warns of democratic backsliding and rising protests across the region...</p>
-        </a>
-      </article>
-
-      <article class="story-card">
-        <a href="articles/zoho-eastafrica.html">
-          <h2>Zoho expands digital skills program across East Africa</h2>
-          <img src="images/zoho.jpg" alt="Zoho East Africa Program" />
-          <p>Tech firm trains youth in Kenya, Uganda, and Tanzania on low-code app development...</p>
-        </a>
-      </article>
-
-      <article class="story-card">
-        <a href="articles/westafrica-drugs.html">
-          <h2>West Africa faces escalating synthetic drug crisis</h2>
-          <img src="images/drugs.jpg" alt="West Africa Drug Crisis" />
-          <p>Ghana’s foreign minister calls for tougher regional action against synthetic drug proliferation...</p>
-        </a>
-      </article>
-
-      <article class="story-card">
-        <a href="articles/nigeria-power.html">
-          <h2>Nigeria targets power supply for entire West Africa</h2>
-          <img src="images/power.jpg" alt="Nigeria Power Supply" />
-          <p>Minister says fixing Nigeria’s electricity grid could stabilize energy security across the region...</p>
-        </a>
-      </article>
 
       <article class="story-card">
         <a href="articles/europe-defense.html">
@@ -235,29 +214,7 @@
         </a>
       </article>
 
-      <article class="story-card">
-        <a href="articles/nairobi-football.html">
-          <h2>Mathare United clash with Nairobi United in tense fixture</h2>
-          <img src="images/mathare.jpg" alt="Nairobi Football" />
-          <p>Relegation-threatened Mathare face mid-table Nairobi United in a decisive league encounter...</p>
-        </a>
-      </article>
 
-      <article class="story-card">
-        <a href="articles/nairobi-matatus.html">
-          <h2>Nairobi MCAs issue ultimatum to evict matatus from fuel stations</h2>
-          <img src="images/matatus.jpg" alt="Nairobi Matatus" />
-          <p>County assembly warns of disaster risks as PSVs crowd petrol stations illegally...</p>
-        </a>
-      </article>
-
-      <article class="story-card">
-        <a href="articles/nairobi-gangs.html">
-          <h2>Report reveals over 130 criminal gangs operating in Nairobi</h2>
-          <img src="images/gangs.jpg" alt="Nairobi Gangs" />
-          <p>Interior ministry highlights growing gang activity disrupting law and order in the capital...</p>
-        </a>
-      </article>
 
       <article class="story-card">
         <a href="articles/epl-chelsea.html">
@@ -274,100 +231,27 @@
           <p>Villa stage stunning comeback while Liverpool stumble with a draw against Sunderland at Anfield...</p>
         </a>
       </article>
+      
+    </div> <!--End of global column--> 
 
-            <!-- 🇰🇪 Kenya Feature Article -->
-      <article class="story-card feature-article">
-        <a href="articles/kenya-gdp.html">
-          <h2>Kenya’s GDP hits Sh11 trillion milestone</h2>
-          <p class="byline">By Zawadi Intel Staff | Dec 2, 2025</p>
-          <img src="images/kenya-gdp.png" alt="Kenya GDP Milestone" />
-          <p>Kenya’s economy shows resilience despite global shocks, driven by agriculture, fintech, and infrastructure growth.</p>
-          <p class="highlight">📊 GDP Growth: 5.3% in 2025</p>
-          <blockquote>“Kenya’s resilience is a model for Africa,” — World Bank Analyst</blockquote>
-          <span class="cta-btn">Read Full Analysis</span>
-        </a>
-      </article>
 
-      <!-- 🇰🇪 Kenya Trending News -->
-      <div class="top-row">
-        <article class="story-card">
-          <a href="articles/raila-bodyguard.html">
-            <h2>Raila Odinga’s bodyguard Maurice Ogeta stuns Kenyans</h2>
-            <img src="images/raila-bodyguard.jpeg" alt="Raila Bodyguard" />
-            <p>Photos of his apartment investment wow social media...</p>
-          </a>
-        </article>
-
-        <article class="story-card">
-          <a href="articles/bishop-kiengei.html">
-            <h2>Bishop Kiengei sparks debate with warning on relationships</h2>
-            <img src="images/bishop.jpeg" alt="Bishop Kiengei" />
-            <p>His sermon ignites national conversation on cultural norms...</p>
-          </a>
-        </article>
-
-        <article class="story-card">
-          <a href="articles/ruto-wedding.html">
-            <h2>Ruto and Wetang’ula attend Noordin Haji’s son’s glamorous wedding</h2>
-            <img src="images/ruto-wedding.jpg" alt="Ruto Wedding" />
-            <p>Political leaders gather for a high‑profile family event...</p>
-          </a>
-        </article>
-
-        <article class="story-card">
-          <a href="articles/aids-day.html">
-            <h2>World AIDS Day: Govt targets vs reality for youth living with HIV</h2>
-            <img src="images/aids-day.jpg" alt="World AIDS Day" />
-            <p>Kenya reviews progress on HIV prevention and treatment...</p>
-          </a>
-        </article>
-      </div>
-
-      <article class="story-card">
-        <a href="articles/kisii-airbus.html">
-          <h2>Kisii exclusive: Travel chaos fears ease after Airbus software fix</h2>
-          <p>Air travel stabilizes after weeks of delays...</p>
-        </a>
-      </article>
-    
-      <article class="story-card">
-        <a href="articles/genz-politics.html">
-          <h2>Gen Z survey shows youth shaping Kenya’s political future</h2>
-          <p>Young voters emerge as a decisive force in 2027 elections...</p>
-        </a>
-      </article>
-
-      <article class="story-card">
-        <a href="articles/nakuru-industry.html">
-          <h2>Nakuru County optimistic industrial parks will grow economy</h2>
-          <p>New investments promise jobs and regional growth...</p>
-        </a>
-      </article>
-    
-
-      <article class="story-card">
-        <a href="articles/uda-odm.html">
-          <h2>Grand coalition talks: UDA and ODM eye 2027 partnership</h2>
-          <p>Political realignment could reshape Kenya’s future...</p>
-        </a>
-      </article>
-
-      <article class="story-card">
-        <a href="articles/haiti-mission.html">
-          <h2>Kenya’s Haiti peace mission faces reckoning</h2>
-          <p>Questions arise over Kenya’s global peacekeeping role...</p>
-        </a>
-      </article>
-
+     <div class="african-column">
+      <section class="african-news">
       <!-- 🌍 Africa & Global Trending News -->
-      <section class="trending-news">
-        <h2>Africa & Global Trending News</h2>
-        <div class="news-list">
+
+        <h2>Africa Trending News</h2>
           <article class="story-card">
             <a href="africa.html#sa-trade"><h2>🇿🇦 South Africa Resilient Amid Global Trade Shifts</h2></a>
             <p>Minister Parks Tau says SA benefits from trade agreements covering 90 countries despite disruptions.</p>
             <time datetime="2025-11-22">2025-11-22</time>
           </article>
+          <article class="story-card">
+        <a href="articles/bahati-family.html">
+          <h2>Bahati searches for woman claiming to be his mother</h2>
+          <img src="images/bahati1.jpg" alt="Bahati Family Story" />
+          <p>Musician Bahati reveals he is seeking a woman who claims to be his biological mother...</p>
+        </a>
+      </article>
 
           <article class="story-card">
             <a href="africa.html#g20-bishops"><h2>✝️ Catholic Bishops in Southern Africa Welcome G20 Resolutions</h2></a>
@@ -389,12 +273,6 @@
   <p>Analysts argue the G20 has failed on debt relief, urging UN intervention.</p>
   <time datetime="2025-11-22">2025-11-22</time>
 </article>
-
-
-        </div>
-
-
-        <div class="news-grid">
           <article class="story-card">
             <a href="articles/cop30-outcomes.html">
               <h2>COP30 criticized for ignoring food systems</h2>
@@ -442,11 +320,190 @@
               <p>Republicans secured victory in Tennessee’s special House election, shaping the political landscape ahead of midterms...</p>
             </a>
           </article>
-        </div>
-      </section>
 
-    </div> <!-- ✅ close aj-main -->
-  </section>
+   <article class="story-card">
+        <a href="articles/africa-climate.html">
+          <h2>African leaders demand food system reforms after COP30</h2>
+          <img src="images/africa1.jpg" alt="Africa Climate" />
+          <p>Advocates warn climate action is impossible without transforming agriculture across the continent...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/africa-business.html">
+          <h2>MSK 2025 Awards celebrate Kenya’s top brands and campaigns</h2>
+          <img src="images/africa2.jpg" alt="Africa Business" />
+          <p>Tusker, Airtel, and KCB shine at the Marketing Society of Kenya gala in Nairobi...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/eac-fgm-law.html">
+          <h2>Kenya backs regional law to eliminate FGM in East Africa</h2>
+          <img src="images/fgm.jpg" alt="East Africa FGM Law" />
+          <p>Proposed EAC bill seeks to harmonize penalties and enforcement against cross-border FGM practices...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/eastafrica-instability.html">
+          <h2>East Africa overtakes Sahel in youth uprising risk</h2>
+          <img src="images/protests.jpg" alt="East Africa Instability" />
+          <p>New report warns of democratic backsliding and rising protests across the region...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/zoho-eastafrica.html">
+          <h2>Zoho expands digital skills program across East Africa</h2>
+          <img src="images/zoho.jpg" alt="Zoho East Africa Program" />
+          <p>Tech firm trains youth in Kenya, Uganda, and Tanzania on low-code app development...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/westafrica-drugs.html">
+          <h2>West Africa faces escalating synthetic drug crisis</h2>
+          <img src="images/drugs.jpg" alt="West Africa Drug Crisis" />
+          <p>Ghana’s foreign minister calls for tougher regional action against synthetic drug proliferation...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/nigeria-power.html">
+          <h2>Nigeria targets power supply for entire West Africa</h2>
+          <img src="images/power.jpg" alt="Nigeria Power Supply" />
+          <p>Minister says fixing Nigeria’s electricity grid could stabilize energy security across the region...</p>
+        </a>
+      </article>
+      <blockquote>"The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt</blockquote>
+    </div>
+    <!--End of africa column-->
+
+    <div class="local-column">
+      <section class="local-news">
+      <h2>Local News</h2>
+            <!-- 🇰🇪 Kenya Feature Article -->
+      <article class="story-card feature-article">
+        <a href="articles/kenya-gdp.html">
+          <h2>Kenya’s GDP hits Sh11 trillion milestone</h2>
+          <p class="byline">By Zawadi Intel Staff | Dec 2, 2025</p>
+          <img src="images/kenya-gdp.png" alt="Kenya GDP Milestone" />
+          <p>Kenya’s economy shows resilience despite global shocks, driven by agriculture, fintech, and infrastructure growth.</p>
+          <p class="highlight">📊 GDP Growth: 5.3% in 2025</p>
+          <blockquote>“Kenya’s resilience is a model for Africa,” — World Bank Analyst</blockquote>
+          <span class="cta-btn">Read Full Analysis</span>
+        </a>
+      </article>
+      <!-- 🇰🇪 Kenya Trending News -->
+      
+        <article class="story-card">
+          <a href="articles/raila-bodyguard.html">
+            <h2>Raila Odinga’s bodyguard Maurice Ogeta stuns Kenyans</h2>
+            <img src="images/raila-bodyguard.jpeg" alt="Raila Bodyguard" />
+            <p>Photos of his apartment investment wow social media...</p>
+          </a>
+        </article>
+
+        <article class="story-card">
+          <a href="articles/bishop-kiengei.html">
+            <h2>Bishop Kiengei sparks debate with warning on relationships</h2>
+            <img src="images/bishop.jpeg" alt="Bishop Kiengei" />
+            <p>His sermon ignites national conversation on cultural norms...</p>
+          </a>
+        </article>
+
+        <article class="story-card">
+          <a href="articles/ruto-wedding.html">
+            <h2>Ruto and Wetang’ula attend Noordin Haji’s son’s glamorous wedding</h2>
+            <img src="images/ruto-wedding.jpg" alt="Ruto Wedding" />
+            <p>Political leaders gather for a high‑profile family event...</p>
+          </a>
+        </article>
+
+        <article class="story-card">
+          <a href="articles/aids-day.html">
+            <h2>World AIDS Day: Govt targets vs reality for youth living with HIV</h2>
+            <img src="images/aids-day.jpg" alt="World AIDS Day" />
+            <p>Kenya reviews progress on HIV prevention and treatment...</p>
+          </a>
+        </article>
+      
+      <article class="story-card">
+        <a href="articles/kisii-airbus.html">
+          <h2>Kisii exclusive: Travel chaos fears ease after Airbus software fix</h2>
+          <p>Air travel stabilizes after weeks of delays...</p>
+        </a>
+      </article>
+    
+      <article class="story-card">
+        <a href="articles/genz-politics.html">
+          <h2>Gen Z survey shows youth shaping Kenya’s political future</h2>
+          <p>Young voters emerge as a decisive force in 2027 elections...</p>
+        </a>
+      </article>
+
+      <article class="story-card">
+        <a href="articles/nakuru-industry.html">
+          <h2>Nakuru County optimistic industrial parks will grow economy</h2>
+          <p>New investments promise jobs and regional growth...</p>
+        </a>
+      </article>
+    
+
+      <article class="story-card">
+        <a href="articles/uda-odm.html">
+          <h2>Grand coalition talks: UDA and ODM eye 2027 partnership</h2>
+          <p>Political realignment could reshape Kenya’s future...</p>
+        </a>
+      </article>
+
+      <article class="story-card">
+        <a href="articles/haiti-mission.html">
+          <h2>Kenya’s Haiti peace mission faces reckoning</h2>
+          <p>Questions arise over Kenya’s global peacekeeping role...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/kenya-politics.html">
+          <h2>Oburu Oginga urges Ruto to honor Raila deal before 2027</h2>
+          <img src="images/politics1.jpg" alt="Kenya Politics" />
+          <p>Oburu Oginga calls on President Ruto to fully implement the 10-point Raila agreement...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/kenya-health.html">
+          <h2>Kenya–US Sh208bn health partnership documents to be tabled in Parliament</h2>
+          <img src="images/health1.jpg" alt="Kenya Health" />
+          <p>Health CS Aden Duale pledges transparency in the landmark health deal with the United States...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/kenya-sports.html">
+          <h2>KCB RFC crushes Leos 72–14 in Kenya Cup showdown</h2>
+          <img src="images/sports1.jpg" alt="Kenya Rugby" />
+          <p>KCB’s dominant performance highlights Kenya’s rugby strength in the 2025/26 season...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/nairobi-football.html">
+          <h2>Mathare United clash with Nairobi United in tense fixture</h2>
+          <img src="images/mathare.jpg" alt="Nairobi Football" />
+          <p>Relegation-threatened Mathare face mid-table Nairobi United in a decisive league encounter...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/nairobi-matatus.html">
+          <h2>Nairobi MCAs issue ultimatum to evict matatus from fuel stations</h2>
+          <img src="images/matatus.jpg" alt="Nairobi Matatus" />
+          <p>County assembly warns of disaster risks as PSVs crowd petrol stations illegally...</p>
+        </a>
+      </article>
+      <article class="story-card">
+        <a href="articles/nairobi-gangs.html">
+          <h2>Report reveals over 130 criminal gangs operating in Nairobi</h2>
+          <img src="images/gangs.jpg" alt="Nairobi Gangs" />
+          <p>Interior ministry highlights growing gang activity disrupting law and order in the capital...</p>
+        </a>
+      </article>
+      <blockquote>"The only way to do great work is to love what you do." — Steve Jobs</blockquote>
+    
+    </div><!--End of local column-->
+  
 </main>
 
  
@@ -478,6 +535,12 @@
     });
   </script>
   <script>
+    // Mobile navigation toggle
+    document.getElementById("nav-toggle").addEventListener("click", () => {
+      const navLinks = document.querySelector(".main-links");
+      navLinks.classList.toggle("show");
+    });
+
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/service-worker.js")
         .then(reg => console.log("Service Worker registered:", reg))

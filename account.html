@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile — Zawadi Intel</title>
-  <meta name="description" content="Manage your user profile, upload and crop your photo." />
+  <title>Account — Zawadi Intel</title>
+  <meta name="description" content="Manage your user account, profile photo, and settings." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/theme.css" />
@@ -124,7 +124,7 @@
       <a href="media.html">Media</a>
       <a href="books.html">Books</a>
       <a href="app.html">Archive</a>
-      <a href="profile.html" class="active">Profile</a>
+      <a href="account.html" class="active">Account</a>
       <button id="install-button" onclick="installApp()" style="display: none;">Install App</button>
     </div>
   </nav>
@@ -138,11 +138,11 @@
 
   <!-- 📰 Hero Banner -->
   <header class="hero-banner">
-    <h1>User Profile</h1>
-    <p>Manage your profile photo and settings.</p>
+    <h1>User Account</h1>
+    <p>Manage your account, profile photo, and settings.</p>
   </header>
 
-  <!-- Profile Content -->
+  <!-- Account Content -->
   <main class="aj-container">
     <div class="profile-container">
       <h2>Welcome, <span id="username-display">Guest</span></h2>
@@ -212,7 +212,7 @@
 
   <script src="main.js"></script>
   <script>
-    // Profile-specific script
+    // Account-specific script
     let cropper;
     const canvas = document.getElementById('crop-canvas');
     const ctx = canvas.getContext('2d');
