@@ -9,13 +9,13 @@
   <!-- 🔍 SEO & Metadata -->
   <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
   <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
-  <link rel="canonical" href="https://zawadiintel.com/" />
+  <link rel="canonical" href="https://zawadiintel.com/articles/kisii-airbus.html" />
 
   <!-- 📱 Social Sharing -->
-  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
-  <meta property="og:description" content="Global news, African voices, cinematic archives." />
-  <meta property="og:image" content="icons/icon-192.png" />
-  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
+  <meta property="og:title" content="Zawadi Intel — Kisii Exclusive: Travel Chaos Fears Ease After Airbus Software Fix" />
+  <meta property="og:description" content="Breaking global stories, African voices, and cinematic archives." />
+  <meta property="og:image" content="https://zawadiintel.com/images/kisii-airbus.png" />
+  <meta property="og:url" content="https://zawadiintel.com/articles/kisii-airbus.html" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- 🎨 Styles -->
@@ -29,7 +29,7 @@
   <meta name="theme-color" content="#000000" />
 
   <!-- 🔒 Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://zawadiintel.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
 
   <!-- 🖼️ Favicon -->
   <link rel="icon" href="../icons/icon-192.png" type="image/png" />
@@ -60,7 +60,7 @@
 </div>
 <article>
   <h1>Kisii exclusive: Travel chaos fears ease after Airbus software fix</h1>
-  <p class="byline">By Zawadi Intel Staff | Nov 30, 2025</p>
+  <p class="byline">By Zawadi Intel Staff | October 26, 2025</p>
   <img src="../images/kisii-airbus.png" alt="Kisii Airbus" />
 
   <p>After weeks of flight delays and mounting frustration, air travel in Kenya is finally stabilizing following a critical software update issued by Airbus. The fix, rolled out globally last week, addressed a glitch affecting navigation systems in select A320 aircraft — a model widely used by regional carriers operating out of Kisii and other domestic hubs.</p>
@@ -91,10 +91,10 @@
   <!-- ⚡ Performance -->
   <script src="../main.js" defer></script>
   <script>
-    // Example using NewsAPI (replace YOUR_API_KEY)
+    // Example using NewsAPI (replace with your actual API key)
     async function loadNews() {
       try {
-        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=NEWS_API_KEY");
         const data = await res.json();
         const ticker = document.getElementById("newsTicker");
 

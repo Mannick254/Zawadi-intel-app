@@ -9,7 +9,7 @@
   <!-- 🔍 SEO & Metadata -->
   <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
   <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
-  <link rel="canonical" href="https://zawadiintel.com/" />
+  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/" />
 
   <!-- 📱 Social Sharing -->
   <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
@@ -29,7 +29,7 @@
   <meta name="theme-color" content="#000000" />
 
   <!-- 🔒 Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
 
   <!-- 🖼️ Favicon -->
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
@@ -102,7 +102,19 @@
       The event has raised global concern due to Japan’s role in technology and automotive supply chains.
     </p>
   </a>
+</article> 
+
+<article class="card" aria-labelledby="vm-title">
+  <div class="label">Explainer</div>
+  <h3 id="vm-title">Voter Mobilization: Strategies and Stakes</h3>
+  <p class="muted">From grassroots canvassing to transportation support, how campaigns turn interest into turnout.</p>
+  <p class="meta">Civic life • New</p>
+  <p>
+    <a class="btn" href="articles/voter-mobilization.html">Read explainer</a>
+    <a class="btn secondary" href="articles/voter-mobilization.html#key-strategies">Key strategies</a>
+  </p>
 </article>
+
 
   <article class="story-card">
     <a href="articles/middle-east-security.html">
@@ -569,11 +581,13 @@
  
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
-    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+    <p>&copy; 2025 Zawadi Intel. All rights reserved.</p>
   </footer>
 
   <!-- ⚡ Performance -->
   <script src="main.js" defer></script>
+  <script src="js/index-feed.js" defer></script>
+  <script src="js/notifications.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const ticker = document.getElementById("newsTicker");
@@ -599,24 +613,6 @@
     document.getElementById("nav-toggle").addEventListener("click", () => {
       const navLinks = document.querySelector(".main-links");
       navLinks.classList.toggle("show");
-    });
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js")
-        .then(reg => console.log("Service Worker registered:", reg))
-        .catch(err => console.log("Service Worker registration failed:", err));
-    }
-
-    document.getElementById("enable-notifications").addEventListener("click", () => {
-      if ("Notification" in window && "serviceWorker" in navigator) {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            console.log("Notification permission granted.");
-          } else {
-            console.log("Notification permission denied.");
-          }
-        });
-      }
     });
   </script>
 </body>

@@ -1,0 +1,16 @@
+[debug] [2025-12-10T08:21:47.491Z] ----------------------------------------------------------------------
+[debug] [2025-12-10T08:21:47.493Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/c776mhyhgykcld7p90ajrka149ifn61a-firebase-tools-14.26.0/lib/node_modules/firebase-tools/lib/bin/firebase.js deploy --only hosting --debug
+[debug] [2025-12-10T08:21:47.493Z] CLI Version:   14.26.0
+[debug] [2025-12-10T08:21:47.494Z] Platform:      linux
+[debug] [2025-12-10T08:21:47.494Z] Node Version:  v20.19.1
+[debug] [2025-12-10T08:21:47.494Z] Time:          Wed Dec 10 2025 08:21:47 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-12-10T08:21:47.494Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-12-10T08:21:47.496Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-12-10T08:21:47.532Z] No OAuth tokens found
+[debug] [2025-12-10T08:21:47.533Z] No OAuth tokens found
+[error] Failed to fetch Firebase Project from current Studio Workspace: Unable to refresh auth: not yet authenticated.
+[error] 
+[error] Error: Not in a Firebase app directory (could not locate firebase.json)
+[debug] [2025-12-10T08:21:47.768Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-12-10T08:21:47.769Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}

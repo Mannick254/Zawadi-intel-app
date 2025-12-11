@@ -15,7 +15,12 @@ const STATIC_ASSETS = [
   "/books.html",
   "/app.html",
   "/icons/icon-192.png",
-  "/icons/icon-512.png"
+  "/icons/icon-512.png",
+  "/search.html",
+  "/articles_list.txt",
+  "/offline.html",
+  "/css/articles.css",
+  "/js/index-feed.js"
 ];
 
 // Install event — pre-cache static assets

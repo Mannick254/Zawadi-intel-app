@@ -1,19 +1,26 @@
+
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const webpush = require('web-push');
+const admin = require('firebase-admin');
 
-const DATA_FILE = path.join(__dirname, 'data.json');
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: '<YOUR_DATABASE_URL>'
+});
 
-function loadData() {
-  try { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8') || '{}'); } catch (e) { return { total: 0, recent: [] }; }
-}
+const db = admin.database();
 
-function saveData(d) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(d, null, 2));
-}
+// Configure VAPID keys
+const publicVapidKey = process.env.PUBLIC_VAPID_KEY;
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
+webpush.setVapidDetails('mailto:your-email@example.com', publicVapidKey, privateVapidKey);
 
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString('hex');
@@ -35,59 +42,139 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Allow serving the static site if user runs server from repo root
-app.use('/', express.static(path.join(__dirname, '..')));
+// --- API Endpoints ---
 
 app.post('/api/register', (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ ok: false, message: 'Username and password required' });
-  const d = loadData();
-  d.users = d.users || {};
-  if (d.users[username]) return res.status(400).json({ ok: false, message: 'User already exists' });
-  d.users[username] = { password: hashPassword(password), isAdmin: false, createdAt: Date.now() };
-  saveData(d);
-  res.json({ ok: true });
+  const usersRef = db.ref('users');
+  usersRef.child(username).once('value', (snapshot) => {
+    if (snapshot.exists()) {
+      return res.status(400).json({ ok: false, message: 'User already exists' });
+    }
+    const newUser = { password: hashPassword(password), isAdmin: false, createdAt: Date.now() };
+    usersRef.child(username).set(newUser);
+    res.json({ ok: true });
+  });
 });
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ ok: false, message: 'Username and password required' });
-  const d = loadData();
-  d.users = d.users || {};
-  const user = d.users[username];
-  if (!user || !verifyPassword(password, user.password)) return res.status(401).json({ ok: false, message: 'Invalid credentials' });
-  const token = generateToken();
-  // Store token temporarily (in production, use a proper session store)
-  d.tokens = d.tokens || {};
-  d.tokens[token] = { username, isAdmin: user.isAdmin, expires: Date.now() + 24 * 60 * 60 * 1000 }; // 24h
-  saveData(d);
-  // Record login
-  d.total = (d.total || 0) + 1;
-  const entry = { username, ts: Date.now() };
-  d.recent = d.recent || [];
-  d.recent.unshift(entry);
-  if (d.recent.length > 50) d.recent = d.recent.slice(0, 50);
-  saveData(d);
-  res.json({ ok: true, token, isAdmin: user.isAdmin });
+  const usersRef = db.ref('users');
+  usersRef.child(username).once('value', (snapshot) => {
+    const user = snapshot.val();
+    if (!user || !verifyPassword(password, user.password)) {
+      return res.status(401).json({ ok: false, message: 'Invalid credentials' });
+    }
+    const token = generateToken();
+    const tokensRef = db.ref('tokens');
+    const session = { username, isAdmin: user.isAdmin, expires: Date.now() + 24 * 60 * 60 * 1000 };
+    tokensRef.child(token).set(session);
+
+    const totalRef = db.ref('total');
+    totalRef.transaction((current) => (current || 0) + 1);
+
+    const recentRef = db.ref('recent');
+    const newEntry = { username, ts: Date.now() };
+    recentRef.transaction((current) => {
+      const recent = current || [];
+      recent.unshift(newEntry);
+      return recent.slice(0, 50);
+    });
+
+    res.json({ ok: true, token, isAdmin: user.isAdmin });
+  });
 });
 
 app.post('/api/verify', (req, res) => {
   const { token } = req.body;
   if (!token) return res.status(400).json({ ok: false });
-  const d = loadData();
-  d.tokens = d.tokens || {};
-  const session = d.tokens[token];
-  if (!session || session.expires < Date.now()) {
-    if (session) delete d.tokens[token];
-    saveData(d);
-    return res.status(401).json({ ok: false });
-  }
-  res.json({ ok: true, username: session.username, isAdmin: session.isAdmin });
+  const tokensRef = db.ref('tokens');
+  tokensRef.child(token).once('value', (snapshot) => {
+    const session = snapshot.val();
+    if (!session || session.expires < Date.now()) {
+      if (session) tokensRef.child(token).remove();
+      return res.status(401).json({ ok: false });
+    }
+    res.json({ ok: true, username: session.username, isAdmin: session.isAdmin });
+  });
 });
 
 app.get('/api/stats', (req, res) => {
-  const d = loadData();
-  res.json({ total: d.total || 0, recent: d.recent || [] });
+  db.ref().once('value', (snapshot) => {
+    const data = snapshot.val();
+    res.json({ total: data.total || 0, recent: data.recent || [] });
+  });
+});
+
+// --- Push Notifications ---
+
+app.post('/api/save-subscription', (req, res) => {
+  const subscription = req.body;
+  if (!subscription || !subscription.endpoint) {
+    return res.status(400).json({ ok: false, message: 'Invalid subscription' });
+  }
+  const subscriptionsRef = db.ref('subscriptions');
+  subscriptionsRef.push(subscription);
+  res.json({ ok: true });
+});
+
+app.post('/api/send-notification', async (req, res) => {
+  const { title, body } = req.body;
+  if (!title || !body) {
+    return res.status(400).json({ ok: false, message: 'Title and body are required' });
+  }
+
+  const subscriptionsRef = db.ref('subscriptions');
+  subscriptionsRef.once('value', async (snapshot) => {
+    const subscriptions = snapshot.val() || {};
+    const payload = JSON.stringify({ title, body });
+    const promises = [];
+
+    for (const key in subscriptions) {
+      const sub = subscriptions[key];
+      promises.push(
+        webpush.sendNotification(sub, payload).catch(err => {
+          if (err.statusCode === 410) {
+            subscriptionsRef.child(key).remove();
+          }
+        })
+      );
+    }
+
+    await Promise.all(promises);
+    res.json({ ok: true });
+  });
+});
+
+
+// --- Static file serving ---
+
+const root = path.join(__dirname, '..');
+
+app.get('/articles/:article', (req, res) => {
+  const articleName = req.params.article;
+  if (articleName && articleName.endsWith('.html')) {
+    const articlePath = path.join(root, 'articles', articleName);
+    if (fs.existsSync(articlePath)) {
+      return res.sendFile(articlePath);
+    }
+  }
+  res.status(404).send('Article not found');
+});
+
+app.use('/', express.static(root, {
+  redirect: false,
+  index: 'index.html'
+}));
+
+app.use((req, res, next) => {
+  const p = path.join(root, req.path);
+  if (fs.existsSync(p) && fs.statSync(p).isDirectory()) {
+    return res.redirect(301, req.path + '/');
+  }
+  next();
 });
 
 const port = process.env.PORT || 3001;

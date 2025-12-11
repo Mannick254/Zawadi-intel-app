@@ -129,6 +129,7 @@ async function registerUser(username, password) {
     // continue to fallback
   }
   // Client-side fallback: store users in localStorage
+  console.warn('Warning: using insecure client-side registration. This is for demo purposes only.');
   const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
   if (users[username]) return { ok: false, message: 'User already exists' };
   users[username] = { password: btoa(password), isAdmin: false, createdAt: Date.now() }; // Simple base64 encoding (not secure, for demo only)
@@ -148,13 +149,14 @@ async function loginUser(username, password) {
     if (resp.ok) {
       localStorage.setItem(AUTH_TOKEN_KEY, result.token);
       updateAuthUi();
-      recordLogin(username).catch(() => {});
+      // The server should handle login recording. No need to call recordLogin here.
       return result;
     }
   } catch (e) {
     // continue to fallback
   }
   // Client-side fallback: check localStorage
+  console.warn('Warning: using insecure client-side login. This is for demo purposes only.');
   const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
   const user = users[username];
   if (!user || atob(user.password) !== password) return { ok: false, message: 'Invalid credentials' };
@@ -180,7 +182,7 @@ async function getCurrentUser() {
 async function recordLogin(username) {
   // Try to notify a server endpoint first
   try {
-    const resp = await fetch('/api/login', {
+    const resp = await fetch('/api/login-activity', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username, ts: Date.now() })
@@ -657,7 +659,7 @@ async function subscribeUser() {
       const reg = await navigator.serviceWorker.ready;
       const subscription = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: "<YOUR_PUBLIC_VAPID_KEY>"
+        applicationServerKey: "BOA0NjzLhlXvX05nWd0Q7MrDE3A8zSvUGKH-aQ0_cejhmWI7BRCdUFALsckKWHCol11QVhcifANZwvOSNdnnmNI"
       });
       console.log("User subscribed:", JSON.stringify(subscription));
       // Send subscription to your server to store
@@ -672,9 +674,9 @@ async function subscribeUser() {
   }
 }
 
-// Notifications button (placeholder)
+// Notifications button
 document.getElementById("enable-notifications").addEventListener("click", () => {
-  alert("Notifications feature coming soon!");
+  subscribeUser();
 });
 
 // Missing functions for onclick handlers
@@ -747,6 +749,3 @@ function learnCybersecurity() {
 function findTestingCenter() {
   window.open('https://www.who.int/health-topics/hiv-aids', '_blank');
 }
-
-
-

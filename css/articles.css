@@ -1,423 +1,213 @@
-/* CSS for News Articles Page */
-.top-nav .main-links a:hover, .notif-btn:hover {
-  text-decoration: underline;
+
+/*
+    Aljazeera Inspired Article CSS
+    - Clean, readable, and modern design
+    - Responsive for all devices
+*/
+
+/* General Body and Typography */
+body {
+    background-color: #fdfdfd;
+    font-family: "Georgia", "Times New Roman", Times, serif;
+    color: #1a1a1a;
+    line-height: 1.8;
 }
 
-/* Main Story Section */
-.main-story {
-  background: linear-gradient(135deg, #f7fafc, #edf2f7, #e6f3e6);
-  padding: 3rem;
-  border-radius: 20px;
-  margin: 3rem 0;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
-}
-
-.main-story::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 8px;
-  background: linear-gradient(90deg, #38a169, #d69e2e, #2b6cb0, #8b4513);
-}
-
-.main-story article {
-  margin-bottom: 2.5rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #ffffff, #f8fafc);
-  border-radius: 16px;
-  border-left: 6px solid #38a169;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-}
-
-.main-story article::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #38a169, #d69e2e);
-  transform: scaleX(0);
-  transition: transform 0.4s ease;
-}
-
-.main-story article:hover::before {
-  transform: scaleX(1);
-}
-
-.main-story article:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 12px 40px rgba(56, 161, 105, 0.15);
-  border-left-color: #d69e2e;
-}
-
-.main-story h2 {
-  color: #1a202c;
-  font-size: 1.6rem;
-  margin-bottom: 1.2rem;
-  font-weight: 800;
-  line-height: 1.4;
-  font-family: 'Georgia', serif;
-  position: relative;
-}
-
-.main-story h2::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #38a169, #d69e2e);
-  border-radius: 2px;
-}
-
-.main-story p {
-  color: #4a5568;
-  line-height: 1.8;
-  margin-bottom: 1.2rem;
-  font-size: 1.05rem;
-}
-
-.main-story footer {
-  background: linear-gradient(135deg, #2d3748, #1a365d, #38a169);
-  color: #ffffff;
-  padding: 3rem;
-  border-radius: 16px;
-  text-align: center;
-  margin-top: 3rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.main-story footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, #d69e2e, #38a169, #2b6cb0);
-}
-
-.main-story footer h2 {
-  color: #ffffff;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  font-weight: 800;
-  position: relative;
-  z-index: 1;
-}
-
-.main-story footer p {
-  color: #e2e8f0;
-  font-size: 1.15rem;
-  line-height: 1.7;
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.breaking-news {
-  background: linear-gradient(90deg, #c00, #900);
-  color: #fff;
-  padding: 0.5rem;
-  overflow: hidden;
-  position: relative;
-}
-.breaking-news::before {
-  content: "🚨 BREAKING NEWS";
-  font-weight: bold;
-  margin-right: 1rem;
-}
-.breaking-news ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  animation: ticker 20s linear infinite;
-}
-@keyframes ticker {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-article {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  line-height: 1.6;
-  font-family: 'Georgia', serif;
-}
-article h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #222;
-  font-weight: 700;
-  text-align: center;
-  border-bottom: 2px solid #c00;
-  padding-bottom: 0.5rem;
-}
-.byline {
-  font-size: 1rem;
-  color: #777;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  font-style: italic;
-}
-article img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin: 1.5rem 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-}
-article img:hover {
-  transform: scale(1.02);
-}
-article p {
-  margin-bottom: 1.2rem;
-  text-align: justify;
-  color: #333;
-}
-article p:first-of-type {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-article a {
-  color: #c00;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-article a:hover {
-  color: #900;
-  text-decoration: underline;
-}
-
-/* 🌟 Hero Banner */
-.hero {
-  position: relative;
-  text-align: center;
-  color: white;
-  margin: 1.5rem 0;
-}
-.hero img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-.hero-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.7);
-  padding: 1rem 2rem;
-  border-radius: 6px;
-  font-size: 1.2rem;
-}
-
-/* 📊 Data Highlights */
-.data-highlights {
-  background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
-  padding: 1.5rem;
-  border-left: 5px solid #007acc;
-  margin: 2rem 0;
-  border-radius: 0 8px 8px 0;
-}
-.data-highlights ul {
-  list-style: none;
-  padding: 0;
-}
-.data-highlights li {
-  margin: 0.5rem 0;
-  font-weight: bold;
-  color: #005a99;
-}
-
-/* 💬 Quote */
-blockquote {
-  font-size: 1.3rem;
-  font-style: italic;
-  background: linear-gradient(135deg, #f9f9f9, #e0e0e0);
-  padding: 1.5rem;
-  border-left: 5px solid #c00;
-  margin: 2rem 0;
-  border-radius: 0 8px 8px 0;
-  position: relative;
-}
-blockquote::before {
-  content: "“";
-  font-size: 3rem;
-  color: #c00;
-  position: absolute;
-  top: -10px;
-  left: 10px;
-}
-
-/* 📢 Call to Action */
-.cta {
-  text-align: center;
-  margin: 2rem 0;
-}
-.cta button {
-  background: linear-gradient(135deg, #c00, #900);
-  color: #fff;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.cta button:hover {
-  background: linear-gradient(135deg, #900, #600);
-  transform: translateY(-2px);
-}
-
-/* 📚 Related Articles */
-.related {
-  background: linear-gradient(135deg, #fafafa, #f0f0f0);
-  padding: 1.5rem;
-  border: 1px solid #ddd;
-  margin-top: 2rem;
-  border-radius: 8px;
-}
-.related h3 {
-  margin-bottom: 0.5rem;
-  color: #333;
-  font-size: 1.2rem;
-}
-.related ul {
-  list-style: none;
-  padding: 0;
-}
-.related li {
-  margin: 0.5rem 0;
-}
-.related a {
-  color: #007acc;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-.related a:hover {
-  color: #005a99;
-  text-decoration: underline;
-}
-
-footer {
-  text-align: center;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #0a0f01, #1a1f11);
-  color: #ffffff;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  article {
-    margin: 1rem;
-    padding: 1rem;
-  }
-  article h1 {
-    font-size: 2rem;
-  }
-  .breaking-news ul {
-    gap: 1rem;
-    animation-duration: 15s;
-  }
-  .hero img {
-    height: 200px;
-  }
-}
-
-/* General Article Styling */
+/* Article Container */
 .news-article {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
+    max-width: 750px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-top: 5px solid #c81010;
 }
 
-/* Header */
+/* Article Header */
 .article-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
+    text-align: left;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 1.5rem;
 }
-.article-header h2 {
-  font-size: 2rem;
-  color: #222;
+
+.article-header .category {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #c81010;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
 }
+
+.article-header h1, .article-header h2 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin: 0;
+}
+
 .article-header .subtitle {
-  font-style: italic;
-  color: #555;
+    font-size: 1.4rem;
+    color: #666;
+    margin-top: 0.5rem;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.article-meta {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.article-meta .author {
+    font-weight: 700;
+}
+
+/* Article Body */
+.article-body {
+    font-size: 1.15rem;
+    color: #333;
+}
+
+.article-body p {
+    margin-bottom: 1.5rem;
+}
+
+.article-body a {
+    color: #c81010;
+    text-decoration: none;
+    border-bottom: 1px dotted #c81010;
+}
+
+.article-body a:hover {
+    color: #000;
+    border-bottom-color: #000;
 }
 
 /* Images */
-.Photos {
-  width: 100%;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+.article-image, .Photos {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    border-radius: 4px;
 }
 
-/* Quotes */
-.highlight-quote {
-  background: #f4f4f4;
-  border-left: 5px solid #0077cc;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  font-style: italic;
-  color: #333;
+.caption {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    margin-top: -1.5rem;
+    margin-bottom: 2rem;
 }
 
-/* Data Bar */
-.data-bar {
-  margin: 1.5rem 0;
-}
-.data-bar .bar {
-  padding: 0.5rem;
-  margin: 0.3rem 0;
-  color: #fff;
-  border-radius: 4px;
-  font-weight: bold;
-}
-.data-bar .positive { background: #28a745; }
-.data-bar .neutral { background: #ffc107; color: #222; }
-.data-bar .negative { background: #dc3545; }
-
-/* Key Takeaways */
-.article-body ul {
-  list-style: none;
-  padding: 0;
-}
-.article-body ul li {
-  background: #f9f9f9;
-  margin: 0.5rem 0;
-  padding: 0.8rem;
-  border-left: 4px solid #0077cc;
-  border-radius: 4px;
+/* Blockquotes */
+blockquote, .highlight-quote {
+    border-left: 3px solid #c81010;
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 500;
+    color: #333;
+    background-color: #f9f9f9;
 }
 
-/*   add this css for global-markets.html inside articles.css */
+/* Two-column layout */
+.article-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 3rem auto;
+    gap: 2rem;
+}
+
+.main-article {
+    flex: 1;
+}
+
+.sidebar {
+    flex: 0 0 300px;
+}
+
+/* Sidebar components */
+.sidebar .related-articles,
+.sidebar .key-takeaways,
+.sidebar .trending-news {
+    margin-bottom: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 4px;
+}
+
+.sidebar h3 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #c81010;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e5e5e5;
+    padding-bottom: 0.5rem;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 0.75rem;
+}
+
+.sidebar ul li a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.sidebar ul li a:hover {
+    color: #c81010;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .news-article {
+        margin: 1rem auto;
+        padding: 1.5rem;
+    }
+
+    .article-header h1, .article-header h2 {
+        font-size: 2.2rem;
+    }
+
+    .article-header .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .article-body {
+        font-size: 1.05rem;
+    }
+
+    blockquote, .highlight-quote {
+        font-size: 1.1rem;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-article,
+    .sidebar {
+        flex: 1 1 100%;
+    }
+
+    .article-container {
+        flex-direction: column;
+    }
+}
