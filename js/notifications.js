@@ -26,7 +26,11 @@
       console.log('User is subscribed.');
 
       // Send subscription to the backend
+<<<<<<< HEAD
       fetch('http://localhost:3000/subscribe', {
+=======
+      fetch('https://localhost:3000/subscribe', {
+>>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -127,11 +127,19 @@ blockquote, .highlight-quote {
 }
 
 .main-article {
+<<<<<<< HEAD
     flex: 1;
 }
 
 .sidebar {
     flex: 0 0 300px;
+=======
+    flex: 0 0 78%; /* 80% width with 2% gap consideration */
+}
+
+.sidebar {
+    flex: 0 0 20%;
+>>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
 }
 
 /* Sidebar components */
@@ -210,4 +218,8 @@ blockquote, .highlight-quote {
     .article-container {
         flex-direction: column;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c

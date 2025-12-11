@@ -22,7 +22,11 @@ const htmlFiles = [
 function generateSitemap() {
   let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
   sitemap += '<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>\n';
+<<<<<<< HEAD
   sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+=======
+  sitemap += '<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">\n';
+>>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
 
   htmlFiles.forEach(file => {
     const url = file === 'index.html' ? `${baseUrl}/` : `${baseUrl}/${file}`;

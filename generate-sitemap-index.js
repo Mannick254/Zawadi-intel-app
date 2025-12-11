@@ -7,7 +7,11 @@ const outputFile = 'sitemap-index.xml';
 function generateSitemapIndex() {
   let sitemapIndex = '<?xml version="1.0" encoding="UTF-8"?>\n';
   sitemapIndex += '<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>\n';
+<<<<<<< HEAD
   sitemapIndex += '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+=======
+  sitemapIndex += '<sitemapindex xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">\n';
+>>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
 
   // Add main sitemap
   sitemapIndex += '  <sitemap>\n';
