@@ -1,0 +1,13 @@
+
+.aj-container {
+  display: flex;
+}
+
+.full-article {
+  width: 70%;
+}
+
+.sidebar {
+  width: 30%;
+  padding-left: 2rem;
+}
