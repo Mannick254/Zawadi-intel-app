@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — Ruto and Wetang’ula Attend Noordin Haji’s Son’s Glamorous Wedding</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
+  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta property="og:description" content="Global news, African voices, cinematic archives." />
+  <meta property="og:image" content="icons/icon-192.png" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/articles.css" />
+
+  <!-- 📱 PWA -->
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- 🔒 Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" href="../icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="logo">
+    <img src="../icons/icon-192.png" alt="Zawadi Intel logo" />
+    <span class="brand">📜 Zawadi Intel</span>
+  </div>
+  <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+  <ul class="main-links">
+    <li><a href="../global.html">Global</a></li>
+    <li><a href="../articles/africa.html">Africa</a></li>
+    <li><a href="../biography.html">Biographies</a></li>
+    <li><a href="../media.html">Media</a></li>
+    <li><a href="../books.html">Books</a></li>
+    <li><a href="../app.html">Archive</a></li>
+    <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+  </ul>
+</nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+<div class="breaking-news">
+    <ul id="newsTicker"></ul>
+</div>
+<article>
+  <h1>Ruto and Wetang’ula attend Noordin Haji’s son’s glamorous wedding</h1>
+  <p class="byline">By Zawadi Intel Staff | Nov 30, 2025</p>
+  <img src="../images/ruto-wedding.jpg" alt="Ruto Wedding" />
+
+  <p>President William Ruto and National Assembly Speaker Moses Wetang’ula were among the high-profile guests who attended the lavish wedding of Noordin Haji’s son this weekend. The event, held at a private venue in Nairobi, drew dignitaries, business leaders, and celebrities, marking one of the most talked-about social gatherings of the year.</p>
+
+  <p>Noordin Haji, Kenya’s National Intelligence Service Director, hosted the ceremony with elegance and precision. The wedding blended traditional Islamic customs with modern luxury, featuring a floral canopy, gourmet cuisine, and performances by renowned artists. Guests were treated to a fusion of cultural heritage and contemporary celebration.</p>
+
+  <p>President Ruto’s presence sparked interest across political circles, with observers noting the symbolic weight of his attendance. While the event was personal, it also served as a subtle display of unity among key government figures. Ruto was seen exchanging pleasantries with Wetang’ula and other leaders, reinforcing ties amid ongoing national debates.</p>
+
+  <p>Security was tight, with plainclothes officers and private guards ensuring smooth proceedings. The guest list included Cabinet Secretaries, governors, and members of Parliament, many of whom arrived in convoys. The ceremony remained peaceful and well-organized, with protocols observed throughout the day.</p>
+
+  <p>Social media lit up with images and clips from the wedding, showcasing designer outfits, luxury vehicles, and heartfelt moments between the bride and groom. Kenyans online praised the elegance of the event, while others questioned the optics of such opulence during a time of economic strain for many citizens.</p>
+
+  <p>Despite mixed reactions, the wedding highlighted the intersection of family, faith, and public life. Religious leaders offered blessings, and speeches emphasized the importance of love, commitment, and legacy. The couple, both professionals in their own right, were celebrated not just for their union but for their shared values and aspirations.</p>
+
+  <p>Analysts noted that such events often carry deeper political undertones. In Kenya’s complex landscape, weddings and funerals can become informal platforms for alliance-building and soft diplomacy. The presence of top officials at Haji’s family event may signal continued trust and influence within the security and governance sectors.</p>
+
+  <p>For many attendees, however, the day was simply about joy. Friends and family gathered to witness a milestone, share meals, and dance into the evening. The bride’s entrance, accompanied by traditional music and ululations, was a highlight that blended cultural pride with personal celebration.</p>
+
+  <p>Vendors and service providers also benefited from the occasion, with local florists, caterers, and photographers reporting brisk business. The wedding injected energy into Nairobi’s event economy, offering a glimpse into how high-profile ceremonies can ripple into broader economic activity.</p>
+
+  <p>As the celebrations concluded, guests departed with memories of elegance, unity, and tradition. For Noordin Haji and his family, the wedding was more than a social event — it was a reflection of legacy, leadership, and the enduring bonds that shape Kenya’s public and private spheres.</p>
+
+  <!-- Back link -->
+  <p><a href="../index.html">⬅ Back to Homepage</a></p>
+</article>
+
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance -->
+  <script src="../main.js" defer></script>
+  <script>
+    // Example using NewsAPI (replace YOUR_API_KEY)
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          // Fallback if API fails
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+
+    // Run on page load
+    loadNews();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

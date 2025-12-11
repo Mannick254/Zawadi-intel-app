@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — Raila Odinga’s Bodyguard Maurice Ogeta Stuns Kenyans</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
+  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta property="og:description" content="Global news, African voices, cinematic archives." />
+  <meta property="og:image" content="icons/icon-192.png" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/articles.css" />
+
+  <!-- 📱 PWA -->
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- 🔒 Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" href="../icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="logo">
+    <img src="../icons/icon-192.png" alt="Zawadi Intel logo" />
+    <span class="brand">📜 Zawadi Intel</span>
+  </div>
+  <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+  <ul class="main-links">
+    <li><a href="../global.html">Global</a></li>
+    <li><a href="../articles/africa.html">Africa</a></li>
+    <li><a href="../biography.html">Biographies</a></li>
+    <li><a href="../media.html">Media</a></li>
+    <li><a href="../books.html">Books</a></li>
+    <li><a href="../app.html">Archive</a></li>
+    <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+  </ul>
+</nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+<div class="breaking-news">
+  <ul id="newsTicker"></ul>
+</div>
+
+ <article class="news-article">
+    <h1>Raila Odinga’s bodyguard Maurice Ogeta stuns Kenyans</h1>
+    <p class="byline">By Zawadi Intel Staff | Nov 30, 2025</p>
+    <img src="../images/raila-bodyguard.jpeg" alt="Raila Bodyguard" />
+
+    <p>Maurice Ogeta, the longtime bodyguard of Raila Odinga, has captured national attention after photos of his newly acquired apartment surfaced online. The images, shared widely on social media, show a sleek, modern residence with panoramic views and high-end finishes, sparking admiration and curiosity among Kenyans.</p>
+
+    <p>Ogeta, known for his quiet professionalism and loyalty to Raila, rarely makes public appearances outside of security duties. His investment move has surprised many, with some praising his financial foresight and others speculating about his journey from humble beginnings to property ownership.</p>
+
+    <p>According to sources close to the Odinga family, Ogeta has been saving and investing discreetly for years. His decision to purchase the apartment was reportedly driven by a desire to secure his future and provide stability for his family. “He’s always been disciplined and focused,” said one insider. “This is the result of years of planning.”</p>
+
+    <p>The apartment, located in Nairobi’s Kilimani district, is part of a newly launched development targeting middle-income professionals. With amenities like rooftop gardens, biometric access, and smart home integration, the property reflects a growing trend of tech-savvy urban living in Kenya.</p>
+
+    <p>Online reactions have ranged from admiration to inspiration. Many young Kenyans have taken to X (formerly Twitter) and TikTok to celebrate Ogeta’s achievement, using hashtags like #SmartMoves and #SilentSuccess. “He’s proof that you don’t need to be loud to win,” one user posted.</p>
+
+    <p>As Raila Odinga continues to shape Kenya’s political legacy, Maurice Ogeta’s quiet rise offers a parallel story of resilience, loyalty, and strategic empowerment. His investment is more than a personal milestone — it’s a symbol of possibility for those working behind the scenes.</p>
+
+    <p><a href="../index.html">⬅ Back to Homepage</a></p>
+</article>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance -->
+  <script src="../main.js" defer></script>
+  <script>
+    // Example using NewsAPI (replace YOUR_API_KEY)
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          // Fallback if API fails
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+
+    // Run on page load
+    loadNews();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

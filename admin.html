@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin — Zawadi</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
+      📜 Zawadi Intel
+    </div>
+    <ul class="main-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="global.html">Global</a></li>
+      <li><a href="middle-east.html">Middle East</a></li>
+      <li><a href="africa.html">Africa</a></li>
+      <li><a href="biography.html">Biographies</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="app.html">Archive</a></li>
+    <li><a href="account.html">Account</a></li>
+    </ul>
+  </nav>
+
+    <main style="max-width:980px;margin:24px auto;padding:12px">
+      <h1>Admin Dashboard</h1>
+      <p id="admin-warn" style="color:#b33"></p>
+      <section style="background:#fff;padding:12px;border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
+        <h2>Login Counts</h2>
+        <div>Total logins (server): <strong id="total-server">—</strong></div>
+        <div>Total logins (local fallback): <strong id="total-local">—</strong></div>
+        <div>Recent logins:</div>
+        <ul id="recent-list"></ul>
+      </section>
+      <p style="margin-top:18px">
+        <a href="index.html">Home</a> |
+        <a href="global.html">Global</a> |
+        <a href="middle-east.html">Middle East</a> |
+        <a href="africa.html">Africa</a> |
+        <a href="biography.html">Biographies</a> |
+        <a href="media.html">Media</a> |
+        <a href="books.html">Books</a> |
+        <a href="app.html">Archive</a> |
+        <a href="account.html">Account</a> |
+        <a href="/">Back to site</a>
+      </p>
+    </main>
+    <script src="main.js" defer></script>
+    <section id="admin-actions" style="max-width:980px;margin:8px auto;padding:12px;display:none">
+      <h2>Admin Actions</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="refresh-stats">Refresh Stats</button>
+        <button id="clear-local">Clear Local Counts</button>
+        <button id="export-recent">Export Recent Logins</button>
+      </div>
+      <p style="margin-top:8px;color:var(--muted);font-size:0.95rem">Only visible to signed-in admins.</p>
+    </section>
+
+    <!-- Inline admin login (if not signed in) -->
+    <section id="admin-login" style="max-width:980px;margin:8px auto;padding:12px;background:#fff;border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+      <h2>Admin Sign In</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input id="admin-username" placeholder="Username" style="padding:8px;border:1px solid #ddd;border-radius:4px;" />
+        <input id="admin-password" type="password" placeholder="Password" style="padding:8px;border:1px solid #ddd;border-radius:4px;" />
+        <button id="admin-login-btn">Sign In</button>
+      </div>
+      <div id="admin-login-msg" style="color:#b33;margin-top:8px"></div>
+    </section>
+
+    <script src="admin.js" defer></script>
+  </body>
+  </html>

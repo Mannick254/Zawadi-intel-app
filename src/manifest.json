@@ -1,0 +1,39 @@
+{
+  "name": "Zawadi Intel",
+  "short_name": "Zawadi",
+  "description": "A cinematic archive for personal intel, dreams, and legacy notes.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f2027",
+  "theme_color": "#2c3e50",
+  "categories": ["productivity", "notes", "archive", "legacy", "personal"],
+  "shortcuts": [
+    {
+      "name": "Share Intel",
+      "short_name": "Share",
+      "description": "Go to the archive to share intel.",
+      "url": "app.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Public Biographies",
+      "short_name": "Biographies",
+      "description": "View public biographies.",
+      "url": "biography.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Media",
+      "short_name": "Media",
+      "description": "Watch legacy media.",
+      "url": "media.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    { "src": "icons/screenshot1.png", "sizes": "1280x720", "type": "image/png", "form_factor": "wide" },
+    { "src": "icons/screenshot2.png", "sizes": "750x1334", "type": "image/png", "form_factor": "narrow" }
+  ]
+}

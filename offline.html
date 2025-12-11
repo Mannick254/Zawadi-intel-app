@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zawadi Intel — Offline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #111;
+      color: #fff;
+      padding: 2rem;
+    }
+    .offline-container {
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      color: #e63946;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    .retry-btn {
+      background: #e63946;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+    section {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: #222;
+      border-radius: 8px;
+      text-align: left;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 0.5rem 0;
+    }
+    button {
+      margin: 0.3rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #444;
+      color: #fff;
+    }
+    button:hover {
+      background: #e63946;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border-radius: 4px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <h1>📡 You're Offline</h1>
+    <p>Zawadi Intel is still here. Explore cached stories, play games, or learn something new.</p>
+    <button class="retry-btn" onclick="window.location.reload();">Retry Connection</button>
+
+    <!-- Cached Stories -->
+    <section class="cached-stories">
+      <h2>📰 Latest Cached Stories</h2>
+      <ul>
+        <li>Kenya hosts Africa G20 Summit</li>
+        <li>Heavy rains forecast for Nairobi</li>
+        <li>Global food security at COP30</li>
+      </ul>
+    </section>
+
+    <!-- Quote of the Day -->
+    <section class="offline-quotes">
+      <h2>💡 Quote of the Day</h2>
+      <p>"Information is power, but clarity is freedom." — Zawadi Intel</p>
+    </section>
+
+    <!-- Quick Quiz -->
+    <section class="offline-quiz">
+      <h2>🎮 Quick Quiz</h2>
+      <p>Which city is Kenya’s capital?</p>
+      <button onclick="alert('Correct! Nairobi is the capital.')">Nairobi</button>
+      <button onclick="alert('Try again!')">Mombasa</button>
+    </section>
+
+    <!-- Calculator -->
+    <section class="offline-tools">
+      <h2>🛠️ Tools</h2>
+      <p>Simple Calculator:</p>
+      <input type="number" id="num1" placeholder="Enter first number">
+      <input type="number" id="num2" placeholder="Enter second number">
+      <button onclick="calc()">Add</button>
+      <p id="calc-result"></p>
+    </section>
+
+    <!-- Notes Pad -->
+    <section class="offline-notes">
+      <h2>📝 Notes Pad</h2>
+      <textarea id="notes" placeholder="Write your thoughts..."></textarea>
+      <button onclick="saveNotes()">Save Notes</button>
+      <p id="notes-status"></p>
+    </section>
+
+    <!-- Tic Tac Toe -->
+    <section class="offline-game">
+      <h2>❌⭕ Tic Tac Toe</h2>
+      <div id="tic-tac-toe" style="display:grid;grid-template-columns:repeat(3,80px);gap:5px;justify-content:center;">
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+        <button onclick="play(this)"></button>
+      </div>
+    </section>
+
+    <!-- App Prompt -->
+    <section class="app-prompt">
+      <h2>📱 Install App</h2>
+      <p>Install Zawadi Intel for offline access anytime.</p>
+      <button onclick="alert('Use browser menu → Add to Home Screen')">Install App</button>
+    </section>
+  </div>
+
+  <script>
+    // Calculator
+    function calc() {
+      const n1 = parseFloat(document.getElementById('num1').value);
+      const n2 = parseFloat(document.getElementById('num2').value);
+      if (!isNaN(n1) && !isNaN(n2)) {
+        document.getElementById('calc-result').innerText = "Result: " + (n1 + n2);
+      } else {
+        document.getElementById('calc-result').innerText = "Please enter valid numbers.";
+      }
+    }
+
+    // Notes Pad
+    function saveNotes() {
+      const notes = document.getElementById('notes').value;
+      localStorage.setItem('offlineNotes', notes);
+      document.getElementById('notes-status').innerText = "Notes saved locally!";
+    }
+    window.onload = () => {
+      const saved = localStorage.getItem('offlineNotes');
+      if (saved) document.getElementById('notes').value = saved;
+    };
+
+    // Tic Tac Toe
+    let turn = 'X';
+    function play(btn) {
+      if (btn.innerText === '') {
+        btn.innerText = turn;
+        turn = (turn === 'X') ? 'O' : 'X';
+      }
+    }
+  </script>
+</body>
+</html>

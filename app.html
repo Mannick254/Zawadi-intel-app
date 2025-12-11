@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archive — Zawadi Intel</title>
+  <meta name="description" content="Search and explore all stories, profiles, media, and books published on Zawadi Intel." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav">
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <a href="index.html">Home</a>
+      <a href="global.html">Global</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="media.html">Media</a>
+      <a href="books.html">Books</a>
+      <a href="account.html">Account</a>
+    </div>
+  </nav>
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-now" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
+
+  <!-- 🗂️ Page Banner -->
+  <header class="page-banner">
+    <h1>📁 Archive</h1>
+    <p>Search and explore every story, profile, and feature published on Zawadi Intel.</p>
+    <form class="search-bar">
+      <input type="text" placeholder="Search by keyword, region, or author..." />
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <!-- 📁 Archive Grid -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+
+        <article class="story-card">
+          <h2>🇵🇸 Gaza Ceasefire Holds — But Barely</h2>
+          <p>Despite deadly Israeli raids, U.S. officials say the Gaza truce is “exceeding expectations.”</p>
+          <a href="global.html#middle-east-focus">Read More</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🇺🇦 Ukraine Strikes Russian Oil Sites</h2>
+          <p>Ukraine’s forces hit key Russian refineries, triggering massive fires. Trump urges a freeze on front lines.</p>
+          <a href="global.html#ukraine-russia">Full Report</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🇰🇪 Raila Odinga — The Architect of Reform</h2>
+          <p>From prison to parliament, Raila Odinga’s journey shaped Kenya’s democratic evolution.</p>
+          <a href="biography.html">View Profile</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📸 Gaza in Ruins — A Photo Essay</h2>
+          <p>Images from Rafah and Khan Younis reveal the scale of destruction and resilience amid war.</p>
+          <a href="media.html">View Gallery</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📝 The Weight of Silence</h2>
+          <p>A poetic meditation on grief, masculinity, and quiet revolutions. By Nickson Ochieng Okoth.</p>
+          <a href="books.html">Read on Booksie</a>
+        </article>
+
+      </div>
+
+      <!-- 📌 Sidebar -->
+      <aside class="aj-sidebar">
+        <div class="sidebar-module">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="global.html">Global Conflict</a></li>
+            <li><a href="africa.html">African Affairs</a></li>
+            <li><a href="biography.html">Profiles</a></li>
+            <li><a href="media.html">Multimedia</a></li>
+            <li><a href="books.html">Literature</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-module">
+          <h3>Recent Highlights</h3>
+          <ul>
+            <li><a href="#">Sudan Ceasefire Collapse</a></li>
+            <li><a href="#">Iran Nuclear Brinkmanship</a></li>
+            <li><a href="#">Nigeria Youth Protests</a></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

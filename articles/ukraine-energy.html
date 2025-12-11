@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — Ukraine’s Energy Grid Faces Winter Resilience Test</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
+  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/articles/ukraine-energy.html" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta property="og:description" content="Global news, African voices, cinematic archives." />
+  <meta property="og:image" content="../icons/icon-192.png" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+<!-- 🎨 Styles -->
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/layout.css" />
+<link rel="stylesheet" href="../css/theme.css" />
+<link rel="stylesheet" href="../css/articles.css" />
+
+  <!-- 🔒 Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" href="../icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+<nav class="top-nav" aria-label="Main Navigation">
+  <div class="logo">
+    <img src="../icons/icon-192.png" alt="Zawadi Intel logo" />
+    <span class="brand">📜 Zawadi Intel</span>
+  </div>
+  <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+  <ul class="main-links">
+    <li><a href="../global.html">Global</a></li>
+    <li><a href="../africa.html">Africa</a></li>
+    <li><a href="../biography.html">Biographies</a></li>
+    <li><a href="../media.html">Media</a></li>
+    <li><a href="../books.html">Books</a></li>
+    <li><a href="../app.html">Archive</a></li>
+    <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+  </ul>
+</nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+<div class="breaking-news">
+  <ul id="newsTicker"></ul>
+</div>
+
+<!-- 🌟 Hero Banner -->
+<section class="hero">
+  <div class="hero-text">
+    <h2>Ukraine’s Energy Grid Faces Winter Resilience Test</h2>
+    <p>Crews race to stabilize power amid targeted strikes and freezing conditions.</p>
+  </div>
+</section>
+
+<article>
+  <h1>Ukraine’s Energy Grid Faces Winter Resilience Test</h1>
+  <p class="byline">By Zawadi Intel Staff | Nov 22, 2025</p>
+  <img src="../images/ukraine-energy.png" alt="Ukraine Energy Grid" />
+
+  <p>As winter approaches, Ukraine's energy infrastructure is under immense pressure from ongoing conflicts. Repair crews are working tirelessly to stabilize the power grid, which has been targeted by strikes, leaving millions without electricity in sub-zero temperatures.</p>
+
+  <p>The grid's vulnerability has been exposed through repeated attacks on power plants and transmission lines. Engineers are deploying emergency repairs, but the scale of damage requires international assistance and advanced technology to restore full functionality.</p>
+
+  <p>Freezing conditions exacerbate the crisis, as homes and hospitals struggle without heating. Humanitarian organizations are distributing generators and thermal blankets, but experts warn that prolonged outages could lead to health emergencies.</p>
+
+  <p>Government officials are coordinating with allies to secure additional power sources, including imports from neighboring countries. Meanwhile, cybersecurity measures are being bolstered to prevent further disruptions.</p>
+
+  <p>The resilience of Ukraine's energy sector is being tested like never before. Stories of heroism from repair teams highlight the determination to maintain essential services despite the odds.</p>
+
+  <p>International observers stress the need for a sustainable peace to allow for long-term infrastructure rebuilding. Until then, the focus remains on immediate stabilization and support for affected communities.</p>
+
+<!-- 📊 Data Highlights -->
+<section class="data-highlights">
+  <h3>Key Statistics</h3>
+  <ul>
+    <li>⚡ Power Outages: 10 million affected</li>
+    <li>🛠️ Repairs: 500+ sites addressed</li>
+    <li>❄️ Temperatures: -10°C average</li>
+    <li>🌐 Imports: 2 GW additional capacity secured</li>
+  </ul>
+</section>
+
+<p>Ukraine's energy grid is a critical lifeline, and its stability is paramount for the nation's survival through winter.</p>
+
+<!-- 💬 Quote -->
+<blockquote>
+  “We will not let the lights go out on our people.” — Ukrainian Energy Minister
+</blockquote>
+
+<p>Global support is crucial to bolster defenses and ensure energy security in conflict zones.</p>
+
+<!-- 📢 Call to Action -->
+<section class="cta">
+  <h3>Support Energy Recovery</h3>
+  <button onclick="supportUkraine()">💡 Donate to Energy Aid</button>
+</section>
+
+<!-- 📚 Related Articles -->
+<aside class="related">
+  <h3>Related Stories</h3>
+  <ul>
+    <li><a href="global.html">Global Energy Crises</a></li>
+    <li><a href="media.html">Conflict Zone Documentaries</a></li>
+    <li><a href="books.html">Books on Resilience</a></li>
+  </ul>
+</aside>
+
+  <!-- Back link -->
+  <p><a href="../index.html">⬅ Back to Homepage</a></p>
+</article>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance -->
+  <script src="../main.js" defer></script>
+  <script>
+    // Example using NewsAPI (replace YOUR_API_KEY)
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          // Fallback if API fails
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+
+    // Run on page load
+    loadNews();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+
+    function supportUkraine() {
+      window.open('https://www.redcross.org/donate/ukraine', '_blank');
+    }
+  </script>
+</body>
+</html>

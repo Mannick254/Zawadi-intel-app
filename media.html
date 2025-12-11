@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multimedia — Zawadi Intel</title>
+  <meta name="description" content="Photo essays, documentaries, and audio stories that bring global events to life." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav">
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <a href="index.html">Home</a>
+      <a href="global.html">Global</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="books.html">Books</a>
+      <a href="app.html">Archive</a>
+      <a href="account.html">Account</a>
+    </div>
+  </nav>
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-now" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
+
+  <!-- 🖼️ Page Banner -->
+  <header class="page-banner">
+    <h1>🎥 Multimedia Archive</h1>
+    <p>Visual storytelling from the frontlines — curated for clarity, emotion, and impact.</p>
+  </header>
+
+  <!-- 🖼️ Media Grid -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+
+        <article class="story-card">
+          <h2>📸 Gaza in Ruins — A Photo Essay</h2>
+          <p>Images from Rafah and Khan Younis reveal the scale of destruction and resilience amid war.</p>
+          <a href="#">View Gallery</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🎧 Voices from Tigray — Audio Dispatch</h2>
+          <p>Survivors share their stories of displacement, hope, and resistance in Ethiopia’s northern region.</p>
+          <a href="#">Listen Now</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🎬 The Last Horizon — Behind the Scenes</h2>
+          <p>Go inside the making of October’s most haunting sci-fi drama. Interviews with cast and crew.</p>
+          <a href="#">Watch Feature</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📸 Sudan’s Exodus — Visual Report</h2>
+          <p>Photojournalists document the refugee surge along the Chad border after ceasefire collapse.</p>
+          <a href="#">Explore Images</a>
+        </article>
+
+      </div>
+
+      <!-- 📌 Sidebar -->
+      <aside class="aj-sidebar">
+        <div class="sidebar-module">
+          <h3>Explore More</h3>
+          <ul>
+            <li><a href="biography.html">Profiles & Biographies</a></li>
+            <li><a href="books.html">Literature & Essays</a></li>
+            <li><a href="app.html">Search Archive</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-module">
+          <h3>Featured Formats</h3>
+          <ul>
+            <li><a href="#">Photo Essays</a></li>
+            <li><a href="#">Documentaries</a></li>
+            <li><a href="#">Audio Dispatches</a></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Nickson Ochieng Okoth.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
