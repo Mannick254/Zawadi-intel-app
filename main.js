@@ -47,7 +47,7 @@ if (searchForm) {
 }
 
 // Toggle mobile menu
-const menuToggle = document.querySelector(".nav-toggle");
+const menuToggle = document.querySelector(".menu-toggle") || document.querySelector(".nav-toggle");
 const mainLinks = document.querySelector(".main-links");
 
 if (menuToggle && mainLinks) {

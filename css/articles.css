@@ -204,7 +204,7 @@ blockquote, .highlight-quote {
 }
 
 /* Responsive adjustments */
-@media (max-width: 992px) {
+@media (max-width: 768px) {
     .main-article,
     .sidebar {
         flex: 1 1 100%;

@@ -99,7 +99,7 @@ a:hover, a:focus { color: var(--accent-hover); }
 .top-nav .notif-btn:hover { color: var(--nav-accent); }
 
 /* Mobile Menu */
-.nav-toggle {
+.menu-toggle {
   display: none;
   background: none;
   border: none;
@@ -108,7 +108,7 @@ a:hover, a:focus { color: var(--accent-hover); }
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-.nav-toggle:hover, .nav-toggle:focus { transform: scale(1.1); outline: none; }
+.menu-toggle:hover, .menu-toggle:focus { transform: scale(1.1); outline: none; }
 
 @media (max-width: 768px) {
   .top-nav .main-links {
@@ -132,7 +132,7 @@ a:hover, a:focus { color: var(--accent-hover); }
     border-radius: 8px;
     text-align: center;
   }
-  .nav-toggle { display: block; }
+  .menu-toggle { display: block; }
 }
 
 @keyframes slideDown {
