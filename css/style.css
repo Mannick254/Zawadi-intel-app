@@ -195,7 +195,7 @@ a:hover, a:focus { color: var(--accent-hover); }
    Breaking News
    =========================== */
 .breaking-news {
-  background: #c0392b;
+  background: #0f0e0e;
   color: #fff;
   padding: 8px;
   font-weight: bold;
