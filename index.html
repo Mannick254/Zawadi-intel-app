@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=https://zawadiintelnews.vercel.app/">
   <title>Zawadi Intel — Home</title>
 
   <!-- 🔍 SEO & Metadata -->
@@ -23,6 +24,7 @@
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/articles.css" />
+  <link rel="stylesheet" href="css/featuredstory.css" />
 
   <!-- 📱 PWA -->
   <link rel="manifest" href="manifest.json" />
@@ -82,13 +84,27 @@
     <h1>Breaking Stories That Shape Our World</h1>
     <p>Global news, African perspectives, and stories that matter. Updated daily.</p>
     <!-- Featured Story -->
-     <article class="story-card featured">
-  <a href="news/cyrus-jirongo.html">
-    <h2>Cyrus Jirongo remembered after tragic accident</h2>
-    <img src="images/jirongo.jpg" class="" alt="Cyrus Jirongo Tribute" />
-    <p>Kenya mourns the outspoken former Lugari MP and YK ’92 leader, whose bold career shaped youth mobilization and national politics...</p>
-  </a>
-</article>
+  <div class="featured-row">
+  <article class="story-card left">
+    <div class="story-content">
+      <div class="story-text">
+        <h2>Cyrus Jirongo remembered after tragic accident</h2>
+        <p>Kenya mourns the outspoken former Lugari MP and YK ’92 leader, whose bold career shaped youth mobilization and national politics...</p>
+      </div>
+      <div class="story-image">
+        <img src="images/jirongo.jpg" alt="Cyrus Jirongo Tribute" />
+      </div>
+    </div>
+  </article>
+
+  <article class="story-card right">
+    <a href="articles/global-un.html">
+    <h2>Leaders from across the continent gathered in Nairobi to chart a new path for green growth...</h2>
+    <img src="images/Copilot_20251214_142648.png" alt="Africa Climate Summit" />
+    </a>
+  </article>
+</div>
+
 
    
   </header>

@@ -1,113 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
-<<<<<<< HEAD
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-=======
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
->>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
+
+  <!-- Homepage -->
   <url>
     <loc>https://mannick254.github.io/Zawadi-intel-app/</loc>
-    <changefreq>weekly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Core Sections -->
   <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/biography.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/books.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://mannick254.github.io/Zawadi-intel-app/global.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mannick254.github.io/Zawadi-intel-app/africa.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/global.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://mannick254.github.io/Zawadi-intel-app/middle-east.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Evergreen Pages -->
+  <url>
+    <loc>https://mannick254.github.io/Zawadi-intel-app/biography.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mannick254.github.io/Zawadi-intel-app/books.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://mannick254.github.io/Zawadi-intel-app/media.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
+
+  <!-- Articles (renamed for clarity) -->
   <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/middle-east.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/profile.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/admin.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/app.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-<<<<<<< HEAD
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/africa.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/aids-day.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/amazon-ai-chip.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article8.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article9.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article11.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article12.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article13.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article15.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article17.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/article19.html</loc>
+    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/kenya-gdp.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -117,197 +54,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/bahati-family.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/bishop-kiengei.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/breakthroughs-in-global-health.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/cop30-outcomes.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/cyber-utilities.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/eac-fgm-law.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/eastafrica-instability.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/emerging-economies-drive-global-growth.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/epl-chelsea.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/epl-villa.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/europe-defense.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/europe-russia.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/gaza-aid.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/genz-politics.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://mannick254.github.io/Zawadi-intel-app/articles/global-debate-on-ai-regulation.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/global-festivals-celebrate-diversity.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/global-markets.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/global-un.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/haiti-mission.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/kenya-gdp.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/kenya-politics.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/kisii-airbus.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/lebanon-israel-talks.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/middle-east-security.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/middleeast-drones.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/nairobi-football.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/nairobi-gangs.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/nairobi-matatus.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/nakuru-industry.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/new-era-of-space-exploration.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/nigeria-power.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/pdiddy-netflix.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/raila-bodyguard.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/ruto-wedding.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/siaya-doctors.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/uda-odm.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/ukraine-energy.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/westafrica-drugs.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/wmo-warning.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -316,11 +63,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://mannick254.github.io/Zawadi-intel-app/articles/zoho-eastafrica.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-=======
->>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
+  
+
 </urlset>
