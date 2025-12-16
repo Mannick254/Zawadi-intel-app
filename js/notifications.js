@@ -3,10 +3,10 @@
   const applicationServerKey = "YOUR_PUBLIC_KEY"; // Replace with your VAPID public key
 
   function urlB64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const padding = "=".repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-      .replace(/\-/g, '+')
-      .replace(/_/g, '/');
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
@@ -23,55 +23,57 @@
       applicationServerKey: urlB64ToUint8Array(applicationServerKey)
     })
     .then(function(subscription) {
-      console.log('User is subscribed.');
+      console.log("User is subscribed.");
 
-      // Send subscription to the backend
-<<<<<<< HEAD
-      fetch('http://localhost:3000/subscribe', {
-=======
-      fetch('https://localhost:3000/subscribe', {
->>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
-        method: 'POST',
+      // Send subscription to your backend
+      fetch("/save-subscription", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(subscription)
-      });
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Failed to save subscription on server");
+        }
+        console.log("Subscription sent to backend.");
+      })
+      .catch(err => console.error("Backend error:", err));
     })
     .catch(function(err) {
-      console.log('Failed to subscribe the user: ', err);
+      console.error("Failed to subscribe the user:", err);
     });
   }
 
   function init() {
-    if ('serviceWorker' in navigator && 'PushManager' in window) {
-      console.log('Service Worker and Push is supported');
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      console.log("Service Worker and Push are supported");
 
-      navigator.serviceWorker.register('/service-worker.js')
+      navigator.serviceWorker.register("/service-worker.js")
       .then(function(swReg) {
-        console.log('Service Worker is registered', swReg);
+        console.log("Service Worker is registered", swReg);
 
-        let swRegistration = swReg;
-        const button = document.getElementById('enable-notifications');
+        const button = document.getElementById("enable-notifications");
         if (button) {
-            button.addEventListener('click', function() {
-                Notification.requestPermission().then(function(permission) {
-                    if (permission === 'granted') {
-                        console.log('Notification permission granted.');
-                        subscribeUser(swRegistration);
-                    }
-                });
+          button.addEventListener("click", function() {
+            Notification.requestPermission().then(function(permission) {
+              if (permission === "granted") {
+                console.log("Notification permission granted.");
+                subscribeUser(swReg);
+              }
             });
+          });
         }
       })
       .catch(function(error) {
-        console.error('Service Worker Error', error);
+        console.error("Service Worker Error", error);
       });
     } else {
-      console.warn('Push messaging is not supported');
-      const button = document.getElementById('enable-notifications');
+      console.warn("Push messaging is not supported");
+      const button = document.getElementById("enable-notifications");
       if (button) {
-        button.style.display = 'none';
+        button.style.display = "none";
       }
     }
   }
