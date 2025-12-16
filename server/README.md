@@ -1,21 +1,35 @@
-Zawadi minimal server
+# Zawadi Minimal Server
 
-This small server provides two endpoints used by the site for tracking login counts:
+A lightweight Node.js + Express server powering **Zawadi Intel’s login tracking system**.  
+It provides simple API endpoints for recording login activity and retrieving statistics, while also serving static admin pages for monitoring.
 
-- POST /api/login  -- body: { username, ts }
-- GET  /api/stats  -- returns total and recent logins
+---
 
-How to run:
+## ✨ Features
+- **Login Tracking**
+  - `POST /api/login` → Records a login event.
+  - `GET /api/stats` → Returns total login count and recent login events.
 
-1. Open a terminal in this folder and run:
+- **Recent Logins**
+  - Keeps the last 20 login events in memory for quick inspection.
 
-   npm install
-   npm start
+- **Static File Serving**
+  - Serves files from the `public/` directory (e.g., `admin.html`) at `http://localhost:3001/admin.html`.
 
-2. The server will listen on port 3001 by default. To change the port, set PORT environment variable.
+- **Security & Logging**
+  - Uses `helmet` for basic security headers.
+  - Uses `morgan` for request logging.
 
-<<<<<<< HEAD
-If you run the server from the project root, it will also serve the static site so you can visit http://localhost:3001/admin.html
-=======
-If you run the server from the project root, it will also serve the static site so you can visit https://localhost:3001/admin.html
->>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
+---
+
+## 📄 API Reference
+
+### POST `/api/login`
+Record a login event.
+
+**Request Body:**
+```json
+{
+  "username": "Nickson",
+  "ts": 1640995200000
+}
