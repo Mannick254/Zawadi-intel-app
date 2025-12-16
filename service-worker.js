@@ -9,7 +9,7 @@ const STATIC_ASSETS = [
   "/css/layout.css",
   "/css/theme.css",
   "/global.html",
-  "/africa.html",
+  "/articles/africa.html",
   "/biography.html",
   "/media.html",
   "/books.html",
