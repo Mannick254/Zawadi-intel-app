@@ -679,10 +679,33 @@ document.getElementById("enable-notifications").addEventListener("click", () => 
   subscribeUser();
 });
 
-// Missing functions for onclick handlers
+// Keep a reference to the deferred install event
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // stop auto banner
+  deferredPrompt = e; // save event for later
+
+  // Show your custom install button
+  const installBtn = document.getElementById('installBtn');
+  if (installBtn) {
+    installBtn.style.display = 'block';
+  }
+});
+
+// Replace your placeholder function
 function installApp() {
-  alert("Install feature coming soon!");
+  if (deferredPrompt) {
+    deferredPrompt.prompt(); // show the install banner
+    deferredPrompt.userChoice.then((choiceResult) => {
+      console.log('User choice:', choiceResult.outcome);
+      deferredPrompt = null; // reset
+    });
+  } else {
+    console.log('Install prompt not available yet');
+  }
 }
+
 
 function calc() {
   const num1 = parseFloat(document.getElementById('num1').value) || 0;
