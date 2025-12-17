@@ -14,9 +14,9 @@
 - [x] articles/bishop-kiengei.html: Update canonical, OG title, description, keywords, OG url
 - [x] articles/article12.html: Update canonical, add structured data, specific OG title
 - [x] articles/article13.html: Update canonical, add structured data, specific OG title
-- [ ] articles/article15.html: Update canonical, add structured data, specific OG title
-- [ ] articles/article17.html: Update canonical, add structured data, specific OG title
-- [ ] articles/article19.html: Update canonical, add structured data, specific OG title
+- [x] articles/article15.html: Update canonical, add structured data, specific OG title
+- [x] articles/article17.html: Update canonical, add structured data, specific OG title
+- [x] articles/article19.html: Update canonical, add structured data, specific OG title
 - [ ] articles/asia-floods.html: Update canonical, add structured data, specific OG title
 - [ ] articles/bahati-family.html: Update canonical, add structured data, specific OG title
 - [ ] articles/breakthroughs-in-global-health.html: Update canonical, add structured data, specific OG title
