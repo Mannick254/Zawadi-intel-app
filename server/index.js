@@ -22,7 +22,7 @@ function readLocalData() {
   try {
     return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
   } catch (e) {
-    return { total: 0, recent: [], users: {}, tokens: {} };
+    return { total: 0, recent: [], users: {}, tokens: {}, subscriptions: [] };
   }
 }
 function writeLocalData(data) {
@@ -76,7 +76,7 @@ if (firebaseEnabled) {
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY || process.env.VAPID_PUBLIC_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY || process.env.VAPID_PRIVATE_KEY;
 if (publicVapidKey && privateVapidKey) {
-  webpush.setVapidDetails('mailto:admin@zawadiintel.com', publicVapidKey, privateVapidKey);
+  webpush.setVapidDetails('mailto:admin@zawadiintelnews.vercel.app', publicVapidKey, privateVapidKey);
 } else {
   console.warn('VAPID keys not fully configured — push notifications disabled. Set PUBLIC_VAPID_KEY and PRIVATE_VAPID_KEY in .env.');
 }
@@ -204,6 +204,33 @@ async function getStats() {
     return { total: data.total || 0, recent: data.recent || [] };
   }
 }
+async function getSubscriptions() {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref('subscriptions').once('value');
+      return snap.val() || [];
+    } else {
+      const snapshot = await db.collection('subscriptions').get();
+      return snapshot.docs.map(doc => doc.data());
+    }
+  } else {
+    const data = readLocalData();
+    return data.subscriptions || [];
+  }
+}
+async function addSubscription(subscription) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref('subscriptions').push(subscription);
+    } else {
+      await db.collection('subscriptions').add(subscription);
+    }
+  } else {
+    const data = readLocalData();
+    data.subscriptions.push(subscription);
+    writeLocalData(data);
+  }
+}
 
 // API endpoints
 app.post('/api/register', async (req, res) => {
@@ -265,6 +292,21 @@ app.get('/api/news', async (req, res) => {
     console.error('Error fetching news:', err);
     res.status(500).json({ error: 'Failed to fetch news' });
   }
+});
+
+app.post('/api/subscribe', async (req, res) => {
+  const subscription = req.body;
+  await addSubscription(subscription);
+  res.status(201).json({});
+});
+
+app.post('/api/notify', async (req, res) => {
+  const subscriptions = await getSubscriptions();
+  const payload = JSON.stringify({ title: 'Zawadi Intel News', body: 'Welcome to Zawadi Intel News. Subscribe, comment and share our site.' });
+  subscriptions.forEach(subscription => {
+    webpush.sendNotification(subscription, payload).catch(error => console.error(error));
+  });
+  res.status(200).json({ success: true });
 });
 
 app.listen(PORT, () => {

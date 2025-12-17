@@ -5,7 +5,7 @@ const webpush = require("web-push");
 
 // Set VAPID details for authentication
 webpush.setVapidDetails(
-  "mailto:admin@zawadiintel.com",
+  "mailto:admin@zawadiintelnews.vercel.app",
   process.env.PUBLIC_VAPID_KEY,
   process.env.PRIVATE_VAPID_KEY
 );
