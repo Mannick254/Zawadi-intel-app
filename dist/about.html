@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — About Us</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Learn more about Zawadi Intel News — our vision, mission, and values." />
+  <meta name="keywords" content="Zawadi Intel, About Us, Newsroom, Africa, Global News" />
+  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/" />
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="About Zawadi Intel News" />
+  <meta property="og:description" content="Discover the vision and mission behind Zawadi Intel News." />
+  <meta property="og:image" content="icons/icon-192.png" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/about.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/articles.css" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
+      <span class="brand">📜 Zawadi Intel</span>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+    <ul class="main-links">
+      <li><a href="global.html">Global</a></li>
+      <li><a href="articles/africa.html">Africa</a></li>
+      <li><a href="biography.html">Biographies</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="app.html">Archive</a></li>
+      <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+    </ul>
+  </nav>
+
+  
+
+  <!-- 📰 About Content -->
+  <article>
+    <h1>About Zawadi Intel News</h1>
+    <p class="byline">Curated in Nairobi, Kenya | Updated Dec 2025</p>
+    <img src="images/Copilot_20251209_132001.png" alt="Zawadi Intel newsroom" />
+
+    <!-- 🌟 Hero Banner -->
+    <section class="hero">
+      <img src="images/Copilot_20251209_132420.png" alt="Editorial team working" />
+      <div class="hero-text">
+        <h2>Our Vision & Mission</h2>
+        <p>Empowering communities through clarity, storytelling, and global benchmarking.</p>
+      </div>
+    </section>
+
+    <p>Zawadi Intel News is a visionary newsroom and service platform founded in Nairobi, Kenya. Our mission is to deliver clear, impactful, and globally benchmarked reporting that empowers communities and amplifies African voices on the world stage.</p>
+
+    <p>We blend editorial excellence with technical innovation, ensuring every article meets professional newsroom standards. From breaking news to in-depth features, we strive to inform, inspire, and engage readers worldwide.</p>
+
+    <!-- 📊 Data Highlights -->
+    <section class="data-highlights">
+      <h3>What We Cover</h3>
+      <ul>
+        <li>🌍 Global and African current affairs</li>
+        <li>📰 Public health advocacy and youth realities</li>
+        <li>💡 Technology, innovation, and emerging economies</li>
+        <li>🎭 Culture, sports, and community stories</li>
+      </ul>
+    </section>
+
+    <blockquote>
+      “Zawadi Intel is more than a news site — it’s a platform for empowerment, storytelling, and legacy-building.”
+    </blockquote>
+
+    <!-- 📚 Contact Hashtags -->
+    <aside class="related">
+      <h3>Contact Us</h3>
+      <ul>
+        <li>#ZawadiIntelSupport</li>
+        <li>#ZawadiIntelNews</li>
+        <li>#ContactZawadiIntel</li>
+        <li>#AskZawadiIntel</li>
+      </ul>
+      <p>Use these hashtags on social platforms to connect with our team and community.</p>
+    </aside>
+
+    <!-- Back link -->
+    <p><a href="index.html">⬅ Back to Homepage</a></p>
+  </article>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance Scripts -->
+  <script src="main.js" defer></script>
+  <script>
+    // Breaking news ticker
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+    loadNews();
+
+    // Notifications
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

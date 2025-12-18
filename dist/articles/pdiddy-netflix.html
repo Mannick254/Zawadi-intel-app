@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel — P Diddy Netflix Docuseries</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Sean 'P Diddy' Combs’ legal team responds to Netflix docuseries produced by 50 Cent revisiting controversies." />
+  <meta name="keywords" content="P Diddy, Netflix, 50 Cent, Docuseries, Celebrity News, Zawadi Intel" />
+  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/" />
+
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:title" content="P Diddy’s lawyers respond to Netflix docuseries by 50 Cent" />
+  <meta property="og:description" content="Sean 'P Diddy' Combs’ legal team reacts to Netflix docuseries revisiting controversies." />
+  <meta property="og:image" content="../images/netflix1.avif" />
+  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/articles/pdiddy-netflix.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/articles.css" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="../icons/icon-192.png" alt="Zawadi Intel logo" />
+      <span class="brand">📜 Zawadi Intel</span>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle Menu">☰</button>
+    <ul class="main-links">
+      <li><a href="../global.html">Global</a></li>
+      <li><a href="../articles/africa.html">Africa</a></li>
+      <li><a href="../biography.html">Biographies</a></li>
+      <li><a href="../media.html">Media</a></li>
+      <li><a href="../books.html">Books</a></li>
+      <li><a href="../app.html">Archive</a></li>
+      <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+    </ul>
+  </nav>
+
+  <!-- 🚨 Breaking News Ticker -->
+  <div class="breaking-news">
+    <ul id="newsTicker"></ul>
+  </div>
+
+  <!-- 📰 Article -->
+  <article>
+    <h1>P Diddy’s lawyers respond to Netflix docuseries by 50 Cent</h1>
+    <p class="byline">By Zawadi Intel Staff | Dec 3, 2025</p>
+    <img src="../images/netflix1.avif" alt="P Diddy Netflix Docuseries" />
+
+    <!-- 🌟 Hero Banner -->
+    <section class="hero">
+      <img src="../images/netflix-banner.jpg" alt="Netflix Docuseries Banner" />
+      <div class="hero-text">
+        <h2>Celebrity Drama Meets Legal Defense</h2>
+        <p>How Netflix’s latest docuseries reignited old controversies.</p>
+      </div>
+    </section>
+
+    <p>Sean “P Diddy” Combs’ legal team has issued a response to a Netflix docuseries produced by rapper 50 Cent. The series revisits long-standing controversies surrounding Combs, sparking renewed debate across entertainment and legal circles.</p>
+
+    <p>The lawyers argue that the docuseries presents a biased narrative, while supporters of the production claim it sheds light on unresolved issues. The clash highlights the growing influence of streaming platforms in shaping celebrity reputations.</p>
+
+    <!-- 📊 Data Highlights -->
+    <section class="data-highlights">
+      <h3>Key Points</h3>
+      <ul>
+        <li>🎬 Netflix docuseries produced by 50 Cent</li>
+        <li>⚖️ P Diddy’s legal team disputes portrayal</li>
+        <li>📺 Streaming platforms amplify celebrity controversies</li>
+        <li>🌍 Global audience fuels ongoing debate</li>
+      </ul>
+    </section>
+
+    <blockquote>
+      “This is not just entertainment — it’s a battle over narrative and reputation.”
+    </blockquote>
+
+    <p>Industry analysts note that celebrity docuseries are increasingly shaping public opinion, often blurring the line between journalism and entertainment. The outcome of this dispute may set precedents for how streaming platforms handle sensitive stories.</p>
+
+    <!-- 📚 Related Articles -->
+    <aside class="related">
+      <h3>Related Stories</h3>
+      <ul>
+        <li><a href="bahati-family.html">Bahati’s Family Search</a></li>
+        <li><a href="amazon-ai-chip.html">Amazon AI Chip Rivalry</a></li>
+        <li><a href="siaya-doctors.html">Siaya Doctors Strike</a></li>
+      </ul>
+    </aside>
+
+    <!-- Back link -->
+    <p><a href="../index.html">⬅ Back to Homepage</a></p>
+  </article>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+  </footer>
+
+  <!-- ⚡ Performance Scripts -->
+  <script src="../main.js" defer></script>
+  <script>
+    // Breaking news ticker
+    async function loadNews() {
+      try {
+        const res = await fetch("https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
+        const data = await res.json();
+        const ticker = document.getElementById("newsTicker");
+
+        if (data.articles) {
+          data.articles.forEach(article => {
+            const li = document.createElement("li");
+            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
+            ticker.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
+      } catch (error) {
+        console.error("Error loading news:", error);
+        const ticker = document.getElementById("newsTicker");
+        const li = document.createElement("li");
+        li.textContent = "🌍 News unavailable at the moment.";
+        ticker.appendChild(li);
+      }
+    }
+    loadNews();
+
+    // Notifications
+    document.getElementById("enable-notifications").addEventListener("click", () => {
+      if ("Notification" in window && "serviceWorker" in navigator) {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          } else {
+            console.log("Notification permission denied.");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

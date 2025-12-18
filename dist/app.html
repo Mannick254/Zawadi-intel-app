@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- SEO Meta Tags -->
+  <title>Archive — Zawadi Intel</title>
+  <meta name="description" content="Search and explore all stories, profiles, media, and books published on Zawadi Intel." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+</head>
+<body>
+
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav">
+    <div class="logo">📜 Zawadi Intel</div>
+    <div class="main-links">
+      <a href="index.html">Home</a>
+      <a href="global.html">Global</a>
+      <a href="africa.html">Africa</a>
+      <a href="biography.html">Biographies</a>
+      <a href="media.html">Media</a>
+      <a href="books.html">Books</a>
+      <a href="account.html">Account</a>
+    </div>
+  </nav>
+
+  <!-- Install banner (mobile) -->
+  <div id="install-banner" role="dialog" aria-live="polite">
+    <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
+    <button id="install-now" onclick="installApp()" style="display:none;">Install</button>
+    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+  </div>
+
+  <!-- 🗂️ Page Banner -->
+  <header class="page-banner">
+    <h1>📁 Archive</h1>
+    <p>Search and explore every story, profile, and feature published on Zawadi Intel.</p>
+    <form class="search-bar">
+      <input type="text" placeholder="Search by keyword, region, or author..." />
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <!-- 📁 Archive Grid -->
+  <main class="aj-container">
+    <section class="aj-grid">
+      <div class="aj-main">
+
+        <!-- Updated Stories -->
+        <article class="story-card">
+          <h2>🇯🇵 Powerful Earthquake Strikes Northern Japan</h2>
+          <p>A 6.7-magnitude quake disrupted transport and damaged infrastructure, raising global supply chain concerns.</p>
+          <a href="global.html#japan-earthquake">Read More</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🌍 UNEA-7 Opens in Nairobi</h2>
+          <p>Over 170 countries gather to debate urgent climate solutions, biodiversity loss, and pollution.</p>
+          <a href="africa.html#unea7">Full Report</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🇮🇳 India Posts 8.2% GDP Growth</h2>
+          <p>PM Modi highlights India’s role as a global growth driver amid economic uncertainty.</p>
+          <a href="global.html#india-economy">View Analysis</a>
+        </article>
+
+        <article class="story-card">
+          <h2>🇰🇪 Nairobi Roads Upgraded Amid Budget Crisis</h2>
+          <p>Governor Sakaja inspects new roads as KHRC warns of looming financial paralysis.</p>
+          <a href="africa.html#nairobi-infrastructure">View Gallery</a>
+        </article>
+
+        <article class="story-card">
+          <h2>📈 US Housing Market Faces Crash Warning</h2>
+          <p>Analysts predict a 50% plunge starting in 2026, worse than the 2008 crisis.</p>
+          <a href="global.html#us-housing">Read Report</a>
+        </article>
+
+      </div>
+
+      <!-- 📌 Sidebar -->
+      <aside class="aj-sidebar">
+        <div class="sidebar-module">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="global.html">Global Conflict</a></li>
+            <li><a href="africa.html">African Affairs</a></li>
+            <li><a href="biography.html">Profiles</a></li>
+            <li><a href="media.html">Multimedia</a></li>
+            <li><a href="books.html">Literature</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-module">
+          <h3>Recent Highlights</h3>
+          <ul>
+            <li><a href="#">Red Sea Tensions Rise</a></li>
+            <li><a href="#">OPEC+ Signals Production Cuts</a></li>
+            <li><a href="#">Africa Targets $5bn Green Economy Projects</a></li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Zawadi Intel. All rights reserved.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

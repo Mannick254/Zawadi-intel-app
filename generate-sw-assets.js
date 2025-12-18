@@ -5,9 +5,9 @@ const DIRECTORIES_TO_CACHE = [
   './',
   './css',
   './js',
-  './public/articles',
-  './public/images',
-  './public/news',
+  './articles',
+  './images',
+  './news',
   './icons'
 ];
 
@@ -18,7 +18,10 @@ const EXCLUDED_FILES = [
   'articles_list.txt',
   'sitemap_articles.txt',
   'image_references.txt',
+  'build.js'
 ];
+
+const dist = 'dist';
 
 function getFilesInDirectory(dir) {
   let files = [];
@@ -29,7 +32,7 @@ function getFilesInDirectory(dir) {
     if (item.isDirectory()) {
       files = files.concat(getFilesInDirectory(fullPath));
     } else if (!EXCLUDED_FILES.includes(item.name)) {
-      files.push(fullPath.replace(/\\/g, '/').substring(1)); // Normalize path for web
+      files.push('/' + path.relative(dist, fullPath).replace(/\\/g, '/')); // Normalize path for web
     }
   }
   return files;
@@ -37,8 +40,9 @@ function getFilesInDirectory(dir) {
 
 let allFiles = [];
 DIRECTORIES_TO_CACHE.forEach(dir => {
-  if (fs.existsSync(dir)) {
-    allFiles = allFiles.concat(getFilesInDirectory(dir));
+  const fullDir = path.join(dist, dir);
+  if (fs.existsSync(fullDir)) {
+    allFiles = allFiles.concat(getFilesInDirectory(fullDir));
   }
 });
 
@@ -61,7 +65,7 @@ const additionalFiles = [
 
 allFiles = [...new Set([...allFiles, ...additionalFiles])]; // Remove duplicates
 
-const serviceWorkerPath = path.join(__dirname, 'service-worker.js');
+const serviceWorkerPath = path.join(__dirname, dist, 'service-worker.js');
 let serviceWorkerContent = fs.readFileSync(serviceWorkerPath, 'utf8');
 
 const assetsString = JSON.stringify(allFiles, null, 2);
