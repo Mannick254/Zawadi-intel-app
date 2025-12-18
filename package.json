@@ -4,7 +4,8 @@
   "description": "Zawadi Intel Progressive Web App",
   "main": "index.js",
   "scripts": {
-    "update-sw": "node generate-sw-assets.js"
+    "build": "node generate-sw-assets.js",
+    "vercel-build": "npm run build"
   },
   "keywords": ["pwa", "news", "zawadi"],
   "author": "Mannick",
