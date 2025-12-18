@@ -1,5 +1,7 @@
 // scripts/main.js
 
+// ----------------- TOGGLE DROPDOWN MENUS -----------------
+
 // Toggle dropdown menus (e.g. Home ▾)
 document.querySelectorAll('.home-btn').forEach(button => {
   button.addEventListener('click', () => {
@@ -33,6 +35,8 @@ if (newsBtn && newsDropdown) {
   });
 }
 
+// ----------------- SEARCH BAR -----------------
+
 // Basic search bar functionality (logs query)
 const searchForm = document.querySelector('.search-bar');
 if (searchForm) {
@@ -45,6 +49,8 @@ if (searchForm) {
     }
   });
 }
+
+// ----------------- MOBILE MENU -----------------
 
 // Toggle mobile menu
 const menuToggle = document.querySelector(".menu-toggle") || document.querySelector(".nav-toggle");
@@ -69,6 +75,8 @@ if (menuToggle && mainLinks) {
     }
   });
 }
+
+// ----------------- AUTHENTICATION -----------------
 
 // --- Server-side auth with token-based sessions ---
 // Admin credentials: Nickson / Zawadi@123
@@ -102,18 +110,6 @@ async function verifyToken(token) {
   } catch (e) {}
   return null;
 }
-
-// Hide expired story cards based on data-expire attribute
-document.addEventListener("DOMContentLoaded", () => {
-  const now = new Date();
-
-  document.querySelectorAll(".story-card").forEach(card => {
-    const expireDate = new Date(card.dataset.expire);
-    if (expireDate < now) {
-      card.style.display = "none";
-    }
-  });
-});
 
 async function registerUser(username, password) {
   // Try server first
@@ -196,6 +192,8 @@ async function recordLogin(username) {
   localStorage.setItem(GLOBAL_COUNT_KEY, String(count));
   return { totalLogins: count, source: 'local' };
 }
+
+// ----------------- AUTH UI -----------------
 
 // Inject a small auth button and modal into the page
 function createAuthUi() {
@@ -314,47 +312,8 @@ async function updateAuthUi() {
   }
 }
 
-// Initialize auth UI on pages where this script loads
-if (typeof document !== 'undefined') {
-  try { createAuthUi(); } catch (e) { /* ignore */ }
-}
+// ----------------- STORY MODAL -----------------
 
-// Make story headings clickable: wrap the heading in a link that points to the card's primary link
-function makeTitlesClickable() {
-  try {
-    const cards = Array.from(document.querySelectorAll('.story-card'));
-    cards.forEach(card => {
-      // find first meaningful link inside the card
-      const link = card.querySelector('a[href]');
-      if (!link) return;
-      // find first heading inside the card
-      const heading = card.querySelector('h1,h2,h3,h4,h5');
-      if (!heading) return;
-      // if heading already contains a link, skip
-      if (heading.querySelector('a')) return;
-      // create an anchor that points to the primary link
-      const a = document.createElement('a');
-      a.href = link.getAttribute('href');
-      a.className = 'story-title-link';
-      a.setAttribute('aria-label', (heading.textContent || 'Open story').trim());
-      // move heading's children into the anchor
-      while (heading.firstChild) a.appendChild(heading.firstChild);
-      heading.appendChild(a);
-      // make the whole heading keyboard friendly
-      a.style.color = 'inherit';
-      a.style.textDecoration = 'none';
-      a.style.cursor = 'pointer';
-    });
-  } catch (e) {
-    console.warn('makeTitlesClickable failed', e);
-  }
-}
-
-// Run after DOM ready so existing story cards are present
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', makeTitlesClickable);
-else makeTitlesClickable();
-
-// --- Inline story modal: fetch & show full story when a title is clicked ---
 function setupStoryModal() {
   if (typeof document === 'undefined') return;
 
@@ -528,7 +487,8 @@ function setupStoryModal() {
     return null;
   }
 
-  // Click handler (delegated)
+  // ----------------- CLICK HANDLER -----------------
+
   // Track modal open state to avoid re-entrant handling
   let _storyModalOpen = false;
 
@@ -620,11 +580,8 @@ function setupStoryModal() {
   });
 }
 
-// Attach on ready
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupStoryModal);
-else setupStoryModal();
+// ----------------- INSTALL PROMPT -----------------
 
-// Additional install prompt script
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -652,7 +609,8 @@ Array.from(document.querySelectorAll('#install-banner button, button#install-but
   });
 });
 
-// --- Push Notification Subscription ---
+// ----------------- PUSH NOTIFICATIONS -----------------
+
 async function subscribeUser() {
   if ("serviceWorker" in navigator) {
     try {
@@ -679,33 +637,7 @@ document.getElementById("enable-notifications").addEventListener("click", () => 
   subscribeUser();
 });
 
-// Keep a reference to the deferred install event
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); // stop auto banner
-  deferredPrompt = e; // save event for later
-
-  // Show your custom install button
-  const installBtn = document.getElementById('installBtn');
-  if (installBtn) {
-    installBtn.style.display = 'block';
-  }
-});
-
-// Replace your placeholder function
-function installApp() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt(); // show the install banner
-    deferredPrompt.userChoice.then((choiceResult) => {
-      console.log('User choice:', choiceResult.outcome);
-      deferredPrompt = null; // reset
-    });
-  } else {
-    console.log('Install prompt not available yet');
-  }
-}
-
+// ----------------- OTHER -----------------
 
 function calc() {
   const num1 = parseFloat(document.getElementById('num1').value) || 0;
@@ -745,30 +677,16 @@ function toggleStory(element) {
   }
 }
 
-function supportUkraine() {
-  window.open('https://www.unicef.org/emergencies/ukraine-crisis', '_blank');
-}
+// ----------------- INITIALIZATION -----------------
 
-function sharePage() {
-  if (navigator.share) {
-    navigator.share({
-      title: document.title,
-      url: window.location.href
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        createAuthUi();
+        makeTitlesClickable();
+        setupStoryModal();
     });
-  } else {
-    navigator.clipboard.writeText(window.location.href);
-    alert('Link copied to clipboard!');
-  }
-}
-
-function joinDiscussion() {
-  alert('Discussion feature coming soon!');
-}
-
-function learnCybersecurity() {
-  window.open('https://www.cisa.gov/secure-our-world', '_blank');
-}
-
-function findTestingCenter() {
-  window.open('https://www.who.int/health-topics/hiv-aids', '_blank');
+} else {
+    createAuthUi();
+    makeTitlesClickable();
+    setupStoryModal();
 }
