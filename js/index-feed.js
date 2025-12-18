@@ -20,6 +20,15 @@
     });
   }
 
+  function escapeHTML(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   function renderGrid(data) {
     const grid = document.querySelector(".article-grid");
     if (!grid) return;
@@ -60,8 +69,9 @@
 
     modules.forEach((mod, idx) => {
       const item = data[idx] || data[idx % data.length];
+      const heading = escapeHTML(mod.querySelector("h3")?.textContent || "In Depth");
       mod.innerHTML = `
-        <h3>${mod.querySelector("h3")?.textContent || "In Depth"}</h3>
+        <h3>${heading}</h3>
         <a href="${item.url}"><strong>${item.title}</strong></a>
         <p class="meta">${item.category || "General"} — ${item.time || ""}</p>
         <p class="excerpt">${item.excerpt || ""}</p>
