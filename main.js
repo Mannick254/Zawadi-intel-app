@@ -609,33 +609,6 @@ Array.from(document.querySelectorAll('#install-banner button, button#install-but
   });
 });
 
-// ----------------- PUSH NOTIFICATIONS -----------------
-
-async function subscribeUser() {
-  if ("serviceWorker" in navigator) {
-    try {
-      const reg = await navigator.serviceWorker.ready;
-      const subscription = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: "BOA0NjzLhlXvX05nWd0Q7MrDE3A8zSvUGKH-aQ0_cejhmWI7BRCdUFALsckKWHCol11QVhcifANZwvOSNdnnmNI"
-      });
-      console.log("User subscribed:", JSON.stringify(subscription));
-      // Send subscription to your server to store
-      await fetch("/save-subscription", {
-        method: "POST",
-        body: JSON.stringify(subscription),
-        headers: { "Content-Type": "application/json" }
-      });
-    } catch (error) {
-      console.error("Push subscription failed:", error);
-    }
-  }
-}
-
-// Notifications button
-document.getElementById("enable-notifications").addEventListener("click", () => {
-  subscribeUser();
-});
 
 // ----------------- OTHER -----------------
 

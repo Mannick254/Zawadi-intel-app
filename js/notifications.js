@@ -1,6 +1,6 @@
 
 (function() {
-  const applicationServerKey = "YOUR_PUBLIC_KEY"; // Replace with your VAPID public key
+  const applicationServerKey = "BOA0NjzLhlXvX05nWd0Q7MrDE3A8zSvUGKH-aQ0_cejhmWI7BRCdUFALsckKWHCol11QVhcifANZwvOSNdnnmNI";
 
   function urlB64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - base64String.length % 4) % 4);
