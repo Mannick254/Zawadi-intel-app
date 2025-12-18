@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const articlesDir = 'articles';
-const outputFile = 'articles.json';
+const articlesDir = 'public/articles';
+const outputFile = 'public/articles.json';
 const baseUrl = 'https://mannick254.github.io/Zawadi-intel-app';
 
 function generateArticlesJson() {

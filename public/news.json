@@ -1,10 +1,18 @@
-async function fetchNewsData() {
-  try {
-    const response = await fetch('/news.json'); // leading slash ensures root-relative
-    if (!response.ok) throw new Error('Failed to load news.json');
-    const data = await response.json();
-    // use data...
-  } catch (error) {
-    console.error("Error fetching news:", error);
-  }
+{
+  "articles": [
+    {
+      "headline": "Wohoro Ndohho to Lead Montran Africa as Regional Executive Director",
+      "image": "images/infrastructure.jpg",
+      "datePublished": "2025-12-12",
+      "description": "Wohoro Ndohho is appointed Regional Executive Director for Montran Africa, leading payments infrastructure modernization from Nairobi.",
+      "url": "/news/Wahoho.html"
+    },
+    {
+      "headline": "World AIDS Day: A Call for Global Solidarity and Shared Responsibility",
+      "image": "images/aids-day.jpg",
+      "datePublished": "2025-12-01",
+      "description": "Commemorating World AIDS Day with a look at progress and the path forward.",
+      "url": "/articles/aids-day.html"
+    }
+  ]
 }
