@@ -1,23 +1,47 @@
+
 (function() {
   async function fetchNewsData() {
     try {
-      const res = await fetch("data/news.json");
-      if (!res.ok) throw new Error("Failed to load news.json");
-      const data = await res.json();
-      return filterExpired(data);
+      const res = await fetch("/public/articles/");
+      if (!res.ok) throw new Error("Failed to load articles directory");
+      const text = await res.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, "text/html");
+      const links = Array.from(doc.querySelectorAll("a"));
+      const articleFiles = links.map(a => a.getAttribute("href")).filter(href => href.endsWith(".html"));
+
+      const articles = await Promise.all(articleFiles.map(async (file) => {
+        try {
+          const articleRes = await fetch(`/public/articles/${file}`);
+          if (!articleRes.ok) return null;
+          const articleText = await articleRes.text();
+          const articleDoc = parser.parseFromString(articleText, "text/html");
+          
+          const title = articleDoc.querySelector('title')?.innerText || 'No Title';
+          const image = articleDoc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '/icons/icon-192.png';
+          const category = articleDoc.querySelector('meta[property="article:section"]')?.getAttribute('content') || 'General';
+          const time = articleDoc.querySelector('meta[property="article:published_time"]')?.getAttribute('content') || '';
+          const excerpt = articleDoc.querySelector('meta[property="og:description"]')?.getAttribute('content') || '';
+
+          return {
+            url: `/public/articles/${file}`,
+            title,
+            image,
+            category,
+            time,
+            excerpt
+          };
+        } catch (error) {
+          console.error(`Error fetching or parsing article: ${file}`, error);
+          return null;
+        }
+      }));
+
+      return articles.filter(Boolean); // Filter out any nulls from failed fetches
     } catch (err) {
       console.error("Error fetching news:", err);
       return [];
     }
-  }
-
-  function filterExpired(data) {
-    const now = new Date();
-    return data.filter(item => {
-      if (!item.expire) return true;
-      const expire = new Date(item.expire);
-      return expire >= now;
-    });
   }
 
   function renderGrid(data) {

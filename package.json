@@ -1,0 +1,12 @@
+{
+  "name": "zawadi-intel-app",
+  "version": "1.0.0",
+  "description": "Zawadi Intel Progressive Web App",
+  "main": "index.js",
+  "scripts": {
+    "update-sw": "node generate-sw-assets.js"
+  },
+  "keywords": ["pwa", "news", "zawadi"],
+  "author": "Mannick",
+  "license": "ISC"
+}
