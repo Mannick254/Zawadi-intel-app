@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-<<<<<<< HEAD
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-=======
-  xmlns:xsl="https://www.w3.org/1999/XSL/Transform">
->>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
   <xsl:template match="/">
     <html>
       <head><title>Sitemap</title></head>
