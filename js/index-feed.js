@@ -2,7 +2,7 @@
 (function() {
   async function fetchNewsData() {
     try {
-      const res = await fetch("/public/articles/");
+      const res = await fetch("/articles/");
       if (!res.ok) throw new Error("Failed to load articles directory");
       const text = await res.text();
       const parser = new DOMParser();
@@ -12,7 +12,7 @@
 
       const articles = await Promise.all(articleFiles.map(async (file) => {
         try {
-          const articleRes = await fetch(`/public/articles/${file}`);
+          const articleRes = await fetch(`/articles/${file}`);
           if (!articleRes.ok) return null;
           const articleText = await articleRes.text();
           const articleDoc = parser.parseFromString(articleText, "text/html");
@@ -24,7 +24,7 @@
           const excerpt = articleDoc.querySelector('meta[property="og:description"]')?.getAttribute('content') || '';
 
           return {
-            url: `/public/articles/${file}`,
+            url: `/articles/${file}`,
             title,
             image,
             category,
