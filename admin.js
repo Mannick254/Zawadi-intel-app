@@ -1,100 +1,142 @@
 // admin.js
 
-// Ensure admin.html requires an admin user before exposing actions
+// Initialize admin UI
 async function initAdmin() {
   const warn = document.getElementById('admin-warn');
+  const loginSection = document.getElementById('admin-login');
+  const actionsSection = document.getElementById('admin-actions');
+
   try {
-    // getCurrentUser is defined in main.js and returns null if not signed in
-    const current = await getCurrentUser();
+    const current = await getCurrentUser(); // defined in main.js
     if (!current || !current.isAdmin) {
-      warn.textContent = 'Admin access required. Please sign in with an admin account.';
-      // ensure login section is visible
-      const loginSection = document.getElementById('admin-login');
+      if (warn) warn.textContent = 'Admin access required. Please sign in with an admin account.';
       if (loginSection) loginSection.style.display = 'block';
+      if (actionsSection) actionsSection.style.display = 'none';
       return;
     }
-    // hide login and show admin actions
-    const loginSection = document.getElementById('admin-login');
+
+    // Admin verified
+    if (warn) warn.textContent = '';
     if (loginSection) loginSection.style.display = 'none';
-    document.getElementById('admin-actions').style.display = 'block';
+    if (actionsSection) actionsSection.style.display = 'block';
+
+    wireAdminButtons();
   } catch (e) {
     console.warn('Admin check failed', e);
-    warn.textContent = 'Unable to verify admin status.';
+    if (warn) warn.textContent = 'Unable to verify admin status.';
   }
-
-  // wire buttons
-  document.getElementById('refresh-stats').addEventListener('click', fetchStats);
-  document.getElementById('clear-local').addEventListener('click', () => {
-    if (!confirm('Clear local login count? This cannot be undone.')) return;
-    localStorage.removeItem('zawadi_global_count_v1');
-    document.getElementById('total-local').textContent = '0';
-  });
-  document.getElementById('export-recent').addEventListener('click', () => {
-    // Try to fetch server recent list, otherwise export local placeholder
-    fetch('/api/stats').then(r => r.ok ? r.json() : Promise.reject()).then(data => {
-      const csv = (data.recent || []).map(r => `${new Date(r.ts).toISOString()},${r.username}`).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'recent-logins.csv'; a.click();
-      URL.revokeObjectURL(url);
-    }).catch(() => {
-      alert('No server data available to export.');
-    });
-  });
 }
 
-// existing fetchStats function
+// Attach button handlers
+function wireAdminButtons() {
+  const refreshBtn = document.getElementById('refresh-stats');
+  const clearBtn = document.getElementById('clear-local');
+  const exportBtn = document.getElementById('export-recent');
+
+  if (refreshBtn) refreshBtn.addEventListener('click', fetchStats);
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (!confirm('Clear local login count? This cannot be undone.')) return;
+      localStorage.removeItem('zawadi_global_count_v1');
+      const localTotal = document.getElementById('total-local');
+      if (localTotal) localTotal.textContent = '0';
+    });
+  }
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/stats');
+        if (!res.ok) throw new Error('No server data');
+        const data = await res.json();
+        const csv = (data.recent || [])
+          .map(r => `${new Date(r.ts).toISOString()},${r.username}`)
+          .join('\n');
+        downloadCSV(csv, 'recent-logins.csv');
+      } catch {
+        alert('No server data available to export.');
+      }
+    });
+  }
+}
+
+// Helper: download CSV
+function downloadCSV(content, filename) {
+  const blob = new Blob([content], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Fetch stats from server or fallback
 async function fetchStats() {
   const warn = document.getElementById('admin-warn');
+  const serverTotal = document.getElementById('total-server');
+  const localTotal = document.getElementById('total-local');
+  const list = document.getElementById('recent-list');
+
   try {
     const res = await fetch('/api/stats');
-    if (!res.ok) throw new Error('no server');
+    if (!res.ok) throw new Error('Server unavailable');
     const data = await res.json();
-    document.getElementById('total-server').textContent = data.total || 0;
-    warn.textContent = '';
-    const list = document.getElementById('recent-list');
-    list.innerHTML = '';
-    (data.recent || []).forEach(r => {
-      const li = document.createElement('li');
-      li.textContent = `${new Date(r.ts).toLocaleString()} — ${r.username}`;
-      list.appendChild(li);
-    });
+
+    if (serverTotal) serverTotal.textContent = data.total || 0;
+    if (warn) warn.textContent = '';
+    if (list) {
+      list.innerHTML = '';
+      (data.recent || []).forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = `${new Date(r.ts).toLocaleString()} — ${r.username}`;
+        list.appendChild(li);
+      });
+    }
   } catch (e) {
-    warn.textContent = 'Server not available — showing local fallback counts.';
-    document.getElementById('total-server').textContent = 'n/a';
+    if (warn) warn.textContent = 'Server not available — showing local fallback counts.';
+    if (serverTotal) serverTotal.textContent = 'n/a';
     const local = parseInt(localStorage.getItem('zawadi_global_count_v1') || '0', 10);
-    document.getElementById('total-local').textContent = local;
-    const list = document.getElementById('recent-list');
-    list.innerHTML = '';
+    if (localTotal) localTotal.textContent = local;
+    if (list) list.innerHTML = '';
   }
 }
-fetchStats();
-// initialize admin UI (checks current user and shows admin actions if allowed)
-initAdmin();
 
-// Admin inline login handler
-document.getElementById('admin-login-btn').addEventListener('click', async () => {
-  const u = document.getElementById('admin-username').value.trim();
-  const p = document.getElementById('admin-password').value;
-  const msg = document.getElementById('admin-login-msg');
-  msg.textContent = '';
-  if (!u || !p) { msg.textContent = 'Enter username and password.'; return; }
-  try {
-    const resp = await loginUser(u, p);
-    if (!resp || !resp.ok) {
-      msg.textContent = resp && resp.message ? resp.message : 'Login failed';
+// Inline admin login handler
+const loginBtn = document.getElementById('admin-login-btn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', async () => {
+    const u = document.getElementById('admin-username')?.value.trim();
+    const p = document.getElementById('admin-password')?.value;
+    const msg = document.getElementById('admin-login-msg');
+    if (msg) msg.textContent = '';
+
+    if (!u || !p) {
+      if (msg) msg.textContent = 'Enter username and password.';
       return;
     }
-    msg.style.color = 'green';
-    msg.textContent = 'Signed in successfully.';
-    // Re-init admin UI now that we are signed in
-    await initAdmin();
-    // hide the inline login form after successful sign-in
-    const loginSectionAfter = document.getElementById('admin-login');
-    if (loginSectionAfter) loginSectionAfter.style.display = 'none';
-  } catch (e) {
-    console.warn('Admin login error', e);
-    msg.textContent = 'Login error';
-  }
-});
+
+    try {
+      const resp = await loginUser(u, p);
+      if (!resp || !resp.ok) {
+        if (msg) msg.textContent = resp?.message || 'Login failed';
+        return;
+      }
+      if (msg) {
+        msg.style.color = 'green';
+        msg.textContent = 'Signed in successfully.';
+      }
+      await initAdmin();
+      const loginSection = document.getElementById('admin-login');
+      if (loginSection) loginSection.style.display = 'none';
+    } catch (e) {
+      console.warn('Admin login error', e);
+      if (msg) msg.textContent = 'Login error';
+    }
+  });
+}
+
+// Initial load
+fetchStats();
+initAdmin();

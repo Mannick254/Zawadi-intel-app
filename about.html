@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- 🌍 Basic Setup -->
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zawadi Intel — About Us</title>
 
   <!-- 🔍 SEO & Metadata -->
   <meta name="description" content="Learn more about Zawadi Intel News — our vision, mission, and values." />
   <meta name="keywords" content="Zawadi Intel, About Us, Newsroom, Africa, Global News" />
-  <link rel="canonical" href="https://mannick254.github.io/Zawadi-intel-app/" />
+  <link rel="canonical" href="https://zawadiintelnews.vercel.app/about.html" />
 
   <!-- 📱 Social Sharing -->
+  <meta property="og:type" content="website" />
   <meta property="og:title" content="About Zawadi Intel News" />
   <meta property="og:description" content="Discover the vision and mission behind Zawadi Intel News." />
-  <meta property="og:image" content="icons/icon-192.png" />
-  <meta property="og:url" content="https://mannick254.github.io/Zawadi-intel-app/about.html" />
+  <meta property="og:image" content="https://zawadiintelnews.vercel.app/icons/icon-192.png" />
+  <meta property="og:url" content="https://zawadiintelnews.vercel.app/about.html" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About Zawadi Intel News" />
+  <meta name="twitter:description" content="Discover the vision and mission behind Zawadi Intel News." />
+  <meta name="twitter:image" content="https://zawadiintelnews.vercel.app/icons/icon-192.png" />
 
   <!-- 🎨 Styles -->
   <link rel="stylesheet" href="css/style.css" />
@@ -40,11 +45,10 @@
       <li><a href="media.html">Media</a></li>
       <li><a href="books.html">Books</a></li>
       <li><a href="app.html">Archive</a></li>
+      <li><a href="about.html" aria-current="page">About Us</a></li>
       <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
     </ul>
   </nav>
-
-  
 
   <!-- 📰 About Content -->
   <article>
@@ -98,8 +102,14 @@
 
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
-    <p>&copy; 2025 Zawadi Intel. Curated by Mannick.</p>
+    <p>&copy; 2025 Zawadi Intel.</p>
   </footer>
+
+  <!-- 📰 News Ticker -->
+  <section>
+    <h3>Latest Headlines</h3>
+    <ul id="newsTicker"></ul>
+  </section>
 
   <!-- ⚡ Performance Scripts -->
   <script src="main.js" defer></script>
@@ -111,13 +121,13 @@
         const data = await res.json();
         const ticker = document.getElementById("newsTicker");
 
-        if (data.articles) {
+        if (data.articles && ticker) {
           data.articles.forEach(article => {
             const li = document.createElement("li");
             li.textContent = `🌍 ${article.source.name}: ${article.title}`;
             ticker.appendChild(li);
           });
-        } else {
+        } else if (ticker) {
           const li = document.createElement("li");
           li.textContent = "🌍 News unavailable at the moment.";
           ticker.appendChild(li);
@@ -125,9 +135,11 @@
       } catch (error) {
         console.error("Error loading news:", error);
         const ticker = document.getElementById("newsTicker");
-        const li = document.createElement("li");
-        li.textContent = "🌍 News unavailable at the moment.";
-        ticker.appendChild(li);
+        if (ticker) {
+          const li = document.createElement("li");
+          li.textContent = "🌍 News unavailable at the moment.";
+          ticker.appendChild(li);
+        }
       }
     }
     loadNews();
@@ -136,14 +148,11 @@
     document.getElementById("enable-notifications").addEventListener("click", () => {
       if ("Notification" in window && "serviceWorker" in navigator) {
         Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            console.log("Notification permission granted.");
-          } else {
-            console.log("Notification permission denied.");
-          }
+          console.log(permission === "granted" ? "Notification permission granted." : "Notification permission denied.");
         });
       }
     });
   </script>
 </body>
 </html>
+
