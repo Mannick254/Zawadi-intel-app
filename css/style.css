@@ -202,19 +202,45 @@ a:hover, a:focus { color: var(--accent-hover); }
   font-size: 0.95em;
   border-bottom: 2px solid #a93226;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
+
+/* Label stays fixed at the start */
+.breaking-news::before {
+  content: "Breaking News:";
+  background: #a93226;
+  color: #fff;
+  padding: 0.4em 0.8em;
+  margin-right: 1em;
+  flex-shrink: 0;
+}
+
+/* Ticker list */
 .breaking-news ul {
   list-style: none;
-  display: flex;
-  animation: scroll-left 60s linear infinite;
+  display: inline-flex;
+  animation: scroll-left 45s linear infinite;
   white-space: nowrap;
+  margin: 0;
+  padding: 0;
 }
-.breaking-news li { margin-right: 2em; }
 
+/* Pause animation on hover */
+.breaking-news ul:hover {
+  animation-play-state: paused;
+}
+
+.breaking-news li {
+  margin-right: 2em;
+}
+
+/* Smooth scrolling keyframes */
 @keyframes scroll-left {
-  0% { transform: translateX(100%); }
+  0%   { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
+
 
 /* ===========================
    Buttons
