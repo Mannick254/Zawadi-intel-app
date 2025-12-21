@@ -5,11 +5,11 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zawadi Intel News -Home</title>
+  <title>Zawadi Intel News — Home</title>
 
   <!-- 🔍 SEO & Metadata -->
-  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
-  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity, authority, and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives, Kenya, Editorial, Investigative Journalism" />
   <link rel="canonical" href="https://zawadiintelnews.vercel.app/" />
 
   <!-- ✅ Verification -->
@@ -18,14 +18,18 @@
 
   <!-- 📱 Social Sharing -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Zawadi Intel News" />
   <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
   <meta property="og:description" content="Global news, African voices, cinematic archives." />
-  <meta property="og:image" content="https://zawadiintelnews.vercel.app/icons/icon-192.png" />
+  <meta property="og:image" content="https://zawadiintelnews.vercel.app/icons/icon-512.png" />
   <meta property="og:url" content="https://zawadiintelnews.vercel.app/" />
+
+  <!-- 🐦 Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ZawadiIntel" />
   <meta name="twitter:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
   <meta name="twitter:description" content="Global news, African voices, cinematic archives." />
-  <meta name="twitter:image" content="https://zawadiintelnews.vercel.app/icons/icon-192.png" />
+  <meta name="twitter:image" content="https://zawadiintelnews.vercel.app/icons/icon-512.png" />
 
   <!-- 🎨 Styles -->
   <link rel="stylesheet" href="css/style.css" />
@@ -37,13 +41,35 @@
   <!-- 📱 PWA -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
   <!-- 🔒 Security -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://newsapi.org;" />
 
   <!-- 🖼️ Favicon -->
-  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <link rel="icon" href="icons/favicon.ico" type="image/x-icon" />
+
+  <!-- ⚡ Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- 📊 Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "Zawadi Intel News",
+    "url": "https://zawadiintelnews.vercel.app/",
+    "logo": "https://zawadiintelnews.vercel.app/icons/icon-512.png",
+    "sameAs": [
+      "https://twitter.com/ZawadiIntel",
+      "https://facebook.com/ZawadiIntel"
+    ]
+  }
+  </script>
 </head>
+
 <body>
   <!-- 🔝 Navigation -->
   <nav class="top-nav" aria-label="Main Navigation">
@@ -70,23 +96,20 @@
 
 
 <!--Breaking News-->
-  <section class="breaking-news" aria-label="Breaking News Ticker">
-    <h2>Breaking News</h2>
-<ul id="newsTicker">
-  <li>🇰🇪 Cyrus Jirongo dies in Naivasha crash</li>
-  <li>🎮 Esports Kenya president elected globally</li>
-  <li>🇰🇪 Jamhuri Day reflections on unity and economy</li>
-  <li>⚔️ Thailand–Cambodia ceasefire renewed</li>
-  <li>🕊️ Iran arrests Nobel laureate Narges Mohammadi</li>
-  <li>💶 EU freezes €210 billion in Russian assets</li>
-  <li>❄️ Winter storm Byron devastates Gaza camps</li>
-  <li>🌊 6.7‑magnitude earthquake hits northern Japan</li>
-  <li>📸 Epstein case photos released in US</li>
-  <li>🚁 Ukraine drone strike on Russian ships</li>
-  <li>🇺🇸 US lawmakers challenge tariffs on India</li>
-  <li>Zwadi intel desk</li>
-</ul>
-  </section>
+<section class="breaking-news" aria-label="Breaking News Ticker">
+  <div class="ticker-wrapper">
+    <span class="ticker-label">Breaking News:</span>
+    <ul id="newsTicker">
+      <li>🇰🇪 NPR officer arrested in Igembe South, AK‑47 recovered in robbery probe</li>
+      <li>⚽ Troy Williamson shocks Callum Simpson in major boxing upset</li>
+      <li>🏀 Texas Tech rallies to beat No. 3 Duke after 17‑point deficit</li>
+      <li>🌍 Euronews bulletin: Europe’s top stories on politics, business, and culture</li>
+      <li>🚨 Security alert: Coordinated police operations in Kirindini Shopping Centre</li>
+      <li>Zawadi Intel Desk</li>
+    </ul>
+  </div>
+</section>
+
 
 
 <!-- Featured Row Extension -->
@@ -112,9 +135,9 @@
 
   <!-- Uhuru Kenyatta Youth Rally -->
   <article class="story-card right">
-    <a href="articles/uhuru-youth.html">
+    <a href="news/uhuru-youth.html">
       <h2>Uhuru Kenyatta Urges Africa’s Youth: “Tomorrow Never Comes”</h2>
-      <img src="images/uhuru-youth.jpg" alt="Uhuru Kenyatta Youth Rally" />
+      <img src="images/copilot_20251221_103118.png" alt="Uhuru Kenyatta Youth Rally" />
       <p>Former President Uhuru Kenyatta calls on young Africans to seize leadership now, challenging the notion of being ‘leaders of tomorrow’...</p>
     </a>
   </article>
