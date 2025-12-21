@@ -31,7 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function displayResults(results, query) {
     if (results.length === 0) {
-      resultsContainer.innerHTML = `<p>No results found for "<strong>${query}</strong>".</p>`;
+      resultsContainer.innerHTML = '';
+      const message = document.createElement('p');
+      const beforeText = document.createTextNode('No results found for "');
+      const strong = document.createElement('strong');
+      strong.textContent = query;
+      const afterText = document.createTextNode('".');
+      message.appendChild(beforeText);
+      message.appendChild(strong);
+      message.appendChild(afterText);
+      resultsContainer.appendChild(message);
       return;
     }
 
