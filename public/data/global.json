@@ -1,0 +1,188 @@
+[
+    {
+      "title": "Voter Mobilization: Strategies and Stakes",
+      "url": "articles/voter-mobilization.html",
+      "image": null,
+      "altText": "Voter Mobilization Explainer",
+      "summary": "From grassroots canvassing to transportation support, how campaigns turn interest into turnout.",
+      "category": "Explainer"
+    },
+    {
+      "title": "Red Sea tensions rise after U.S. Navy warship misfires on jets",
+      "url": "articles/middle-east-security.html",
+      "image": "images/middleeast1.jpg",
+      "altText": "Middle East Security",
+      "summary": "A defense mishap sparks debate over military readiness in the volatile Red Sea corridor..."
+    },
+    {
+      "title": "OPEC+ signals production cuts amid global demand uncertainty",
+      "url": "articles/middle-east-energy.html",
+      "image": "images/middleeast2.jpg",
+      "altText": "Middle East Energy",
+      "summary": "Oil producers weigh new strategies as markets brace for 2026 economic shifts..."
+    },
+    {
+      "title": "UNEA-7 opens in Nairobi with urgent climate agenda",
+      "url": "articles/global-un.html",
+      "image": "images/Copilot_20251213_165740.png",
+      "altText": "Global UN Summit",
+      "summary": "Over 170 countries gather to debate solutions for climate change, biodiversity loss, and pollution..."
+    },
+    {
+      "title": "UN cuts humanitarian appeal to $23bn amid donor fatigue",
+      "url": "articles/global-aid.html",
+      "image": "images/global2.jpg",
+      "altText": "Global Aid",
+      "summary": "Millions risk losing lifesaving assistance as funding gaps widen worldwide..."
+    },
+    {
+      "title": "India launches inclusive AI mission for the Global South",
+      "url": "articles/global-ai.html",
+      "image": "images/Copilot_20251213_152435.png",
+      "altText": "Global AI",
+      "summary": "New initiative aims to build equitable AI ecosystems across developing nations..."
+    },
+    {
+      "title": "Amazon unveils new AI chip to rival Nvidia",
+      "url": "articles/amazon-ai-chip.html",
+      "image": "images/chip.jpg",
+      "altText": "Amazon AI Chip",
+      "summary": "Amazon introduces a powerful AI chip, intensifying competition in cloud and AI hardware..."
+    },
+    {
+      "title": "US Economy Shows Resilience Amid Global Uncertainty",
+      "url": "global.html#us-economy",
+      "image": null,
+      "altText": "US Economy",
+      "summary": "Recent data indicates steady growth despite international challenges.",
+      "date": "2025-11-22"
+    },
+    {
+      "title": "COP30 Sidelines Food Systems in Climate Deal",
+      "url": "global.html#cop30-climate",
+      "image": null,
+      "altText": "COP30 Climate",
+      "summary": "Advocates warn excluding agriculture weakens global climate action strategies.",
+      "date": "2025-12-06"
+    },
+    {
+      "title": "India Posts 8.2% GDP Growth in Q2",
+      "url": "india.html#gdp-growth",
+      "image": null,
+      "altText": "India GDP Growth",
+      "summary": "PM Modi highlights India’s role as a global growth driver amid economic shifts.",
+      "date": "2025-12-06"
+    },
+    {
+      "title": "US Housing Market Faces Crash Warning",
+      "url": "us.html#housing-crash",
+      "image": null,
+      "altText": "US Housing Crash",
+      "summary": "Analysts predict a 50% plunge starting in 2026, worse than the 2008 crisis.",
+      "date": "2025-12-06"
+    },
+    {
+      "title": "Nairobi Roads Upgraded Amid Budget Crisis",
+      "url": "kenya.html#nairobi-budget",
+      "image": null,
+      "altText": "Nairobi Budget",
+      "summary": "Governor Sakaja inspects new roads as KHRC warns of looming financial paralysis.",
+      "date": "2025-12-06"
+    },
+    {
+      "title": "China Advances in Tech Sector with New Innovations",
+      "url": "global.html#china-tech",
+      "image": null,
+      "altText": "China Tech",
+      "summary": "China unveils breakthroughs in AI and renewable energy technologies.",
+      "date": "2025-11-22"
+    },
+    {
+      "title": "Bahati searches for woman claiming to be his mother",
+      "url": "articles/bahati-family.html",
+      "image": "images/bahati1.jpg",
+      "altText": "Bahati Family Story",
+      "summary": "Musician Bahati reveals he is seeking a woman who claims to be his biological mother..."
+    },
+    {
+      "title": "P Diddy’s lawyers respond to Netflix docuseries by 50 Cent",
+      "url": "articles/pdiddy-netflix.html",
+      "image": "images/netflix1.avif",
+      "altText": "P Diddy Netflix",
+      "summary": "Sean 'P Diddy' Combs’ legal team reacts to Netflix docuseries revisiting controversies..."
+    },
+    {
+      "title": "US deploys new attack drone task force in Middle East",
+      "url": "articles/middleeast-drones.html",
+      "image": "images/drones.jpg",
+      "altText": "Middle East Drones",
+      "summary": "CENTCOM announces Task Force Scorpion Strike to counter Iran-backed militias with low-cost drones..."
+    },
+    {
+      "title": "Lebanon-Israel talks raise hopes for expanded truce",
+      "url": "articles/lebanon-israel-talks.html",
+      "image": "images/Copilot_20251213_144113.png",
+      "altText": "Lebanon Israel Talks",
+      "summary": "Officials explore economic cooperation amid fragile ceasefire in the region..."
+    },
+    {
+      "title": "Asia floods leave 1,300 dead, billions in damages",
+      "url": "articles/asia-floods.html",
+      "image": "images/floods.jpg",
+      "altText": "Asia Floods",
+      "summary": "Catastrophic cyclones devastate Sri Lanka, Indonesia, and Thailand, displacing millions..."
+    },
+    {
+      "title": "WMO warns of rising flood risks across Asia",
+      "url": "articles/wmo-warning.html",
+      "image": "images/wmo.jpg",
+      "altText": "Asia Flood Warning",
+      "summary": "UN agency cautions that climate change is intensifying rainfall and disasters in Southeast Asia..."
+    },
+    {
+      "title": "Europe revives conscription amid rising security fears",
+      "url": "articles/europe-defense.html",
+      "image": "images/europe-defense.jpg",
+      "altText": "Europe Defense Plans",
+      "summary": "France and other nations rearm with new military service programs and multi-billion defense plans..."
+    },
+    {
+      "title": "Putin’s threat sparks debate on Europe’s war readiness",
+      "url": "articles/europe-russia.html",
+      "image": "images/russia.jpg",
+      "altText": "Europe Russia Tensions",
+      "summary": "Analysts question whether NATO allies are prepared for escalating hybrid warfare tactics..."
+    },
+    {
+      "title": "Chelsea slump to 3-1 defeat against Leeds United",
+      "url": "articles/epl-chelsea.html",
+      "image": "images/chelsea.jpg",
+      "altText": "Chelsea EPL",
+      "summary": "Coach Maresca says team missed key players Caicedo and Palmer in tough away loss..."
+    },
+    {
+      "title": "Aston Villa leap to third after dramatic win over Brighton",
+      "url": "articles/epl-villa.html",
+      "image": "images/villa.jpg",
+      "altText": "Aston Villa EPL",
+      "summary": "Villa stage stunning comeback while Liverpool stumble with a draw against Sunderland at Anfield..."
+    },
+        {
+          "title": "Private Jet Crashes in Central Mexico, Seven Dead as Emergency Landing Fails",
+          "url": "articles/mexico-plane-crash.html",
+          "image": "images/mexico-plane-crash.png",
+          "altText": "Mexico Plane Crash Aftermath",
+          "summary": "A small private jet carrying ten people crashed into a business premises in Central Mexico after attempting an emergency landing. Seven bodies have been recovered as rescue teams continue to search the wreckage. The incident has sparked global concern over aviation safety and emergency response preparedness.",
+          "category": "Global"
+        },
+        {
+          "title": "Powerful Earthquake Strikes Northern Japan, Disrupting Infrastructure and Raising Global Supply Chain Concerns",
+          "url": "articles/japan-earthquake.html",
+          "image": "images/global-earthquake.png",
+          "altText": "Japan Earthquake Aftermath",
+          "summary": "A strong earthquake hit northern Japan today, disrupting transport and damaging infrastructure. Rescue teams are deployed as authorities assess casualties and aftershock risks. The event has raised global concern due to Japan’s role in technology and automotive supply chains.",
+          "category": "Global"
+        }
+      
+  ]
+  
