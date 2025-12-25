@@ -12,12 +12,22 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const webpush = require("web-push");
+const rateLimit = require("express-rate-limit");
 
 let admin;
 let firebaseEnabled = false;
 let db = null;
 
 const DATA_FILE = path.join(__dirname, "data.json");
+
+// Rate limiter for login attempts: limit repeated login requests
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 login requests per windowMs
+  message: { ok: false, message: "Too many login attempts, please try again later." },
+  standardHeaders: true, // return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // disable the `X-RateLimit-*` headers
+});
 
 // --- Safe JSON helpers ---
 function readLocalData() {
@@ -250,7 +260,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-app.post("/api/login", async (req, res) => {
+app.post("/api/login", loginLimiter, async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) return res.status(400).json({ ok: false, message: "Username and password required" });
   try {
