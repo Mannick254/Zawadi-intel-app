@@ -15,10 +15,11 @@ const webpush = require("web-push");
 
 let admin;
 let firebaseEnabled = false;
+let db = null;
 
 const DATA_FILE = path.join(__dirname, "data.json");
 
-// Safe JSON helpers
+// --- Safe JSON helpers ---
 function readLocalData() {
   try {
     return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
@@ -30,7 +31,7 @@ function writeLocalData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
 }
 
-// Firebase init (optional)
+// --- Firebase init (optional) ---
 try {
   admin = require("firebase-admin");
   const svcPath = path.join(__dirname, "service-account.json");
@@ -49,34 +50,33 @@ try {
       });
       firebaseEnabled = true;
     } catch (err) {
-      console.warn("Firebase default init failed—using local JSON.", err.message);
+      console.warn("Firebase default init failed — using local JSON.", err.message);
       firebaseEnabled = false;
     }
   }
 } catch {
-  console.warn("firebase-admin not available—using local JSON store.");
+  console.warn("firebase-admin not available — using local JSON store.");
   firebaseEnabled = false;
 }
 
-let db = null;
 if (firebaseEnabled) {
   if (admin.database && admin.database().ref) {
-    db = admin.database();
+    db = admin.database(); // Realtime Database
   } else {
-    db = admin.firestore();
+    db = admin.firestore(); // Firestore
   }
 }
 
-// VAPID keys
+// --- VAPID keys ---
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY || process.env.VAPID_PUBLIC_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY || process.env.VAPID_PRIVATE_KEY;
 if (publicVapidKey && privateVapidKey) {
   webpush.setVapidDetails("mailto:admin@zawadiintelnews.vercel.app", publicVapidKey, privateVapidKey);
 } else {
-  console.warn("VAPID keys missing—push disabled. Set PUBLIC_VAPID_KEY and PRIVATE_VAPID_KEY in .env.");
+  console.warn("VAPID keys missing — push disabled. Set PUBLIC_VAPID_KEY and PRIVATE_VAPID_KEY in .env.");
 }
 
-// Password utilities
+// --- Password utilities ---
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
   const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
@@ -92,14 +92,14 @@ function generateToken() {
   return crypto.randomBytes(32).toString("hex");
 }
 
+// --- Express setup ---
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
-
 const PORT = process.env.PORT || 3001;
 
-// Data access helpers
+// --- Data access helpers ---
 async function getUser(username) {
   if (firebaseEnabled) {
     if (db.ref) {
@@ -230,7 +230,7 @@ async function addSubscription(subscription) {
   }
 }
 
-// Routes
+// --- Routes ---
 app.get("/health", (req, res) => {
   res.json({ ok: true, firebaseEnabled });
 });
@@ -280,20 +280,52 @@ app.get("/api/stats", async (req, res) => {
     return res.status(500).json({ error: "Failed to read stats" });
   }
 });
-
 app.get("/api/news", async (req, res) => {
   try {
     const apiKey = process.env.NEWS_API_KEY;
-    if (!apiKey) return res.status(500).json({ error: "News API key not configured" });
+    if (!apiKey) {
+      return res.status(500).json({ error: "News API key not configured" });
+    }
 
-    const response = await fetch(`https://newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=${apiKey}`);
+    // Fetch headlines from NewsAPI
+    const response = await fetch(
+      `https://newsapi.org/v2/top-headlines?language=en&pageSize=10&apiKey=${apiKey}`
+    );
     const data = await response.json();
+
+    // Send headlines back to client
     res.json(data);
+
+    // --- Auto-trigger push notifications ---
+    if (data.articles && data.articles.length > 0) {
+      // Notify with the top 3 headlines
+      const topArticles = data.articles.slice(0, 3);
+
+      const subscriptions = await getSubscriptions();
+      topArticles.forEach(article => {
+        const payload = JSON.stringify({
+          title: "Zawadi Intel News",
+          body: `${article.title} — ${article.description || "Tap to read more."}`,
+          url: article.url || "https://zawadiintelnews.vercel.app/"
+        });
+
+        subscriptions.forEach(subscription => {
+          webpush.sendNotification(subscription, payload).catch(err =>
+            console.error("Push error:", err)
+          );
+        });
+      });
+
+      console.log(
+        `Auto-notified ${subscriptions.length} subscribers with ${topArticles.length} headlines.`
+      );
+    }
   } catch (err) {
     console.error("Error fetching news:", err);
     res.status(500).json({ error: "Failed to fetch news" });
   }
 });
+
 
 app.post("/api/subscribe", async (req, res) => {
   try {
@@ -330,7 +362,8 @@ app.post("/api/notify", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3001;
+// --- Start server ---
 app.listen(PORT, () => {
   console.log(`Zawadi server listening on port ${PORT} — Firebase enabled: ${firebaseEnabled}`);
 });
+
