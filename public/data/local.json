@@ -1,4 +1,16 @@
 [
+  {
+    "title": "Christmas Day road crash claims five lives in Kericho",
+    "url": "articles/kericho-accident.html",
+    "image": "images/kericho-accident.png",
+    "altText": "Kericho Road Accident",
+    "summary": "Five people were killed and two others seriously injured in a Christmas Day accident involving a Toyota Probox and a trailer along the Kericho–Nakuru highway near Kedowa Trading Centre.",
+    "date": "2025-12-26",
+    "highlight": "⚠️ Road Safety Alert: Holiday travel fatalities rise",
+    "quote": "We urge motorists to exercise caution during festive journeys — Kericho County Police Commander",
+    "category": "Local"
+  },
+  
     {
       "title": "Kenya’s GDP hits Sh11 trillion milestone",
       "url": "articles/kenya-gdp.html",
