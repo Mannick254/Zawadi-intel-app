@@ -1,167 +1,144 @@
 // scripts/main.js
-
 // ----------------- TOGGLE DROPDOWN MENUS -----------------
 
-// Toggle dropdown menus (e.g. Home ▾)
-document.querySelectorAll('.home-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const dropdown = button.nextElementSibling;
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+function toggleDropdown(button, dropdown) {
+  const isOpen = dropdown.classList.contains('show');
+  dropdown.classList.toggle('show', !isOpen);
+  button.setAttribute('aria-expanded', !isOpen);
+}
+
+// Generic dropdown toggle for buttons with .dropdown-btn
+document.querySelectorAll('.dropdown-btn').forEach(button => {
+  const dropdown = button.nextElementSibling;
+  if (!dropdown) return;
+
+  button.setAttribute('aria-haspopup', 'true');
+  button.setAttribute('aria-expanded', 'false');
+
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleDropdown(button, dropdown);
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove('show');
+      button.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Close when a link inside dropdown is clicked
+  dropdown.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      dropdown.classList.remove('show');
+      button.setAttribute('aria-expanded', 'false');
+    }
   });
 });
 
-// Toggle News dropdown
-const newsBtn = document.querySelector('.news-btn');
-const newsDropdown = document.querySelector('.news-dropdown');
-
-if (newsBtn && newsDropdown) {
-  newsBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    newsDropdown.classList.toggle('show');
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!newsBtn.contains(e.target) && !newsDropdown.contains(e.target)) {
-      newsDropdown.classList.remove('show');
-    }
-  });
-
-  // Close dropdown when a link is clicked
-  newsDropdown.addEventListener('click', (e) => {
-    if (e.target.tagName === 'A') {
-      newsDropdown.classList.remove('show');
-    }
-  });
-}
-
 // ----------------- SEARCH BAR -----------------
 
-// Basic search bar functionality (logs query)
 const searchForm = document.querySelector('.search-bar');
 if (searchForm) {
-  searchForm.addEventListener('submit', function (e) {
+  searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const query = this.querySelector('input').value.trim();
+    const input = searchForm.querySelector('input');
+    const query = input.value.trim();
     if (query) {
       console.log(`Searching for: ${query}`);
-      // Future: Redirect to search results or filter archive
+      // Future: redirect to results page
+      // window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
     }
   });
 }
 
 // ----------------- MOBILE MENU -----------------
 
-// Toggle mobile menu
-const menuToggle = document.querySelector(".menu-toggle") || document.querySelector(".nav-toggle");
-const mainLinks = document.querySelector(".main-links");
+const menuToggle = document.querySelector('.menu-toggle') || document.querySelector('.nav-toggle');
+const mainLinks = document.querySelector('.main-links');
 
 if (menuToggle && mainLinks) {
-  menuToggle.addEventListener("click", () => {
-    mainLinks.classList.toggle("show");
+  menuToggle.setAttribute('aria-expanded', 'false');
+  menuToggle.setAttribute('aria-controls', 'main-links');
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mainLinks.classList.toggle('show');
+    menuToggle.setAttribute('aria-expanded', isOpen);
   });
 
   // Hide menu when a link is clicked
-  mainLinks.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") {
-      mainLinks.classList.remove("show");
+  mainLinks.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      mainLinks.classList.remove('show');
+      menuToggle.setAttribute('aria-expanded', 'false');
     }
   });
 
   // Hide menu when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!menuToggle.contains(e.target) && !mainLinks.contains(e.target) && mainLinks.classList.contains("show")) {
-      mainLinks.classList.remove("show");
+  document.addEventListener('click', (e) => {
+    if (!menuToggle.contains(e.target) && !mainLinks.contains(e.target)) {
+      mainLinks.classList.remove('show');
+      menuToggle.setAttribute('aria-expanded', 'false');
     }
   });
 }
 
 // ----------------- AUTHENTICATION -----------------
 
-// --- Server-side auth with token-based sessions ---
-// Admin credentials: Nickson / Zawadi@123
 const AUTH_TOKEN_KEY = 'zawadi_auth_token_v1';
 const GLOBAL_COUNT_KEY = 'zawadi_global_count_v1';
 
 async function verifyToken(token) {
-  // Try server first
   try {
     const resp = await fetch('/api/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })
     });
+    if (!resp.ok) throw new Error(`Verify failed: ${resp.status}`);
     const result = await resp.json();
-    if (resp.ok && result.ok) return result;
+    return result.ok ? result : null;
   } catch (e) {
-    // continue to fallback
+    console.warn('Token verification failed:', e);
+    return null;
   }
-  // Client-side fallback: decode token
-  try {
-    const decoded = atob(token);
-    const [username, ts] = decoded.split(':');
-    if (username && ts) {
-      const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
-      const user = users[username];
-      if (user) {
-        return { ok: true, username, isAdmin: user.isAdmin };
-      }
-    }
-  } catch (e) {}
-  return null;
 }
 
 async function registerUser(username, password) {
-  // Try server first
   try {
     const resp = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
-    const result = await resp.json();
-    if (resp.ok) return result;
+    if (!resp.ok) throw new Error(`Register failed: ${resp.status}`);
+    return await resp.json();
   } catch (e) {
-    // continue to fallback
+    console.error('Registration error:', e);
+    return { ok: false, message: 'Registration failed' };
   }
-  // Client-side fallback: store users in localStorage
-  console.warn('Warning: using insecure client-side registration. This is for demo purposes only.');
-  const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
-  if (users[username]) return { ok: false, message: 'User already exists' };
-  users[username] = { password: btoa(password), isAdmin: false, createdAt: Date.now() }; // Simple base64 encoding (not secure, for demo only)
-  localStorage.setItem('zawadi_users', JSON.stringify(users));
-  return { ok: true };
 }
 
 async function loginUser(username, password) {
-  // Try server first
   try {
     const resp = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
+    if (!resp.ok) throw new Error(`Login failed: ${resp.status}`);
     const result = await resp.json();
-    if (resp.ok) {
+    if (result.ok && result.token) {
       localStorage.setItem(AUTH_TOKEN_KEY, result.token);
       updateAuthUi();
-      // The server should handle login recording. No need to call recordLogin here.
       return result;
     }
+    return { ok: false, message: result.message || 'Login failed' };
   } catch (e) {
-    // continue to fallback
+    console.error('Login error:', e);
+    return { ok: false, message: 'Server error during login' };
   }
-  // Client-side fallback: check localStorage
-  console.warn('Warning: using insecure client-side login. This is for demo purposes only.');
-  const users = JSON.parse(localStorage.getItem('zawadi_users') || '{}');
-  const user = users[username];
-  if (!user || atob(user.password) !== password) return { ok: false, message: 'Invalid credentials' };
-  const token = btoa(username + ':' + Date.now()); // Simple token
-  localStorage.setItem(AUTH_TOKEN_KEY, token);
-  updateAuthUi();
-  // record login globally
-  recordLogin(username).catch(() => {});
-  return { ok: true, token, isAdmin: user.isAdmin };
 }
 
 function logoutUser() {
@@ -176,112 +153,113 @@ async function getCurrentUser() {
 }
 
 async function recordLogin(username) {
-  // Try to notify a server endpoint first
   try {
     const resp = await fetch('/api/login-activity', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, ts: Date.now() })
+      body: JSON.stringify({ username, ts: Date.now() })
     });
-    if (resp.ok) return await resp.json();
+    if (!resp.ok) throw new Error(`Login activity failed: ${resp.status}`);
+    return await resp.json();
   } catch (e) {
-    // continue to fallback
+    console.warn('Login activity fallback:', e);
+    const count = parseInt(localStorage.getItem(GLOBAL_COUNT_KEY) || '0', 10) + 1;
+    localStorage.setItem(GLOBAL_COUNT_KEY, String(count));
+    return { totalLogins: count, source: 'local' };
   }
-  // Fallback: count in localStorage (per-browser)
-  const count = parseInt(localStorage.getItem(GLOBAL_COUNT_KEY) || '0', 10) + 1;
-  localStorage.setItem(GLOBAL_COUNT_KEY, String(count));
-  return { totalLogins: count, source: 'local' };
 }
 
 // ----------------- AUTH UI -----------------
 
-// Inject a small auth button and modal into the page
 function createAuthUi() {
   if (document.getElementById('zawadi-auth')) return;
 
-  // auth button
+  // Auth button
   const btn = document.createElement('button');
   btn.id = 'zawadi-auth-button';
-  btn.style.position = 'fixed';
-  btn.style.right = '12px';
-  btn.style.top = '12px';
-  btn.style.zIndex = 9999;
-  btn.style.padding = '6px 10px';
-  btn.style.borderRadius = '4px';
-  btn.style.border = '1px solid rgba(0,0,0,0.15)';
-  btn.style.background = '#fff';
-  btn.style.cursor = 'pointer';
+  btn.className = 'auth-button';
+  btn.textContent = 'Login';
   btn.addEventListener('click', () => toggleAuthModal(true));
   document.body.appendChild(btn);
 
-  // modal container
+  // Modal container
   const modal = document.createElement('div');
   modal.id = 'zawadi-auth';
-  modal.style.display = 'none';
-  modal.style.position = 'fixed';
-  modal.style.left = '0';
-  modal.style.top = '0';
-  modal.style.width = '100%';
-  modal.style.height = '100%';
-  modal.style.background = 'rgba(0,0,0,0.4)';
-  modal.style.zIndex = 9998;
+  modal.className = 'auth-modal hidden';
   modal.innerHTML = `
-    <div style="max-width:380px;margin:8% auto;background:#fff;padding:18px;border-radius:6px;">
-      <h3 style="margin:0 0 10px 0">Account</h3>
-      <div id="zawadi-msg" style="color:#a33;margin-bottom:8px"></div>
-      <label>Username</label>
-      <input id="zawadi-username" style="width:100%;padding:8px;margin:6px 0" />
-      <label>Password</label>
-      <input id="zawadi-password" type="password" style="width:100%;padding:8px;margin:6px 0" />
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button id="zawadi-login" style="flex:1;padding:8px">Login</button>
-        <button id="zawadi-register" style="flex:1;padding:8px">Register</button>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-        <span id="zawadi-status" style="font-size:13px;color:#333"></span>
+    <div class="auth-box">
+      <h3>Account</h3>
+      <div id="zawadi-msg" class="auth-msg"></div>
+      <form id="zawadi-form" class="auth-form">
+        <label for="zawadi-username">Username</label>
+        <input id="zawadi-username" name="username" required />
+        <label for="zawadi-password">Password</label>
+        <input id="zawadi-password" name="password" type="password" required />
+        <div class="auth-actions">
+          <button type="submit" id="zawadi-login">Login</button>
+          <button type="button" id="zawadi-register">Register</button>
+        </div>
+      </form>
+      <div class="auth-status">
+        <span id="zawadi-status"></span>
         <div>
-          <button id="zawadi-logout" style="display:none;padding:6px">Logout</button>
-          <button id="zawadi-admin" style="display:none;padding:6px;margin-left:6px">Admin</button>
+          <button id="zawadi-logout" class="hidden">Logout</button>
+          <button id="zawadi-admin" class="hidden">Admin</button>
         </div>
       </div>
-      <button id="zawadi-close" style="position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:18px;cursor:pointer">×</button>
+      <button id="zawadi-close" class="auth-close">×</button>
     </div>
   `;
   modal.addEventListener('click', (e) => { if (e.target === modal) toggleAuthModal(false); });
   document.body.appendChild(modal);
 
-  // events
-  document.getElementById('zawadi-login').addEventListener('click', async () => {
-    const u = document.getElementById('zawadi-username').value.trim();
-    const p = document.getElementById('zawadi-password').value;
-    const msg = document.getElementById('zawadi-msg');
+  // Events
+  const form = document.getElementById('zawadi-form');
+  const msg = document.getElementById('zawadi-msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const u = form.username.value.trim();
+    const p = form.password.value;
     msg.textContent = '';
     try {
       const r = await loginUser(u, p);
-      if (!r || !r.ok) { msg.textContent = r && r.message ? r.message : 'Login failed'; return; }
-      msg.style.color = 'green';
+      if (!r || !r.ok) {
+        msg.textContent = r?.message || 'Login failed';
+        msg.classList.add('error');
+        return;
+      }
       msg.textContent = 'Logged in';
+      msg.classList.add('success');
       toggleAuthModal(false);
-    } catch (e) {
+      updateAuthUi();
+    } catch {
       msg.textContent = 'Login error';
+      msg.classList.add('error');
     }
   });
+
   document.getElementById('zawadi-register').addEventListener('click', async () => {
-    const u = document.getElementById('zawadi-username').value.trim();
-    const p = document.getElementById('zawadi-password').value;
-    const msg = document.getElementById('zawadi-msg');
+    const u = form.username.value.trim();
+    const p = form.password.value;
     msg.textContent = '';
     try {
       const r = await registerUser(u, p);
-      if (!r || !r.ok) { msg.textContent = r && r.message ? r.message : 'Registration failed'; return; }
-      msg.style.color = 'green';
+      if (!r || !r.ok) {
+        msg.textContent = r?.message || 'Registration failed';
+        msg.classList.add('error');
+        return;
+      }
       msg.textContent = 'Registered. You can now login.';
-    } catch (e) {
+      msg.classList.add('success');
+    } catch {
       msg.textContent = 'Registration error';
+      msg.classList.add('error');
     }
   });
+
   document.getElementById('zawadi-close').addEventListener('click', () => toggleAuthModal(false));
-  document.getElementById('zawadi-logout').addEventListener('click', () => { logoutUser(); toggleAuthModal(false); });
+  document.getElementById('zawadi-logout').addEventListener('click', () => { logoutUser(); toggleAuthModal(false); updateAuthUi(); });
   document.getElementById('zawadi-admin').addEventListener('click', () => { window.location.href = '/admin.html'; });
 
   updateAuthUi();
@@ -290,7 +268,7 @@ function createAuthUi() {
 function toggleAuthModal(show) {
   const m = document.getElementById('zawadi-auth');
   if (!m) return;
-  m.style.display = show ? 'block' : 'none';
+  m.classList.toggle('hidden', !show);
 }
 
 async function updateAuthUi() {
@@ -299,18 +277,20 @@ async function updateAuthUi() {
   const logout = document.getElementById('zawadi-logout');
   const adminBtn = document.getElementById('zawadi-admin');
   const current = await getCurrentUser();
+
   if (current) {
-    if (btn) btn.textContent = current.username;
-    if (status) status.textContent = `Signed in as ${current.username}`;
-    if (logout) logout.style.display = 'inline-block';
-    if (adminBtn) adminBtn.style.display = current.isAdmin ? 'inline-block' : 'none';
+    btn.textContent = current.username;
+    status.textContent = `Signed in as ${current.username}`;
+    logout.classList.remove('hidden');
+    adminBtn.classList.toggle('hidden', !current.isAdmin);
   } else {
-    if (btn) btn.textContent = 'Login';
-    if (status) status.textContent = 'Not signed in';
-    if (logout) logout.style.display = 'none';
-    if (adminBtn) adminBtn.style.display = 'none';
+    btn.textContent = 'Login';
+    status.textContent = 'Not signed in';
+    logout.classList.add('hidden');
+    adminBtn.classList.add('hidden');
   }
 }
+
 
 // ----------------- STORY MODAL -----------------
 
@@ -486,99 +466,90 @@ function setupStoryModal() {
     console.debug('[story-modal] no article found in fetched doc');
     return null;
   }
+}
 
-  // ----------------- CLICK HANDLER -----------------
+// ----------------- CLICK HANDLER -----------------
 
-  // Track modal open state to avoid re-entrant handling
-  let _storyModalOpen = false;
+let _storyModalOpen = false;
 
-  // Auto-open if the page loads with a hash (useful for testing and deep-linking)
+function openStoryModal(el, titleText, source) {
+  _storyModalOpen = true;
   try {
-    if (location && location.hash) {
-      const fragOnLoad = location.hash.slice(1);
-      // open after a short delay so DOM has fully initialized
-      window.addEventListener('DOMContentLoaded', () => {
-        try {
-          const elOnLoad = document.getElementById(fragOnLoad);
-          if (elOnLoad) {
-            console.debug('[story-modal] auto-opening fragment on load:', fragOnLoad);
-            _storyModalOpen = true;
-            const titleText = elOnLoad.querySelector('h1,h2,h3') ? (elOnLoad.querySelector('h1,h2,h3').textContent || '') : document.title;
-            const source = location.href;
-            // ensure the modal exists and then show
-            setTimeout(() => { showModal(elOnLoad.innerHTML, titleText, source); _storyModalOpen = false; }, 60);
-          }
-        } catch (e) { /* ignore auto-open errors */ }
-      });
+    showModal(el.innerHTML, titleText, source);
+  } finally {
+    _storyModalOpen = false;
+  }
+}
+
+// Auto-open fragment on load
+window.addEventListener('DOMContentLoaded', () => {
+  const fragOnLoad = location.hash.slice(1);
+  if (fragOnLoad) {
+    const elOnLoad = document.getElementById(fragOnLoad);
+    if (elOnLoad) {
+      const titleText = elOnLoad.querySelector('h1,h2,h3')?.textContent || document.title;
+      setTimeout(() => openStoryModal(elOnLoad, titleText, location.href), 60);
     }
-  } catch (e) { /* ignore */ }
+  }
+});
 
-  document.addEventListener('click', function (e) {
-    const a = e.target.closest && e.target.closest('a.story-title-link');
-    if (!a) return;
-    // Prevent duplicate handling while modal content is being prepared
-    if (_storyModalOpen) return;
+// Handle clicks on story links
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a.story-title-link');
+  if (!a || _storyModalOpen) return;
 
-    // Only handle same-origin links
-    try {
-      const href = a.getAttribute('href');
-      if (!href) return;
+  const href = a.getAttribute('href');
+  if (!href) return;
 
-      // prefer the id of the nearest .story-card in the current document when available
-      const localCard = a.closest && a.closest('.story-card');
-      const preferredFragment = (localCard && localCard.id) ? localCard.id : null;
+  const localCard = a.closest('.story-card');
+  const preferredFragment = localCard?.id || null;
 
-      // If it's an in-page anchor on the same document, open that specific element
-      if (href.startsWith('#')) {
-        const frag = preferredFragment || href.slice(1);
-        const el = document.getElementById(frag);
-        if (el) {
-          e.preventDefault();
-          _storyModalOpen = true;
-          const titleText = el.querySelector('h1,h2,h3') ? (el.querySelector('h1,h2,h3').textContent || '') : a.textContent;
-          const source = location.href.split('#')[0] + '#' + frag;
-          console.debug('[story-modal] opening in-page fragment', frag, 'source:', source);
-          showModal(el.innerHTML, titleText, source);
-          _storyModalOpen = false;
-          return;
-        }
-      }
-
-      const url = new URL(href, location.href);
-      // only handle same-origin
-      if (url.origin !== location.origin) return;
-
+  // In-page anchor
+  if (href.startsWith('#')) {
+    const frag = preferredFragment || href.slice(1);
+    const el = document.getElementById(frag);
+    if (el) {
       e.preventDefault();
-      const fragmentFromHref = url.hash ? url.hash.slice(1) : null;
-      // prefer the local card id as the fragment when present to ensure we open exactly the clicked story
-      const fragment = preferredFragment || fragmentFromHref || null;
+      const titleText = el.querySelector('h1,h2,h3')?.textContent || a.textContent;
+      const source = `${location.href.split('#')[0]}#${frag}`;
+      openStoryModal(el, titleText, source);
+      return;
+    }
+  }
 
-      _storyModalOpen = true;
-      // fetch the target page and extract the article
-      fetch(url.pathname + url.search).then(resp => {
+  // Same-origin fetch
+  try {
+    const url = new URL(href, location.href);
+    if (url.origin !== location.origin) return;
+
+    e.preventDefault();
+    const fragment = preferredFragment || (url.hash ? url.hash.slice(1) : null);
+
+    _storyModalOpen = true;
+    fetch(url.pathname + url.search)
+      .then(resp => {
         if (!resp.ok) throw new Error('Fetch failed');
         return resp.text();
-      }).then(text => {
+      })
+      .then(text => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
         const found = extractArticleFromDoc(doc, fragment);
         if (found) {
-          console.debug('[story-modal] fetched and extracted fragment:', fragment, 'title:', found.title);
-          showModal(found.html, found.title || a.textContent.trim(), url.href + (fragment ? ('#' + fragment) : ''));
+          showModal(found.html, found.title || a.textContent.trim(), url.href + (fragment ? `#${fragment}` : ''));
         } else {
-          // fallback: open the link normally
           window.location.href = href;
         }
-      }).catch(err => {
+      })
+      .catch(err => {
         console.warn('Could not load story inline, falling back to navigation', err);
         window.location.href = href;
-      }).finally(() => { _storyModalOpen = false; });
-    } catch (err) {
-      // ignore and allow default
-      console.warn('story modal handler error', err);
-    }
-  });
-}
+      })
+      .finally(() => { _storyModalOpen = false; });
+  } catch (err) {
+    console.warn('story modal handler error', err);
+  }
+});
 
 // ----------------- INSTALL PROMPT -----------------
 
@@ -587,28 +558,22 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('install-banner').style.display = 'block';
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.classList.remove('hidden');
 });
 
-// Attach install prompt to any install buttons (banner button or header/install buttons). Use querySelectorAll
-Array.from(document.querySelectorAll('#install-banner button, button#install-button')).forEach(btn => {
+document.querySelectorAll('#install-banner button, button#install-button').forEach(btn => {
   btn.addEventListener('click', () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-        }
-        deferredPrompt = null;
-        const banner = document.getElementById('install-banner');
-        if (banner) banner.style.display = 'none';
-      });
-    }
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choiceResult => {
+      console.log(`User ${choiceResult.outcome === 'accepted' ? 'accepted' : 'dismissed'} the install prompt`);
+      deferredPrompt = null;
+      const banner = document.getElementById('install-banner');
+      if (banner) banner.classList.add('hidden');
+    });
   });
 });
-
 
 // ----------------- OTHER -----------------
 
@@ -649,17 +614,52 @@ function toggleStory(element) {
     content.style.display = content.style.display === 'none' ? 'block' : 'none';
   }
 }
-
 // ----------------- INITIALIZATION -----------------
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        createAuthUi();
-        makeTitlesClickable();
-        setupStoryModal();
-    });
-} else {
+function safeInit() {
+  if (typeof createAuthUi === 'function') {
     createAuthUi();
+  } else {
+    console.warn('createAuthUi is not defined');
+  }
+
+  if (typeof makeTitlesClickable === 'function') {
     makeTitlesClickable();
+  } else {
+    console.warn('makeTitlesClickable is not defined');
+  }
+
+  if (typeof setupStoryModal === 'function') {
     setupStoryModal();
+  } else {
+    console.warn('setupStoryModal is not defined');
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', safeInit);
+} else {
+  safeInit();
+}
+
+// ----------------- CLICKABLE TITLES -----------------
+
+function makeTitlesClickable() {
+  document.querySelectorAll('.article-title').forEach(title => {
+    const link = title.dataset.link;
+    if (!link) return; // skip if no link defined
+
+    title.style.cursor = 'pointer'; // visual cue
+    title.addEventListener('click', () => {
+      window.location.href = link;
+    });
+  });
+}
+
+// ----------------- THEME TOGGLE -----------------
+
+if (typeof initThemeToggle === 'function') {
+  initThemeToggle();
+} else {
+  console.warn('initThemeToggle is not defined');
 }
