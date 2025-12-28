@@ -109,6 +109,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="css/clock-calendar.css" />
 </head>
 <body>
 
@@ -128,6 +129,9 @@
       <button id="install-button" onclick="installApp()" style="display: none;">Install App</button>
     </div>
   </nav>
+
+  <div id="clock"></div>
+  <div id="calendar-widget"></div>
 
   <!-- Install banner (mobile) -->
   <div id="install-banner" role="dialog" aria-live="polite">
@@ -408,5 +412,6 @@
     // Initialize UI on page load
     updateProfileUI();
   </script>
+  <script src="js/clock-calendar.js" defer></script>
 </body>
 </html>
