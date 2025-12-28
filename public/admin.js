@@ -5,6 +5,7 @@ async function initAdmin() {
   const warn = document.getElementById('admin-warn');
   const loginSection = document.getElementById('admin-login');
   const actionsSection = document.getElementById('admin-actions');
+  const articleSection = document.getElementById('article-management');
 
   try {
     const current = await getCurrentUser(); // defined in main.js
@@ -12,6 +13,7 @@ async function initAdmin() {
       if (warn) warn.textContent = 'Admin access required. Please sign in with an admin account.';
       if (loginSection) loginSection.style.display = 'block';
       if (actionsSection) actionsSection.style.display = 'none';
+      if (articleSection) articleSection.style.display = 'none';
       return;
     }
 
@@ -19,6 +21,7 @@ async function initAdmin() {
     if (warn) warn.textContent = '';
     if (loginSection) loginSection.style.display = 'none';
     if (actionsSection) actionsSection.style.display = 'block';
+    if (articleSection) articleSection.style.display = 'block';
 
     wireAdminButtons();
   } catch (e) {
@@ -121,6 +124,10 @@ if (loginBtn) {
       const resp = await loginUser(u, p);
       if (!resp || !resp.ok) {
         if (msg) msg.textContent = resp?.message || 'Login failed';
+        return;
+      }
+      if (resp.isAdmin) {
+        window.location.href = 'admin.html';
         return;
       }
       if (msg) {

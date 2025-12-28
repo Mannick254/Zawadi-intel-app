@@ -34,7 +34,7 @@ function readLocalData() {
   try {
     return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
   } catch {
-    return { total: 0, recent: [], users: {}, tokens: {}, subscriptions: [] };
+    return { total: 0, recent: [], users: {}, tokens: {}, subscriptions: [], articles: [] };
   }
 }
 function writeLocalData(data) {
@@ -240,6 +240,89 @@ async function addSubscription(subscription) {
   }
 }
 
+async function getArticles() {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref("articles").once("value");
+      return snap.val() || [];
+    } else {
+      const snapshot = await db.collection("articles").get();
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
+  } else {
+    const data = readLocalData();
+    return data.articles || [];
+  }
+}
+
+async function getArticle(id) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref(`articles/${id}`).once("value");
+      return snap.val();
+    } else {
+      const doc = await db.collection("articles").doc(id).get();
+      return doc.exists ? { id: doc.id, ...doc.data() } : null;
+    }
+  } else {
+    const data = readLocalData();
+    return (data.articles || []).find(a => a.id === id) || null;
+  }
+}
+
+async function addArticle(article) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const newArticleRef = db.ref("articles").push();
+      await newArticleRef.set({ ...article, id: newArticleRef.key });
+      return newArticleRef.key;
+    } else {
+      const newArticleRef = await db.collection("articles").add(article);
+      return newArticleRef.id;
+    }
+  } else {
+    const data = readLocalData();
+    const newArticle = { ...article, id: crypto.randomBytes(16).toString("hex") };
+    data.articles = data.articles || [];
+    data.articles.push(newArticle);
+    writeLocalData(data);
+    return newArticle.id;
+  }
+}
+
+async function updateArticle(id, article) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`articles/${id}`).update(article);
+    } else {
+      await db.collection("articles").doc(id).update(article);
+    }
+  } else {
+    const data = readLocalData();
+    data.articles = data.articles || [];
+    const index = data.articles.findIndex(a => a.id === id);
+    if (index !== -1) {
+      data.articles[index] = { ...data.articles[index], ...article };
+      writeLocalData(data);
+    }
+  }
+}
+
+async function deleteArticle(id) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`articles/${id}`).remove();
+    } else {
+      await db.collection("articles").doc(id).delete();
+    }
+  } else {
+    const data = readLocalData();
+    data.articles = (data.articles || []).filter(a => a.id !== id);
+    writeLocalData(data);
+  }
+}
+
+
 // --- Routes ---
 app.get("/health", (req, res) => {
   res.json({ ok: true, firebaseEnabled });
@@ -298,6 +381,71 @@ app.get("/api/stats", async (req, res) => {
     return res.status(500).json({ error: "Failed to read stats" });
   }
 });
+
+// --- Article Routes ---
+app.get("/api/articles", async (req, res) => {
+  try {
+    const articles = await getArticles();
+    res.json(articles);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to read articles" });
+  }
+});
+
+app.get("/api/articles/:id", async (req, res) => {
+  try {
+    const article = await getArticle(req.params.id);
+    if (article) {
+      res.json(article);
+    } else {
+      res.status(404).json({ error: "Article not found" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to read article" });
+  }
+});
+
+app.post("/api/articles", async (req, res) => {
+  try {
+    const { title, content, imageUrl } = req.body;
+    if (!title || !content) {
+      return res.status(400).json({ error: "Title and content are required" });
+    }
+    const newArticleId = await addArticle({ title, content, imageUrl, createdAt: Date.now() });
+    res.status(201).json({ id: newArticleId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create article" });
+  }
+});
+
+app.put("/api/articles/:id", async (req, res) => {
+  try {
+    const { title, content, imageUrl } = req.body;
+    if (!title || !content) {
+      return res.status(400).json({ error: "Title and content are required" });
+    }
+    await updateArticle(req.params.id, { title, content, imageUrl, updatedAt: Date.now() });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update article" });
+  }
+});
+
+app.delete("/api/articles/:id", async (req, res) => {
+  try {
+    await deleteArticle(req.params.id);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete article" });
+  }
+});
+
+
 app.get("/api/news", async (req, res) => {
   try {
     const apiKey = process.env.NEWS_API_KEY;

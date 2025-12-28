@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="/css/admin.css">
   <link rel="stylesheet" href="/css/clock-calendar.css">
 
+  <!-- Quill Rich Text Editor CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
   <!-- Favicon -->
   <link rel="icon" href="/icons/icon-192.png" type="image/png" />
 </head>
@@ -60,6 +63,29 @@
     <p class="muted-text">Only visible to signed-in admins.</p>
   </section>
 
+  <!-- 📄 Article Management -->
+  <section id="article-management" class="admin-section hidden">
+    <h2>Article Management</h2>
+    <form id="article-form">
+      <input type="hidden" id="article-id" />
+      <input type="text" id="article-title" placeholder="Article Title" required />
+      <div id="editor-container">
+        <div id="editor"></div>
+      </div>
+      <input type="text" id="article-image-url" placeholder="Image URL" />
+      <div class="button-group">
+        <button type="submit" id="save-article-btn">Save Article</button>
+        <button type="button" id="preview-article-btn">Preview</button>
+      </div>
+    </form>
+    <div id="preview-area" class="hidden">
+      <h3>Article Preview</h3>
+      <div id="preview-content" class="article-content-preview"></div>
+    </div>
+    <h3>Existing Articles</h3>
+    <ul id="article-list"></ul>
+  </section>
+
   <!-- 🔑 Admin Login -->
   <section id="admin-login" class="admin-section">
     <h2>Admin Sign In</h2>
@@ -72,9 +98,11 @@
   </section>
 
   <!-- Scripts -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   <script src="/js/main.js" defer></script>
   <script src="/js/admin.js" defer></script>
   <script src="/js/clock-calendar.js" defer></script>
+  <script src="/js/article-management.js" defer></script>
 
   <!-- 🔻 Footer -->
   <footer class="site-footer">
