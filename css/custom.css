@@ -1,0 +1,22 @@
+
+.clock-calendar-container {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  text-align: right;
+}
+
+#clock {
+    font-size: 1em;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    margin-bottom: 0;
+}
+
+#calendar-widget {
+   font-size: 0.8em;
+   font-weight: bold;
+   color: #fff;
+   text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}

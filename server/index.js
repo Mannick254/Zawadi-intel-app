@@ -264,17 +264,25 @@ app.post("/api/login", loginLimiter, async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) return res.status(400).json({ ok: false, message: "Username and password required" });
   try {
-    const user = await getUser(username);
-    if (!user || !verifyPassword(password, user.password)) return res.status(401).json({ ok: false, message: "Invalid credentials" });
+    let isAdmin = false;
+    if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
+      isAdmin = true;
+    } else {
+      const user = await getUser(username);
+      if (!user || !verifyPassword(password, user.password)) {
+        return res.status(401).json({ ok: false, message: "Invalid credentials" });
+      }
+      isAdmin = user.isAdmin || false;
+    }
 
     const token = generateToken();
-    const session = { username, isAdmin: user.isAdmin || false, expires: Date.now() + 24 * 60 * 60 * 1000 };
+    const session = { username, isAdmin, expires: Date.now() + 24 * 60 * 60 * 1000 };
     await storeToken(token, session);
 
     await incrementTotal();
     await pushRecent({ username, ts: Date.now() });
 
-    return res.json({ ok: true, token, isAdmin: user.isAdmin || false });
+    return res.json({ ok: true, token, isAdmin });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ ok: false, message: err.message });
@@ -351,7 +359,7 @@ app.post("/api/subscribe", async (req, res) => {
   }
 });
 
-app.post("/api/notify", async (req, res) => {
+app.post("/api/notify", async (req, a) => {
   try {
     const { title, body, url } = req.body || {};
     const payload = JSON.stringify({
@@ -376,4 +384,3 @@ app.post("/api/notify", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Zawadi server listening on port ${PORT} — Firebase enabled: ${firebaseEnabled}`);
 });
-

@@ -618,7 +618,7 @@ function toggleStory(element) {
 
 function safeInit() {
   if (typeof createAuthUi === 'function') {
-    createAuthUi();
+    // createAuthUi();
   } else {
     console.warn('createAuthUi is not defined');
   }
