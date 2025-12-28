@@ -1,98 +1,142 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const adminWarn = document.getElementById('admin-warn');
-    const adminActions = document.getElementById('admin-actions');
-    const adminLogin = document.getElementById('admin-login');
-    const adminLoginBtn = document.getElementById('admin-login-btn');
-    const adminUsernameInput = document.getElementById('admin-username');
-    const adminPasswordInput = document.getElementById('admin-password');
-    const adminLoginMsg = document.getElementById('admin-login-msg');
+// admin.js
 
-    const totalServer = document.getElementById('total-server');
-    const totalLocal = document.getElementById('total-local');
-    const recentList = document.getElementById('recent-list');
+// Initialize admin UI
+async function initAdmin() {
+  const warn = document.getElementById('admin-warn');
+  const loginSection = document.getElementById('admin-login');
+  const actionsSection = document.getElementById('admin-actions');
 
-    const refreshBtn = document.getElementById('refresh-stats');
-    const clearLocalBtn = document.getElementById('clear-local');
-    const exportRecentBtn = document.getElementById('export-recent');
-
-    async function checkAdmin() {
-        const user = await getCurrentUser();
-        if (user && user.isAdmin) {
-            adminWarn.textContent = '';
-            adminActions.style.display = 'block';
-            adminLogin.style.display = 'none';
-            updateStats();
-        } else {
-            adminWarn.textContent = 'You must be an admin to view this page.';
-            adminActions.style.display = 'none';
-            adminLogin.style.display = 'block';
-        }
+  try {
+    const current = await getCurrentUser(); // defined in main.js
+    if (!current || !current.isAdmin) {
+      if (warn) warn.textContent = 'Admin access required. Please sign in with an admin account.';
+      if (loginSection) loginSection.style.display = 'block';
+      if (actionsSection) actionsSection.style.display = 'none';
+      return;
     }
 
-    async function updateStats() {
-        try {
-            const resp = await fetch('/api/stats');
-            const data = await resp.json();
+    // Admin verified
+    if (warn) warn.textContent = '';
+    if (loginSection) loginSection.style.display = 'none';
+    if (actionsSection) actionsSection.style.display = 'block';
 
-            if (data) {
-                totalServer.textContent = data.totalLogins || 'N/A';
-                totalLocal.textContent = localStorage.getItem('zawadi_global_count_v1') || '0';
+    wireAdminButtons();
+  } catch (e) {
+    console.warn('Admin check failed', e);
+    if (warn) warn.textContent = 'Unable to verify admin status.';
+  }
+}
 
-                recentList.innerHTML = '';
-                if (data.recentLogins && data.recentLogins.length) {
-                    data.recentLogins.forEach(login => {
-                        const li = document.createElement('li');
-                        li.textContent = `${login.username} at ${new Date(login.ts).toLocaleString()}`;
-                        recentList.appendChild(li);
-                    });
-                }
-            }
-        } catch (error) {
-            console.error('Failed to fetch stats:', error);
-        }
+// Attach button handlers
+function wireAdminButtons() {
+  const refreshBtn = document.getElementById('refresh-stats');
+  const clearBtn = document.getElementById('clear-local');
+  const exportBtn = document.getElementById('export-recent');
+
+  if (refreshBtn) refreshBtn.addEventListener('click', fetchStats);
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (!confirm('Clear local login count? This cannot be undone.')) return;
+      localStorage.removeItem('zawadi_global_count_v1');
+      const localTotal = document.getElementById('total-local');
+      if (localTotal) localTotal.textContent = '0';
+    });
+  }
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/stats');
+        if (!res.ok) throw new Error('No server data');
+        const data = await res.json();
+        const csv = (data.recent || [])
+          .map(r => `${new Date(r.ts).toISOString()},${r.username}`)
+          .join('\n');
+        downloadCSV(csv, 'recent-logins.csv');
+      } catch {
+        alert('No server data available to export.');
+      }
+    });
+  }
+}
+
+// Helper: download CSV
+function downloadCSV(content, filename) {
+  const blob = new Blob([content], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Fetch stats from server or fallback
+async function fetchStats() {
+  const warn = document.getElementById('admin-warn');
+  const serverTotal = document.getElementById('total-server');
+  const localTotal = document.getElementById('total-local');
+  const list = document.getElementById('recent-list');
+
+  try {
+    const res = await fetch('/api/stats');
+    if (!res.ok) throw new Error('Server unavailable');
+    const data = await res.json();
+
+    if (serverTotal) serverTotal.textContent = data.total || 0;
+    if (warn) warn.textContent = '';
+    if (list) {
+      list.innerHTML = '';
+      (data.recent || []).forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = `${new Date(r.ts).toLocaleString()} — ${r.username}`;
+        list.appendChild(li);
+      });
+    }
+  } catch (e) {
+    if (warn) warn.textContent = 'Server not available — showing local fallback counts.';
+    if (serverTotal) serverTotal.textContent = 'n/a';
+    const local = parseInt(localStorage.getItem('zawadi_global_count_v1') || '0', 10);
+    if (localTotal) localTotal.textContent = local;
+    if (list) list.innerHTML = '';
+  }
+}
+
+// Inline admin login handler
+const loginBtn = document.getElementById('admin-login-btn');
+if (loginBtn) {
+  loginBtn.addEventListener('click', async () => {
+    const u = document.getElementById('admin-username')?.value.trim();
+    const p = document.getElementById('admin-password')?.value;
+    const msg = document.getElementById('admin-login-msg');
+    if (msg) msg.textContent = '';
+
+    if (!u || !p) {
+      if (msg) msg.textContent = 'Enter username and password.';
+      return;
     }
 
-    adminLoginBtn.addEventListener('click', async () => {
-        const username = adminUsernameInput.value;
-        const password = adminPasswordInput.value;
-        const result = await loginUser(username, password);
+    try {
+      const resp = await loginUser(u, p);
+      if (!resp || !resp.ok) {
+        if (msg) msg.textContent = resp?.message || 'Login failed';
+        return;
+      }
+      if (msg) {
+        msg.style.color = 'green';
+        msg.textContent = 'Signed in successfully.';
+      }
+      await initAdmin();
+      const loginSection = document.getElementById('admin-login');
+      if (loginSection) loginSection.style.display = 'none';
+    } catch (e) {
+      console.warn('Admin login error', e);
+      if (msg) msg.textContent = 'Login error';
+    }
+  });
+}
 
-        if (result.ok) {
-            checkAdmin();
-        } else {
-            adminLoginMsg.textContent = result.message || 'Login failed';
-        }
-    });
-
-    refreshBtn.addEventListener('click', updateStats);
-
-    clearLocalBtn.addEventListener('click', () => {
-        localStorage.removeItem('zawadi_global_count_v1');
-        totalLocal.textContent = '0';
-    });
-
-    exportRecentBtn.addEventListener('click', () => {
-        let csvContent = 'data:text/csv;charset=utf-8,';
-        csvContent += 'Username,Timestamp\n';
-
-        const rows = Array.from(recentList.querySelectorAll('li')).map(li => {
-            const [username, ts] = li.textContent.split(' at ');
-            return [username, ts];
-        });
-
-        rows.forEach(rowArray => {
-            const row = rowArray.join(',');
-            csvContent += row + '\n';
-        });
-
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'recent_logins.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-
-    checkAdmin();
-});
+// Initial load
+fetchStats();
+initAdmin();
