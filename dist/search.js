@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchArticlesAndSearch(query) {
     try {
-      const response = await fetch('articles.json');
+      const response = await fetch('news.json');
       if (!response.ok) throw new Error('Failed to load articles.json');
       const articles = await response.json();
 
