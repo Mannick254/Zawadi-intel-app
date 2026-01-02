@@ -1,66 +1,49 @@
-/* public/css/admin.css */
-
-/* --- Article Management --- */
-#article-management {
-  border-top: 1px solid #ddd;
-  margin-top: 2rem;
-  padding-top: 2rem;
-}
-
-#article-form input[type="text"],
-#article-form textarea {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-#editor-container {
-  margin-bottom: 1rem;
-}
-
-#editor {
-  height: 250px;
-  background-color: #fff;
-}
-
-.article-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-/* --- Preview Area --- */
-#preview-area {
-  margin-top: 2rem;
-  padding: 1rem;
-  border: 1px dashed #ccc;
-  border-radius: 4px;
-}
-
-#preview-content {
-  border-top: 1px solid #eee;
-  padding-top: 1rem;
-  margin-top: 1rem;
-}
-
-/* --- Utility --- */
-.hidden {
-  display: none;
-}
-
-.warn-text {
-  color: #c0392b;
-  font-weight: bold;
-}
-
-.muted-text {
-  color: #777;
-  font-size: 0.9em;
-}
-
-.button-group {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
+.admin-main {
+    max-width: 980px;
+    margin: 24px auto;
+    padding: 12px;
+  }
+  
+  .admin-section {
+    background: #fff;
+    padding: 12px;
+    margin: 12px auto;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    max-width: 980px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .login-form {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .login-form input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .warn-text {
+    color: #b33;
+    margin-top: 8px;
+  }
+  
+  .muted-text {
+    margin-top: 8px;
+    color: var(--muted, #666);
+    font-size: 0.95rem;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
