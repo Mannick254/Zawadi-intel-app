@@ -1,35 +1,41 @@
-function startTime() {
-  const today = new Date();
-  let h = today.getHours();
-  let m = today.getMinutes();
-  let s = today.getSeconds();
-  m = checkTime(m);
-  s = checkTime(s);
-  document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
-  setTimeout(startTime, 1000);
+function padZero(num) {
+  return num < 10 ? "0" + num : num;
 }
 
-function checkTime(i) {
-  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-  return i;
+function updateClock() {
+  const now = new Date();
+  let hours = now.getHours();
+  const minutes = padZero(now.getMinutes());
+  const seconds = padZero(now.getSeconds());
+
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+
+  const clockEl = document.getElementById("clock");
+  if (clockEl) {
+    clockEl.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+  }
 }
 
-function renderCalendarWidget() {
-  const calendarEl = document.getElementById('calendar-widget');
+function updateCalendar() {
+  const calendarEl = document.getElementById("calendar-widget");
   if (!calendarEl) return;
-  const today = new Date();
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-  
-  const day = today.getDate();
-  const month = monthNames[today.getMonth()];
-  const year = today.getFullYear();
 
-  calendarEl.innerHTML = `<div class="date-display">${day} ${month}, ${year}</div>`;
+  const now = new Date();
+  const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const monthNames = ["January","February","March","April","May","June",
+    "July","August","September","October","November","December"];
+
+  const weekday = dayNames[now.getDay()];
+  const day = now.getDate();
+  const month = monthNames[now.getMonth()];
+  const year = now.getFullYear();
+
+  calendarEl.textContent = `${weekday}, ${day} ${month} ${year}`;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    startTime();
-    renderCalendarWidget();
+document.addEventListener("DOMContentLoaded", () => {
+  updateClock();
+  updateCalendar();
+  setInterval(updateClock, 1000); // refresh clock every second
 });
