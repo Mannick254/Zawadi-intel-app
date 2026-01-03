@@ -2,38 +2,48 @@
   "date": "2026-01-02",
   "global_news": [
     {
-      "region": "Switzerland",
-      "headline": "Deadly fire at Alpine resort bar",
-      "details": {
-        "casualties": { "deaths": 40, "injured": 100 },
-        "location": "Crans-Montana",
-        "issue": "Fire safety in crowded venues"
-      }
+      "title": "Deadly fire at Alpine resort bar",
+      "url": "articles/switzerland-fire.html",
+      "image": "images/switzerland-fire.jpg",
+      "altText": "Switzerland Alpine Resort Fire",
+      "summary": "A fire at a crowded Alpine resort bar in Crans-Montana left 40 dead and 100 injured, raising urgent questions about fire safety in tourist venues.",
+      "date": "2026-01-02",
+      "highlight": "🔥 Safety Alert: Fire tragedy in Switzerland",
+      "quote": "Authorities pledge a full inquiry into venue safety standards — Swiss Federal Police",
+      "category": "Global"
     },
     {
-      "region": "Iran",
-      "headline": "Violent protests escalate",
-      "details": {
-        "casualties": { "deaths": "several" },
-        "issue": "Political unrest and regime stability"
-      }
+      "title": "Violent protests escalate in Iran",
+      "url": "articles/iran-protests.html",
+      "image": "images/iran-protests.jpg",
+      "altText": "Iran Protests Escalation",
+      "summary": "Nationwide protests in Iran have turned violent, with several deaths reported amid growing unrest and regime stability concerns.",
+      "date": "2026-01-02",
+      "highlight": "⚠️ Political Unrest: Violence spreads across Iran",
+      "quote": "Human rights groups condemn use of live ammunition against protesters — Amnesty International",
+      "category": "Global"
     },
     {
-      "region": "Kenya",
-      "headline": "16-storey building collapses in Nairobi",
-      "details": {
-        "casualties": { "injured": 1, "trapped": "several" },
-        "location": "South C, Nairobi",
-        "issue": "Construction safety concerns"
-      }
+      "title": "16-storey building collapses in Nairobi",
+      "url": "articles/kenya-collapse.html",
+      "image": "images/kenya-collapse.jpg",
+      "altText": "Nairobi Building Collapse",
+      "summary": "A 16-storey building under construction in South C, Nairobi collapsed, leaving several trapped and one injured, sparking debate over construction safety standards.",
+      "date": "2026-01-02",
+      "highlight": "🏗️ Safety Alert: Nairobi high-rise collapse",
+      "quote": "We must enforce strict building codes to protect lives — Nairobi County Governor",
+      "category": "Local"
     },
     {
-      "region": "United States",
-      "headline": "Immigration ruling and market update",
-      "details": {
-        "immigration": "Kilmar Abrego Garcia not detained while court order remains",
-        "markets": "Wall Street open Dec 31, 2025"
-      }
+      "title": "Immigration ruling and market update in the US",
+      "url": "articles/us-immigration.html",
+      "image": "images/us-immigration.jpg",
+      "altText": "US Immigration Court Ruling",
+      "summary": "A US court ruled that Kilmar Abrego Garcia will not be detained while his case continues, alongside Wall Street’s year-end market updates.",
+      "date": "2026-01-02",
+      "highlight": "📊 Legal & Market Watch: Immigration ruling and Wall Street close",
+      "quote": "This decision underscores the balance between due process and enforcement — US Immigration Attorney",
+      "category": "Global"
     }
   ],
   "articles": [
