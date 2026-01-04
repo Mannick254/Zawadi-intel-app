@@ -1,6 +1,4 @@
-{
-  "date": "2026-01-02",
-  "global_news": [
+[
     {
       "title": "Deadly fire at Alpine resort bar",
       "url": "articles/switzerland-fire.html",
@@ -51,4 +49,3 @@
       "category": "Global"
     }
   ]
-}
