@@ -24,17 +24,6 @@
       "category": "Global"
     },
     {
-      "title": "16-storey building collapses in Nairobi",
-      "url": "articles/kenya-collapse.html",
-      "image": "images/kenya-collapse.jpg",
-      "altText": "Nairobi Building Collapse",
-      "summary": "A 16-storey building under construction in South C, Nairobi collapsed, leaving several trapped and one injured, sparking debate over construction safety standards.",
-      "date": "2026-01-02",
-      "highlight": "🏗️ Safety Alert: Nairobi high-rise collapse",
-      "quote": "We must enforce strict building codes to protect lives — Nairobi County Governor",
-      "category": "Local"
-    },
-    {
       "title": "Immigration ruling and market update in the US",
       "url": "articles/us-immigration.html",
       "image": "images/us-immigration.jpg",
@@ -44,37 +33,6 @@
       "highlight": "📊 Legal & Market Watch: Immigration ruling and Wall Street close",
       "quote": "This decision underscores the balance between due process and enforcement — US Immigration Attorney",
       "category": "Global"
-    }
-  ],
-  "articles": [
-    {
-      "title": "Voter Mobilization: Strategies and Stakes",
-      "url": "articles/voter-mobilization.html",
-      "image": null,
-      "altText": "Voter Mobilization Explainer",
-      "summary": "From grassroots canvassing to transportation support, how campaigns turn interest into turnout.",
-      "category": "Explainer"
-    },
-    {
-      "title": "Red Sea tensions rise after U.S. Navy warship misfires on jets",
-      "url": "articles/middle-east-security.html",
-      "image": "images/middleeast1.jpg",
-      "altText": "Middle East Security",
-      "summary": "A defense mishap sparks debate over military readiness in the volatile Red Sea corridor..."
-    },
-    {
-      "title": "OPEC+ signals production cuts amid global demand uncertainty",
-      "url": "articles/middle-east-energy.html",
-      "image": "images/middleeast2.jpg",
-      "altText": "Middle East Energy",
-      "summary": "Oil producers weigh new strategies as markets brace for 2026 economic shifts..."
-    },
-    {
-      "title": "UNEA-7 opens in Nairobi with urgent climate agenda",
-      "url": "articles/global-un.html",
-      "image": "images/Copilot_20251213_165740.png",
-      "altText": "Global UN Summit",
-      "summary": "Over 170 countries gather to debate solutions for climate change, biodiversity loss, and pollution..."
     },
     {
       "title": "Private Jet Crashes in Central Mexico, Seven Dead as Emergency Landing Fails",
