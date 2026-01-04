@@ -658,8 +658,3 @@ function makeTitlesClickable() {
 
 // ----------------- THEME TOGGLE -----------------
 
-if (typeof initThemeToggle === 'function') {
-  initThemeToggle();
-} else {
-  console.warn('initThemeToggle is not defined');
-}
