@@ -23,6 +23,23 @@ async function loginUser(username, password) {
 }
 
 /**
+ * Registers a new user.
+ * @param {string} username - The user's username.
+ * @param {string} password - The user's password.
+ * @returns {Promise<object>} - The response from the server.
+ */
+async function registerUser(username, password) {
+  const response = await fetch('/api/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, password })
+  });
+  return response.json();
+}
+
+/**
  * Gets the current user from the server.
  * @returns {Promise<object|null>} - The current user or null if not logged in.
  */

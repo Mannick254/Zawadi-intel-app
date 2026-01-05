@@ -4,6 +4,7 @@
 async function initAdmin() {
   const warn = document.getElementById('admin-warn');
   const loginSection = document.getElementById('admin-login');
+  const registerSection = document.getElementById('admin-register');
   const actionsSection = document.getElementById('admin-actions');
   const articleSection = document.getElementById('article-management');
   const pushSection = document.getElementById('push-notifications');
@@ -13,6 +14,7 @@ async function initAdmin() {
     if (!current || !current.isAdmin) {
       if (warn) warn.textContent = 'Admin access required. Please sign in with an admin account.';
       if (loginSection) loginSection.style.display = 'block';
+      if (registerSection) registerSection.style.display = 'block';
       if (actionsSection) actionsSection.style.display = 'none';
       if (articleSection) articleSection.style.display = 'none';
       if (pushSection) pushSection.style.display = 'none';
@@ -22,6 +24,7 @@ async function initAdmin() {
     // Admin verified
     if (warn) warn.textContent = '';
     if (loginSection) loginSection.style.display = 'none';
+    if (registerSection) registerSection.style.display = 'none';
     if (actionsSection) actionsSection.style.display = 'block';
     if (articleSection) articleSection.style.display = 'block';
     if (pushSection) pushSection.style.display = 'block';
@@ -143,6 +146,37 @@ if (loginBtn) {
     } catch (e) {
       console.warn('Admin login error', e);
       if (msg) msg.textContent = 'Login error';
+    }
+  });
+}
+
+// Inline admin registration handler
+const registerBtn = document.getElementById('admin-register-btn');
+if (registerBtn) {
+  registerBtn.addEventListener('click', async () => {
+    const u = document.getElementById('admin-register-username')?.value.trim();
+    const p = document.getElementById('admin-register-password')?.value;
+    const msg = document.getElementById('admin-register-msg');
+    if (msg) msg.textContent = '';
+
+    if (!u || !p) {
+      if (msg) msg.textContent = 'Enter username and password.';
+      return;
+    }
+
+    try {
+      const resp = await registerUser(u, p);
+      if (!resp || !resp.ok) {
+        if (msg) msg.textContent = resp?.message || 'Registration failed';
+        return;
+      }
+      if (msg) {
+        msg.style.color = 'green';
+        msg.textContent = 'Signed up successfully. Please sign in.';
+      }
+    } catch (e) {
+      console.warn('Admin registration error', e);
+      if (msg) msg.textContent = 'Registration error';
     }
   });
 }
