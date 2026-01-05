@@ -4,65 +4,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const registerMessage = document.getElementById('register-message');
   const loginMessage = document.getElementById('login-message');
 
-  // Utility: show feedback messages
-  function showMessage(el, message, type = 'info') {
-    if (!el) return;
-    el.textContent = message;
-    el.style.color = type === 'success' ? 'green' : type === 'error' ? 'red' : 'black';
-  }
-
-  // --- Handle registration ---
+  // Handle registration form submission
   if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('register-username').value.trim();
-      const password = document.getElementById('register-password').value.trim();
-      showMessage(registerMessage, '');
-
-      if (!username || !password) {
-        showMessage(registerMessage, 'Username and password are required.', 'error');
-        return;
-      }
+      const username = document.getElementById('register-username').value;
+      const password = document.getElementById('register-password').value;
+      registerMessage.textContent = '';
 
       try {
         const response = await fetch('/api/register', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({ username, password })
         });
 
         const result = await response.json();
 
         if (response.ok) {
-          showMessage(registerMessage, 'Registration successful! You can now log in.', 'success');
-          registerForm.reset();
+          registerMessage.textContent = 'Registration successful! You can now log in.';
+          registerMessage.style.color = 'green';
         } else {
-          showMessage(registerMessage, result.message || 'Registration failed.', 'error');
+          registerMessage.textContent = result.message || 'Registration failed.';
+          registerMessage.style.color = 'red';
         }
       } catch (error) {
-        showMessage(registerMessage, 'An error occurred. Please try again.', 'error');
-        console.error('Registration error:', error);
+        registerMessage.textContent = 'An error occurred. Please try again.';
+        registerMessage.style.color = 'red';
       }
     });
   }
 
-  // --- Handle login ---
+  // Handle login form submission
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('login-username').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-      showMessage(loginMessage, '');
-
-      if (!username || !password) {
-        showMessage(loginMessage, 'Username and password are required.', 'error');
-        return;
-      }
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      loginMessage.textContent = '';
 
       try {
         const response = await fetch('/api/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({ username, password })
         });
 
@@ -70,16 +58,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok && result.token) {
           localStorage.setItem('token', result.token);
-          showMessage(loginMessage, 'Login successful! Redirecting...', 'success');
-          setTimeout(() => {
-            window.location.href = result.isAdmin ? '/admin.html' : '/app.html';
-          }, 1000);
+          loginMessage.textContent = 'Login successful! Redirecting...';
+          loginMessage.style.color = 'green';
+          window.location.href = result.isAdmin ? '/admin.html' : '/app.html';
         } else {
-          showMessage(loginMessage, result.message || 'Invalid credentials.', 'error');
+          loginMessage.textContent = result.message || 'Invalid credentials.';
+          loginMessage.style.color = 'red';
         }
       } catch (error) {
-        showMessage(loginMessage, 'An error occurred. Please try again.', 'error');
-        console.error('Login error:', error);
+        loginMessage.textContent = 'An error occurred. Please try again.';
+        loginMessage.style.color = 'red';
       }
     });
   }

@@ -432,6 +432,43 @@ footer {
 }
 
 /* ===========================
+   Install Banner
+   =========================== */
+.install-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--accent);
+  color: var(--btn-text);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.install-banner.show {
+  transform: translateY(0);
+}
+
+.install-banner p {
+  margin: 0;
+}
+
+.install-banner button {
+  background-color: var(--btn-text);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.hidden {
+  display: none;
+}
+
+/* ===========================
    Responsive
    =========================== */
 @media (max-width: 992px) {
