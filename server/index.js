@@ -322,11 +322,6 @@ async function deleteArticle(id) {
   }
 }
 
-// --- Routes ---
-app.get("/api/health", (req, res) => {
-  res.status(200).json({ status: "ok", timestamp: Date.now() });
-});
-
 // --- Auth Routes ---
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body || {};
