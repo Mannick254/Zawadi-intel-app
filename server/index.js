@@ -324,7 +324,7 @@ async function deleteArticle(id) {
 
 // --- Routes ---
 app.get("/api/health", (req, res) => {
-  res.json({ ok: true, firebaseEnabled });
+  res.status(200).json({ status: "ok", timestamp: Date.now() });
 });
 
 // --- Auth Routes ---
@@ -511,7 +511,6 @@ app.post("/api/subscribe", async (req, res) => {
     res.status(500).json({ ok: false, message: "Failed to save subscription" });
   }
 });
-
 // --- Manual Notify ---
 app.post("/api/notify", async (req, res) => {
   try {
@@ -523,13 +522,23 @@ app.post("/api/notify", async (req, res) => {
     });
 
     const subscriptions = await getSubscriptions();
-    await Promise.allSettled(
+    const results = await Promise.allSettled(
       subscriptions.map(sub => webpush.sendNotification(sub, payload))
     );
 
-    res.status(200).json({ ok: true, count: subscriptions.length });
+    const failed = results.filter(r => r.status === "rejected");
+    if (failed.length) {
+      console.warn(`Failed to notify ${failed.length} subscriptions`);
+      // Optionally: remove invalid subscriptions here
+    }
+
+    res.status(200).json({ 
+      ok: true, 
+      count: subscriptions.length, 
+      failedCount: failed.length 
+    });
   } catch (err) {
-    console.error("Notify error:", err);
+    console.error("Notify error:", err.message || err);
     res.status(500).json({ ok: false, message: "Failed to send notifications" });
   }
 });
