@@ -1,12 +1,13 @@
 const fs = require('fs');
 const path = require('path');
+const striptags = require('striptags');
 
 const newsDir = 'news';
 const outputFile = 'news.json';
 const baseUrl = 'https://zawadiintelnews.vercel.app'; // updated domain
 
 function stripTags(html) {
-  return html.replace(/<[^>]*>/g, '').trim();
+  return striptags(html).trim();
 }
 
 function generateNewsJson() {
