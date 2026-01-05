@@ -307,7 +307,7 @@ async function updateArticle(id, article) {
     }
   }
 }
-
+// --- Delete Article Helper ---
 async function deleteArticle(id) {
   if (firebaseEnabled) {
     if (db.ref) {
@@ -322,15 +322,17 @@ async function deleteArticle(id) {
   }
 }
 
-
 // --- Routes ---
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({ ok: true, firebaseEnabled });
 });
 
+// --- Auth Routes ---
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body || {};
-  if (!username || !password) return res.status(400).json({ ok: false, message: "Username and password required" });
+  if (!username || !password) {
+    return res.status(400).json({ ok: false, message: "Username and password required" });
+  }
   try {
     const user = await getUser(username);
     if (user) return res.status(400).json({ ok: false, message: "User already exists" });
@@ -345,7 +347,9 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", loginLimiter, async (req, res) => {
   const { username, password } = req.body || {};
-  if (!username || !password) return res.status(400).json({ ok: false, message: "Username and password required" });
+  if (!username || !password) {
+    return res.status(400).json({ ok: false, message: "Username and password required" });
+  }
   try {
     let isAdmin = false;
     if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
@@ -372,13 +376,14 @@ app.post("/api/login", loginLimiter, async (req, res) => {
   }
 });
 
+// --- Stats Route ---
 app.get("/api/stats", async (req, res) => {
   try {
     const stats = await getStats();
     return res.json(stats);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Failed to read stats" });
+    return res.status(500).json({ ok: false, message: "Failed to read stats" });
   }
 });
 
@@ -389,7 +394,7 @@ app.get("/api/articles", async (req, res) => {
     res.json(articles);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to read articles" });
+    res.status(500).json({ ok: false, message: "Failed to read articles" });
   }
 });
 
@@ -399,11 +404,11 @@ app.get("/api/articles/:id", async (req, res) => {
     if (article) {
       res.json(article);
     } else {
-      res.status(404).json({ error: "Article not found" });
+      res.status(404).json({ ok: false, message: "Article not found" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to read article" });
+    res.status(500).json({ ok: false, message: "Failed to read article" });
   }
 });
 
@@ -411,13 +416,13 @@ app.post("/api/articles", async (req, res) => {
   try {
     const { title, content, imageUrl } = req.body;
     if (!title || !content) {
-      return res.status(400).json({ error: "Title and content are required" });
+      return res.status(400).json({ ok: false, message: "Title and content are required" });
     }
     const newArticleId = await addArticle({ title, content, imageUrl, createdAt: Date.now() });
-    res.status(201).json({ id: newArticleId });
+    res.status(201).json({ ok: true, id: newArticleId });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to create article" });
+    res.status(500).json({ ok: false, message: "Failed to create article" });
   }
 });
 
@@ -425,13 +430,13 @@ app.put("/api/articles/:id", async (req, res) => {
   try {
     const { title, content, imageUrl } = req.body;
     if (!title || !content) {
-      return res.status(400).json({ error: "Title and content are required" });
+      return res.status(400).json({ ok: false, message: "Title and content are required" });
     }
     await updateArticle(req.params.id, { title, content, imageUrl, updatedAt: Date.now() });
     res.json({ ok: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to update article" });
+    res.status(500).json({ ok: false, message: "Failed to update article" });
   }
 });
 
@@ -441,58 +446,46 @@ app.delete("/api/articles/:id", async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to delete article" });
+    res.status(500).json({ ok: false, message: "Failed to delete article" });
   }
 });
 
-
+// --- News Route with Push ---
 app.get("/api/news", async (req, res) => {
   try {
     const apiKey = process.env.NEWS_API_KEY;
     if (!apiKey) {
-      return res.status(500).json({ error: "News API key not configured" });
+      return res.status(500).json({ ok: false, message: "News API key not configured" });
     }
 
-    // Fetch headlines from NewsAPI
     const response = await fetch(
       `https://newsapi.org/v2/top-headlines?language=en&pageSize=10&apiKey=${apiKey}`
     );
     const data = await response.json();
-
-    // Send headlines back to client
     res.json(data);
 
-    // --- Auto-trigger push notifications ---
     if (data.articles && data.articles.length > 0) {
-      // Notify with the top 3 headlines
       const topArticles = data.articles.slice(0, 3);
-
       const subscriptions = await getSubscriptions();
-      topArticles.forEach(article => {
-        const payload = JSON.stringify({
-          title: "Zawadi Intel News",
-          body: `${article.title} — ${article.description || "Tap to read more."}`,
-          url: article.url || "https://zawadiintelnews.vercel.app/"
-        });
 
-        subscriptions.forEach(subscription => {
-          webpush.sendNotification(subscription, payload).catch(err =>
-            console.error("Push error:", err)
-          );
-        });
-      });
-
-      console.log(
-        `Auto-notified ${subscriptions.length} subscribers with ${topArticles.length} headlines.`
+      await Promise.allSettled(
+        subscriptions.map(subscription => {
+          const payload = JSON.stringify({
+            title: "Zawadi Intel News",
+            body: `${topArticles[0].title} — ${topArticles[0].description || "Tap to read more."}`,
+            url: topArticles[0].url || "https://zawadiintelnews.vercel.app/"
+          });
+          return webpush.sendNotification(subscription, payload);
+        })
       );
     }
   } catch (err) {
     console.error("Error fetching news:", err);
-    res.status(500).json({ error: "Failed to fetch news" });
+    res.status(500).json({ ok: false, message: "Failed to fetch news" });
   }
 });
 
-
+// --- Push Subscription ---
 app.post("/api/subscribe", async (req, res) => {
   try {
     const subscription = req.body;
@@ -500,18 +493,15 @@ app.post("/api/subscribe", async (req, res) => {
       return res.status(400).json({ ok: false, message: "Invalid subscription" });
     }
 
-    // Store the subscription
     await addSubscription(subscription);
 
-    // Send a welcome notification
     const payload = JSON.stringify({
       title: "Welcome to Zawadi Intel News!",
-      body: "You are now subscribed to breaking news and updates. Thank you for joining our community!",
+      body: "You are now subscribed to breaking news and updates.",
       url: "https://zawadiintelnews.vercel.app/"
     });
 
     webpush.sendNotification(subscription, payload).catch(err => {
-      // Don't let a failed push stop the success response
       console.error("Welcome notification failed:", err);
     });
 
@@ -522,7 +512,8 @@ app.post("/api/subscribe", async (req, res) => {
   }
 });
 
-app.post("/api/notify", async (req, a) => {
+// --- Manual Notify ---
+app.post("/api/notify", async (req, res) => {
   try {
     const { title, body, url } = req.body || {};
     const payload = JSON.stringify({
@@ -532,14 +523,14 @@ app.post("/api/notify", async (req, a) => {
     });
 
     const subscriptions = await getSubscriptions();
-    subscriptions.forEach(subscription => {
-      webpush.sendNotification(subscription, payload).catch(err => console.error("Push error:", err));
-    });
+    await Promise.allSettled(
+      subscriptions.map(sub => webpush.sendNotification(sub, payload))
+    );
 
-    res.status(200).json({ success: true, count: subscriptions.length });
+    res.status(200).json({ ok: true, count: subscriptions.length });
   } catch (err) {
     console.error("Notify error:", err);
-    res.status(500).json({ success: false });
+    res.status(500).json({ ok: false, message: "Failed to send notifications" });
   }
 });
 
