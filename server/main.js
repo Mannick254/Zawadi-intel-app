@@ -9,6 +9,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const path = require('path');
 
@@ -192,7 +193,14 @@ app.post('/api/login', async (req, res) => {
 });
 
 // Verify Firebase ID token
-app.post('/api/verify', async (req, res) => {
+const authLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 30,             // limit each IP to 30 requests per `windowMs`
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+app.post('/api/verify', authLimiter, async (req, res) => {
   if (!ensureFirebase(res)) return;
 
   try {
