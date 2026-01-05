@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const globalNewsContainer = document.querySelector(".global-news");
 
-  fetch("../global.json")
+  fetch("../data/global.json")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
