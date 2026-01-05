@@ -6,6 +6,7 @@ async function initAdmin() {
   const loginSection = document.getElementById('admin-login');
   const actionsSection = document.getElementById('admin-actions');
   const articleSection = document.getElementById('article-management');
+  const pushSection = document.getElementById('push-notifications');
 
   try {
     const current = await getCurrentUser(); // defined in main.js
@@ -14,6 +15,7 @@ async function initAdmin() {
       if (loginSection) loginSection.style.display = 'block';
       if (actionsSection) actionsSection.style.display = 'none';
       if (articleSection) articleSection.style.display = 'none';
+      if (pushSection) pushSection.style.display = 'none';
       return;
     }
 
@@ -22,6 +24,7 @@ async function initAdmin() {
     if (loginSection) loginSection.style.display = 'none';
     if (actionsSection) actionsSection.style.display = 'block';
     if (articleSection) articleSection.style.display = 'block';
+    if (pushSection) pushSection.style.display = 'block';
 
     wireAdminButtons();
   } catch (e) {

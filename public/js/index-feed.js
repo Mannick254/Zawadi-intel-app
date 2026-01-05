@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const globalNewsContainer = document.querySelector(".global-news");
 
-  fetch("../data/global.json")
+  fetch("data/global.json")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
       data.slice(0, 5).forEach(article => {
         articlesHtml += `
           <div class="story-card">
-            <img src="${article.image}" alt="${article.title}">
+            ${article.image ? `<img src="${article.image}" alt="${article.title}">` : ""}
             <div class="story-content">
-              <h3><a href="${article.url}">${article.title}</a></h3>
-              <p>${article.description}</p>
-              <small>${article.source} - ${new Date(article.publishedAt).toLocaleDateString()}</small>
+              <h3><a href="${article.url}" target="_blank" rel="noopener">${article.title}</a></h3>
+              <p>${article.description || ""}</p>
+              <small>${article.source || ""} - ${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : ""}</small>
             </div>
           </div>
         `;
