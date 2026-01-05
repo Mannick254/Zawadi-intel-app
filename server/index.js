@@ -499,7 +499,22 @@ app.post("/api/subscribe", async (req, res) => {
     if (!subscription || !subscription.endpoint) {
       return res.status(400).json({ ok: false, message: "Invalid subscription" });
     }
+
+    // Store the subscription
     await addSubscription(subscription);
+
+    // Send a welcome notification
+    const payload = JSON.stringify({
+      title: "Welcome to Zawadi Intel News!",
+      body: "You are now subscribed to breaking news and updates. Thank you for joining our community!",
+      url: "https://zawadiintelnews.vercel.app/"
+    });
+
+    webpush.sendNotification(subscription, payload).catch(err => {
+      // Don't let a failed push stop the success response
+      console.error("Welcome notification failed:", err);
+    });
+
     res.status(201).json({ ok: true });
   } catch (err) {
     console.error("Subscribe error:", err);
