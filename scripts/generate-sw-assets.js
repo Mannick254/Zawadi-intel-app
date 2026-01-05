@@ -41,10 +41,13 @@ fs.readFile(outputFile, 'utf8', (err, data) => {
     process.exit(1);
   }
 
+  const newVersion = `v${Date.now()}`;
+
   // Replace placeholders
   const updatedContent = data
     .replace('/* DYNAMIC_CACHE_LIST */', cacheFiles)
-    .replace('/* CACHE_VERSION */', 'v1'); // bump version here
+    .replace(/zawadi-intel-static-v\d+/, `zawadi-intel-static-${newVersion}`)
+    .replace(/zawadi-intel-dynamic-v\d+/, `zawadi-intel-dynamic-${newVersion}`);
 
   fs.writeFile(outputFile, updatedContent, 'utf8', (err) => {
     if (err) {
