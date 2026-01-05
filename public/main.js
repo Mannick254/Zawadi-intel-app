@@ -658,3 +658,88 @@ function makeTitlesClickable() {
 
 // ----------------- THEME TOGGLE -----------------
 
+document.addEventListener("DOMContentLoaded", () => {
+    const ticker = document.getElementById("newsTicker");
+    if (!ticker) return;
+
+    const headlines = document.querySelectorAll(".story-card h2");
+
+    // Build ticker list
+    headlines.forEach(headline => {
+      const li = document.createElement("li");
+      li.textContent = headline.textContent;
+      li.style.display = "none"; // hide initially
+      ticker.appendChild(li);
+    });
+
+    // Scrolling effect
+    let index = 0;
+    const items = ticker.querySelectorAll("li");
+    if (items.length > 0) {
+      items[0].style.display = "block"; // show first headline
+      setInterval(() => {
+        items.forEach((item, i) => {
+          item.style.display = i === index ? "block" : "none";
+        });
+        index = (index + 1) % items.length;
+      }, 3000);
+    }
+  });
+
+  // Mobile navigation toggle
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navLinks = document.querySelector('.main-links');
+
+    if (toggleBtn && navLinks) {
+      toggleBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+        toggleBtn.setAttribute(
+          "aria-expanded",
+          navLinks.classList.contains("show") ? "true" : "false"
+        );
+      });
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+      const articleContainer = document.getElementById('article-container');
+      const articleTitle = document.getElementById('article-title');
+      const articleMeta = document.getElementById('article-meta');
+      const articleContent = document.getElementById('article-content');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const articleId = urlParams.get('id');
+
+      if (!articleId) {
+        articleContainer.innerHTML = '<p>Article not found.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/articles/${articleId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch article');
+        }
+        const article = await response.json();
+
+        // Populate the page with article data
+        document.title = `${article.title} — Zawadi Intel News`;
+        articleTitle.textContent = article.title;
+        articleContent.innerHTML = article.content;
+
+        // Set meta information
+        const descriptionTag = document.querySelector('meta[name="description"]');
+        if (descriptionTag) {
+          descriptionTag.setAttribute('content', article.content.substring(0, 150).replace(/<[^>]+>/g, ''));
+        }
+        const canonicalTag = document.querySelector('link[rel="canonical"]');
+        if (canonicalTag) {
+          canonicalTag.setAttribute('href', `https://zawadiintelnews.vercel.app/article.html?id=${article.id}`);
+        }
+
+      } catch (error) {
+        console.error('Error loading article:', error);
+        articleContainer.innerHTML = '<p>Error loading article. Please try again later.</p>';
+      }
+    });

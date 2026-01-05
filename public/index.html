@@ -165,55 +165,6 @@
   <!-- Notifications-->
 <script src="js/notifications.js" defer></script>
 <script src="js/load-articles.js" defer></script>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const ticker = document.getElementById("newsTicker");
-    if (!ticker) return;
-
-    const headlines = document.querySelectorAll(".story-card h2");
-
-    // Build ticker list
-    headlines.forEach(headline => {
-      const li = document.createElement("li");
-      li.textContent = headline.textContent;
-      li.style.display = "none"; // hide initially
-      ticker.appendChild(li);
-    });
-
-    // Scrolling effect
-    let index = 0;
-    const items = ticker.querySelectorAll("li");
-    if (items.length > 0) {
-      items[0].style.display = "block"; // show first headline
-      setInterval(() => {
-        items.forEach((item, i) => {
-          item.style.display = i === index ? "block" : "none";
-        });
-        index = (index + 1) % items.length;
-      }, 3000);
-    }
-  });
-</script>
-
-<script>
-  // Mobile navigation toggle
-  document.addEventListener("DOMContentLoaded", () => {
-    const toggleBtn = document.getElementById("nav-toggle");
-    const navLinks = document.querySelector(".main-links");
-
-    if (toggleBtn && navLinks) {
-      toggleBtn.addEventListener("click", () => {
-        navLinks.classList.toggle("show");
-        toggleBtn.setAttribute(
-          "aria-expanded",
-          navLinks.classList.contains("show") ? "true" : "false"
-        );
-      });
-    }
-  });
-</script>
 <script src="js/clock-calendar.js" defer></script>
 <script src="js/prevent-broken-.js" defer></script>
 </body>
