@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- 🌍 Basic Setup -->
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zawadi Intel News — Home</title>
+
+  <!-- 🔍 SEO & Metadata -->
+  <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity, authority, and impact." />
+  <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives, Kenya, Editorial, Investigative Journalism" />
+  <link rel="canonical" href="https://zawadiintelnews.vercel.app/" />
+
+  <!-- ✅ Verification -->
+  <meta name="google-site-verification" content="zLwNNBoRUIhz7EJQqsg92MQHnTZTdVhJIXfL839qx-M" />
+  <meta name="msvalidate.01" content="EF56DB6600D0D29A6DEE52AC0A302DCD" /> 
+
+  <!-- 📱 Social Sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Zawadi Intel News" />
+  <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta property="og:description" content="Global news, African voices, cinematic archives." />
+  <meta property="og:image" content="https://zawadiintelnews.vercel.app/icons/icon-512.png" />
+  <meta property="og:url" content="https://zawadiintelnews.vercel.app/" />
+
+  <!-- 🐦 Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ZawadiIntel" />
+  <meta name="twitter:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
+  <meta name="twitter:description" content="Global news, African voices, cinematic archives." />
+  <meta name="twitter:image" content="https://zawadiintelnews.vercel.app/icons/icon-512.png" />
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/articles.css" />
+  <link rel="stylesheet" href="css/featuredstory.css" />
+  <link rel="stylesheet" href="css/clock-calendar.css" />
+  <link rel="stylesheet" href="css/custom.css" />
+
+  <!-- 📱 PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <!-- 🔒 Security -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://newsapi.org;" />
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" href="icons/favicon.ico" type="image/x-icon" />
+
+  <!-- ⚡ Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- 📊 Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "Zawadi Intel News",
+    "url": "https://zawadiintelnews.vercel.app/",
+    "logo": "https://zawadiintelnews.vercel.app/icons/icon-512.png",
+    "sameAs": [
+      "https://twitter.com/ZawadiIntel",
+      "https://facebook.com/ZawadiIntel"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="icons/icon-192.png" alt="Zawadi Intel logo" />
+      <span class="brand">📜 Zawadi Intel</span>
+    </div>
+    <div class="clock-calendar-container">
+      <div id="clock"></div>
+      <div id="calendar-widget"></div>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu">☰</button>
+    <ul class="main-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="global.html">Global</a></li>
+      <li><a href="articles/africa.html">Africa</a></li>
+      <li><a href="middle-east.html">Middle East</a></li>
+      <li><a href="biography.html">Biographies</a></li>
+      <li><a href="media.html">Media</a></li>
+      <li><a href="books.html">Books</a></li>
+      <li><a href="app.html">Archive</a></li>
+      <li><button id="enable-notifications" class="notif-btn">🔔 Notifications</button></li>
+    </ul>
+  </nav>
+
+<!--Breaking News-->
+
+
+<!-- Featured Row Extension -->
+<header class="hero-banner">
+  <h1>Breaking Stories That Shape Our World</h1>
+  <p>Global news, African perspectives, and stories that matter. Updated daily.</p>
+
+  <div class="featured-row">
+  </div>
+
+</header>
+  
+  <!-- 🔍 Search Bar -->
+  <section class="search-bar">
+    <form>
+      <input type="text" placeholder="Search stories..." aria-label="Search stories">
+      <button type="submit" class="btn">Search</button>
+    </form>
+  </section>
+
+  <!-- 📰 News Ticker -->
+  <section class="news-ticker">
+    <ul id="newsTicker"></ul>
+  </section>
+
+  <main class="aj-container">
+  <section class="three-column-layout">
+    <div class="global-column">
+      <h2>News Today</h2>
+      <blockquote>"The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt</blockquote>
+
+      <section class="global-news">
+        </section>
+    </div>
+
+
+
+
+
+     <div class="african-column">
+      <section class="african-news">
+      <!-- 🌍 Africa & Global Trending News -->
+
+        <h2>Africa Trending News</h2>
+      </section>
+     </div>
+
+        
+    <!--End of africa column-->
+
+    <div class="local-column">
+      <section class="local-news">
+      <h2>Local News</h2>
+      <!--Kenya Featured Articles-->
+    </div><!--End of local column-->
+
+    </section>
+  
+</main>
+
+ 
+  <!-- 🔻 Footer -->
+  <footer role="contentinfo">
+    <p>&copy; 2026 Zawadi Intel. All rights reserved.</p>
+  </footer>
+
+  <!-- ⚡ Performance -->
+  <script src="main.js" defer></script>
+  <script src="js/index-feed.js" defer></script>
+  <!-- Notifications-->
+<script src="js/notifications.js" defer></script>
+<script src="js/load-articles.js" defer></script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const ticker = document.getElementById("newsTicker");
+    if (!ticker) return;
+
+    const headlines = document.querySelectorAll(".story-card h2");
+
+    // Build ticker list
+    headlines.forEach(headline => {
+      const li = document.createElement("li");
+      li.textContent = headline.textContent;
+      li.style.display = "none"; // hide initially
+      ticker.appendChild(li);
+    });
+
+    // Scrolling effect
+    let index = 0;
+    const items = ticker.querySelectorAll("li");
+    if (items.length > 0) {
+      items[0].style.display = "block"; // show first headline
+      setInterval(() => {
+        items.forEach((item, i) => {
+          item.style.display = i === index ? "block" : "none";
+        });
+        index = (index + 1) % items.length;
+      }, 3000);
+    }
+  });
+</script>
+
+<script>
+  // Mobile navigation toggle
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("nav-toggle");
+    const navLinks = document.querySelector(".main-links");
+
+    if (toggleBtn && navLinks) {
+      toggleBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+        toggleBtn.setAttribute(
+          "aria-expanded",
+          navLinks.classList.contains("show") ? "true" : "false"
+        );
+      });
+    }
+  });
+</script>
+<script>
+function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+  setTimeout(startTime, 1000);
+}
+
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+
+startTime();
+function renderCalendarWidget() {
+  const calendarEl = document.getElementById('calendar-widget');
+  if (!calendarEl) return;
+  const today = new Date();
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  const day = today.getDate();
+  const month = monthNames[today.getMonth()];
+  const year = today.getFullYear();
+
+  calendarEl.innerHTML = `<div class="date-display">${day} ${month}, ${year}</div>`;
+}
+renderCalendarWidget();
+</script>
+  <script src="/public/js/clock-calendar.js" defer></script>
+  <script src="public/js/prevent-broken-images.js" defer></script>
+<script src="js/prevent-broken-images.js" defer></script>
+</body>
+</html>
