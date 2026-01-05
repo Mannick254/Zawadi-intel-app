@@ -1,3 +1,4 @@
+
 // server.js
 // Zawadi Intel — refined Node.js + Express server
 // Features: Auth (Firebase Admin), login activity (Firestore), NewsAPI proxy, Web Push,
@@ -9,7 +10,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-
+const jwt = require('jsonwebtoken');
 const path = require('path');
 
 // Use global fetch in Node 18+; fallback to node-fetch for older versions
@@ -31,6 +32,9 @@ const NEWS_API_KEY = process.env.NEWS_API_KEY || '';
 const VAPID_PUBLIC_KEY = process.env.VAPID_PUBLIC_KEY || '';
 const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY || '';
 const WEBPUSH_CONTACT = process.env.WEBPUSH_CONTACT || 'mailto:admin@example.com';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-default-secret';
 
 // CORS: tighten as needed
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
@@ -168,46 +172,59 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// Login user — simplified (no password verification here)
-// In production, prefer Firebase Client SDK on the frontend (email/password)
-// or implement a secure custom auth flow (hash + verify).
+// Login user — with admin check
 app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!isNonEmptyString(username) || !isNonEmptyString(password)) {
+    return res.status(400).json({ ok: false, message: 'Invalid username or password' });
+  }
+
+  const isAdmin = username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
+
+  if (isAdmin) {
+    const token = jwt.sign({ username, isAdmin: true }, JWT_SECRET, { expiresIn: '1h' });
+    return res.json({ ok: true, token, isAdmin: true });
+  }
+
+  // Fallback to Firebase for non-admin users
   if (!ensureFirebase(res)) return;
 
   try {
-    const { username } = req.body;
-
-    if (!isNonEmptyString(username)) {
-      return res.status(400).json({ ok: false, message: 'Invalid username' });
-    }
-
     const userRecord = await admin.auth().getUser(username);
     const token = await admin.auth().createCustomToken(userRecord.uid);
-
-    // Adjust isAdmin logic as needed (e.g., via custom claims)
     res.json({ ok: true, token, isAdmin: false });
   } catch (error) {
     res.status(401).json({ ok: false, message: 'Invalid credentials' });
   }
 });
 
-// Verify Firebase ID token
+// Verify token
 app.post('/api/verify', async (req, res) => {
-  if (!ensureFirebase(res)) return;
+  const { token } = req.body;
+
+  if (!isNonEmptyString(token)) {
+    return res.status(400).json({ ok: false, message: 'Invalid token' });
+  }
 
   try {
-    const { token } = req.body;
-
-    if (!isNonEmptyString(token)) {
-      return res.status(400).json({ ok: false, message: 'Invalid token' });
+    // Try JWT verification first
+    const decodedJwt = jwt.verify(token, JWT_SECRET);
+    if (decodedJwt.isAdmin) {
+      return res.json({ ok: true, username: decodedJwt.username, isAdmin: true });
     }
-
-    const decoded = await admin.auth().verifyIdToken(token);
-
-    // isAdmin could come from custom claims (decoded.admin === true)
-    res.json({ ok: true, username: decoded.uid, isAdmin: Boolean(decoded.admin) || false });
-  } catch (error) {
-    res.status(401).json({ ok: false, message: 'Invalid token' });
+  } catch (jwtError) {
+    // Fallback to Firebase token verification
+    if (ensureFirebase(res)) {
+      try {
+        const decodedFirebase = await admin.auth().verifyIdToken(token);
+        res.json({ ok: true, username: decodedFirebase.uid, isAdmin: false });
+      } catch (firebaseError) {
+        return res.status(401).json({ ok: false, message: 'Invalid token' });
+      }
+    } else {
+      return res.status(401).json({ ok: false, message: 'Invalid token' });
+    }
   }
 });
 
