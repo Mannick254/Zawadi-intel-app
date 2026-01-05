@@ -1,7 +1,9 @@
+// Utility: pad numbers with leading zero
 function padZero(num) {
   return num < 10 ? "0" + num : num;
 }
 
+// Update the clock element
 function updateClock() {
   const now = new Date();
   let hours = now.getHours();
@@ -17,6 +19,7 @@ function updateClock() {
   }
 }
 
+// Update the calendar element
 function updateCalendar() {
   const calendarEl = document.getElementById("calendar-widget");
   if (!calendarEl) return;
@@ -34,6 +37,7 @@ function updateCalendar() {
   calendarEl.textContent = `${weekday}, ${day} ${month} ${year}`;
 }
 
+// Initialize after DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
   updateClock();
   updateCalendar();
