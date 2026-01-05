@@ -106,7 +106,7 @@ function generateToken() {
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../public")));
 const PORT = process.env.PORT || 3001;
 
 // --- Data access helpers ---
@@ -396,7 +396,7 @@ app.get("/api/articles", async (req, res) => {
 app.get("/api/articles/:id", async (req, res) => {
   try {
     const article = await getArticle(req.params.id);
-    if (article) {
+    if (.article) {
       res.json(article);
     } else {
       res.status(404).json({ ok: false, message: "Article not found" });
