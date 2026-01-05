@@ -2,12 +2,17 @@
   "name": "zawadi-intel-app",
   "version": "1.0.0",
   "description": "Zawadi Intel Progressive Web App",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
+    "start": "node server/index.js",
     "build": "node build.js && node generate-sw-assets.js",
     "vercel-build": "npm run build"
   },
-  "keywords": ["pwa", "news", "zawadi"],
+  "keywords": [
+    "pwa",
+    "news",
+    "zawadi"
+  ],
   "author": "Mannick",
   "license": "ISC"
 }
