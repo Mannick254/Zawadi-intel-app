@@ -33,8 +33,8 @@
   <!-- Install banner (mobile) -->
   <div id="install-banner" role="dialog" aria-live="polite">
     <div class="install-text">Install Zawadi Intel for quick access and offline reading.</div>
-    <button id="install-now" onclick="installApp()" style="display:none;">Install</button>
-    <button class="close-btn" onclick="document.getElementById('install-banner').style.display='none'">✕</button>
+    <button id="install-now" style="display:none;">Install</button>
+    <button id="install-close" class="close-btn">✕</button>
   </div>
 
   <!-- 📰 Hero Banner -->
@@ -111,6 +111,7 @@
     <p>&copy; 2026 Zawadi Intel. All rights reserved.</p>
   </footer>
 
+  <!-- External scripts only -->
   <script src="main.js"></script>
   <script src="/public/js/auth.js"></script>
   <script src="/public/js/profile.js"></script>
