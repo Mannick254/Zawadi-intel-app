@@ -10,7 +10,6 @@
     "quote": "We urge motorists to exercise caution during festive journeys — Kericho County Police Commander",
     "category": "Local"
   },
-  
     {
       "title": "Kenya’s GDP hits Sh11 trillion milestone",
       "url": "articles/kenya-gdp.html",
@@ -55,43 +54,11 @@
       "category": "Local"
     },
     {
-      "title": "Kisii exclusive: Travel chaos fears ease after Airbus software fix",
-      "url": "articles/kisii-airbus.html",
-      "image": null,
-      "altText": "Kisii Airbus",
-      "summary": "Air travel stabilizes after weeks of delays...",
-      "category": "Local"
-    },
-    {
-      "title": "Gen Z survey shows youth shaping Kenya’s political future",
-      "url": "articles/genz-politics.html",
-      "image": null,
-      "altText": "Gen Z Politics",
-      "summary": "Young voters emerge as a decisive force in 2027 elections...",
-      "category": "Local"
-    },
-    {
       "title": "Nakuru County optimistic industrial parks will grow economy",
       "url": "articles/nakuru-industry.html",
       "image": null,
       "altText": "Nakuru Industry",
       "summary": "New investments promise jobs and regional growth...",
-      "category": "Local"
-    },
-    {
-      "title": "Grand coalition talks: UDA and ODM eye 2027 partnership",
-      "url": "articles/uda-odm.html",
-      "image": null,
-      "altText": "UDA ODM Coalition",
-      "summary": "Political realignment could reshape Kenya’s future...",
-      "category": "Local"
-    },
-    {
-      "title": "Kenya’s Haiti peace mission faces reckoning",
-      "url": "articles/haiti-mission.html",
-      "image": null,
-      "altText": "Kenya Haiti Mission",
-      "summary": "Questions arise over Kenya’s global peacekeeping role...",
       "category": "Local"
     },
     {
@@ -101,46 +68,7 @@
       "altText": "Kenya Politics",
       "summary": "Oburu Oginga calls on President Ruto to fully implement the 10-point Raila agreement...",
       "category": "Local"
-    },
-    {
-      "title": "Kenya–US Sh208bn health partnership documents to be tabled in Parliament",
-      "url": "articles/kenya-health.html",
-      "image": "images/health1.jpg",
-      "altText": "Kenya Health",
-      "summary": "Health CS Aden Duale pledges transparency in the landmark health deal with the United States...",
-      "category": "Local"
-    },
-    {
-      "title": "KCB RFC crushes Leos 72–14 in Kenya Cup showdown",
-      "url": "articles/kenya-sports.html",
-      "image": "images/sports1.jpg",
-      "altText": "Kenya Rugby",
-      "summary": "KCB’s dominant performance highlights Kenya’s rugby strength in the 2025/26 season...",
-      "category": "Sports"
-    },
-    {
-      "title": "Mathare United clash with Nairobi United in tense fixture",
-      "url": "articles/nairobi-football.html",
-      "image": "images/mathare.jpg",
-      "altText": "Nairobi Football",
-      "summary": "Relegation-threatened Mathare face mid-table Nairobi United in a decisive league encounter...",
-      "category": "Sports"
-    },
-    {
-      "title": "Nairobi MCAs issue ultimatum to evict matatus from fuel stations",
-      "url": "articles/nairobi-matatus.html",
-      "image": "images/matatus.jpg",
-      "altText": "Nairobi Matatus",
-      "summary": "County assembly warns of disaster risks as PSVs crowd petrol stations illegally...",
-      "category": "Local"
-    },
-    {
-      "title": "Report reveals over 130 criminal gangs operating in Nairobi",
-      "url": "articles/nairobi-gangs.html",
-      "image": "images/gangs.jpg",
-      "altText": "Nairobi Gangs",
-      "summary": "Interior ministry highlights growing gang activity disrupting law and order in the capital...",
-      "category": "Local"
     }
   ]
+    
   
