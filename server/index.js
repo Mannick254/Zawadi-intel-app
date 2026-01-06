@@ -371,14 +371,19 @@ app.post("/api/login", loginLimiter, async (req, res) => {
   }
 });
 
+// --- Health Route ---
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ ok: true, message: "Zawadi Intel News backend alive" });
+});
+
 // --- Stats Route ---
 app.get("/api/stats", async (req, res) => {
   try {
     const stats = await getStats();
-    return res.json(stats);
+    res.json(stats);
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ ok: false, message: "Failed to read stats" });
+    console.error("Stats error:", err.stack || err);
+    res.status(500).json({ ok: false, message: "Failed to read stats" });
   }
 });
 
@@ -388,7 +393,7 @@ app.get("/api/articles", async (req, res) => {
     const articles = await getArticles();
     res.json(articles);
   } catch (err) {
-    console.error(err);
+    console.error("Articles fetch error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to read articles" });
   }
 });
@@ -396,13 +401,12 @@ app.get("/api/articles", async (req, res) => {
 app.get("/api/articles/:id", async (req, res) => {
   try {
     const article = await getArticle(req.params.id);
-    if (.article) {
-      res.json(article);
-    } else {
-      res.status(404).json({ ok: false, message: "Article not found" });
+    if (!article) {
+      return res.status(404).json({ ok: false, message: "Article not found" });
     }
+    res.json(article);
   } catch (err) {
-    console.error(err);
+    console.error("Article fetch error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to read article" });
   }
 });
@@ -410,13 +414,18 @@ app.get("/api/articles/:id", async (req, res) => {
 app.post("/api/articles", async (req, res) => {
   try {
     const { title, content, imageUrl } = req.body;
-    if (!title || !content) {
+    if (!title?.trim() || !content?.trim()) {
       return res.status(400).json({ ok: false, message: "Title and content are required" });
     }
-    const newArticleId = await addArticle({ title, content, imageUrl, createdAt: Date.now() });
+    const newArticleId = await addArticle({ 
+      title, 
+      content, 
+      imageUrl, 
+      createdAt: Date.now() 
+    });
     res.status(201).json({ ok: true, id: newArticleId });
   } catch (err) {
-    console.error(err);
+    console.error("Create article error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to create article" });
   }
 });
@@ -424,13 +433,18 @@ app.post("/api/articles", async (req, res) => {
 app.put("/api/articles/:id", async (req, res) => {
   try {
     const { title, content, imageUrl } = req.body;
-    if (!title || !content) {
+    if (!title?.trim() || !content?.trim()) {
       return res.status(400).json({ ok: false, message: "Title and content are required" });
     }
-    await updateArticle(req.params.id, { title, content, imageUrl, updatedAt: Date.now() });
+    await updateArticle(req.params.id, { 
+      title, 
+      content, 
+      imageUrl, 
+      updatedAt: Date.now() 
+    });
     res.json({ ok: true });
   } catch (err) {
-    console.error(err);
+    console.error("Update article error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to update article" });
   }
 });
@@ -440,7 +454,7 @@ app.delete("/api/articles/:id", async (req, res) => {
     await deleteArticle(req.params.id);
     res.json({ ok: true });
   } catch (err) {
-    console.error(err);
+    console.error("Delete article error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to delete article" });
   }
 });
@@ -459,23 +473,30 @@ app.get("/api/news", async (req, res) => {
     const data = await response.json();
     res.json(data);
 
-    if (data.articles && data.articles.length > 0) {
-      const topArticles = data.articles.slice(0, 3);
+    if (data.articles?.length) {
+      const topArticle = data.articles[0];
       const subscriptions = await getSubscriptions();
 
-      await Promise.allSettled(
+      const results = await Promise.allSettled(
         subscriptions.map(subscription => {
           const payload = JSON.stringify({
             title: "Zawadi Intel News",
-            body: `${topArticles[0].title} — ${topArticles[0].description || "Tap to read more."}`,
-            url: topArticles[0].url || "https://zawadiintelnews.vercel.app/"
+            body: `${topArticle.title} — ${topArticle.description || "Tap to read more."}`,
+            url: topArticle.url || "https://zawadiintelnews.vercel.app/"
           });
           return webpush.sendNotification(subscription, payload);
         })
       );
+
+      results.forEach((r, i) => {
+        if (r.status === "rejected") {
+          console.warn(`Push failed for subscription ${i}:`, r.reason);
+          // Optionally remove invalid subscription here
+        }
+      });
     }
   } catch (err) {
-    console.error("Error fetching news:", err);
+    console.error("Error fetching news:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to fetch news" });
   }
 });
@@ -484,7 +505,7 @@ app.get("/api/news", async (req, res) => {
 app.post("/api/subscribe", async (req, res) => {
   try {
     const subscription = req.body;
-    if (!subscription || !subscription.endpoint) {
+    if (!subscription?.endpoint) {
       return res.status(400).json({ ok: false, message: "Invalid subscription" });
     }
 
@@ -497,15 +518,16 @@ app.post("/api/subscribe", async (req, res) => {
     });
 
     webpush.sendNotification(subscription, payload).catch(err => {
-      console.error("Welcome notification failed:", err);
+      console.error("Welcome notification failed:", err.stack || err);
     });
 
-    res.status(201).json({ ok: true });
+    res.status(201).json({ ok: true, endpoint: subscription.endpoint });
   } catch (err) {
-    console.error("Subscribe error:", err);
+    console.error("Subscribe error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to save subscription" });
   }
 });
+
 // --- Manual Notify ---
 app.post("/api/notify", async (req, res) => {
   try {
@@ -522,10 +544,7 @@ app.post("/api/notify", async (req, res) => {
     );
 
     const failed = results.filter(r => r.status === "rejected");
-    if (failed.length) {
-      console.warn(`Failed to notify ${failed.length} subscriptions`);
-      // Optionally: remove invalid subscriptions here
-    }
+    failed.forEach((f, i) => console.warn(`Manual notify failed [${i}]:`, f.reason));
 
     res.status(200).json({ 
       ok: true, 
@@ -533,12 +552,13 @@ app.post("/api/notify", async (req, res) => {
       failedCount: failed.length 
     });
   } catch (err) {
-    console.error("Notify error:", err.message || err);
+    console.error("Notify error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to send notifications" });
   }
 });
 
 // --- Start server ---
 app.listen(PORT, () => {
-  console.log(`Zawadi server listening on port ${PORT} — Firebase enabled: ${firebaseEnabled}`);
+  console.log(`Zawadi server listening on port ${PORT}`);
+  console.log(`Firebase enabled: ${firebaseEnabled}`);
 });
