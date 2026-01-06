@@ -1,3 +1,91 @@
+// scripts/main.js
+// ----------------- TOGGLE DROPDOWN MENUS -----------------
+
+function toggleDropdown(button, dropdown) {
+  const isOpen = dropdown.classList.contains('show');
+  dropdown.classList.toggle('show', !isOpen);
+  button.setAttribute('aria-expanded', !isOpen);
+}
+
+// Generic dropdown toggle for buttons with .dropdown-btn
+document.querySelectorAll('.dropdown-btn').forEach(button => {
+  const dropdown = button.nextElementSibling;
+  if (!dropdown) return;
+
+  button.setAttribute('aria-haspopup', 'true');
+  button.setAttribute('aria-expanded', 'false');
+
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleDropdown(button, dropdown);
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove('show');
+      button.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Close when a link inside dropdown is clicked
+  dropdown.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      dropdown.classList.remove('show');
+      button.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+
+// ----------------- SEARCH BAR -----------------
+
+const searchForm = document.querySelector('.search-bar');
+if (searchForm) {
+  searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = searchForm.querySelector('input');
+    const query = input.value.trim();
+    if (query) {
+      console.log(`Searching for: ${query}`);
+      // Future: redirect to results page
+      // window.location.href = `/search.html?q=${encodeURIComponent(query)}`;
+    }
+  });
+}
+
+// ----------------- MOBILE MENU -----------------
+
+const menuToggle = document.querySelector('.menu-toggle') || document.querySelector('.nav-toggle');
+const mainLinks = document.querySelector('.main-links');
+
+if (menuToggle && mainLinks) {
+  menuToggle.setAttribute('aria-expanded', 'false');
+  menuToggle.setAttribute('aria-controls', 'main-links');
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mainLinks.classList.toggle('show');
+    menuToggle.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Hide menu when a link is clicked
+  mainLinks.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      mainLinks.classList.remove('show');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Hide menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!menuToggle.contains(e.target) && !mainLinks.contains(e.target)) {
+      mainLinks.classList.remove('show');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// ----------------- AUTHENTICATION -----------------
+
 const AUTH_TOKEN_KEY = 'zawadi_auth_token_v1';
 const GLOBAL_COUNT_KEY = 'zawadi_global_count_v1';
 
@@ -8,6 +96,7 @@ async function verifyToken(token) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })
     });
+    if (!resp.ok) throw new Error(`Verify failed: ${resp.status}`);
     const result = await resp.json();
     return result.ok ? result : null;
   } catch (e) {
@@ -23,6 +112,7 @@ async function registerUser(username, password) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
+    if (!resp.ok) throw new Error(`Register failed: ${resp.status}`);
     return await resp.json();
   } catch (e) {
     console.error('Registration error:', e);
@@ -37,10 +127,11 @@ async function loginUser(username, password) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
+    if (!resp.ok) throw new Error(`Login failed: ${resp.status}`);
     const result = await resp.json();
     if (result.ok && result.token) {
       localStorage.setItem(AUTH_TOKEN_KEY, result.token);
-      updateAuthUi?.(); // safe call if defined
+      updateAuthUi();
       return result;
     }
     return { ok: false, message: result.message || 'Login failed' };
@@ -52,7 +143,7 @@ async function loginUser(username, password) {
 
 function logoutUser() {
   localStorage.removeItem(AUTH_TOKEN_KEY);
-  updateAuthUi?.();
+  updateAuthUi();
 }
 
 async function getCurrentUser() {
@@ -68,6 +159,7 @@ async function recordLogin(username) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, ts: Date.now() })
     });
+    if (!resp.ok) throw new Error(`Login activity failed: ${resp.status}`);
     return await resp.json();
   } catch (e) {
     console.warn('Login activity fallback:', e);
@@ -80,7 +172,7 @@ async function recordLogin(username) {
 // ----------------- AUTH UI -----------------
 
 function createAuthUi() {
-  if (document.getElementById('zawadi-auth') || document.getElementById('zawadi-auth-button')) return;
+  if (document.getElementById('zawadi-auth')) return;
 
   // Auth button
   const btn = document.createElement('button');
@@ -129,8 +221,7 @@ function createAuthUi() {
     e.preventDefault();
     const u = form.username.value.trim();
     const p = form.password.value;
-    msg.textContent = 'Processing...';
-    msg.classList.remove('error', 'success');
+    msg.textContent = '';
     try {
       const r = await loginUser(u, p);
       if (!r || !r.ok) {
@@ -151,8 +242,7 @@ function createAuthUi() {
   document.getElementById('zawadi-register').addEventListener('click', async () => {
     const u = form.username.value.trim();
     const p = form.password.value;
-    msg.textContent = 'Processing...';
-    msg.classList.remove('error', 'success');
+    msg.textContent = '';
     try {
       const r = await registerUser(u, p);
       if (!r || !r.ok) {
@@ -186,13 +276,7 @@ async function updateAuthUi() {
   const status = document.getElementById('zawadi-status');
   const logout = document.getElementById('zawadi-logout');
   const adminBtn = document.getElementById('zawadi-admin');
-
-  let current = null;
-  try {
-    current = await getCurrentUser();
-  } catch (err) {
-    console.warn("Auth UI update failed:", err);
-  }
+  const current = await getCurrentUser();
 
   if (current) {
     btn.textContent = current.username;
@@ -207,77 +291,181 @@ async function updateAuthUi() {
   }
 }
 
-function showModal(html, title, sourceUrl) {
-  createModalIfNeeded();
-  const modal = document.getElementById('story-modal');
-  const body = document.getElementById('story-modal-body');
-  if (!modal || !body) return;
 
-  body.innerHTML = '';
+// ----------------- STORY MODAL -----------------
 
-  // Toolbar
-  const toolbar = document.createElement('div');
-  toolbar.className = 'modal-toolbar';
+function setupStoryModal() {
+  if (typeof document === 'undefined') return;
 
-  const metaSpan = document.createElement('div');
-  metaSpan.className = 'meta';
-  metaSpan.textContent = sourceUrl ? sourceUrl.replace(/^https?:\/\//, '') : '';
+  function createModalIfNeeded() {
+    if (document.getElementById('story-modal')) return;
+    const modal = document.createElement('div');
+    modal.id = 'story-modal';
+    modal.style.position = 'fixed';
+    modal.style.left = '0';
+    modal.style.top = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.display = 'none';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.style.background = 'rgba(0,0,0,0.6)';
+    modal.style.zIndex = 99999;
+    modal.innerHTML = `
+      <div id="story-modal-content" style="max-width:900px;width:95%;max-height:90%;overflow:auto;border-radius:8px;background:#fff;padding:18px;position:relative;">
+        <button id="story-modal-close" aria-label="Close story" style="position:absolute;right:12px;top:12px;border:none;background:transparent;font-size:22px;cursor:pointer">×</button>
+        <div id="story-modal-body"></div>
+      </div>`;
+    document.body.appendChild(modal);
 
-  const actions = document.createElement('div');
-  const openBtn = document.createElement('button');
-  openBtn.textContent = 'Open original';
-  openBtn.addEventListener('click', () => { if (sourceUrl) window.open(sourceUrl, '_blank'); });
+    // close handlers
+    document.getElementById('story-modal-close').addEventListener('click', hideModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideModal(); });
+  }
 
-  const copyBtn = document.createElement('button');
-  copyBtn.textContent = 'Copy link';
-  copyBtn.addEventListener('click', async () => {
-    try {
-      if (navigator.clipboard && sourceUrl) await navigator.clipboard.writeText(sourceUrl);
-      else prompt('Copy link', sourceUrl || location.href);
-    } catch {
-      prompt('Copy link', sourceUrl || location.href);
+  function showModal(html, title, sourceUrl) {
+    createModalIfNeeded();
+    const modal = document.getElementById('story-modal');
+    const body = document.getElementById('story-modal-body');
+    if (!modal || !body) return;
+    // set content
+    body.innerHTML = '';
+
+    // Build a toolbar with source / actions
+    const toolbar = document.createElement('div');
+    toolbar.className = 'modal-article';
+    const tbar = document.createElement('div');
+    tbar.className = 'modal-toolbar';
+
+    const metaSpan = document.createElement('div');
+    metaSpan.className = 'meta';
+    metaSpan.textContent = sourceUrl ? sourceUrl.replace(/^https?:\/\//, '') : '';
+
+    const actions = document.createElement('div');
+
+    const openBtn = document.createElement('button');
+    openBtn.className = 'open-link';
+    openBtn.textContent = 'Open original';
+    openBtn.addEventListener('click', () => { if (sourceUrl) window.open(sourceUrl, '_blank'); });
+
+    const copyBtn = document.createElement('button');
+    copyBtn.textContent = 'Copy link';
+    copyBtn.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard && sourceUrl) await navigator.clipboard.writeText(sourceUrl);
+        else prompt('Copy link', sourceUrl || location.href);
+      } catch (e) { prompt('Copy link', sourceUrl || location.href); }
+    });
+
+    actions.appendChild(openBtn);
+    actions.appendChild(copyBtn);
+    tbar.appendChild(metaSpan);
+    tbar.appendChild(actions);
+    toolbar.appendChild(tbar);
+
+    // Article container with Al-Jazeera style: headline, meta, lead, body
+    const article = document.createElement('article');
+    article.className = 'modal-article';
+
+    // Title
+    if (title) {
+      const h = document.createElement('h1');
+      h.textContent = title;
+      article.appendChild(h);
     }
-  });
 
-  actions.appendChild(openBtn);
-  actions.appendChild(copyBtn);
-  toolbar.appendChild(metaSpan);
-  toolbar.appendChild(actions);
+    // Parse the html and extract ONLY the first <article> element to avoid showing the whole page
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const articleEl = tempDiv.querySelector('article');
+    let cleanHtml = html;
+    
+    if (articleEl) {
+      // Found an article element; use only its innerHTML
+      cleanHtml = articleEl.innerHTML;
+    } else {
+      // No article found; try to extract just the content without parent wrappers
+      // Remove common page wrapper elements
+      const mainContent = tempDiv.querySelector('main, .aj-main, .content, [role="main"]');
+      if (mainContent) {
+        cleanHtml = mainContent.innerHTML;
+      }
+      // As a last resort, use the first significant content block
+      const firstSection = tempDiv.querySelector('section, .section, [role="region"]');
+      if (firstSection) {
+        cleanHtml = firstSection.innerHTML;
+      }
+    }
 
-  // Article
-  const article = document.createElement('article');
-  article.className = 'modal-article';
-  if (title) {
-    const h = document.createElement('h1');
-    h.textContent = title;
-    article.appendChild(h);
+    // attach cleaned html into a body wrapper and attempt to extract a lead paragraph
+    const bodyWrapper = document.createElement('div');
+    bodyWrapper.className = 'modal-body';
+    bodyWrapper.innerHTML = cleanHtml;
+
+    // If first child paragraph looks like a lead, promote it
+    const firstP = bodyWrapper.querySelector('p');
+    if (firstP) {
+      const lead = document.createElement('p');
+      lead.className = 'lead';
+      lead.textContent = firstP.textContent;
+      // remove the promoted paragraph from bodyWrapper to avoid duplication
+      firstP.parentNode && firstP.parentNode.removeChild(firstP);
+      article.appendChild(lead);
+    }
+
+    article.appendChild(bodyWrapper);
+    toolbar.appendChild(article);
+
+    body.appendChild(toolbar);
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
   }
 
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = html;
-  const articleEl = tempDiv.querySelector('article');
-  let cleanHtml = articleEl ? articleEl.innerHTML : html;
-
-  const bodyWrapper = document.createElement('div');
-  bodyWrapper.className = 'modal-body';
-  bodyWrapper.innerHTML = cleanHtml;
-
-  const firstP = bodyWrapper.querySelector('p');
-  if (firstP && firstP.textContent.length > 50) {
-    const lead = document.createElement('p');
-    lead.className = 'lead';
-    lead.textContent = firstP.textContent;
-    firstP.remove();
-    article.appendChild(lead);
+  function hideModal() {
+    const modal = document.getElementById('story-modal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
   }
 
-  article.appendChild(bodyWrapper);
-
-  body.appendChild(toolbar);
-  body.appendChild(article);
-
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  // Extract content from fetched document: look for fragment ID, then sensible article selectors
+  // IMPORTANT: always return ONLY the inner HTML of the first <article> element to avoid showing multiple articles
+  function extractArticleFromDoc(doc, fragmentId) {
+    let targetArticle = null;
+    
+    // If fragmentId is provided, find that specific article by id
+    if (fragmentId) {
+      const el = doc.getElementById(fragmentId);
+      if (el && el.tagName && el.tagName.toLowerCase() === 'article') {
+        targetArticle = el;
+      } else if (el) {
+        // If the element is a parent, find the first <article> child
+        targetArticle = el.querySelector('article');
+      }
+      if (!targetArticle) {
+        console.debug('[story-modal] fragment article not found in fetched doc:', fragmentId);
+      }
+    }
+    
+    // If no fragment found, try common selectors to find the first article
+    if (!targetArticle) {
+      const selectors = ['article.story-card', 'article', '.feature-article', '.story-card', '.feature'];
+      for (const sel of selectors) {
+        targetArticle = doc.querySelector(sel);
+        if (targetArticle) break;
+      }
+    }
+    
+    // If we found an article, extract ONLY its inner HTML (not the article tag itself, just contents)
+    if (targetArticle) {
+      const title = targetArticle.querySelector('h1,h2,h3') ? (targetArticle.querySelector('h1,h2,h3').textContent || '') : '';
+      // Return only the article's inner content, stripping all outer wrappers
+      return { html: targetArticle.innerHTML, title: title };
+    }
+    
+    console.debug('[story-modal] no article found in fetched doc');
+    return null;
+  }
 }
 
 // ----------------- CLICK HANDLER -----------------
@@ -430,7 +618,7 @@ function toggleStory(element) {
 
 function safeInit() {
   if (typeof createAuthUi === 'function') {
-    createAuthUi();
+    // createAuthUi();
   } else {
     console.warn('createAuthUi is not defined');
   }
@@ -446,10 +634,6 @@ function safeInit() {
   } else {
     console.warn('setupStoryModal is not defined');
   }
-
-  initTicker();
-  initMobileNav();
-  initArticleLoader();
 }
 
 if (document.readyState === 'loading') {
@@ -457,85 +641,105 @@ if (document.readyState === 'loading') {
 } else {
   safeInit();
 }
-//________CLICABLE TITLE_________
+
+// ----------------- CLICKABLE TITLES -----------------
+
 function makeTitlesClickable() {
   document.querySelectorAll('.article-title').forEach(title => {
-    if (title.dataset.clickBound) return;
     const link = title.dataset.link;
-    if (!link) return;
-    title.style.cursor = 'pointer';
-    title.addEventListener('click', () => { window.location.href = link; });
-    title.dataset.clickBound = true;
+    if (!link) return; // skip if no link defined
+
+    title.style.cursor = 'pointer'; // visual cue
+    title.addEventListener('click', () => {
+      window.location.href = link;
+    });
   });
 }
-//_________NEWS TICKER________
-function initTicker() {
-  const ticker = document.getElementById("newsTicker");
-  if (!ticker) return;
 
-  const headlines = document.querySelectorAll(".story-card h2");
-  headlines.forEach(headline => {
-    const li = document.createElement("li");
-    li.textContent = headline.textContent;
-    li.classList.add("hidden");
-    ticker.appendChild(li);
-  });
+// ----------------- THEME TOGGLE -----------------
 
-  let index = 0;
-  const items = ticker.querySelectorAll("li");
-  if (items.length > 0) {
-    items[0].classList.remove("hidden");
-    setInterval(() => {
-      items.forEach((item, i) => item.classList.toggle("hidden", i !== index));
-      index = (index + 1) % items.length;
-    }, 3000);
-  }
-}
-//_________MOBILE NAV______
-function initMobileNav() {
-  const toggleBtn = document.getElementById('nav-toggle');
-  const navLinks = document.querySelector('.main-links');
-  if (!toggleBtn || !navLinks) return;
+document.addEventListener("DOMContentLoaded", () => {
+    const ticker = document.getElementById("newsTicker");
+    if (!ticker) return;
 
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = navLinks.classList.toggle("show");
-    toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  });
-}
-//_______ARTICLE LOADER_______
-async function initArticleLoader() {
-  const articleContainer = document.getElementById('article-container');
-  const articleTitle = document.getElementById('article-title');
-  const articleContent = document.getElementById('article-content');
+    const headlines = document.querySelectorAll(".story-card h2");
 
-  if (!articleContainer || !articleTitle || !articleContent) return;
+    // Build ticker list
+    headlines.forEach(headline => {
+      const li = document.createElement("li");
+      li.textContent = headline.textContent;
+      li.style.display = "none"; // hide initially
+      ticker.appendChild(li);
+    });
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const articleId = urlParams.get('id');
-  if (!articleId) {
-    articleContainer.innerHTML = '<p>Article not found.</p>';
-    return;
-  }
-
-  try {
-    const response = await fetch(`/api/articles/${articleId}`);
-    if (!response.ok) throw new Error('Failed to fetch article');
-    const article = await response.json();
-
-    document.title = `${article.title} — Zawadi Intel News`;
-    articleTitle.textContent = article.title;
-    articleContent.innerHTML = article.content;
-
-    const descriptionTag = document.querySelector('meta[name="description"]');
-    if (descriptionTag) {
-      descriptionTag.setAttribute('content', article.content.replace(/<[^>]+>/g, '').substring(0, 150));
+    // Scrolling effect
+    let index = 0;
+    const items = ticker.querySelectorAll("li");
+    if (items.length > 0) {
+      items[0].style.display = "block"; // show first headline
+      setInterval(() => {
+        items.forEach((item, i) => {
+          item.style.display = i === index ? "block" : "none";
+        });
+        index = (index + 1) % items.length;
+      }, 3000);
     }
-    const canonicalTag = document.querySelector('link[rel="canonical"]');
-    if (canonicalTag) {
-      canonicalTag.setAttribute('href', `https://zawadiintelnews.vercel.app/article.html?id=${article.id}`);
+  });
+
+  // Mobile navigation toggle
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById('nav-toggle');
+    const navLinks = document.querySelector('.main-links');
+
+    if (toggleBtn && navLinks) {
+      toggleBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+        toggleBtn.setAttribute(
+          "aria-expanded",
+          navLinks.classList.contains("show") ? "true" : "false"
+        );
+      });
     }
-  } catch (error) {
-    console.error('Error loading article:', error);
-    articleContainer.innerHTML = '<p>Error loading article. Please try again later.</p>';
-  }
-}
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+      const articleContainer = document.getElementById('article-container');
+      const articleTitle = document.getElementById('article-title');
+      const articleMeta = document.getElementById('article-meta');
+      const articleContent = document.getElementById('article-content');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const articleId = urlParams.get('id');
+
+      if (!articleId) {
+        articleContainer.innerHTML = '<p>Article not found.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/articles/${articleId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch article');
+        }
+        const article = await response.json();
+
+        // Populate the page with article data
+        document.title = `${article.title} — Zawadi Intel News`;
+        articleTitle.textContent = article.title;
+        articleContent.innerHTML = article.content;
+
+        // Set meta information
+        const descriptionTag = document.querySelector('meta[name="description"]');
+        if (descriptionTag) {
+          descriptionTag.setAttribute('content', article.content.substring(0, 150).replace(/<[^>]+>/g, ''));
+        }
+        const canonicalTag = document.querySelector('link[rel="canonical"]');
+        if (canonicalTag) {
+          canonicalTag.setAttribute('href', `https://zawadiintelnews.vercel.app/article.html?id=${article.id}`);
+        }
+
+      } catch (error) {
+        console.error('Error loading article:', error);
+        articleContainer.innerHTML = '<p>Error loading article. Please try again later.</p>';
+      }
+    });
