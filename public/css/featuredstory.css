@@ -3,15 +3,16 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.9);
   color: #1d3557;
-  font-size: 0.7rem;
-  padding: 3px 6px;
+  font-size: 0.75rem;
+  padding: 4px 8px;
   border-radius: 4px;
-  font-weight: 500;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
-/* Breaking/Trending ribbon */
+/* Breaking ribbon */
 .story-card.breaking::before {
   content: "Breaking";
   position: absolute;
@@ -19,12 +20,30 @@
   left: 0;
   background: #e63946; /* bold red */
   color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 12px;
   border-bottom-right-radius: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Trending ribbon */
+.story-card.trending::before {
+  content: "Trending";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #f9a825; /* amber yellow */
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-bottom-right-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* Hover overlay effect */
@@ -32,13 +51,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .story-card:hover::after {
   opacity: 1;
+  transform: scale(1.02);
 }
 
 /* Footer engagement bar */
@@ -46,19 +66,43 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-top: 1px solid #eee;
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 0.85rem;
+  color: #555;
+  background: #fafafa;
 }
 
 .footer-bar span {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .footer-bar i {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #457b9d;
+  transition: color 0.2s ease;
+}
+
+.footer-bar i:hover {
+  color: #1d3557;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .story-card .timestamp {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+  }
+  .story-card.breaking::before,
+  .story-card.trending::before {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+  .footer-bar {
+    font-size: 0.75rem;
+    flex-direction: column;
+    gap: 6px;
+  }
 }
