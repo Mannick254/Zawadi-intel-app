@@ -4,9 +4,7 @@
   "description": "Zawadi Intel Progressive Web App",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "build": "node build.js && node generate-sw-assets.js",
-    "vercel-build": "npm run build"
+    "start": "node server/index.js"
   },
   "keywords": [
     "pwa",
