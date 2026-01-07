@@ -1,8 +1,7 @@
-
 /*
-    Aljazeera Inspired Article CSS
-    - Clean, readable, and modern design
-    - Responsive for all devices
+    Refined Article CSS
+    - Clean, modern, and responsive
+    - Safe refinements that don’t break layout
 */
 
 /* General Body and Typography */
@@ -13,16 +12,56 @@ body {
     line-height: 1.8;
 }
 
-/* Article Container */
+/* ===========================
+   Trending Now Ticker
+   =========================== */
+.trending-ticker {
+    width: 100%;
+    background: #c81010;
+    color: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 1rem;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.trending-ticker span {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker-scroll 15s linear infinite;
+}
+
+@keyframes ticker-scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* ===========================
+   Article Container
+   =========================== */
 .news-article {
     max-width: 750px;
-    margin: 3rem auto;
+    margin: 2rem auto;
     padding: 2rem;
     background: #fff;
     border-top: 5px solid #c81010;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: box-shadow 0.3s ease;
 }
 
-/* Article Header */
+.news-article:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ===========================
+   Article Header
+   =========================== */
 .article-header {
     text-align: left;
     margin-bottom: 2rem;
@@ -31,18 +70,21 @@ body {
 }
 
 .article-header .category {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #c81010;
+    display: inline-block;
+    background: #c81010;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-.article-header h1, .article-header h2 {
+.article-header h1 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 2.8rem;
+    font-size: 2.6rem;
     font-weight: 700;
     color: #1a1a1a;
     line-height: 1.2;
@@ -50,24 +92,29 @@ body {
 }
 
 .article-header .subtitle {
-    font-size: 1.4rem;
-    color: #666;
+    font-size: 1.3rem;
+    color: #555;
     margin-top: 0.5rem;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: italic;
 }
 
 .article-meta {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.9rem;
-    color: #666;
+    color: #777;
     margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .article-meta .author {
     font-weight: 700;
 }
 
-/* Article Body */
+/* ===========================
+   Article Body
+   =========================== */
 .article-body {
     font-size: 1.15rem;
     color: #333;
@@ -81,6 +128,7 @@ body {
     color: #c81010;
     text-decoration: none;
     border-bottom: 1px dotted #c81010;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
 }
 
 .article-body a:hover {
@@ -88,8 +136,10 @@ body {
     border-bottom-color: #000;
 }
 
-/* Images */
-.article-image, .Photos {
+/* ===========================
+   Images & Captions
+   =========================== */
+.article-image {
     width: 100%;
     height: auto;
     margin: 2rem 0;
@@ -101,23 +151,27 @@ body {
     font-size: 0.9rem;
     color: #666;
     text-align: center;
-    margin-top: -1.5rem;
+    margin-top: -1rem;
     margin-bottom: 2rem;
 }
 
-/* Blockquotes */
-blockquote, .highlight-quote {
-    border-left: 3px solid #c81010;
+/* ===========================
+   Blockquotes
+   =========================== */
+blockquote {
+    border-left: 4px solid #c81010;
     margin: 2rem 0;
     padding: 1rem 1.5rem;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-style: italic;
     font-weight: 500;
     color: #333;
     background-color: #f9f9f9;
 }
 
-/* Two-column layout */
+/* ===========================
+   Two-column Layout
+   =========================== */
 .article-container {
     display: flex;
     flex-wrap: wrap;
@@ -134,22 +188,27 @@ blockquote, .highlight-quote {
     flex: 0 0 300px;
 }
 
-
-
-
 /* Sidebar components */
 .sidebar .related-articles,
 .sidebar .key-takeaways,
 .sidebar .trending-news {
     margin-bottom: 2rem;
-    background-color: #f9f9f9;
-    padding: 1.5rem;
-    border-radius: 4px;
+    background-color: #fdfdfd;
+    padding: 1.25rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.sidebar .related-articles:hover,
+.sidebar .key-takeaways:hover,
+.sidebar .trending-news:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .sidebar h3 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #c81010;
     margin-bottom: 1rem;
@@ -178,39 +237,31 @@ blockquote, .highlight-quote {
     color: #c81010;
 }
 
-
-/* Responsive Design */
+/* ===========================
+   Responsive Design
+   =========================== */
 @media (max-width: 768px) {
     .news-article {
         margin: 1rem auto;
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
-
-    .article-header h1, .article-header h2 {
+    .article-header h1 {
         font-size: 2.2rem;
     }
-
     .article-header .subtitle {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
-
     .article-body {
         font-size: 1.05rem;
     }
-
-    blockquote, .highlight-quote {
-        font-size: 1.1rem;
+    blockquote {
+        font-size: 1.05rem;
     }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
+    .article-container {
+        flex-direction: column;
+    }
     .main-article,
     .sidebar {
         flex: 1 1 100%;
-    }
-
-    .article-container {
-        flex-direction: column;
     }
 }
