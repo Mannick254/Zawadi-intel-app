@@ -8,67 +8,91 @@
     "date": "2025-12-26",
     "highlight": "⚠️ Road Safety Alert: Holiday travel fatalities rise",
     "quote": "We urge motorists to exercise caution during festive journeys — Kericho County Police Commander",
-    "category": "Local"
+    "category": "Local",
+    "tags": ["Kericho", "Road Safety", "Accident"]
   },
-    {
-      "title": "Kenya’s GDP hits Sh11 trillion milestone",
-      "url": "articles/kenya-gdp.html",
-      "image": "images/kenya-gdp.png",
-      "altText": "Kenya GDP Milestone",
-      "summary": "Kenya’s economy shows resilience despite global shocks, driven by agriculture, fintech, and infrastructure growth.",
-      "date": "2025-12-02",
-      "highlight": "📊 GDP Growth: 5.3% in 2025",
-      "quote": "Kenya’s resilience is a model for Africa — World Bank Analyst",
-      "category": "Local"
-    },
-    {
-      "title": "Raila Odinga’s bodyguard Maurice Ogeta stuns Kenyans",
-      "url": "articles/raila-bodyguard.html",
-      "image": "images/raila-bodyguard.jpeg",
-      "altText": "Raila Bodyguard",
-      "summary": "Photos of his apartment investment wow social media...",
-      "category": "Local"
-    },
-    {
-      "title": "Bishop Kiengei sparks debate with warning on relationships",
-      "url": "articles/bishop-kiengei.html",
-      "image": "images/bishop.jpeg",
-      "altText": "Bishop Kiengei",
-      "summary": "His sermon ignites national conversation on cultural norms...",
-      "category": "Local"
-    },
-    {
-      "title": "Ruto and Wetang’ula attend Noordin Haji’s son’s glamorous wedding",
-      "url": "articles/ruto-wedding.html",
-      "image": "images/ruto-wedding.jpg",
-      "altText": "Ruto Wedding",
-      "summary": "Political leaders gather for a high‑profile family event...",
-      "category": "Local"
-    },
-    {
-      "title": "World AIDS Day: Govt targets vs reality for youth living with HIV",
-      "url": "articles/aids-day.html",
-      "image": "images/aids-day.jpg",
-      "altText": "World AIDS Day",
-      "summary": "Kenya reviews progress on HIV prevention and treatment...",
-      "category": "Local"
-    },
-    {
-      "title": "Nakuru County optimistic industrial parks will grow economy",
-      "url": "articles/nakuru-industry.html",
-      "image": null,
-      "altText": "Nakuru Industry",
-      "summary": "New investments promise jobs and regional growth...",
-      "category": "Local"
-    },
-    {
-      "title": "Oburu Oginga urges Ruto to honor Raila deal before 2027",
-      "url": "articles/kenya-politics.html",
-      "image": "images/politics1.jpg",
-      "altText": "Kenya Politics",
-      "summary": "Oburu Oginga calls on President Ruto to fully implement the 10-point Raila agreement...",
-      "category": "Local"
-    }
-  ]
-    
-  
+  {
+    "title": "Oburu Oginga urges Ruto to honor Raila deal before 2027",
+    "url": "articles/kenya-politics.html",
+    "image": "images/politics1.jpg",
+    "altText": "Kenya Politics",
+    "summary": "Oburu Oginga calls on President Ruto to fully implement the 10-point Raila agreement...",
+    "date": "2025-12-22",
+    "highlight": "⚖️ Politics: Raila deal debate heats up",
+    "quote": "The agreement must be respected — Oburu Oginga",
+    "category": "Local",
+    "tags": ["Politics", "Raila", "Ruto"]
+  },
+  {
+    "title": "Bishop Kiengei sparks debate with warning on relationships",
+    "url": "articles/bishop-kiengei.html",
+    "image": "images/bishop.jpeg",
+    "altText": "Bishop Kiengei",
+    "summary": "His sermon ignites national conversation on cultural norms...",
+    "date": "2025-12-20",
+    "highlight": "🙏 Faith & Culture: Sermon sparks debate",
+    "quote": "Relationships must be grounded in respect — Bishop Kiengei",
+    "category": "Local",
+    "tags": ["Religion", "Culture", "Debate"]
+  },
+  {
+    "title": "Ruto and Wetang’ula attend Noordin Haji’s son’s glamorous wedding",
+    "url": "articles/ruto-wedding.html",
+    "image": "images/ruto-wedding.jpg",
+    "altText": "Ruto Wedding",
+    "summary": "Political leaders gather for a high‑profile family event...",
+    "date": "2025-12-18",
+    "highlight": "💍 Society: Glamorous wedding attracts top leaders",
+    "quote": "A celebration of family and unity.",
+    "category": "Local",
+    "tags": ["Politics", "Society", "Events"]
+  },
+  {
+    "title": "Raila Odinga’s bodyguard Maurice Ogeta stuns Kenyans",
+    "url": "articles/raila-bodyguard.html",
+    "image": "images/raila-bodyguard.jpeg",
+    "altText": "Raila Bodyguard",
+    "summary": "Photos of his apartment investment wow social media...",
+    "date": "2025-12-15",
+    "highlight": "🏠 Lifestyle Buzz: Raila’s bodyguard trends online",
+    "quote": "Kenyans admire his bold investment move.",
+    "category": "Local",
+    "tags": ["Politics", "Lifestyle", "Social Media"]
+  },
+  {
+    "title": "Nakuru County optimistic industrial parks will grow economy",
+    "url": "articles/nakuru-industry.html",
+    "image": null,
+    "altText": "Nakuru Industry",
+    "summary": "New investments promise jobs and regional growth...",
+    "date": "2025-12-10",
+    "highlight": "🏭 Industry: Nakuru bets on new parks",
+    "quote": "Industrial parks will transform Nakuru’s economy — County Governor",
+    "category": "Local",
+    "tags": ["Industry", "Nakuru", "Jobs"]
+  },
+  {
+    "title": "Kenya’s GDP hits Sh11 trillion milestone",
+    "url": "articles/kenya-gdp.html",
+    "image": "images/kenya-gdp.png",
+    "altText": "Kenya GDP Milestone",
+    "summary": "Kenya’s economy shows resilience despite global shocks, driven by agriculture, fintech, and infrastructure growth.",
+    "date": "2025-12-02",
+    "highlight": "📊 GDP Growth: 5.3% in 2025",
+    "quote": "Kenya’s resilience is a model for Africa — World Bank Analyst",
+    "category": "Local",
+    "tags": ["Economy", "GDP", "Finance"]
+  },
+  {
+    "title": "World AIDS Day: Govt targets vs reality for youth living with HIV",
+    "url": "articles/aids-day.html",
+    "image": "images/aids-day.jpg",
+    "altText": "World AIDS Day",
+    "summary": "Kenya reviews progress on HIV prevention and treatment...",
+    "date": "2025-12-01",
+    "highlight": "🌍 Health Focus: Youth HIV targets under review",
+    "quote": "We must close the gap in youth HIV care — Ministry of Health",
+    "category": "Local",
+    "tags": ["Health", "HIV", "Youth"]
+  }
+]
