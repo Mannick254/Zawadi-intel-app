@@ -82,6 +82,21 @@
   }
   </script>
 </head>
+<body>
+  <!-- 🔝 Navigation -->
+  <nav class="top-nav" aria-label="Main Navigation">
+    <div class="logo">
+      <img src="/icons/icon-192.png" alt="Zawadi Intel logo" loading="lazy" width="48" height="48" />
+      <span class="brand">📜 Zawadi Intel</span>
+    </div>
+    <ul class="main-links">
+      <li><a href="/" aria-current="page">Home</a></li>
+      <li><a href="/global">Global</a></li>
+      <li><a href="/books">Books</a></li>
+      <li><a href="/archive">Archive</a></li>
+      <li><a href="/account">Account</a></li>
+    </ul>
+  </nav>
 
   <!-- 📰 Hero Banner -->
   <header class="hero-banner">
@@ -89,43 +104,65 @@
     <p>Global news, African perspectives, and stories that matter. Updated daily.</p>
     <div class="featured-row">
       <!-- Breaking Story -->
-      <article class="featured-card breaking">
-        <img src="/images/kericho-accident.jpg" alt="Kericho Road Accident" loading="lazy" />
-        <span class="category-label">Local</span>
-        <h3><a href="/articles/kericho-accident.html">Kericho Road Crash Claims Five Lives</a></h3>
-        <p>⚠️ Holiday travel fatalities rise across Kenya. Police urge caution on highways.</p>
-        <div class="card-footer">
-          <span class="timestamp">Updated 2h ago</span>
-          <span class="engagement">💬 45 Comments</span>
+      <article class="featured-card" itemscope itemtype="https://schema.org/NewsArticle">
+        <div class="card-image">
+          <img src="/images/kericho-accident.jpg" alt="Scene of Kericho Road Accident" loading="lazy" />
+          <span class="category-badge local" itemprop="articleSection">Local</span>
+        </div>
+        <div class="card-content">
+          <h3 itemprop="headline"><a href="/articles/kericho-accident">Kericho Road Crash Claims Five Lives</a></h3>
+          <p itemprop="description">⚠️ Holiday travel fatalities rise across Kenya. Police urge caution on highways.</p>
+          <meta itemprop="dateModified" content="2026-01-07T14:30:00+03:00" />
+          <div class="card-footer">
+            <span class="timestamp">Updated 2h ago</span>
+            <div class="engagement-bar">
+              <span class="engagement"><i class="icon-comment"></i> 45</span>
+            </div>
+          </div>
         </div>
       </article>
     
       <!-- Trending Economy Story -->
-      <article class="featured-card trending">
-        <img src="/images/kenya-gdp.jpg" alt="Kenya GDP Milestone" loading="lazy" />
-        <span class="category-label">Economy</span>
-        <h3><a href="/articles/kenya-gdp.html">Kenya’s GDP Hits Sh11 Trillion</a></h3>
-        <p>📊 Growth driven by agriculture, fintech, and infrastructure despite global shocks.</p>
-        <div class="card-footer">
-          <span class="timestamp">Updated 5h ago</span>
-          <span class="engagement">👁️ 1.2k Views</span>
+      <article class="featured-card" itemscope itemtype="https://schema.org/NewsArticle">
+        <div class="card-image">
+          <img src="/images/kenya-gdp.jpg" alt="Kenya GDP milestone chart" loading="lazy" />
+          <span class="category-badge economy" itemprop="articleSection">Economy</span>
+        </div>
+        <div class="card-content">
+          <h3 itemprop="headline"><a href="/articles/kenya-gdp">Kenya’s GDP Hits Sh11 Trillion</a></h3>
+          <p itemprop="description">📊 Growth driven by agriculture, fintech, and infrastructure despite global shocks.</p>
+          <meta itemprop="dateModified" content="2026-01-07T11:00:00+03:00" />
+          <div class="card-footer">
+            <span class="timestamp">Updated 5h ago</span>
+            <div class="engagement-bar">
+              <span class="engagement"><i class="icon-eye"></i> 1.2k</span>
+            </div>
+          </div>
         </div>
       </article>
     
       <!-- Lifestyle Buzz -->
-      <article class="featured-card">
-        <img src="/images/raila-bodyguard.jpg" alt="Raila Bodyguard" loading="lazy" />
-        <span class="category-label">Lifestyle</span>
-        <h3><a href="/articles/raila-bodyguard.html">Raila’s Bodyguard Stuns Kenyans</a></h3>
-        <p>🏠 Maurice Ogeta trends after showcasing bold apartment investment.</p>
-        <div class="card-footer">
-          <span class="timestamp">Updated 1d ago</span>
-          <span class="engagement">🔄 320 Shares</span>
+      <article class="featured-card" itemscope itemtype="https://schema.org/NewsArticle">
+        <div class="card-image">
+          <img src="/images/raila-bodyguard.jpg" alt="Maurice Ogeta, Raila’s bodyguard" loading="lazy" />
+          <span class="category-badge lifestyle" itemprop="articleSection">Lifestyle</span>
+        </div>
+        <div class="card-content">
+          <h3 itemprop="headline"><a href="/articles/raila-bodyguard">Raila’s Bodyguard Stuns Kenyans</a></h3>
+          <p itemprop="description">🏠 Maurice Ogeta trends after showcasing bold apartment investment.</p>
+          <meta itemprop="dateModified" content="2026-01-06T18:00:00+03:00" />
+          <div class="card-footer">
+            <span class="timestamp">Updated 1d ago</span>
+            <div class="engagement-bar">
+              <span class="engagement"><i class="icon-share"></i> 320</span>
+            </div>
+          </div>
         </div>
       </article>
     </div>
-  </header>    
-  
+    
+  </header>
+
   <!-- 🔍 Search Bar -->
   <section class="search-bar">
     <form>
@@ -195,6 +232,11 @@
 
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
+    <ul class="footer-links">
+      <li>"<a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/privacy.html">Privacy Policy</a></li>
+    </ul>
     <p>&copy; 2026 Zawadi Intel. All rights reserved.</p>
   </footer>
 
