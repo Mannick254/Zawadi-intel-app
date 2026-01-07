@@ -2,81 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article Image Uploader</title>
+  <title>Zawadi Intel — Image Uploader</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background-color: #f4f4f4;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    input[type="file"] {
-      margin-bottom: 1rem;
-    }
-    #preview {
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px dashed #ccc;
-      min-height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    #preview img {
-      max-width: 100%;
-      height: auto;
-    }
-    textarea {
-      width: 100%;
-      height: 100px;
-      margin-top: 1rem;
-      font-family: monospace;
-    }
+    body { font-family: Roboto, sans-serif; margin: 2rem; }
+    .uploader { max-width: 400px; margin: auto; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; }
+    .uploader h2 { margin-bottom: 1rem; }
+    .preview { margin-top: 1rem; }
+    .preview img { max-width: 100%; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Article Image Uploader</h1>
-    <p>Select an image to generate a data URL. You can then copy this URL and paste it into the `src` attribute of an `<img>` tag in your article.</p>
-    
-    <input type="file" id="image-input" accept="image/*">
-    
-    <div id="preview">
-      <p>Image preview will appear here.</p>
-    </div>
-    
-    <textarea id="data-url" readonly placeholder="Image data URL will be generated here..."></textarea>
+  <div class="uploader">
+    <h2>Upload an Image</h2>
+    <form id="uploadForm">
+      <input type="file" name="image" accept="image/*" required />
+      <button type="submit">Upload</button>
+    </form>
+    <div class="preview" id="preview"></div>
   </div>
 
   <script>
-    const imageInput = document.getElementById('image-input');
+    const form = document.getElementById('uploadForm');
     const preview = document.getElementById('preview');
-    const dataUrlText = document.getElementById('data-url');
 
-    imageInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        
-        reader.onload = (e) => {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          preview.innerHTML = '';
-          preview.appendChild(img);
-          
-          dataUrlText.value = e.target.result;
-        };
-        
-        reader.readAsDataURL(file);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fileInput = form.querySelector('input[type="file"]');
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const res = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.ok) {
+          preview.innerHTML = `<p>✅ Uploaded successfully!</p>
+            <img src="${data.imageUrl}" alt="Uploaded image">`;
+        } else {
+          preview.innerHTML = `<p>❌ Upload failed: ${data.message}</p>`;
+        }
+      } catch (err) {
+        preview.innerHTML = `<p>❌ Error: ${err.message}</p>`;
       }
     });
   </script>

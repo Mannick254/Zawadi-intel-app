@@ -13,6 +13,7 @@ const path = require("path");
 const crypto = require("crypto");
 const webpush = require("web-push");
 const rateLimit = require("express-rate-limit");
+const multer = require("multer");
 
 let admin;
 let firebaseEnabled = false;
@@ -108,6 +109,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
 const PORT = process.env.PORT || 3001;
+
+// --- Multer setup for image uploads ---
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/images/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // --- Data access helpers ---
 async function getUser(username) {
@@ -369,6 +382,14 @@ app.post("/api/login", loginLimiter, async (req, res) => {
     console.error(err);
     return res.status(500).json({ ok: false, message: err.message });
   }
+});
+
+// --- Image Upload Route ---
+app.post('/api/upload-image', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ ok: false, message: 'No image uploaded' });
+  }
+  res.json({ ok: true, imageUrl: `/images/${req.file.filename}` });
 });
 
 // --- Health Route ---
