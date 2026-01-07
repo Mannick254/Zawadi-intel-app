@@ -59,6 +59,7 @@ rootDirs.forEach(dir => {
 // Copy contents of public to dist
 if (fs.existsSync('public')) {
   copyDirSync('public', dist);
+  deleteFolderRecursive('public');
 }
 
 console.log('Build successful!');
