@@ -30,6 +30,9 @@ walk('.', (err, files) => {
     }
 
     const htmlFiles = files.filter(file => file.endsWith('.html'));
+    const loginFunctionRegex = /<div id="login-function-container">[\s\S]*?<\/div>/;
+    const duplicateFooterRegex = /\. All rights reserved\.copy; [0-9]{4} Zawadi Intel News\. All rights reserved\./g;
+
 
     htmlFiles.forEach(file => {
         fs.readFile(file, 'utf8', (err, data) => {
@@ -38,7 +41,12 @@ walk('.', (err, files) => {
                 return;
             }
 
-            const updatedContent = data.replace(/(&copy;|©)\s*2025/g, '$1 2026');
+            let updatedContent = data.replace(/(&copy;|©)\s*[0-9]{4}/g, '$1 2026');
+            updatedContent = updatedContent.replace(duplicateFooterRegex, '. All rights reserved.');
+            
+            if (loginFunctionRegex.test(updatedContent)) {
+              updatedContent = updatedContent.replace(loginFunctionRegex, '');
+            }
 
             if (data !== updatedContent) {
                 fs.writeFile(file, updatedContent, 'utf8', (err) => {
@@ -46,7 +54,7 @@ walk('.', (err, files) => {
                         console.error("Error writing file:", file, err);
                         return;
                     }
-                    console.log("Updated copyright in:", file);
+                    console.log("Updated file:", file);
                 });
             }
         });
