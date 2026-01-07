@@ -3,61 +3,67 @@ const path = require('path');
 
 const publicDir = path.join(__dirname, '../public');
 
-// Function to recursively get all files in a directory
-const getAllFiles = (dirPath, arrayOfFiles) => {
+// Recursively collect all files
+function getAllFiles(dirPath, arrayOfFiles = []) {
   const files = fs.readdirSync(dirPath);
 
-  arrayOfFiles = arrayOfFiles || [];
-
   files.forEach(file => {
-    if (fs.statSync(path.join(dirPath, file)).isDirectory()) {
-      arrayOfFiles = getAllFiles(path.join(dirPath, file), arrayOfFiles);
+    const curPath = path.join(dirPath, file);
+    if (fs.statSync(curPath).isDirectory()) {
+      arrayOfFiles = getAllFiles(curPath, arrayOfFiles);
     } else {
-      arrayOfFiles.push(path.join(dirPath, file));
+      arrayOfFiles.push(curPath);
     }
   });
 
   return arrayOfFiles;
-};
+}
 
-const checkHtmlFile = (filePath) => {
+function checkHtmlFile(filePath) {
   const htmlContent = fs.readFileSync(filePath, 'utf8');
-  const hrefRegex = /href="(.*?)"/g;
-  const srcRegex = /src="(.*?)"/g;
-  let match;
+  const linkPatterns = [/href="(.*?)"/g, /src="(.*?)"/g];
   let brokenLinks = [];
 
   const checkLink = (link) => {
-    if (link && !link.startsWith('http') && !link.startsWith('#') && !link.startsWith('mailto:')) {
+    if (
+      link &&
+      !link.startsWith('http') &&
+      !link.startsWith('#') &&
+      !link.startsWith('mailto:')
+    ) {
       let absolutePath;
       if (link.startsWith('/')) {
         absolutePath = path.join(publicDir, link);
       } else {
         absolutePath = path.resolve(path.dirname(filePath), link);
       }
-      
+
       if (!fs.existsSync(absolutePath)) {
-          const relativePath = '/' + path.relative(publicDir, absolutePath).replace(/\\/g, '/');
-          brokenLinks.push({link, absolutePath, relativePath});
+        const relativePath =
+          '/' + path.relative(publicDir, absolutePath).replace(/\\/g, '/');
+        brokenLinks.push({ link, relativePath });
       }
     }
   };
 
-  while ((match = hrefRegex.exec(htmlContent)) !== null) {
-    checkLink(match[1]);
-  }
-
-  while ((match = srcRegex.exec(htmlContent)) !== null) {
-    checkLink(match[1]);
-  }
+  linkPatterns.forEach((regex) => {
+    let match;
+    while ((match = regex.exec(htmlContent)) !== null) {
+      checkLink(match[1]);
+    }
+  });
 
   if (brokenLinks.length > 0) {
     console.log(`Broken links in ${path.relative(publicDir, filePath)}:`);
-    brokenLinks.forEach(item => console.log(`  - ${item.link}`))
+    brokenLinks.forEach((item) =>
+      console.log(`  - ${item.link} → expected at ${item.relativePath}`)
+    );
   }
-};
+}
 
-const htmlFiles = getAllFiles(publicDir).filter(file => file.endsWith('.html'));
+const htmlFiles = getAllFiles(publicDir).filter((file) =>
+  file.endsWith('.html')
+);
 
 htmlFiles.forEach(checkHtmlFile);
 

@@ -1,36 +1,39 @@
 const fs = require('fs');
 const path = require('path');
 
-const deleteFolderRecursive = function(directoryPath) {
+function deleteFolderRecursive(directoryPath) {
   if (fs.existsSync(directoryPath)) {
-    fs.readdirSync(directoryPath).forEach((file, index) => {
+    fs.readdirSync(directoryPath).forEach(file => {
       const curPath = path.join(directoryPath, file);
-      if (fs.lstatSync(curPath).isDirectory()) { // recurse
+      if (fs.lstatSync(curPath).isDirectory()) {
         deleteFolderRecursive(curPath);
-      } else { // delete file
+      } else {
         fs.unlinkSync(curPath);
       }
     });
     fs.rmdirSync(directoryPath);
   }
-};
-
+}
 
 function copyDirSync(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
-  let entries = fs.readdirSync(src, { withFileTypes: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
 
-  for (let entry of entries) {
-    let srcPath = path.join(src, entry.name);
-    let destPath = path.join(dest, entry.name);
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
 
-    entry.isDirectory() ? copyDirSync(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
   }
 }
 
 const dist = 'dist';
 
-// Create dist directory
+// Clean dist
 deleteFolderRecursive(dist);
 fs.mkdirSync(dist, { recursive: true });
 
@@ -56,10 +59,9 @@ rootDirs.forEach(dir => {
   }
 });
 
-// Copy contents of public to dist
+// Copy contents of public to dist (⚠️ don’t delete public on Vercel)
 if (fs.existsSync('public')) {
   copyDirSync('public', dist);
-  deleteFolderRecursive('public');
 }
 
 console.log('Build successful!');
