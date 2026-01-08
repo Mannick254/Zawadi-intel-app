@@ -23,9 +23,9 @@
 </head>
 <body>
   <div class="uploader">
-    <h2>Upload Images</h2>
+    <h2>Upload Image</h2>
     <form id="uploadForm">
-      <input type="file" name="images" accept="image/*" multiple required />
+      <input type="file" name="image" accept="image/*" required />
       <button type="submit">Upload</button>
     </form>
     <div class="status" id="status" aria-live="polite"></div>
@@ -41,27 +41,27 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const files = form.querySelector('input[type="file"]').files;
-      if (!files.length) return;
+      const fileInput = form.querySelector('input[type="file"]');
+      const file = fileInput.files[0];
+      if (!file) return;
 
       status.innerHTML = "⏳ Uploading... <span class='spinner'></span>";
       preview.innerHTML = "";
       button.disabled = true;
 
-      const formData = new FormData();
-      for (const file of files) {
-        if (!file.type.startsWith('image/')) {
-          status.textContent = "❌ Invalid file type.";
-          button.disabled = false;
-          return;
-        }
-        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-          status.textContent = `❌ File too large (max ${MAX_SIZE_MB}MB).`;
-          button.disabled = false;
-          return;
-        }
-        formData.append('images', file);
+      if (!file.type.startsWith('image/')) {
+        status.textContent = "❌ Invalid file type.";
+        button.disabled = false;
+        return;
       }
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        status.textContent = `❌ File too large (max ${MAX_SIZE_MB}MB).`;
+        button.disabled = false;
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('image', file);
 
       try {
         const res = await fetch('/api/upload-image', { method: 'POST', body: formData });
@@ -70,12 +70,12 @@
 
         if (data.ok) {
           status.textContent = "✅ Uploaded successfully!";
-          preview.innerHTML = data.urls.map((url, i) => `
+          preview.innerHTML = `
             <figure>
-              <img src="${url}" alt="Uploaded image ${i+1}">
-              <figcaption>Image ${i+1}</figcaption>
+              <img src="${data.url}" alt="Uploaded image">
+              <figcaption>Image</figcaption>
             </figure>
-          `).join('');
+          `;
         } else {
           status.textContent = `❌ Upload failed: ${data.message}`;
         }
@@ -83,7 +83,7 @@
         status.textContent = `❌ Error: ${err.message}`;
       } finally {
         button.disabled = false;
-        form.querySelector('input[type="file"]').value = "";
+        fileInput.value = "";
       }
     });
   </script>
