@@ -335,6 +335,30 @@ async function deleteArticle(id) {
   }
 }
 
+// Check database connection status
+async function checkDbStatus() {
+  if (firebaseEnabled) {
+    try {
+      if (db.ref) {
+        await db.ref(".info/connected").once("value");
+        return { status: 'online', message: 'Firebase Realtime DB connected' };
+      } else {
+        await db.collection("_meta").limit(1).get();
+        return { status: 'online', message: 'Firestore connected' };
+      }
+    } catch (error) {
+      return { status: 'offline', message: error.message };
+    }
+  } else {
+    try {
+      fs.accessSync(DATA_FILE, fs.constants.R_OK);
+      return { status: 'online', message: 'Local JSON file accessible' };
+    } catch (error) {
+      return { status: 'offline', message: 'Local JSON file not accessible' };
+    }
+  }
+}
+
 // --- Auth Routes ---
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body || {};
