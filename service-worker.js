@@ -225,6 +225,10 @@ self.addEventListener("activate", event => {
 
 // Fetch event — cache-first with dynamic fallback
 self.addEventListener("fetch", event => {
+  // Skip caching for browser extension requests
+  if (event.request.url.startsWith('chrome-extension://') || event.request.url.startsWith('moz-extension://')) {
+    return;
+  }
   if (event.request.method !== "GET") return; // Only cache GET requests
 
   event.respondWith(
