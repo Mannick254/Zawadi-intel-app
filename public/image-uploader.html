@@ -6,72 +6,84 @@
   <link rel="stylesheet" href="/css/style.css">
   <style>
     body { font-family: Roboto, sans-serif; margin: 2rem; background: #fafafa; }
-    .uploader { max-width: 420px; margin: auto; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+    .uploader { max-width: 480px; margin: auto; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
     .uploader h2 { margin-bottom: 1rem; font-size: 1.4rem; }
-    .preview { margin-top: 1rem; text-align: center; }
-    .preview img { max-width: 100%; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .status { margin-top: 0.5rem; font-size: 0.9rem; color: #555; }
+    .preview { margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .preview figure { position: relative; margin: 0; }
+    .preview img { width: 100%; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+    .preview img:hover { transform: scale(1.05); }
+    .preview figcaption { position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem; padding: 2px 4px; border-radius: 4px; text-align: center; }
+    .status { margin-top: 0.5rem; font-size: 0.9rem; color: #555; min-height: 1.2rem; }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc; border-top-color: #0070f3; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 6px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
     button { margin-top: 0.8rem; padding: 0.5rem 1rem; border: none; border-radius: 4px; background: #0070f3; color: #fff; cursor: pointer; }
-    button:hover { background: #005bb5; }
+    button:disabled { background: #aaa; cursor: not-allowed; }
+    button:hover:not(:disabled) { background: #005bb5; }
   </style>
 </head>
 <body>
   <div class="uploader">
-    <h2>Upload an Image</h2>
+    <h2>Upload Images</h2>
     <form id="uploadForm">
-      <input type="file" name="image" accept="image/*" required />
+      <input type="file" name="images" accept="image/*" multiple required />
       <button type="submit">Upload</button>
     </form>
+    <div class="status" id="status" aria-live="polite"></div>
     <div class="preview" id="preview"></div>
-    <div class="status" id="status"></div>
   </div>
 
   <script>
     const form = document.getElementById('uploadForm');
     const preview = document.getElementById('preview');
     const status = document.getElementById('status');
+    const button = form.querySelector('button');
+    const MAX_SIZE_MB = 5;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const fileInput = form.querySelector('input[type="file"]');
-      const file = fileInput.files[0];
-      if (!file) return;
+      const files = form.querySelector('input[type="file"]').files;
+      if (!files.length) return;
 
-      if (!file.type.startsWith('image/')) {
-        status.textContent = "❌ Please select a valid image file.";
-        return;
-      }
+      status.innerHTML = "⏳ Uploading... <span class='spinner'></span>";
+      preview.innerHTML = "";
+      button.disabled = true;
 
       const formData = new FormData();
-      formData.append('image', file);
-
-      status.textContent = "⏳ Uploading...";
-      preview.innerHTML = "";
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) {
+          status.textContent = "❌ Invalid file type.";
+          button.disabled = false;
+          return;
+        }
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+          status.textContent = `❌ File too large (max ${MAX_SIZE_MB}MB).`;
+          button.disabled = false;
+          return;
+        }
+        formData.append('images', file);
+      }
 
       try {
-        const res = await fetch('/api/upload-image', {
-          method: 'POST',
-          body: formData
-        });
+        const res = await fetch('/api/upload-image', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
         const data = await res.json();
 
         if (data.ok) {
           status.textContent = "✅ Uploaded successfully!";
-          // Responsive preview using Cloudinary transformations if available
-          const baseUrl = data.imageUrl;
-          preview.innerHTML = `
-            <img 
-              src="${baseUrl}" 
-              srcset="${baseUrl.replace('/upload/', '/upload/w_400/')} 400w,
-                      ${baseUrl.replace('/upload/', '/upload/w_800/')} 800w"
-              sizes="(max-width: 600px) 400px, 800px"
-              alt="Uploaded image">
-          `;
+          preview.innerHTML = data.urls.map((url, i) => `
+            <figure>
+              <img src="${url}" alt="Uploaded image ${i+1}">
+              <figcaption>Image ${i+1}</figcaption>
+            </figure>
+          `).join('');
         } else {
           status.textContent = `❌ Upload failed: ${data.message}`;
         }
       } catch (err) {
         status.textContent = `❌ Error: ${err.message}`;
+      } finally {
+        button.disabled = false;
+        form.querySelector('input[type="file"]').value = "";
       }
     });
   </script>
