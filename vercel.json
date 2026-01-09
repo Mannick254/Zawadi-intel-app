@@ -3,7 +3,8 @@
   "builds": [
     {
       "src": "server/index.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": { "includeFiles": "../public/**" }
     }
   ],
   "routes": [
@@ -14,6 +15,10 @@
     {
       "src": "/news/wahoho",
       "dest": "/news/Wahoho.html"
+    },
+    {
+      "src": "/public/js/push-notifications.js",
+      "dest": "/public/js/push-notifications.js"
     },
     {
       "src": "/(.*)",

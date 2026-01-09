@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -206,6 +207,12 @@
         </div>
       </div>
 
+      <!-- Push Notifications Section -->
+      <div id="push-notifications-section" style="display: none; margin-top: 20px; text-align: center;">
+          <h3>Notifications</h3>
+          <button id="subscribe-button">Subscribe to Notifications</button>
+      </div>
+
       <p id="status-message"></p>
     </div>
   </main>
@@ -376,6 +383,7 @@
       const userDetails = document.getElementById('user-details');
       const authForms = document.getElementById('auth-forms');
       const profilePhotoSection = document.getElementById('profile-photo-section');
+      const pushNotificationsSection = document.getElementById('push-notifications-section');
       const usernameDisplay = document.getElementById('username-display');
 
       if (currentUser) {
@@ -384,6 +392,7 @@
         userDetails.style.display = 'block';
         authForms.style.display = 'none';
         profilePhotoSection.style.display = 'block';
+        pushNotificationsSection.style.display = 'block';
 
         // Populate user details
         document.getElementById('user-username').textContent = currentUser.username;
@@ -407,6 +416,7 @@
         userDetails.style.display = 'none';
         authForms.style.display = 'block';
         profilePhotoSection.style.display = 'none';
+        pushNotificationsSection.style.display = 'none';
       }
     }
 
@@ -414,5 +424,6 @@
     updateProfileUI();
   </script>
   <script src="/public/js/clock-calendar.js" defer></script>
+  <script src="public/js/push-notifications.js"></script>
 </body>
 </html>
