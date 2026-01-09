@@ -1,0 +1,32 @@
+[
+  {
+    "headline": "The Lifestyle of a High-Profile Bodyguard: The Case of Maurice Ogeta",
+    "image": "/images/raila-bodyguard.jpeg",
+    "category": "Lifestyle",
+    "badgeClass": "lifestyle",
+    "timestamp": "Updated 5h ago",
+    "url": "/articles/raila-bodyguard.html",
+    "readMoreText": "Read More",
+    "engagement": "1.2k Views"
+  },
+  {
+    "headline": "Building Collapses in Nairobi's Embakasi Area",
+    "image": "/images/kenya-collapse.jpg",
+    "category": "Breaking News",
+    "badgeClass": "breaking",
+    "timestamp": "Updated 2h ago",
+    "url": "/articles/kenya-collapse.html",
+    "readMoreText": "Read More",
+    "engagement": "5.7k Views"
+  },
+  {
+    "headline": "Kenya's GDP Growth Exceeds Expectations",
+    "image": "/images/kenya-gdp.jpg",
+    "category": "Economy",
+    "badgeClass": "economy",
+    "timestamp": "Updated 2d ago",
+    "url": "/articles/kenya-gdp.html",
+    "readMoreText": "Read More",
+    "engagement": "2.8k Views"
+  }
+]
