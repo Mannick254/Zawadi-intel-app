@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,50 +186,7 @@
   <div class="update-container">
     <h2>Kenyan Latest Update</h2>
     <p class="intro">Stay informed with the most recent developments shaping Kenya’s politics, sports, and society.</p>
-
-    <div class="update-grid">
-      <!-- Story 1: Politics -->
-      <article class="update-card">
-        <span class="badge politics">Politics</span>
-        <img src="https://cdn.tuko.co.ke/images/1200x675/96e1ed92aba0c549.jpeg?v=1" alt="Western Kenya Political Contest" />
-        <h3>Western Kenya Remains a Tight Political Contest</h3>
-        <p class="timestamp">Updated Jan 8, 2026</p>
-        <a href="/articles/kenyapolitics.html" class="read-more">Read More</a>
-        <div class="share-icons">
-          <a href="#">🐦</a>
-          <a href="#">📘</a>
-          <a href="#">📱</a>
-        </div>
-      </article>
-
-      <!-- Story 2: Sports -->
-      <article class="update-card">
-        <span class="badge sports">Sports</span>
-        <img src="https://www.kenyacup.co.ke/wp-content/uploads/2021/09/kcb-2.jpg" alt="KCB Rugby Kenya Cup" />
-        <h3>KCB Set Sights on Kenya Cup Glory</h3>
-        <p class="timestamp">Updated Jan 8, 2026</p>
-        <a href="/articles/kenyasports.html" class="read-more">Explore</a>
-        <div class="share-icons">
-          <a href="#">🐦</a>
-          <a href="#">📘</a>
-          <a href="#">📱</a>
-        </div>
-      </article>
-
-      <!-- Story 3: Society -->
-      <article class="update-card">
-        <span class="badge society">Society</span>
-        <img src="https://sauce.co.ke/wp-content/uploads/2026/01/get-860x1075.jpg" alt="Pastor James Irungu Tree Hugging Challenge" />
-        <h3>Pastor James Irungu Collapses During Tree-Hugging Challenge</h3>
-        <p class="timestamp">Updated Jan 8, 2026</p>
-        <a href="/articles/kenyasociety.html" class="read-more">Details</a>
-        <div class="share-icons">
-          <a href="#">🐦</a>
-          <a href="#">📘</a>
-          <a href="#">📱</a>
-        </div>
-      </article>
-    </div>
+    <div class="update-grid" id="kenya-latest-update-grid"></div>
   </div>
 </section>
 
@@ -370,6 +328,32 @@
     <script src="/js/load-articles.js" defer></script>
     <script src="/js/clock-calendar.js" defer></script>
     <script src="/js/prevent-broken-images.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        fetch('/data/kenya.json')
+          .then(response => response.json())
+          .then(data => {
+            const grid = document.getElementById('kenya-latest-update-grid');
+            data.forEach(story => {
+              const card = document.createElement('article');
+              card.className = 'update-card';
+              card.innerHTML = `
+                <span class="badge ${story.badgeClass}">${story.category}</span>
+                <img src="${story.image}" alt="${story.headline}" />
+                <h3>${story.headline}</h3>
+                <p class="timestamp">${story.timestamp}</p>
+                <a href="${story.url}" class="read-more">${story.readMoreText}</a>
+                <div class="share-icons">
+                  <a href="#">🐦</a>
+                  <a href="#">📘</a>
+                  <a href="#">📱</a>
+                </div>
+              `;
+              grid.appendChild(card);
+            });
+          })
+          .catch(error => console.error('Error loading Kenyan updates:', error));
+      });
+    </script>
   </body>
   </html>
-  

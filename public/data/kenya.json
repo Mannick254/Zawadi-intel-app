@@ -1,0 +1,30 @@
+
+[
+  {
+    "category": "Politics",
+    "badgeClass": "politics",
+    "image": "https://cdn.tuko.co.ke/images/1200x675/96e1ed92aba0c549.jpeg?v=1",
+    "headline": "Western Kenya Remains a Tight Political Contest",
+    "timestamp": "Updated Jan 8, 2026",
+    "url": "/articles/kenyapolitics.html",
+    "readMoreText": "Read More"
+  },
+  {
+    "category": "Sports",
+    "badgeClass": "sports",
+    "image": "https://www.kenyacup.co.ke/wp-content/uploads/2021/09/kcb-2.jpg",
+    "headline": "KCB Set Sights on Kenya Cup Glory",
+    "timestamp": "Updated Jan 8, 2026",
+    "url": "/articles/kenyasports.html",
+    "readMoreText": "Explore"
+  },
+  {
+    "category": "Society",
+    "badgeClass": "society",
+    "image": "https://sauce.co.ke/wp-content/uploads/2026/01/get-860x1075.jpg",
+    "headline": "Pastor James Irungu Collapses During Tree-Hugging Challenge",
+    "timestamp": "Updated Jan 8, 2026",
+    "url": "/articles/kenyasociety.html",
+    "readMoreText": "Details"
+  }
+]
