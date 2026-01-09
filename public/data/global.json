@@ -6,7 +6,7 @@
         "url": "/articles/breakthroughs-in-global-health.html",
         "category": "Health",
         "date": "Nov 30, 2025",
-        "summary": "The global health landscape is being reshaped by innovations like mRNA vaccines and AI-powered diagnostics, which are improving healthcare access in underserved regions. Telemedicine and digital health records are further bridging gaps, though challenges in equitable distribution remain. These advancements signal a move towards greater health equity worldwide."
+        "summary": "Innovations in vaccines and digital health are transforming healthcare access in underserved regions."
     },
     {
         "title": "Emerging Economies Drive Global Growth",
@@ -15,7 +15,7 @@
         "url": "/articles/emerging-economies-drive-global-growth.html",
         "category": "Economy",
         "date": "Nov 30, 2025",
-        "summary": "Emerging economies in Asia and Africa are fueling global growth through innovation and increased foreign investment. Key drivers include rapid urbanization, technological adoption, and a young workforce. While challenges like income inequality and environmental sustainability persist, this economic shift points toward a more multipolar world economy."
+        "summary": "Rapid urbanization and technological adoption in Asia and Africa are fueling a new wave of global economic growth."
     },
     {
         "title": "Gates Foundation Pledges $10B to End Malaria",
@@ -24,7 +24,7 @@
         "url": "/articles/gates-foundation.html",
         "category": "Health",
         "date": "Nov 25, 2025",
-        "summary": "The Gates Foundation has announced a landmark $10 billion commitment to eradicate malaria within the next ten years. This initiative will fund research, development, and distribution of new tools and strategies to combat the disease, which continues to claim hundreds of thousands of lives annually, primarily in sub-Saharan Africa. The effort aims to build on previous successes while addressing the growing challenge of drug and insecticide resistance."
+        "summary": "The Gates Foundation has committed $10 billion to fund research and distribution of new tools to eradicate malaria within a decade."
     },
     {
         "title": "The Global Race to Regulate AI",
@@ -33,7 +33,7 @@
         "url": "/articles/global-ai.html",
         "category": "Technology",
         "date": "Nov 20, 2025",
-        "summary": "As artificial intelligence becomes increasingly integrated into daily life, governments are racing to establish regulatory frameworks. The debate centers on balancing innovation with safety, privacy, and ethical considerations. International cooperation is seen as key to creating consistent standards, but differing national priorities are complicating efforts to achieve a unified approach."
+        "summary": "Nations around the world are urgently working to create regulations that balance the rapid innovation of AI with critical safety and ethical concerns."
     },
     {
         "title": "Global Aid Pledges Fall Short Amidst Crises",
@@ -42,7 +42,7 @@
         "url": "/articles/global-aid.html",
         "category": "World",
         "date": "Nov 18, 2025",
-        "summary": "A significant shortfall in global aid pledges is threatening humanitarian efforts worldwide. Organizations are warning that millions could face starvation, lack of medical care, and displacement as funding gaps widen amidst a confluence of climate-related disasters, conflict, and economic instability. The international community is being urged to honor its commitments to prevent a deepening of these crises."
+        "summary": "A shortfall in international aid commitments is jeopardizing humanitarian efforts and risking the lives of millions."
     },
     {
         "title": "The Global Debate on AI Regulation",
@@ -51,7 +51,7 @@
         "url": "/articles/global-debate-on-ai-regulation.html",
         "category": "Technology",
         "date": "Nov 15, 2025",
-        "summary": "The rapid advancement of artificial intelligence has sparked a global debate on the need for comprehensive regulation. Proponents argue that clear rules are necessary to prevent misuse and ensure ethical development, while opponents caution that excessive regulation could stifle innovation. This article explores the key arguments and the various approaches being considered by different nations."
+        "summary": "The global community is engaged in a critical debate over how to regulate AI to ensure its development is both ethical and beneficial."
     },
     {
         "title": "Global Festivals Celebrate Diversity and Unity",
@@ -60,7 +60,7 @@
         "url": "/articles/global-festivals-celebrate-diversity.html",
         "category": "Culture",
         "date": "Nov 12, 2025",
-        "summary": "After years of restrictions, global festivals are making a vibrant comeback, celebrating cultural diversity and fostering a sense of unity. From the colorful chaos of Holi in India to the rhythmic beats of Brazil's Carnival, these events are drawing massive crowds and providing a much-needed boost to local economies. The resurgence highlights the enduring human need for connection and shared experience."
+        "summary": "Cultural festivals are re-emerging worldwide, fostering unity and celebrating diversity in a post-pandemic era."
     },
     {
         "title": "Global Markets Face Uncertainty Amid Geopolitical Tensions",
@@ -69,7 +69,7 @@
         "url": "/articles/global-markets.html",
         "category": "Economy",
         "date": "Nov 10, 2025",
-        "summary": "A climate of uncertainty is looming over global markets as geopolitical tensions and unresolved trade disputes continue to escalate. Investors are proceeding with caution, leading to increased market volatility. This article examines the primary sources of instability and their potential impact on the global economy in the coming months."
+        "summary": "Geopolitical instability and trade disputes are creating significant uncertainty and volatility in global financial markets."
     },
     {
         "title": "UN Summit Addresses Global Food Security",
@@ -78,7 +78,7 @@
         "url": "/articles/global-un.html",
         "category": "World",
         "date": "Nov 5, 2025",
-        "summary": "The United Nations recently convened a summit to address the critical issue of global food security. With the world's population projected to reach 10 billion by 2050, leaders discussed sustainable agriculture, supply chain resilience, and the impact of climate change on food production. The summit concluded with a call for renewed international cooperation to prevent future food crises."
+        "summary": "A recent UN summit called for international cooperation to ensure food security for a growing global population."
     },
     {
         "title": "A New Era of Space Exploration",
@@ -87,7 +87,7 @@
         "url": "/articles/new-era-of-space-exploration.html",
         "category": "Science",
         "date": "Oct 30, 2025",
-        "summary": "The final frontier is buzzing with activity as a new era of space exploration dawns. A surge in private sector involvement, led by companies like SpaceX and Blue Origin, is complementing the efforts of national space agencies. This article looks at the ambitious missions on the horizon, from lunar bases to Mars colonization, and the technological innovations driving them."
+        "summary": "The convergence of private and public efforts is launching a new and ambitious chapter in space exploration."
     },
     {
         "title": "WMO Warns of Record-Breaking Global Temperatures",
@@ -96,7 +96,7 @@
         "url": "/articles/wmo-warning.html",
         "category": "Climate",
         "date": "Oct 28, 2025",
-        "summary": "The World Meteorological Organization has issued a stark warning as global temperatures continue to break records. The latest data indicates an acceleration of the climate crisis, with more frequent and intense heatwaves, droughts, and floods. The report urges immediate and drastic action to cut greenhouse gas emissions and mitigate the worst impacts of climate change."
+        "summary": "The World Meteorological Organization has issued a warning about accelerating climate change due to record-breaking global temperatures."
     },
     {
         "title": "World Leaders Gather for Climate Summit",
@@ -105,6 +105,6 @@
         "url": "/articles/world-leaders-gather-for-climate-summit.html",
         "category": "Climate",
         "date": "Oct 25, 2025",
-        "summary": "The eyes of the world are on the latest global climate summit, where leaders are under immense pressure to make bold and binding commitments to combat the climate emergency. With time running out to avert catastrophic environmental consequences, activists and scientists are demanding more than just rhetoric. This article covers the key negotiations and the potential outcomes of this critical gathering."
+        "summary": "Global leaders are facing intense pressure to agree on concrete actions to address the climate crisis at the latest summit."
     }
 ]
