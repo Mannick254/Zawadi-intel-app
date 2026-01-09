@@ -1,4 +1,4 @@
- [
+[
     {
       "category": "Local",
       "categoryClass": "local",
@@ -7,6 +7,7 @@
       "headline": "Kericho Road Crash Claims Five Lives",
       "link": "/articles/kericho-accident.html",
       "description": "⚠️ Holiday travel fatalities rise across Kenya. Police urge caution on highways.",
+      "date": "2026-01-07",
       "dateModified": "2026-01-07T14:30:00+03:00",
       "timestamp": "Updated 2h ago",
       "engagementType": "comment",
@@ -20,6 +21,7 @@
       "headline": "Kenya’s GDP Hits Sh11 Trillion",
       "link": "/articles/kenya-gdp.html",
       "description": "📊 Growth driven by agriculture, fintech, and infrastructure despite global shocks.",
+      "date": "2026-01-07",
       "dateModified": "2026-01-07T11:00:00+03:00",
       "timestamp": "Updated 5h ago",
       "engagementType": "eye",
@@ -33,6 +35,7 @@
       "headline": "Raila’s Bodyguard Stuns Kenyans",
       "link": "/articles/raila-bodyguard.html",
       "description": "🏠 Maurice Ogeta trends after showcasing bold apartment investment.",
+      "date": "2026-01-06",
       "dateModified": "2026-01-06T18:00:00+03:00",
       "timestamp": "Updated 1d ago",
       "engagementType": "share",

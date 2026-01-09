@@ -13,20 +13,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     const card = document.createElement('div');
                     card.classList.add('featured-card');
 
+                    const storyDate = new Date(story.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
                     card.innerHTML = `
                         <div class="card-image">
-                            <a href="${story.url}">
-                                <img src="${story.image}" alt="${story.headline}">
+                            <a href="${story.link}">
+                                <img src="${story.image}" alt="${story.alt}">
                             </a>
-                            <span class="badge ${story.badgeClass}">${story.category}</span>
+                            <span class="category-badge ${story.categoryClass}">${story.category}</span>
                         </div>
                         <div class="card-content">
-                            <h3><a href="${story.url}">${story.headline}</a></h3>
+                            <h3><a href="${story.link}">${story.headline}</a></h3>
+                            <p>${story.description}</p>
                             <div class="card-meta">
-                                <span>${story.timestamp}</span>
-                                <span class="engagement">${story.engagement}</span>
+                                <span class="date">${storyDate}</span>
+                                <span class="timestamp">${story.timestamp}</span>
                             </div>
-                            <a href="${story.url}" class="read-more">${story.readMoreText} &rarr;</a>
+                            <div class="card-footer">
+                                <span class="engagement">${story.engagementCount}</span>
+                                <a href="${story.link}" class="read-more">Read More &rarr;</a>
+                            </div>
                         </div>
                     `;
                     featuredRow.appendChild(card);
