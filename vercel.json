@@ -8,6 +8,14 @@
   ],
   "routes": [
     {
+      "src": "/news/cyrus-jirongo",
+      "dest": "/news/cyrus-jirongo.html"
+    },
+    {
+      "src": "/news/wahoho",
+      "dest": "/news/Wahoho.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "server/index.js"
     }
