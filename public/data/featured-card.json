@@ -1,32 +1,42 @@
-[
-  {
-    "headline": "The Lifestyle of a High-Profile Bodyguard: The Case of Maurice Ogeta",
-    "image": "/images/raila-bodyguard.jpeg",
-    "category": "Lifestyle",
-    "badgeClass": "lifestyle",
-    "timestamp": "Updated 5h ago",
-    "url": "/articles/raila-bodyguard.html",
-    "readMoreText": "Read More",
-    "engagement": "1.2k Views"
-  },
-  {
-    "headline": "Building Collapses in Nairobi's Embakasi Area",
-    "image": "/images/kenya-collapse.jpg",
-    "category": "Breaking News",
-    "badgeClass": "breaking",
-    "timestamp": "Updated 2h ago",
-    "url": "/articles/kenya-collapse.html",
-    "readMoreText": "Read More",
-    "engagement": "5.7k Views"
-  },
-  {
-    "headline": "Kenya's GDP Growth Exceeds Expectations",
-    "image": "/images/kenya-gdp.jpg",
-    "category": "Economy",
-    "badgeClass": "economy",
-    "timestamp": "Updated 2d ago",
-    "url": "/articles/kenya-gdp.html",
-    "readMoreText": "Read More",
-    "engagement": "2.8k Views"
-  }
-]
+ [
+    {
+      "category": "Local",
+      "categoryClass": "local",
+      "image": "https://cdn.odrisystems.com/wp-content/uploads/2025/01/06133730/killa.jpg",
+      "alt": "Scene of Kericho Road Accident",
+      "headline": "Kericho Road Crash Claims Five Lives",
+      "link": "/articles/kericho-accident.html",
+      "description": "⚠️ Holiday travel fatalities rise across Kenya. Police urge caution on highways.",
+      "dateModified": "2026-01-07T14:30:00+03:00",
+      "timestamp": "Updated 2h ago",
+      "engagementType": "comment",
+      "engagementCount": "45 Comments"
+    },
+    {
+      "category": "Economy",
+      "categoryClass": "economy",
+      "image": "/images/kenya-gdp.png",
+      "alt": "Kenya GDP milestone chart",
+      "headline": "Kenya’s GDP Hits Sh11 Trillion",
+      "link": "/articles/kenya-gdp.html",
+      "description": "📊 Growth driven by agriculture, fintech, and infrastructure despite global shocks.",
+      "dateModified": "2026-01-07T11:00:00+03:00",
+      "timestamp": "Updated 5h ago",
+      "engagementType": "eye",
+      "engagementCount": "1.2k Views"
+    },
+    {
+      "category": "Lifestyle",
+      "categoryClass": "lifestyle",
+      "image": "/images/raila-bodyguard.jpeg",
+      "alt": "Maurice Ogeta, Raila’s bodyguard",
+      "headline": "Raila’s Bodyguard Stuns Kenyans",
+      "link": "/articles/raila-bodyguard.html",
+      "description": "🏠 Maurice Ogeta trends after showcasing bold apartment investment.",
+      "dateModified": "2026-01-06T18:00:00+03:00",
+      "timestamp": "Updated 1d ago",
+      "engagementType": "share",
+      "engagementCount": "320 Shares"
+    }
+  ]
+
