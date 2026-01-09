@@ -1,1 +1,107 @@
-[]
+
+[
+  {
+    "title": "Breakthroughs in Global Health",
+    "description": "Exploring new vaccines and digital health tools transforming medical access worldwide.",
+    "image": "/images/global5.jpg",
+    "url": "/articles/breakthroughs-in-global-health.html",
+    "category": "Health",
+    "date": "Nov 30, 2025"
+  },
+  {
+    "title": "COP30 Outcomes: A New Global Climate Pact",
+    "description": "Nations agree on historic measures to accelerate the transition to clean energy, but challenges remain.",
+    "image": "/images/global2.jpg",
+    "url": "/articles/cop30-outcomes.html",
+    "category": "Climate",
+    "date": "Nov 30, 2025"
+  },
+  {
+    "title": "Emerging Economies Drive Global Growth",
+    "description": "Asia and Africa lead the charge in reshaping global trade and investment.",
+    "image": "/images/global4.jpg",
+    "url": "/articles/emerging-economies-drive-global-growth.html",
+    "category": "Economy",
+    "date": "Nov 30, 2025"
+  },
+  {
+    "title": "Gates Foundation Pledges $10B to End Malaria",
+    "description": "The foundation's bold initiative aims to eradicate the deadly disease within a decade.",
+    "image": "/images/global-gates.jpg",
+    "url": "/articles/gates-foundation.html",
+    "category": "Health",
+    "date": "Nov 25, 2025"
+  },
+  {
+    "title": "The Global Race to Regulate AI",
+    "description": "Governments worldwide are grappling with how to manage the risks and opportunities of artificial intelligence.",
+    "image": "/images/global-ai.jpg",
+    "url": "/articles/global-ai.html",
+    "category": "Technology",
+    "date": "Nov 20, 2025"
+  },
+  {
+    "title": "Global Aid Pledges Fall Short Amidst Crises",
+    "description": "Humanitarian organizations warn of dire consequences as funding fails to keep pace with growing needs.",
+    "image": "/images/global-aid.jpg",
+    "url": "/articles/global-aid.html",
+    "category": "World",
+    "date": "Nov 18, 2025"
+  },
+  {
+    "title": "The Global Debate on AI Regulation",
+    "description": "As AI's influence grows, so do calls for guardrails to ensure ethical and responsible development.",
+    "image": "/images/global-debate.jpg",
+    "url": "/articles/global-debate-on-ai-regulation.html",
+    "category": "Technology",
+    "date": "Nov 15, 2025"
+  },
+  {
+    "title": "Global Festivals Celebrate Diversity and Unity",
+    "description": "From music to food, cultural events are bringing people together in a post-pandemic world.",
+    "image": "/images/global-festivals.jpg",
+    "url": "/articles/global-festivals-celebrate-diversity.html",
+    "category": "Culture",
+    "date": "Nov 12, 2025"
+  },
+  {
+    "title": "Global Markets Face Uncertainty Amid Geopolitical Tensions",
+    "description": "Investors are on edge as conflicts and trade disputes create a volatile economic climate.",
+    "image": "/images/global-markets.jpg",
+    "url": "/articles/global-markets.html",
+    "category": "Economy",
+    "date": "Nov 10, 2025"
+  },
+  {
+    "title": "UN Summit Addresses Global Food Security",
+    "description": "Leaders gather to tackle the urgent challenge of feeding a growing global population.",
+    "image": "/images/global-un.jpg",
+    "url": "/articles/global-un.html",
+    "category": "World",
+    "date": "Nov 5, 2025"
+  },
+  {
+    "title": "A New Era of Space Exploration",
+    "description": "Private companies and national agencies are pushing the boundaries of space travel and research.",
+    "image": "/images/space-exploration.jpg",
+    "url": "/articles/new-era-of-space-exploration.html",
+    "category": "Science",
+    "date": "Oct 30, 2025"
+  },
+  {
+    "title": "WMO Warns of Record-Breaking Global Temperatures",
+    "description": "The World Meteorological Organization's latest report highlights the accelerating climate crisis.",
+    "image": "/images/wmo-warning.jpg",
+    "url": "/articles/wmo-warning.html",
+    "category": "Climate",
+    "date": "Oct 28, 2025"
+  },
+  {
+    "title": "World Leaders Gather for Climate Summit",
+    "description": "The pressure is on for meaningful commitments to address the climate emergency.",
+    "image": "/images/climate-summit.jpg",
+    "url": "/articles/world-leaders-gather-for-climate-summit.html",
+    "category": "Climate",
+    "date": "Oct 25, 2025"
+  }
+]
