@@ -9,11 +9,7 @@
   <!-- 🔍 SEO & Metadata -->
   <meta name="description" content="Breaking global stories, African voices, and cinematic archives. Curated for clarity and impact." />
   <meta name="keywords" content="Africa, Global News, Zawadi Intel, Breaking Stories, Media, Archives" />
-<<<<<<< HEAD
   <link rel="canonical" href="https:/mannick254.github.io/Zawadi-intel-app/" />
-=======
-  <link rel="canonical" href="https:/mannick254.github.io/Zawadi-intel-app/" />
->>>>>>> ecca6d92d0de59a69b15d1aba40c775f6214643c
 
   <!-- 📱 Social Sharing -->
   <meta property="og:title" content="Zawadi Intel — Breaking Stories That Shape Our World" />
@@ -131,61 +127,7 @@
 
   <!-- ⚡ Performance -->
   <script src="/main.js" defer></script>
-  <script>
-    / Example using NewsAPI (replace YOUR_API_KEY)
-    async function loadNews() {
-      try {
-        const res = await fetch("https:/newsapi.org/v2/top-headlines?language=en&pageSize=30&apiKey=YOUR_API_KEY");
-        const data = await res.json();
-        const ticker = document.getElementById("newsTicker");
-
-        if (data.articles) {
-          data.articles.forEach(article => {
-            const li = document.createElement("li");
-            li.textContent = `🌍 ${article.source.name}: ${article.title}`;
-            ticker.appendChild(li);
-          });
-        } else {
-          / Fallback if API fails
-          const li = document.createElement("li");
-          li.textContent = "🌍 News unavailable at the moment.";
-          ticker.appendChild(li);
-        }
-      } catch (error) {
-        console.error("Error loading news:", error);
-        const ticker = document.getElementById("newsTicker");
-        const li = document.createElement("li");
-        li.textContent = "🌍 News unavailable at the moment.";
-        ticker.appendChild(li);
-      }
-    }
-
-    / Run on page load
-    loadNews();
-  </script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js")
-        .then(reg => console.log("Service Worker registered:", reg))
-        .catch(err => console.log("Service Worker registration failed:", err));
-    }
-
-    document.getElementById("enable-notifications").addEventListener("click", () => {
-      if ("Notification" in window && "serviceWorker" in navigator) {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            console.log("Notification permission granted.");
-          } else {
-            console.log("Notification permission denied.");
-          }
-        });
-      }
-    });
-
-    function learnCybersecurity() {
-      window.open('https:/www.cisa.gov/cybersecurity', '_blank');
-    }
-  </script>
+  <script src="/service-worker.js" defer></script>
   <script src="/js/clock-calendar.js" defer></script>
 <script src="/js/prevent-broken-images.js" defer></script>
 </body>
