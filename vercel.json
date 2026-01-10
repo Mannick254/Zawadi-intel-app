@@ -9,13 +9,17 @@
   ],
   "routes": [
     {
-      "src": "/public/js/push-notifications.js",
-      "dest": "/public/js/push-notifications.js"
+      "src": "/home",
+      "dest": "/index.html"
     },
     {
       "src": "/",
       "status": 301,
       "dest": "/home"
+    },
+    {
+      "src": "/public/js/push-notifications.js",
+      "dest": "/public/js/push-notifications.js"
     },
     {
       "src": "/(.*)",
