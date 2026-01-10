@@ -13,6 +13,11 @@
       "dest": "/public/js/push-notifications.js"
     },
     {
+      "src": "/",
+      "status": 301,
+      "dest": "/home"
+    },
+    {
       "src": "/(.*)",
       "dest": "server/index.js"
     }
