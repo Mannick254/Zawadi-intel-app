@@ -9,14 +9,6 @@
   ],
   "routes": [
     {
-      "src": "/news/cyrus-jirongo",
-      "dest": "/news/cyrus-jirongo.html"
-    },
-    {
-      "src": "/news/wahoho",
-      "dest": "/news/Wahoho.html"
-    },
-    {
       "src": "/public/js/push-notifications.js",
       "dest": "/public/js/push-notifications.js"
     },
@@ -24,5 +16,6 @@
       "src": "/(.*)",
       "dest": "server/index.js"
     }
-  ]
+  ],
+  "cleanUrls": true
 }
