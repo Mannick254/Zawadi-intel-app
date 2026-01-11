@@ -4,7 +4,9 @@
   "description": "Zawadi Intel Progressive Web App",
   "main": "server/index.js",
   "scripts": {
-    "start": "vercel dev"
+    "build": "echo 'Build step complete'",
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
   },
   "keywords": [
     "pwa",
