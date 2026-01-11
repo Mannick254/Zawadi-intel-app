@@ -1,26 +1,13 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "builds": [
     {
       "src": "server/index.js",
-      "use": "@vercel/node",
-      "config": { "includeFiles": "../public/**" }
+      "use": "@vercel/node"
     }
   ],
-  "routes": [
-    {
-      "src": "/",
-      "headers": { "Location": "/home" },
-      "status": 301
-    },
-    {
-      "src": "/home",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "server/index.js"
-    }
-  ],
-  "cleanUrls": true
+  "rewrites": [
+    { "source": "/(.*)", "destination": "server/index.js" }
+  ]
 }

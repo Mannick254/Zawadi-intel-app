@@ -105,15 +105,18 @@ function generateToken() {
 
 // --- Express setup ---
 const app = express();
+const apiRouter = express.Router();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../public")));
+// Use a dedicated router for all API endpoints
+app.use("/api", apiRouter);
 const PORT = process.env.PORT || 3001;
 
 // --- Multer setup for image uploads ---
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/images/')
+    // This will save to a temporary directory in the serverless environment
+    cb(null, '/tmp')
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -360,7 +363,7 @@ async function checkDbStatus() {
 }
 
 // --- Auth Routes ---
-app.post("/api/register", async (req, res) => {
+apiRouter.post("/register", async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) {
     return res.status(400).json({ ok: false, message: "Username and password required" });
@@ -377,7 +380,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-app.post("/api/login", loginLimiter, async (req, res) => {
+apiRouter.post("/login", loginLimiter, async (req, res) => {
   const { username, password } = req.body || {};
   if (!username || !password) {
     return res.status(400).json({ ok: false, message: "Username and password required" });
@@ -409,20 +412,21 @@ app.post("/api/login", loginLimiter, async (req, res) => {
 });
 
 // --- Image Upload Route ---
-app.post('/api/upload-image', upload.single('image'), (req, res) => {
+apiRouter.post('/upload-image', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ ok: false, message: 'No image uploaded' });
   }
-  res.json({ ok: true, imageUrl: `/images/${req.file.filename}` });
+  // Since we can't serve from /tmp, this just confirms the upload
+  res.json({ ok: true, message: `Image '${req.file.filename}' uploaded successfully.` });
 });
 
 // --- Health Route ---
-app.get("/api/health", (req, res) => {
+apiRouter.get("/health", (req, res) => {
   res.status(200).json({ ok: true, message: "Zawadi Intel News backend alive" });
 });
 
 // --- Stats Route ---
-app.get("/api/stats", async (req, res) => {
+apiRouter.get("/stats", async (req, res) => {
   try {
     const stats = await getStats();
     res.json(stats);
@@ -433,7 +437,7 @@ app.get("/api/stats", async (req, res) => {
 });
 
 // --- Article Routes ---
-app.get("/api/articles", async (req, res) => {
+apiRouter.get("/articles", async (req, res) => {
   try {
     const articles = await getArticles();
     res.json(articles);
@@ -443,7 +447,7 @@ app.get("/api/articles", async (req, res) => {
   }
 });
 
-app.get("/api/articles/:id", async (req, res) => {
+apiRouter.get("/articles/:id", async (req, res) => {
   try {
     const article = await getArticle(req.params.id);
     if (!article) {
@@ -456,7 +460,7 @@ app.get("/api/articles/:id", async (req, res) => {
   }
 });
 
-app.post("/api/articles", async (req, res) => {
+apiRouter.post("/articles", async (req, res) => {
   try {
     const { title, content, imageUrl } = req.body;
     if (!title?.trim() || !content?.trim()) {
@@ -475,7 +479,7 @@ app.post("/api/articles", async (req, res) => {
   }
 });
 
-app.put("/api/articles/:id", async (req, res) => {
+apiRouter.put("/articles/:id", async (req, res) => {
   try {
     const { title, content, imageUrl } = req.body;
     if (!title?.trim() || !content?.trim()) {
@@ -494,7 +498,7 @@ app.put("/api/articles/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/articles/:id", async (req, res) => {
+apiRouter.delete("/articles/:id", async (req, res) => {
   try {
     await deleteArticle(req.params.id);
     res.json({ ok: true });
@@ -505,7 +509,7 @@ app.delete("/api/articles/:id", async (req, res) => {
 });
 
 // --- News Route with Push ---
-app.get("/api/news", async (req, res) => {
+apiRouter.get("/news", async (req, res) => {
   try {
     const apiKey = process.env.NEWS_API_KEY;
     if (!apiKey) {
@@ -547,7 +551,7 @@ app.get("/api/news", async (req, res) => {
 });
 
 // --- Push Subscription ---
-app.post("/api/subscribe", async (req, res) => {
+apiRouter.post("/subscribe", async (req, res) => {
   try {
     const subscription = req.body;
     if (!subscription?.endpoint) {
@@ -574,7 +578,7 @@ app.post("/api/subscribe", async (req, res) => {
 });
 
 // --- Manual Notify ---
-app.post("/api/notify", async (req, res) => {
+apiRouter.post("/notify", async (req, res) => {
   try {
     const { title, body, url } = req.body || {};
     const payload = JSON.stringify({
@@ -602,8 +606,12 @@ app.post("/api/notify", async (req, res) => {
   }
 });
 
+
 // --- Start server ---
 app.listen(PORT, () => {
   console.log(`Zawadi server listening on port ${PORT}`);
   console.log(`Firebase enabled: ${firebaseEnabled}`);
 });
+
+// Export the app for Vercel
+module.exports = app;
