@@ -1,49 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
   const statusGrid = document.getElementById('status-grid');
+  const incidentList = document.getElementById('incident-list');
   const lastUpdated = document.getElementById('last-updated');
 
-  if (!statusGrid) return;
-
   function renderServiceCard(name, service) {
+    const statusClass = service.status || 'offline';
     return `
-      <div class="status-card ${service.status}">
+      <div class="status-card ${statusClass}">
         <h2>${name}</h2>
-        <p>${service.message}</p>
+        <p>${service.message || 'No status message available'}</p>
         <p>Last checked: ${new Date().toLocaleTimeString()}</p>
       </div>
     `;
   }
 
-  function checkStatus() {
-    // Show loading state
-    statusGrid.innerHTML = `<p>🔄 Checking status...</p>`;
+  function renderIncident(incident) {
+    return `<li>${incident.date} — ${incident.description}</li>`;
+  }
 
-    fetch('/api/health')
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok && data.services) {
-          statusGrid.innerHTML = `
-            ${renderServiceCard("API Service", data.services.api)}
-            ${renderServiceCard("Database", data.services.db)}
-            ${renderServiceCard("Push Notifications", data.services.notifications)}
-          `;
-          lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+  async function checkStatus() {
+    statusGrid.innerHTML = `<p>🔄 Checking status...</p>`;
+    incidentList.innerHTML = '';
+
+    try {
+      const res = await fetch('/api/health');
+      const data = await res.json();
+
+      if (data.ok) {
+        // Services
+        statusGrid.innerHTML = Object.entries(data.services)
+          .map(([name, service]) => renderServiceCard(name, service))
+          .join('');
+
+        // Incidents
+        if (data.incidents && data.incidents.length > 0) {
+          incidentList.innerHTML = data.incidents
+            .map(renderIncident)
+            .join('');
         } else {
-          throw new Error("Invalid health data");
+          incidentList.innerHTML = `<li>No recent incidents</li>`;
         }
-      })
-      .catch(error => {
-        console.error("Error fetching server status:", error);
-        statusGrid.innerHTML = `
-          <div class="status-card offline">
-            <h2>Server Status: Offline</h2>
-            <p>Could not connect to the server. It may be down for maintenance.</p>
-            <p>Error: ${error.message}</p>
-            <p>Last checked: ${new Date().toLocaleTimeString()}</p>
-          </div>
-        `;
+
         lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
-      });
+      } else {
+        throw new Error("Invalid health data");
+      }
+    } catch (error) {
+      console.error("Error fetching server status:", error);
+      statusGrid.innerHTML = `
+        <div class="status-card offline">
+          <h2>Server Status: Offline</h2>
+          <p>Could not connect to the server. It may be down for maintenance.</p>
+          <p>Error: ${error.message}</p>
+          <p>Last checked: ${new Date().toLocaleTimeString()}</p>
+        </div>
+      `;
+      incidentList.innerHTML = `<li>Unable to fetch incident history</li>`;
+      lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+    }
   }
 
   // Initial check
