@@ -609,7 +609,12 @@ apiRouter.post("/notify", async (req, res) => {
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  const filePath = path.join(__dirname, '../public', req.path);
+  if (path.extname(req.path).length > 0 && fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  }
 });
 
 // --- Start server ---
