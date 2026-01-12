@@ -4,9 +4,7 @@
   "description": "Zawadi Intel Progressive Web App",
   "main": "server/index.js",
   "scripts": {
-    "build": "echo 'Build step complete'",
-    "start": "node server/index.js",
-    "dev": "nodemon server/index.js"
+    "start": "vercel dev"
   },
   "keywords": [
     "pwa",
@@ -38,5 +36,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mannick/zawadi-intel-app.git"
+  },
+  "overrides": {
+    "protobufjs": "^7.2.5"
   }
 }
