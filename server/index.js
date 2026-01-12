@@ -107,13 +107,15 @@ function generateToken() {
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../public")));
+// CORRECTED PATH: Use absolute path for Vercel environment
+app.use(express.static(path.join(process.cwd(), "public")));
 const PORT = process.env.PORT || 3001;
 
 // --- Multer setup for image uploads ---
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/images/')
+    // CORRECTED PATH: Use absolute path for Vercel environment
+    cb(null, path.join(process.cwd(), 'public', 'images'))
   },
   filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -602,8 +604,34 @@ app.post("/api/notify", async (req, res) => {
   }
 });
 
+// --- Fallback for HTML pages ---
+app.get('*', (req, res) => {
+  // Check if the request is for a file with an extension
+  if (path.extname(req.path)) {
+    return res.status(404).send('Not Found');
+  }
+
+  // Construct the path to the potential HTML file
+  const filePath = path.join(process.cwd(), 'public', `${req.path}.html`);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // If the file doesn't exist, send the main index.html or a custom 404 page
+      res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+    } else {
+      // If the file exists, send it
+      res.sendFile(filePath);
+    }
+  });
+});
+
+
 // --- Start server ---
 app.listen(PORT, () => {
   console.log(`Zawadi server listening on port ${PORT}`);
   console.log(`Firebase enabled: ${firebaseEnabled}`);
 });
+
+// Export the app for Vercel
+module.exports = app;
