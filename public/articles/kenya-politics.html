@@ -23,6 +23,12 @@
   <link rel="stylesheet" href="/css/layout.css" />
   <link rel="stylesheet" href="/css/theme.css" />
   <link rel="stylesheet" href="/css/articles.css" />
+  <link rel="stylesheet" href="/css/featuredstory.css" />
+  <link rel="stylesheet" href="/css/clock-calendar.css" />
+  <link rel="stylesheet" href="/css/kenyaupdate.css" />
+
+
+
 </head>
 
 <body>
@@ -103,6 +109,15 @@
       </div>
     </div>
 
+    <!-- Featured Stories Section -->
+<section id="featured-stories">
+  <h2>Featured Stories</h2>
+  <div class="featured-row">
+    <!-- Cards will be injected here from JSON -->
+  </div>
+</section>
+ 
+
     <!-- 📌 Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-widget">
@@ -120,6 +135,14 @@
       </div>
     </aside>
   </div>
+  <!-- 🇰🇪 Kenyan Latest Update -->
+<section class="kenyan-latest-update">
+  <div class="update-container">
+    <h2>Kenyan Latest Update</h2>
+    <p class="intro">Stay informed with the most recent developments shaping Kenya’s politics, sports, and society.</p>
+    <div class="update-grid" id="kenya-latest-update-grid"></div>
+  </div>
+</section>
 
   <!-- 🔻 Footer -->
   <footer role="contentinfo">
@@ -130,6 +153,11 @@
   <script src="/js/main.js" defer></script>
   <script src="/js/clock-calendar.js" defer></script>
   <script src="/js/prevent-broken-images.js" defer></script>
+  <script src="/js/load-featured.js" defer></script>
+  <script src="/js/kenya-updates.js" defer></script>
+
+
+
   <script>
     // Share page function
     function sharePage() {
