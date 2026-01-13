@@ -386,8 +386,13 @@ app.post("/api/login", loginLimiter, async (req, res) => {
   }
   try {
     let isAdmin = false;
-    if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD) {
-      isAdmin = true;
+    // Explicitly check for admin user
+    if (process.env.ADMIN_USERNAME && username === process.env.ADMIN_USERNAME) {
+      if (password === process.env.ADMIN_PASSWORD) {
+        isAdmin = true;
+      } else {
+        return res.status(401).json({ ok: false, message: "Invalid admin credentials" });
+      }
     } else {
       const user = await getUser(username);
       if (!user || !verifyPassword(password, user.password)) {
