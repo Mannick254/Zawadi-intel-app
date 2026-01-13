@@ -44,7 +44,7 @@
     {
         "category": "Politics",
         "categoryClass": "politics",
-        "image": "/images/busia-politics.jpg",
+        "image": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1768287633/WhatsApp_Image_2026-01-13_at_9.53.10_AM_oovdel.jpg",
         "alt": "Busia County Assembly",
         "headline": "Busia Politics Heats Up Ahead of Elections",
         "link": "/articles/busia-politics.html",
