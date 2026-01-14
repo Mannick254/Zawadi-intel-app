@@ -3,30 +3,63 @@
 let currentUser = null;
 
 async function loginUser(username, password) {
-  const response = await fetch('/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username, password })
-  });
-  const result = await response.json();
-  if (result.token) {
-    localStorage.setItem('token', result.token);
-    await verifyToken(result.token); 
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const text = await response.text(); // capture raw response
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch {
+      throw new Error(`Invalid JSON response: ${text}`);
+    }
+
+    if (!response.ok) {
+      console.error("Login failed:", result);
+      return { ok: false, message: result.message || `Error ${response.status}` };
+    }
+
+    if (result.token) {
+      localStorage.setItem('token', result.token);
+      await verifyToken(result.token);
+    }
+    return result;
+  } catch (err) {
+    console.error("Login error:", err);
+    return { ok: false, message: err.message };
   }
-  return result;
 }
 
 async function registerUser(username, password) {
-  const response = await fetch('/api/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username, password })
-  });
-  return response.json();
+  try {
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const text = await response.text();
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch {
+      throw new Error(`Invalid JSON response: ${text}`);
+    }
+
+    if (!response.ok) {
+      console.error("Registration failed:", result);
+      return { ok: false, message: result.message || `Error ${response.status}` };
+    }
+
+    return result;
+  } catch (err) {
+    console.error("Register error:", err);
+    return { ok: false, message: err.message };
+  }
 }
 
 async function verifyToken(token) {
@@ -38,18 +71,17 @@ async function verifyToken(token) {
   try {
     const response = await fetch('/api/verify', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })
     });
 
     const result = await response.json();
-    if (result.ok && result.session) {
+    if (response.ok && result.session) {
       currentUser = result.session;
     } else {
+      console.warn("Token verification failed:", result);
       currentUser = null;
-      localStorage.removeItem('token'); 
+      localStorage.removeItem('token');
     }
   } catch (error) {
     console.error('Error verifying token:', error);
@@ -63,9 +95,7 @@ async function logout() {
     try {
       await fetch('/api/logout', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token })
       });
     } catch (error) {
@@ -84,12 +114,9 @@ function showLoading(visible) {
   }
 }
 
-
 async function checkAuth() {
   const token = localStorage.getItem('token');
-  if (!token) {
-    return;
-  }
+  if (!token) return;
 
   showLoading(true);
   await verifyToken(token);
