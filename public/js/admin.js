@@ -1,6 +1,22 @@
-// admin.js
+// ==========================
+// Utility Functions
+// ==========================
+function show(el) {
+  if (el) el.style.display = 'block';
+}
+function hide(el) {
+  if (el) el.style.display = 'none';
+}
+function setText(el, text, color = '') {
+  if (el) {
+    el.textContent = text;
+    if (color) el.style.color = color;
+  }
+}
 
-// Initialize admin UI
+// ==========================
+// Initialize Admin UI
+// ==========================
 async function initAdmin() {
   const warn = document.getElementById('admin-warn');
   const loginSection = document.getElementById('admin-login');
@@ -12,31 +28,33 @@ async function initAdmin() {
   try {
     const current = await getCurrentUser(); // defined in main.js
     if (!current || !current.isAdmin) {
-      if (warn) warn.textContent = 'Admin access required. Please sign in with an admin account.';
-      if (loginSection) loginSection.style.display = 'block';
-      if (registerSection) registerSection.style.display = 'block';
-      if (actionsSection) actionsSection.style.display = 'none';
-      if (articleSection) articleSection.style.display = 'none';
-      if (pushSection) pushSection.style.display = 'none';
+      setText(warn, 'Admin access required. Please sign in with an admin account.');
+      show(loginSection);
+      show(registerSection);
+      hide(actionsSection);
+      hide(articleSection);
+      hide(pushSection);
       return;
     }
 
     // Admin verified
-    if (warn) warn.textContent = '';
-    if (loginSection) loginSection.style.display = 'none';
-    if (registerSection) registerSection.style.display = 'none';
-    if (actionsSection) actionsSection.style.display = 'block';
-    if (articleSection) articleSection.style.display = 'block';
-    if (pushSection) pushSection.style.display = 'block';
+    setText(warn, '');
+    hide(loginSection);
+    hide(registerSection);
+    show(actionsSection);
+    show(articleSection);
+    show(pushSection);
 
     wireAdminButtons();
   } catch (e) {
     console.warn('Admin check failed', e);
-    if (warn) warn.textContent = 'Unable to verify admin status.';
+    setText(document.getElementById('admin-warn'), 'Unable to verify admin status.');
   }
 }
 
-// Attach button handlers
+// ==========================
+// Button Handlers
+// ==========================
 function wireAdminButtons() {
   const refreshBtn = document.getElementById('refresh-stats');
   const clearBtn = document.getElementById('clear-local');
@@ -48,8 +66,7 @@ function wireAdminButtons() {
     clearBtn.addEventListener('click', () => {
       if (!confirm('Clear local login count? This cannot be undone.')) return;
       localStorage.removeItem('zawadi_global_count_v1');
-      const localTotal = document.getElementById('total-local');
-      if (localTotal) localTotal.textContent = '0';
+      setText(document.getElementById('total-local'), '0');
     });
   }
 
@@ -70,7 +87,9 @@ function wireAdminButtons() {
   }
 }
 
+// ==========================
 // Helper: download CSV
+// ==========================
 function downloadCSV(content, filename) {
   const blob = new Blob([content], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
@@ -81,7 +100,9 @@ function downloadCSV(content, filename) {
   URL.revokeObjectURL(url);
 }
 
-// Fetch stats from server or fallback
+// ==========================
+// Fetch Stats
+// ==========================
 async function fetchStats() {
   const warn = document.getElementById('admin-warn');
   const serverTotal = document.getElementById('total-server');
@@ -93,8 +114,8 @@ async function fetchStats() {
     if (!res.ok) throw new Error('Server unavailable');
     const data = await res.json();
 
-    if (serverTotal) serverTotal.textContent = data.total || 0;
-    if (warn) warn.textContent = '';
+    setText(serverTotal, data.total || 0);
+    setText(warn, '');
     if (list) {
       list.innerHTML = '';
       (data.recent || []).forEach(r => {
@@ -104,83 +125,82 @@ async function fetchStats() {
       });
     }
   } catch (e) {
-    if (warn) warn.textContent = 'Server not available — showing local fallback counts.';
-    if (serverTotal) serverTotal.textContent = 'n/a';
+    setText(warn, 'Server not available — showing local fallback counts.');
+    setText(serverTotal, 'n/a');
     const local = parseInt(localStorage.getItem('zawadi_global_count_v1') || '0', 10);
-    if (localTotal) localTotal.textContent = local;
+    setText(localTotal, local);
     if (list) list.innerHTML = '';
   }
 }
 
-// Inline admin login handler
+// ==========================
+// Inline Admin Login
+// ==========================
 const loginBtn = document.getElementById('admin-login-btn');
 if (loginBtn) {
   loginBtn.addEventListener('click', async () => {
     const u = document.getElementById('admin-username')?.value.trim();
     const p = document.getElementById('admin-password')?.value;
     const msg = document.getElementById('admin-login-msg');
-    if (msg) msg.textContent = '';
+    setText(msg, '');
 
     if (!u || !p) {
-      if (msg) msg.textContent = 'Enter username and password.';
+      setText(msg, 'Enter username and password.');
       return;
     }
 
     try {
-      const resp = await loginUser(u, p);
+      const resp = await loginUser(u, p); // must be defined elsewhere
       if (!resp || !resp.ok) {
-        if (msg) msg.textContent = resp?.message || 'Login failed';
+        setText(msg, resp?.message || 'Login failed');
         return;
       }
       if (resp.isAdmin) {
         window.location.href = 'admin.html';
         return;
       }
-      if (msg) {
-        msg.style.color = 'green';
-        msg.textContent = 'Signed in successfully.';
-      }
+      setText(msg, 'Signed in successfully.', 'green');
       await initAdmin();
-      const loginSection = document.getElementById('admin-login');
-      if (loginSection) loginSection.style.display = 'none';
+      hide(document.getElementById('admin-login'));
     } catch (e) {
       console.warn('Admin login error', e);
-      if (msg) msg.textContent = 'Login error';
+      setText(msg, 'Login error');
     }
   });
 }
 
-// Inline admin registration handler
+// ==========================
+// Inline Admin Registration
+// ==========================
 const registerBtn = document.getElementById('admin-register-btn');
 if (registerBtn) {
   registerBtn.addEventListener('click', async () => {
     const u = document.getElementById('admin-register-username')?.value.trim();
     const p = document.getElementById('admin-register-password')?.value;
     const msg = document.getElementById('admin-register-msg');
-    if (msg) msg.textContent = '';
+    setText(msg, '');
 
     if (!u || !p) {
-      if (msg) msg.textContent = 'Enter username and password.';
+      setText(msg, 'Enter username and password.');
       return;
     }
 
     try {
-      const resp = await registerUser(u, p);
+      const resp = await registerUser(u, p); // must be defined elsewhere
       if (!resp || !resp.ok) {
-        if (msg) msg.textContent = resp?.message || 'Registration failed';
+        setText(msg, resp?.message || 'Registration failed');
         return;
       }
-      if (msg) {
-        msg.style.color = 'green';
-        msg.textContent = 'Signed up successfully. Please sign in.';
-      }
+      setText(msg, 'Signed up successfully. Please sign in.', 'green');
     } catch (e) {
       console.warn('Admin registration error', e);
-      if (msg) msg.textContent = 'Registration error';
+      setText(msg, 'Registration error');
     }
   });
 }
 
-// Initial load
+// ==========================
+// Initial Load
+// ==========================
 fetchStats();
 initAdmin();

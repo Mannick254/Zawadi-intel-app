@@ -1,12 +1,7 @@
-
 // public/js/auth.js
 
-/**
- * Logs in a user.
- * @param {string} username - The user's username.
- * @param {string} password - The user's password.
- * @returns {Promise<object>} - The response from the server.
- */
+let currentUser = null;
+
 async function loginUser(username, password) {
   const response = await fetch('/api/login', {
     method: 'POST',
@@ -18,16 +13,11 @@ async function loginUser(username, password) {
   const result = await response.json();
   if (result.token) {
     localStorage.setItem('token', result.token);
+    await verifyToken(result.token); 
   }
   return result;
 }
 
-/**
- * Registers a new user.
- * @param {string} username - The user's username.
- * @param {string} password - The user's password.
- * @returns {Promise<object>} - The response from the server.
- */
 async function registerUser(username, password) {
   const response = await fetch('/api/register', {
     method: 'POST',
@@ -39,15 +29,12 @@ async function registerUser(username, password) {
   return response.json();
 }
 
-/**
- * Gets the current user from the server.
- * @returns {Promise<object|null>} - The current user or null if not logged in.
- */
-async function getCurrentUser() {
-  const token = localStorage.getItem('token');
+async function verifyToken(token) {
   if (!token) {
-    return null;
+    currentUser = null;
+    return;
   }
+
   try {
     const response = await fetch('/api/verify', {
       method: 'POST',
@@ -56,10 +43,55 @@ async function getCurrentUser() {
       },
       body: JSON.stringify({ token })
     });
+
     const result = await response.json();
-    return result.ok ? result : null;
+    if (result.ok && result.session) {
+      currentUser = result.session;
+    } else {
+      currentUser = null;
+      localStorage.removeItem('token'); 
+    }
   } catch (error) {
     console.error('Error verifying token:', error);
-    return null;
+    currentUser = null;
   }
+}
+
+async function logout() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    try {
+      await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token })
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  }
+  localStorage.removeItem('token');
+  currentUser = null;
+  window.location.reload();
+}
+
+function showLoading(visible) {
+  const loading = document.getElementById('loading');
+  if (loading) {
+    loading.style.display = visible ? 'block' : 'none';
+  }
+}
+
+
+async function checkAuth() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return;
+  }
+
+  showLoading(true);
+  await verifyToken(token);
+  showLoading(false);
 }

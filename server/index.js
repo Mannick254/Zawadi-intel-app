@@ -165,6 +165,36 @@ async function storeToken(token, session) {
     writeLocalData(data);
   }
 }
+
+async function getToken(token) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref(`tokens/${token}`).once("value");
+      return snap.val();
+    } else {
+      const doc = await db.collection("tokens").doc(token).get();
+      return doc.exists ? doc.data() : null;
+    }
+  } else {
+    const data = readLocalData();
+    return data.tokens[token] || null;
+  }
+}
+
+async function deleteToken(token) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`tokens/${token}`).remove();
+    } else {
+      await db.collection("tokens").doc(token).delete();
+    }
+  } else {
+    const data = readLocalData();
+    delete data.tokens[token];
+    writeLocalData(data);
+  }
+}
+
 async function incrementTotal() {
   if (firebaseEnabled && db.ref) {
     await db.ref("total").transaction(current => (current || 0) + 1);
@@ -415,6 +445,47 @@ app.post("/api/login", loginLimiter, async (req, res) => {
   }
 });
 
+app.post("/api/verify", async (req, res) => {
+  const { token } = req.body || {};
+  if (!token) {
+    return res.status(400).json({ ok: false, message: "Token is required" });
+  }
+
+  try {
+    const session = await getToken(token);
+    if (!session || session.expires < Date.now()) {
+      if (session) {
+        // Clean up expired token
+        await deleteToken(token);
+      }
+      return res.status(401).json({ ok: false, message: "Invalid or expired token" });
+    }
+
+    // Optionally, extend the session on activity
+    session.expires = Date.now() + 24 * 60 * 60 * 1000; // Extend by 24 hours
+    await storeToken(token, session);
+
+    return res.json({ ok: true, session });
+  } catch (err) {
+    console.error("Token verification error:", err);
+    return res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+});
+
+app.post("/api/logout", async (req, res) => {
+  const { token } = req.body || {};
+  if (token) {
+    try {
+      await deleteToken(token);
+    } catch (err) {
+      console.error("Logout (token deletion) error:", err);
+      // Still, client should proceed with logout
+    }
+  }
+  // Always return OK, so client can clear its state
+  return res.json({ ok: true });
+});
+
 // --- Image Upload Route ---
 app.post('/api/upload-image', upload.single('image'), (req, res) => {
   if (!req.file) {
@@ -574,7 +645,7 @@ app.post("/api/subscribe", async (req, res) => {
     });
 
     res.status(201).json({ ok: true, endpoint: subscription.endpoint });
-  } catch (err) {
+  } catch (err) {_
     console.error("Subscribe error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to save subscription" });
   }
