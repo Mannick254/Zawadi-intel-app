@@ -2,64 +2,45 @@
 
 let currentUser = null;
 
-async function loginUser(username, password) {
+async function safeFetch(url, options) {
   try {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-
-    const text = await response.text(); // capture raw response
+    const response = await fetch(url, options);
     let result;
     try {
-      result = JSON.parse(text);
+      result = await response.json();
     } catch {
-      throw new Error(`Invalid JSON response: ${text}`);
+      throw new Error(`Invalid JSON response (status ${response.status})`);
     }
-
     if (!response.ok) {
-      console.error("Login failed:", result);
       return { ok: false, message: result.message || `Error ${response.status}` };
-    }
-
-    if (result.token) {
-      localStorage.setItem('token', result.token);
-      await verifyToken(result.token);
     }
     return result;
   } catch (err) {
-    console.error("Login error:", err);
+    console.error(`Request to ${url} failed:`, err);
     return { ok: false, message: err.message };
   }
 }
 
-async function registerUser(username, password) {
-  try {
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
+async function loginUser(username, password) {
+  const result = await safeFetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
 
-    const text = await response.text();
-    let result;
-    try {
-      result = JSON.parse(text);
-    } catch {
-      throw new Error(`Invalid JSON response: ${text}`);
-    }
-
-    if (!response.ok) {
-      console.error("Registration failed:", result);
-      return { ok: false, message: result.message || `Error ${response.status}` };
-    }
-
-    return result;
-  } catch (err) {
-    console.error("Register error:", err);
-    return { ok: false, message: err.message };
+  if (result.ok && result.token) {
+    localStorage.setItem('token', result.token);
+    await verifyToken(result.token);
   }
+  return result;
+}
+
+async function registerUser(username, password) {
+  return await safeFetch('/api/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
 }
 
 async function verifyToken(token) {
@@ -67,40 +48,27 @@ async function verifyToken(token) {
     currentUser = null;
     return;
   }
-
-  try {
-    const response = await fetch('/api/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
-    });
-
-    const result = await response.json();
-    if (response.ok && result.session) {
-      currentUser = result.session;
-    } else {
-      console.warn("Token verification failed:", result);
-      currentUser = null;
-      localStorage.removeItem('token');
-    }
-  } catch (error) {
-    console.error('Error verifying token:', error);
+  const result = await safeFetch('/api/verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token })
+  });
+  if (result.ok && result.session) {
+    currentUser = result.session;
+  } else {
     currentUser = null;
+    localStorage.removeItem('token');
   }
 }
 
 async function logout() {
   const token = localStorage.getItem('token');
   if (token) {
-    try {
-      await fetch('/api/logout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-      });
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+    await safeFetch('/api/logout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
   }
   localStorage.removeItem('token');
   currentUser = null;
@@ -109,15 +77,12 @@ async function logout() {
 
 function showLoading(visible) {
   const loading = document.getElementById('loading');
-  if (loading) {
-    loading.style.display = visible ? 'block' : 'none';
-  }
+  if (loading) loading.style.display = visible ? 'block' : 'none';
 }
 
 async function checkAuth() {
   const token = localStorage.getItem('token');
   if (!token) return;
-
   showLoading(true);
   await verifyToken(token);
   showLoading(false);

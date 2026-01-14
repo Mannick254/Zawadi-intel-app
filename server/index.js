@@ -390,7 +390,6 @@ async function checkDbStatus() {
     }
   }
 }
-
 // --- Auth Routes ---
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body || {};
@@ -405,7 +404,7 @@ app.post("/api/register", async (req, res) => {
     return res.json({ ok: true });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ ok: false, message: err.message });
+    return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
@@ -416,12 +415,11 @@ app.post("/api/login", loginLimiter, async (req, res) => {
   }
   try {
     let isAdmin = false;
-    // Explicitly check for admin user
     if (process.env.ADMIN_USERNAME && username === process.env.ADMIN_USERNAME) {
       if (password === process.env.ADMIN_PASSWORD) {
         isAdmin = true;
       } else {
-        return res.status(401).json({ ok: false, message: "Invalid admin credentials" });
+        return res.status(401).json({ ok: false, message: "Invalid credentials" });
       }
     } else {
       const user = await getUser(username);
@@ -441,7 +439,7 @@ app.post("/api/login", loginLimiter, async (req, res) => {
     return res.json({ ok: true, token, isAdmin });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ ok: false, message: err.message });
+    return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
@@ -450,21 +448,14 @@ app.post("/api/verify", async (req, res) => {
   if (!token) {
     return res.status(400).json({ ok: false, message: "Token is required" });
   }
-
   try {
     const session = await getToken(token);
     if (!session || session.expires < Date.now()) {
-      if (session) {
-        // Clean up expired token
-        await deleteToken(token);
-      }
+      if (session) await deleteToken(token);
       return res.status(401).json({ ok: false, message: "Invalid or expired token" });
     }
-
-    // Optionally, extend the session on activity
-    session.expires = Date.now() + 24 * 60 * 60 * 1000; // Extend by 24 hours
+    session.expires = Date.now() + 24 * 60 * 60 * 1000;
     await storeToken(token, session);
-
     return res.json({ ok: true, session });
   } catch (err) {
     console.error("Token verification error:", err);
@@ -478,13 +469,12 @@ app.post("/api/logout", async (req, res) => {
     try {
       await deleteToken(token);
     } catch (err) {
-      console.error("Logout (token deletion) error:", err);
-      // Still, client should proceed with logout
+      console.error("Logout error:", err);
     }
   }
-  // Always return OK, so client can clear its state
   return res.json({ ok: true });
 });
+
 
 // --- Image Upload Route ---
 app.post('/api/upload-image', upload.single('image'), (req, res) => {
