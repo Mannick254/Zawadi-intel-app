@@ -1,9 +1,9 @@
 // public/js/main.js
 
 /**
- * Calls the /api/health endpoint and returns true if the server is healthy.
+ * Calls the /api/health endpoint and returns the parsed JSON object.
  */
-async function checkServerStatus() {
+async function fetchServerHealth() {
   try {
     const response = await fetch('/api/health', { cache: 'no-store' });
     if (!response.ok) {
@@ -19,10 +19,10 @@ async function checkServerStatus() {
       throw new Error("Invalid JSON response from server");
     }
 
-    return data.ok === true;
+    return data;
   } catch (error) {
-    console.error("Error checking server status:", error);
-    return false;
+    console.error("Error fetching server health:", error);
+    return { ok: false, message: error.message };
   }
 }
 
@@ -30,18 +30,24 @@ async function checkServerStatus() {
  * Checks the server status and displays a message to the user.
  */
 async function checkServerAndDisplayStatus() {
-  const serverStatus = await checkServerStatus();
+  const data = await fetchServerHealth();
   const statusElement = document.getElementById('server-status');
 
-  if (statusElement) {
-    if (serverStatus) {
-      statusElement.textContent = 'Server is online';
-      statusElement.style.color = 'green';
-    } else {
-      statusElement.textContent = 'Server is offline';
-      statusElement.style.color = 'red';
-    }
+  if (!statusElement) return;
+
+  if (data.ok) {
+    statusElement.textContent = `✅ Server is online — ${data.message || "Healthy"}`;
+    statusElement.style.color = 'green';
+  } else {
+    statusElement.textContent = `❌ Server is offline — ${data.message || "Unknown issue"}`;
+    statusElement.style.color = 'red';
   }
+
+  // Optional: show timestamp
+  const timestamp = document.createElement('span');
+  timestamp.className = 'status-timestamp';
+  timestamp.textContent = ` (Last checked: ${new Date().toLocaleTimeString()})`;
+  statusElement.appendChild(timestamp);
 }
 
 // Check the server status every 30 seconds

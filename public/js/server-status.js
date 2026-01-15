@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusEl = document.getElementById('server-status');
   if (!statusEl) return;
 
-  fetch('/api/health')
-    .then(async response => {
+  async function checkServerHealth() {
+    try {
+      const response = await fetch('/api/health');
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -16,20 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch {
         throw new Error("Invalid JSON response from server");
       }
-      return data;
-    })
-    .then(data => {
+
       if (data.ok) {
         statusEl.textContent = `Server Status: Online — ${data.message}`;
         statusEl.style.color = 'green';
       } else {
-        statusEl.textContent = 'Server Status: Offline';
+        statusEl.textContent = `Server Status: Offline — ${data.message || "Unknown issue"}`;
         statusEl.style.color = 'red';
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error fetching server status:', error);
       statusEl.textContent = `Server Status: Offline — ${error.message}`;
       statusEl.style.color = 'red';
-    });
+    }
+  }
+
+  // Initial check
+  checkServerHealth();
+
+  // Auto-refresh every 60 seconds
+  setInterval(checkServerHealth, 60000);
 });

@@ -4,46 +4,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!statusGrid) return;
 
+  // Render a single service card
   function renderServiceCard(name, service) {
+    const statusClass = service.status || 'unknown';
+    const message = service.message || 'No data available';
     return `
-      <div class="status-card ${service.status}">
+      <div class="status-card ${statusClass}">
         <h2>${name}</h2>
-        <p>${service.message}</p>
+        <p>${message}</p>
         <p>Last checked: ${new Date().toLocaleTimeString()}</p>
       </div>
     `;
   }
 
-  function checkStatus() {
+  async function checkStatus() {
     // Show loading state
     statusGrid.innerHTML = `<p>🔄 Checking status...</p>`;
 
-    fetch('/api/health')
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok && data.services) {
-          statusGrid.innerHTML = `
-            ${renderServiceCard("API Service", data.services.api)}
-            ${renderServiceCard("Database", data.services.db)}
-            ${renderServiceCard("Push Notifications", data.services.notifications)}
-          `;
-          lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
-        } else {
-          throw new Error("Invalid health data");
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching server status:", error);
+    try {
+      const res = await fetch('/api/health');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (data.ok && data.services) {
         statusGrid.innerHTML = `
-          <div class="status-card offline">
-            <h2>Server Status: Offline</h2>
-            <p>Could not connect to the server. It may be down for maintenance.</p>
-            <p>Error: ${error.message}</p>
-            <p>Last checked: ${new Date().toLocaleTimeString()}</p>
-          </div>
+          ${renderServiceCard("API Service", data.services.api)}
+          ${renderServiceCard("Database", data.services.db)}
+          ${renderServiceCard("Push Notifications", data.services.notifications)}
         `;
         lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
-      });
+      } else {
+        throw new Error("Invalid health data format");
+      }
+    } catch (error) {
+      console.error("Error fetching server status:", error);
+      statusGrid.innerHTML = `
+        <div class="status-card offline">
+          <h2>Server Status: Offline</h2>
+          <p>Could not connect to the server. It may be down for maintenance.</p>
+          <p>Error: ${error.message}</p>
+          <p>Last checked: ${new Date().toLocaleTimeString()}</p>
+        </div>
+      `;
+      lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+    }
   }
 
   // Initial check

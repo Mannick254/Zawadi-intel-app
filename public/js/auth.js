@@ -2,15 +2,27 @@
 
 let currentUser = null;
 
-async function safeFetch(url, options) {
+/**
+ * Safe wrapper around fetch with JSON parsing and error handling.
+ */
+async function safeFetch(url, options = {}) {
   try {
-    const response = await fetch(url, options);
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(options.headers || {})
+      },
+      cache: 'no-store' // avoid cached responses
+    });
+
     let result;
     try {
       result = await response.json();
     } catch {
       throw new Error(`Invalid JSON response (status ${response.status})`);
     }
+
     if (!response.ok) {
       return { ok: false, message: result.message || `Error ${response.status}` };
     }
@@ -21,10 +33,12 @@ async function safeFetch(url, options) {
   }
 }
 
+/**
+ * Login user and store token.
+ */
 async function loginUser(username, password) {
   const result = await safeFetch('/api/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   });
 
@@ -35,14 +49,19 @@ async function loginUser(username, password) {
   return result;
 }
 
+/**
+ * Register new user.
+ */
 async function registerUser(username, password) {
   return await safeFetch('/api/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   });
 }
 
+/**
+ * Verify token and update currentUser.
+ */
 async function verifyToken(token) {
   if (!token) {
     currentUser = null;
@@ -50,9 +69,9 @@ async function verifyToken(token) {
   }
   const result = await safeFetch('/api/verify', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ token })
   });
+
   if (result.ok && result.session) {
     currentUser = result.session;
   } else {
@@ -61,12 +80,14 @@ async function verifyToken(token) {
   }
 }
 
+/**
+ * Logout user and clear token.
+ */
 async function logout() {
   const token = localStorage.getItem('token');
   if (token) {
     await safeFetch('/api/logout', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token })
     });
   }
@@ -75,11 +96,17 @@ async function logout() {
   window.location.reload();
 }
 
+/**
+ * Show or hide loading indicator.
+ */
 function showLoading(visible) {
   const loading = document.getElementById('loading');
   if (loading) loading.style.display = visible ? 'block' : 'none';
 }
 
+/**
+ * Check authentication status on page load.
+ */
 async function checkAuth() {
   const token = localStorage.getItem('token');
   if (!token) return;

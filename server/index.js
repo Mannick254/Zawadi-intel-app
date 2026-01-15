@@ -42,63 +42,78 @@ function writeLocalData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
 }
 
-// --- Firebase init (optional) ---
+// --- Firebase Initialization ---
+
+
 try {
-  admin = require("firebase-admin");
+  const admin = require("firebase-admin");
   const svcPath = path.join(__dirname, "service-account.json");
+
   if (fs.existsSync(svcPath)) {
     const serviceAccount = require(svcPath);
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.DATABASE_URL || null
-    });
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.DATABASE_URL || undefined
+      });
+    }
     firebaseEnabled = true;
   } else {
     try {
-      admin.initializeApp({
-        credential: admin.credential.applicationDefault(),
-        databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.DATABASE_URL || null
-      });
+      if (!admin.apps.length) {
+        admin.initializeApp({
+          credential: admin.credential.applicationDefault(),
+          databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.DATABASE_URL || undefined
+        });
+      }
       firebaseEnabled = true;
     } catch (err) {
-      console.warn("Firebase default init failed — using local JSON.", err.message);
-      firebaseEnabled = false;
+      console.warn("Firebase default init failed — using local JSON fallback.", err.message);
+    }
+  }
+
+  if (firebaseEnabled) {
+    // Explicitly choose DB type via env var
+    if (process.env.USE_FIRESTORE === "true") {
+      db = admin.firestore();
+    } else {
+      db = admin.database();
     }
   }
 } catch {
   console.warn("firebase-admin not available — using local JSON store.");
-  firebaseEnabled = false;
 }
 
-if (firebaseEnabled) {
-  if (admin.database && admin.database().ref) {
-    db = admin.database(); // Realtime Database
-  } else {
-    db = admin.firestore(); // Firestore
-  }
-}
-
-// --- VAPID keys ---
+// --- VAPID Keys ---
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY || process.env.VAPID_PUBLIC_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY || process.env.VAPID_PRIVATE_KEY;
+
 if (publicVapidKey && privateVapidKey) {
-  webpush.setVapidDetails("mailto:admin@zawadiintelnews.vercel.app", publicVapidKey, privateVapidKey);
+  webpush.setVapidDetails(
+    "mailto:admin@zawadiintelnews.vercel.app",
+    publicVapidKey,
+    privateVapidKey
+  );
 } else {
-  console.warn("VAPID keys missing — push disabled. Set PUBLIC_VAPID_KEY and PRIVATE_VAPID_KEY in .env.");
+  console.error("VAPID keys missing — push notifications disabled. Set PUBLIC_VAPID_KEY and PRIVATE_VAPID_KEY in .env.");
 }
 
-// --- Password utilities ---
+// --- Password Utilities ---
 function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
-  return `${salt}:${hash}`;
+  const iterations = 100000; // modern recommended minimum
+  const hash = crypto.pbkdf2Sync(password, salt, iterations, 64, "sha512").toString("hex");
+  return `${iterations}:${salt}:${hash}`;
 }
+
 function verifyPassword(password, stored) {
-  if (!stored || !stored.includes(":")) return false;
-  const [salt, hash] = stored.split(":");
-  const verifyHash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
+  if (!stored) return false;
+  const [iterations, salt, hash] = stored.split(":");
+  if (!iterations || !salt || !hash) return false;
+  const verifyHash = crypto.pbkdf2Sync(password, salt, parseInt(iterations, 10), 64, "sha512").toString("hex");
   return hash === verifyHash;
 }
+
 function generateToken() {
   return crypto.randomBytes(32).toString("hex");
 }
@@ -485,20 +500,61 @@ app.post('/api/upload-image', upload.single('image'), (req, res) => {
 });
 
 // --- Health Route ---
-app.get("/api/health", (req, res) => {
-  res.status(200).json({ ok: true, message: "Zawadi Intel News backend alive" });
+app.get("/api/health", async (req, res) => {
+  try {
+    // Replace with real checks
+    const apiHealthy = true; // e.g. ping your API
+    const dbHealthy = true;  // e.g. run a lightweight query
+    const pushHealthy = false; // e.g. check push service connection
+
+    res.status(200).json({
+      ok: apiHealthy && dbHealthy && pushHealthy,
+      services: {
+        api: {
+          status: apiHealthy ? "online" : "offline",
+          message: apiHealthy ? "✅ Operational" : "❌ API not responding"
+        },
+        db: {
+          status: dbHealthy ? "online" : "degraded",
+          message: dbHealthy ? "✅ Database healthy" : "⚠️ Experiencing latency"
+        },
+        notifications: {
+          status: pushHealthy ? "online" : "offline",
+          message: pushHealthy ? "✅ Push service active" : "❌ Currently offline"
+        }
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error("Health check error:", err.stack || err);
+    res.status(500).json({
+      ok: false,
+      message: "Health check failed",
+      services: {}
+    });
+  }
 });
+
 
 // --- Stats Route ---
 app.get("/api/stats", async (req, res) => {
   try {
-    const stats = await getStats();
-    res.json(stats);
+    const stats = await getStats(); // your custom function
+    res.json({
+      ok: true,
+      stats,
+      timestamp: new Date().toISOString()
+    });
   } catch (err) {
     console.error("Stats error:", err.stack || err);
-    res.status(500).json({ ok: false, message: "Failed to read stats" });
+    res.status(500).json({
+      ok: false,
+      message: "Failed to read stats"
+    });
   }
 });
+
+
 
 // --- Article Routes ---
 app.get("/api/articles", async (req, res) => {
