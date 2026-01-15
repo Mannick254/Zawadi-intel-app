@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const articleList = document.getElementById('article-list');
   const articleIdField = document.getElementById('article-id');
   const articleTitleField = document.getElementById('article-title');
+  const articleImageField = document.getElementById('article-image');
   const articleImageUrlField = document.getElementById('article-image-url');
   const saveArticleBtn = document.getElementById('save-article-btn');
   const previewArticleBtn = document.getElementById('preview-article-btn');
@@ -28,6 +29,30 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     }
   });
+
+  // --- Function to upload an image ---
+  async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await fetch('/api/upload-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+
+      const result = await response.json();
+      articleImageUrlField.value = result.url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error uploading image. Please try again.');
+    }
+  }
+
 
   // --- Function to display all articles ---
   async function displayArticles() {
@@ -139,6 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Event Listeners ---
   articleForm.addEventListener('submit', saveArticle);
   previewArticleBtn.addEventListener('click', previewArticle);
+  articleImageField.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      uploadImage(file);
+    }
+  });
 
   articleList.addEventListener('click', (event) => {
     const target = event.target;
