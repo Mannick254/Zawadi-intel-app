@@ -1,6 +1,7 @@
 // public/js/auth.js
 
 let currentUser = null;
+let authChecked = false;
 
 /**
  * Safe wrapper around fetch with JSON parsing and error handling.
@@ -105,12 +106,27 @@ function showLoading(visible) {
 }
 
 /**
- * Check authentication status on page load.
+ * Check authentication status on page load, only once.
  */
 async function checkAuth() {
+  if (authChecked) return;
+
   const token = localStorage.getItem('token');
-  if (!token) return;
+  if (!token) {
+    authChecked = true;
+    return;
+  }
+
   showLoading(true);
   await verifyToken(token);
   showLoading(false);
+  authChecked = true;
+}
+
+/**
+ * Get the current user, performing auth check if needed.
+ */
+async function getCurrentUser() {
+    await checkAuth();
+    return currentUser;
 }
