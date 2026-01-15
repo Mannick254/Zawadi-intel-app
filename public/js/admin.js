@@ -40,7 +40,7 @@ async function initAdmin() {
     // Admin verified
     setText(warn, '');
     hide(loginSection);
-    hide(registerSection);
+    show(registerSection);
     show(actionsSection);
     show(articleSection);
     show(pushSection);
