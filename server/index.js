@@ -505,7 +505,7 @@ app.get("/api/health", async (req, res) => {
     // Replace with real checks
     const apiHealthy = true; // e.g. ping your API
     const dbHealthy = true;  // e.g. run a lightweight query
-    const pushHealthy = false; // e.g. check push service connection
+    const pushHealthy = publicVapidKey && privateVapidKey;
 
     res.status(200).json({
       ok: apiHealthy && dbHealthy && pushHealthy,
@@ -691,7 +691,7 @@ app.post("/api/subscribe", async (req, res) => {
     });
 
     res.status(201).json({ ok: true, endpoint: subscription.endpoint });
-  } catch (err) {_
+  } catch (err) {
     console.error("Subscribe error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to save subscription" });
   }
