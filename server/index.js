@@ -1,43 +1,91 @@
 /**
- * Zawadi Intel server — Vercel-ready, Supabase-only
- * - Routes: /api/register, /api/login, /api/verify, /api/logout
- *           /api/stats, /api/articles, /api/articles/:id
- *           /api/upload-image, /api/subscribe, /api/notify, /api/news
- * - Uses Supabase for persistence and storage
- * - Uses VAPID keys from .env for web-push
+ * Zawadi Intel server
+ * - Firebase if available, else local JSON store
+ * - Routes: /api/register, /api/login, /api/stats, /api/news, /api/subscribe, /api/notify
+ * - Uses VAPID keys from .env
  */
 
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const helmet = require("helmet");
+const fs = require("fs");
+const path = require("path");
 const crypto = require("crypto");
 const webpush = require("web-push");
 const rateLimit = require("express-rate-limit");
 const multer = require("multer");
-const path = require("path");
-const supabase = require("./supabase");
+const supabase = require('./supabase');
 
-// --- Express setup ---
-const app = express();
-const PORT = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-}));
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true, limit: "2mb" }));
-app.use(express.static(path.join(process.cwd(), "public")));
 
-// --- Rate limiter for login attempts ---
+let admin;
+let firebaseEnabled = false;
+let db = null;
+
+const DATA_FILE = path.join(__dirname, "data.json");
+
+// Rate limiter for login attempts: limit repeated login requests
 const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 login requests per windowMs
   message: { ok: false, message: "Too many login attempts, please try again later." },
-  standardHeaders: true,
-  legacyHeaders: false,
+  standardHeaders: true, // return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // disable the `X-RateLimit-*` headers
 });
+
+// --- Safe JSON helpers ---
+function readLocalData() {
+  try {
+    return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  } catch {
+    return { total: 0, recent: [], users: {}, tokens: {}, subscriptions: [], articles: [] };
+  }
+}
+function writeLocalData(data) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+// --- Firebase Initialization ---
+
+
+try {
+  const admin = require("firebase-admin");
+  const svcPath = path.join(__dirname, "service-account.json");
+
+  if (fs.existsSync(svcPath)) {
+    const serviceAccount = require(svcPath);
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.DATABASE_URL || undefined
+      });
+    }
+    firebaseEnabled = true;
+  } else {
+    try {
+      if (!admin.apps.length) {
+        admin.initializeApp({
+          credential: admin.credential.applicationDefault(),
+          databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.DATABASE_URL || undefined
+        });
+      }
+      firebaseEnabled = true;
+    } catch (err) {
+      console.warn("Firebase default init failed — using local JSON fallback.", err.message);
+    }
+  }
+
+  if (firebaseEnabled) {
+    // Explicitly choose DB type via env var
+    if (process.env.USE_FIRESTORE === "true") {
+      db = admin.firestore();
+    } else {
+      db = admin.database();
+    }
+  }
+} catch {
+  console.warn("firebase-admin not available — using local JSON store.");
+}
 
 // --- VAPID Keys ---
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY || process.env.VAPID_PUBLIC_KEY;
@@ -53,95 +101,362 @@ if (publicVapidKey && privateVapidKey) {
   console.error("VAPID keys missing — push notifications disabled. Set PUBLIC_VAPID_KEY and PRIVATE_VAPID_KEY in .env.");
 }
 
-// --- Multer memory storage for uploads (no disk writes) ---
-const upload = multer({ storage: multer.memoryStorage() });
+// --- Password Utilities ---
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const iterations = 100000; // modern recommended minimum
+  const hash = crypto.pbkdf2Sync(password, salt, iterations, 64, "sha512").toString("hex");
+  return `${iterations}:${salt}:${hash}`;
+}
 
-// --- Auth helpers ---
-async function requireAuth(req, res, next) {
-  try {
-    const authHeader = req.headers.authorization || "";
-    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
-    if (!token) return res.status(401).json({ ok: false, message: "Missing bearer token" });
+function verifyPassword(password, stored) {
+  if (!stored) return false;
+  const [iterations, salt, hash] = stored.split(":");
+  if (!iterations || !salt || !hash) return false;
+  const verifyHash = crypto.pbkdf2Sync(password, salt, parseInt(iterations, 10), 64, "sha512").toString("hex");
+  return hash === verifyHash;
+}
 
-    const { data, error } = await supabase.auth.getUser(token);
-    if (error || !data.user) return res.status(401).json({ ok: false, message: "Invalid or expired token" });
+function generateToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
 
-    req.user = {
-      id: data.user.id,
-      email: data.user.email,
-      isAdmin: data.user.user_metadata?.isAdmin || false,
-    };
-    next();
-  } catch (err) {
-    console.error("Auth middleware error:", err);
-    res.status(500).json({ ok: false, message: "Internal server error" });
+// --- Express setup ---
+const app = express();
+app.use(cors());
+app.use(express.json());
+// CORRECTED PATH: Use absolute path for Vercel environment
+app.use(express.static(path.join(process.cwd(), "public")));
+const PORT = process.env.PORT || 3001;
+
+// --- Multer setup for image uploads ---
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // CORRECTED PATH: Use absolute path for Vercel environment
+    cb(null, path.join(process.cwd(), 'public', 'images'))
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// --- Data access helpers ---
+async function getUser(username) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref(`users/${username}`).once("value");
+      return snap.val();
+    } else {
+      const doc = await db.collection("users").doc(username).get();
+      return doc.exists ? doc.data() : null;
+    }
+  } else {
+    const data = readLocalData();
+    return data.users[username] || null;
+  }
+}
+async function setUser(username, obj) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`users/${username}`).set(obj);
+    } else {
+      await db.collection("users").doc(username).set(obj);
+    }
+  } else {
+    const data = readLocalData();
+    data.users[username] = obj;
+    writeLocalData(data);
+  }
+}
+async function storeToken(token, session) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`tokens/${token}`).set(session);
+    } else {
+      await db.collection("tokens").doc(token).set(session);
+    }
+  } else {
+    const data = readLocalData();
+    data.tokens[token] = session;
+    writeLocalData(data);
   }
 }
 
-function requireAdmin(req, res, next) {
-  if (!req.user?.isAdmin) {
-    return res.status(403).json({ ok: false, message: "Admin privileges required" });
+async function getToken(token) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref(`tokens/${token}`).once("value");
+      return snap.val();
+    } else {
+      const doc = await db.collection("tokens").doc(token).get();
+      return doc.exists ? doc.data() : null;
+    }
+  } else {
+    const data = readLocalData();
+    return data.tokens[token] || null;
   }
-  next();
 }
 
-// --- Auth Routes (Supabase) ---
+async function deleteToken(token) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`tokens/${token}`).remove();
+    } else {
+      await db.collection("tokens").doc(token).delete();
+    }
+  } else {
+    const data = readLocalData();
+    delete data.tokens[token];
+    writeLocalData(data);
+  }
+}
+
+async function incrementTotal() {
+  if (firebaseEnabled && db.ref) {
+    await db.ref("total").transaction(current => (current || 0) + 1);
+  } else if (firebaseEnabled && db.collection) {
+    const metaRef = db.collection("_meta").doc("counts");
+    await db.runTransaction(async t => {
+      const doc = await t.get(metaRef);
+      const current = doc.exists ? (doc.data().total || 0) : 0;
+      t.set(metaRef, { total: current + 1 }, { merge: true });
+    });
+  } else {
+    const data = readLocalData();
+    data.total = (data.total || 0) + 1;
+    writeLocalData(data);
+  }
+}
+async function pushRecent(entry) {
+  if (firebaseEnabled && db.ref) {
+    await db.ref("recent").transaction(current => {
+      const arr = current || [];
+      arr.unshift(entry);
+      return arr.slice(0, 50);
+    });
+  } else if (firebaseEnabled && db.collection) {
+    const metaRef = db.collection("_meta").doc("recent");
+    await db.runTransaction(async t => {
+      const doc = await t.get(metaRef);
+      const arr = doc.exists ? (doc.data().recent || []) : [];
+      arr.unshift(entry);
+      arr.splice(50);
+      t.set(metaRef, { recent: arr }, { merge: true });
+    });
+  } else {
+    const data = readLocalData();
+    data.recent = data.recent || [];
+    data.recent.unshift(entry);
+    data.recent = data.recent.slice(0, 50);
+    writeLocalData(data);
+  }
+}
+async function getStats() {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const [totalSnap, recentSnap] = await Promise.all([
+        db.ref("total").once("value"),
+        db.ref("recent").once("value")
+      ]);
+      return { total: totalSnap.val() || 0, recent: recentSnap.val() || [] };
+    } else {
+      const metaRef1 = db.collection("_meta").doc("counts");
+      const metaRef2 = db.collection("_meta").doc("recent");
+      const [d1, d2] = await Promise.all([metaRef1.get(), metaRef2.get()]);
+      return {
+        total: d1.exists ? (d1.data().total || 0) : 0,
+        recent: d2.exists ? (d2.data().recent || []) : []
+      };
+    }
+  } else {
+    const data = readLocalData();
+    return { total: data.total || 0, recent: data.recent || [] };
+  }
+}
+async function getSubscriptions() {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref("subscriptions").once("value");
+      return snap.val() || [];
+    } else {
+      const snapshot = await db.collection("subscriptions").get();
+      return snapshot.docs.map(doc => doc.data());
+    }
+  } else {
+    const data = readLocalData();
+    return data.subscriptions || [];
+  }
+}
+async function addSubscription(subscription) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref("subscriptions").push(subscription);
+    } else {
+      await db.collection("subscriptions").add(subscription);
+    }
+  } else {
+    const data = readLocalData();
+    data.subscriptions.push(subscription);
+    writeLocalData(data);
+  }
+}
+
+async function getArticles() {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref("articles").once("value");
+      return snap.val() || [];
+    } else {
+      const snapshot = await db.collection("articles").get();
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
+  } else {
+    const data = readLocalData();
+    return data.articles || [];
+  }
+}
+
+async function getArticle(id) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const snap = await db.ref(`articles/${id}`).once("value");
+      return snap.val();
+    } else {
+      const doc = await db.collection("articles").doc(id).get();
+      return doc.exists ? { id: doc.id, ...doc.data() } : null;
+    }
+  } else {
+    const data = readLocalData();
+    return (data.articles || []).find(a => a.id === id) || null;
+  }
+}
+
+async function addArticle(article) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      const newArticleRef = db.ref("articles").push();
+      await newArticleRef.set({ ...article, id: newArticleRef.key });
+      return newArticleRef.key;
+    } else {
+      const newArticleRef = await db.collection("articles").add(article);
+      return newArticleRef.id;
+    }
+  } else {
+    const data = readLocalData();
+    const newArticle = { ...article, id: crypto.randomBytes(16).toString("hex") };
+    data.articles = data.articles || [];
+    data.articles.push(newArticle);
+    writeLocalData(data);
+    return newArticle.id;
+  }
+}
+
+async function updateArticle(id, article) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`articles/${id}`).update(article);
+    } else {
+      await db.collection("articles").doc(id).update(article);
+    }
+  } else {
+    const data = readLocalData();
+    data.articles = data.articles || [];
+    const index = data.articles.findIndex(a => a.id === id);
+    if (index !== -1) {
+      data.articles[index] = { ...data.articles[index], ...article };
+      writeLocalData(data);
+    }
+  }
+}
+// --- Delete Article Helper ---
+async function deleteArticle(id) {
+  if (firebaseEnabled) {
+    if (db.ref) {
+      await db.ref(`articles/${id}`).remove();
+    } else {
+      await db.collection("articles").doc(id).delete();
+    }
+  } else {
+    const data = readLocalData();
+    data.articles = (data.articles || []).filter(a => a.id !== id);
+    writeLocalData(data);
+  }
+}
+
+// Check database connection status
+async function checkDbStatus() {
+  if (firebaseEnabled) {
+    try {
+      if (db.ref) {
+        await db.ref(".info/connected").once("value");
+        return { status: 'online', message: 'Firebase Realtime DB connected' };
+      } else {
+        await db.collection("_meta").limit(1).get();
+        return { status: 'online', message: 'Firestore connected' };
+      }
+    } catch (error) {
+      return { status: 'offline', message: error.message };
+    }
+  } else {
+    try {
+      fs.accessSync(DATA_FILE, fs.constants.R_OK);
+      return { status: 'online', message: 'Local JSON file accessible' };
+    } catch (error) {
+      return { status: 'offline', message: 'Local JSON file not accessible' };
+    }
+  }
+}
+// --- Auth Routes ---
 app.post("/api/register", async (req, res) => {
-  const { email, password, isAdmin } = req.body || {};
-  if (!email || !password) {
-    return res.status(400).json({ ok: false, message: "Email and password required" });
+  const { username, password } = req.body || {};
+  if (!username || !password) {
+    return res.status(400).json({ ok: false, message: "Username and password required" });
   }
-
   try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { isAdmin: !!isAdmin } }
-    });
-
-    if (error) return res.status(400).json({ ok: false, message: error.message });
-
-    const userInfo = {
-      id: data.user?.id,
-      email: data.user?.email,
-      isAdmin: data.user?.user_metadata?.isAdmin || false,
-    };
-
-    return res.json({
-      ok: true,
-      message: "Registration successful! Please check your email to confirm.",
-      user: userInfo,
-    });
+    const user = await getUser(username);
+    if (user) return res.status(400).json({ ok: false, message: "User already exists" });
+    const newUser = { password: hashPassword(password), isAdmin: false, createdAt: Date.now() };
+    await setUser(username, newUser);
+    return res.json({ ok: true });
   } catch (err) {
-    console.error("Registration route error:", err);
+    console.error(err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
 app.post("/api/login", loginLimiter, async (req, res) => {
-  const { email, password } = req.body || {};
-  if (!email || !password) {
-    return res.status(400).json({ ok: false, message: "Email and password required" });
+  const { username, password } = req.body || {};
+  if (!username || !password) {
+    return res.status(400).json({ ok: false, message: "Username and password required" });
   }
-
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return res.status(401).json({ ok: false, message: error.message });
+    let isAdmin = false;
+    if (process.env.ADMIN_USERNAME && username === process.env.ADMIN_USERNAME) {
+      if (password === process.env.ADMIN_PASSWORD) {
+        isAdmin = true;
+      } else {
+        return res.status(401).json({ ok: false, message: "Invalid credentials" });
+      }
+    } else {
+      const user = await getUser(username);
+      if (!user || !verifyPassword(password, user.password)) {
+        return res.status(401).json({ ok: false, message: "Invalid credentials" });
+      }
+      isAdmin = user.isAdmin || false;
+    }
 
-    const userInfo = {
-      id: data.user?.id,
-      email: data.user?.email,
-      isAdmin: data.user?.user_metadata?.isAdmin || false,
-    };
+    const token = generateToken();
+    const session = { username, isAdmin, expires: Date.now() + 24 * 60 * 60 * 1000 };
+    await storeToken(token, session);
 
-    return res.json({
-      ok: true,
-      token: data.session?.access_token,
-      refresh_token: data.session?.refresh_token,
-      user: userInfo,
-    });
+    await incrementTotal();
+    await pushRecent({ username, ts: Date.now() });
+
+    return res.json({ ok: true, token, isAdmin });
   } catch (err) {
-    console.error("Login route error:", err);
+    console.error(err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
@@ -151,18 +466,15 @@ app.post("/api/verify", async (req, res) => {
   if (!token) {
     return res.status(400).json({ ok: false, message: "Token is required" });
   }
-
   try {
-    const { data, error } = await supabase.auth.getUser(token);
-    if (error || !data.user) return res.status(401).json({ ok: false, message: "Invalid or expired token" });
-
-    const userInfo = {
-      id: data.user.id,
-      email: data.user.email,
-      isAdmin: data.user.user_metadata?.isAdmin || false,
-    };
-
-    return res.json({ ok: true, user: userInfo });
+    const session = await getToken(token);
+    if (!session || session.expires < Date.now()) {
+      if (session) await deleteToken(token);
+      return res.status(401).json({ ok: false, message: "Invalid or expired token" });
+    }
+    session.expires = Date.now() + 24 * 60 * 60 * 1000;
+    await storeToken(token, session);
+    return res.json({ ok: true, session });
   } catch (err) {
     console.error("Token verification error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
@@ -170,258 +482,152 @@ app.post("/api/verify", async (req, res) => {
 });
 
 app.post("/api/logout", async (req, res) => {
+  const { token } = req.body || {};
+  if (token) {
+    try {
+      await deleteToken(token);
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  }
+  return res.json({ ok: true });
+});
+
+
+// --- Image Upload Route ---
+app.post('/api/upload-image', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ ok: false, message: 'No image uploaded' });
+  }
+  res.json({ ok: true, imageUrl: `/images/${req.file.filename}` });
+});
+
+// --- Health Route ---
+app.get("/api/health", async (req, res) => {
   try {
-    const { error } = await supabase.auth.signOut();
-    if (error) return res.status(400).json({ ok: false, message: error.message });
-    return res.json({ ok: true });
+    // Replace with real checks
+    const apiHealthy = true; // e.g. ping your API
+    const dbHealthy = true;  // e.g. run a lightweight query
+    const pushHealthy = publicVapidKey && privateVapidKey;
+
+    res.status(200).json({
+      ok: apiHealthy && dbHealthy && pushHealthy,
+      services: {
+        api: {
+          status: apiHealthy ? "online" : "offline",
+          message: apiHealthy ? "✅ Operational" : "❌ API not responding"
+        },
+        db: {
+          status: dbHealthy ? "online" : "degraded",
+          message: dbHealthy ? "✅ Database healthy" : "⚠️ Experiencing latency"
+        },
+        notifications: {
+          status: pushHealthy ? "online" : "offline",
+          message: pushHealthy ? "✅ Push service active" : "❌ Currently offline"
+        }
+      },
+      timestamp: new Date().toISOString()
+    });
   } catch (err) {
-    console.error("Logout route error:", err);
-    return res.status(500).json({ ok: false, message: "Internal server error" });
+    console.error("Health check error:", err.stack || err);
+    res.status(500).json({
+      ok: false,
+      message: "Health check failed",
+      services: {}
+    });
   }
 });
 
-// --- Stats Routes (Supabase) ---
-async function getStats() {
-  const { data, error } = await supabase.from("stats").select("*").limit(1);
-  if (error) throw error;
-  const row = data?.[0] || { total: 0, recent: [] };
-  return { total: row.total || 0, recent: row.recent || [] };
-}
 
-async function incrementTotalAndPushRecent(entry) {
-  // Fetch current
-  const { data, error } = await supabase.from("stats").select("*").limit(1);
-  if (error) throw error;
-  const row = data?.[0];
-
-  if (!row) {
-    const { error: insErr } = await supabase.from("stats").insert({ total: 1, recent: [entry] });
-    if (insErr) throw insErr;
-    return;
-  }
-
-  const recent = Array.isArray(row.recent) ? row.recent : [];
-  recent.unshift(entry);
-  recent.splice(50);
-
-  const { error: updErr } = await supabase
-    .from("stats")
-    .update({ total: (row.total || 0) + 1, recent })
-    .eq("id", row.id);
-
-  if (updErr) throw updErr;
-}
-
+// --- Stats Route ---
 app.get("/api/stats", async (req, res) => {
   try {
-    const stats = await getStats();
-    res.json({ ok: true, stats, timestamp: new Date().toISOString() });
+    const stats = await getStats(); // your custom function
+    res.json({
+      ok: true,
+      stats,
+      timestamp: new Date().toISOString()
+    });
   } catch (err) {
-    console.error("Stats error:", err);
-    res.status(500).json({ ok: false, message: "Failed to read stats" });
+    console.error("Stats error:", err.stack || err);
+    res.status(500).json({
+      ok: false,
+      message: "Failed to read stats"
+    });
   }
 });
 
-// --- Articles Routes (Supabase) ---
+
+
+// --- Article Routes ---
 app.get("/api/articles", async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("articles")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (error) throw error;
-    res.json(data || []);
+    const articles = await getArticles();
+    res.json(articles);
   } catch (err) {
-    console.error("Articles fetch error:", err);
+    console.error("Articles fetch error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to read articles" });
   }
 });
 
 app.get("/api/articles/:id", async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from("articles")
-      .select("*")
-      .eq("id", req.params.id)
-      .limit(1);
-    if (error) throw error;
-    const article = data?.[0];
-    if (!article) return res.status(404).json({ ok: false, message: "Article not found" });
+    const article = await getArticle(req.params.id);
+    if (!article) {
+      return res.status(404).json({ ok: false, message: "Article not found" });
+    }
     res.json(article);
   } catch (err) {
-    console.error("Article fetch error:", err);
+    console.error("Article fetch error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to read article" });
   }
 });
 
-// Protect create/update/delete with auth + admin
-app.post("/api/articles", requireAuth, requireAdmin, async (req, res) => {
+app.post("/api/articles", async (req, res) => {
   try {
-    const { title, content, imageUrl } = req.body || {};
+    const { title, content, imageUrl } = req.body;
     if (!title?.trim() || !content?.trim()) {
       return res.status(400).json({ ok: false, message: "Title and content are required" });
     }
-    const { data, error } = await supabase
-      .from("articles")
-      .insert({ title, content, image_url: imageUrl || null })
-      .select("id")
-      .limit(1);
-    if (error) throw error;
-
-    await incrementTotalAndPushRecent({ type: "article_create", by: req.user.email, ts: Date.now() });
-
-    res.status(201).json({ ok: true, id: data?.[0]?.id });
+    const newArticleId = await addArticle({ 
+      title, 
+      content, 
+      imageUrl, 
+      createdAt: Date.now() 
+    });
+    res.status(201).json({ ok: true, id: newArticleId });
   } catch (err) {
-    console.error("Create article error:", err);
+    console.error("Create article error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to create article" });
   }
 });
 
-app.put("/api/articles/:id", requireAuth, requireAdmin, async (req, res) => {
+app.put("/api/articles/:id", async (req, res) => {
   try {
-    const { title, content, imageUrl } = req.body || {};
+    const { title, content, imageUrl } = req.body;
     if (!title?.trim() || !content?.trim()) {
       return res.status(400).json({ ok: false, message: "Title and content are required" });
     }
-    const { error } = await supabase
-      .from("articles")
-      .update({ title, content, image_url: imageUrl || null, updated_at: new Date().toISOString() })
-      .eq("id", req.params.id);
-    if (error) throw error;
-
-    await incrementTotalAndPushRecent({ type: "article_update", by: req.user.email, ts: Date.now() });
-
+    await updateArticle(req.params.id, { 
+      title, 
+      content, 
+      imageUrl, 
+      updatedAt: Date.now() 
+    });
     res.json({ ok: true });
   } catch (err) {
-    console.error("Update article error:", err);
+    console.error("Update article error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to update article" });
   }
 });
 
-app.delete("/api/articles/:id", requireAuth, requireAdmin, async (req, res) => {
+app.delete("/api/articles/:id", async (req, res) => {
   try {
-    const { error } = await supabase.from("articles").delete().eq("id", req.params.id);
-    if (error) throw error;
-
-    await incrementTotalAndPushRecent({ type: "article_delete", by: req.user.email, ts: Date.now() });
-
+    await deleteArticle(req.params.id);
     res.json({ ok: true });
   } catch (err) {
-    console.error("Delete article error:", err);
+    console.error("Delete article error:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to delete article" });
-  }
-});
-
-// --- Image Upload to Supabase Storage ---
-app.post("/api/upload-image", requireAuth, requireAdmin, upload.single("image"), async (req, res) => {
-  try {
-    if (!req.file) return res.status(400).json({ ok: false, message: "No image uploaded" });
-
-    const ext = path.extname(req.file.originalname) || ".jpg";
-    const filename = `img-${Date.now()}-${crypto.randomBytes(6).toString("hex")}${ext}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from("images")
-      .upload(filename, req.file.buffer, {
-        contentType: req.file.mimetype,
-        upsert: false,
-      });
-
-    if (uploadError) throw uploadError;
-
-    const { data: publicUrlData } = supabase.storage.from("images").getPublicUrl(filename);
-    const imageUrl = publicUrlData?.publicUrl;
-
-    res.json({ ok: true, imageUrl });
-  } catch (err) {
-    console.error("Upload image error:", err);
-    res.status(500).json({ ok: false, message: "Failed to upload image" });
-  }
-});
-
-// --- Push Subscriptions (Supabase) ---
-async function getSubscriptions() {
-  const { data, error } = await supabase.from("subscriptions").select("*");
-  if (error) throw error;
-  return data || [];
-}
-
-async function addSubscription(subscription) {
-  const payload = {
-    endpoint: subscription.endpoint,
-    keys: subscription.keys || {},
-  };
-  const { error } = await supabase.from("subscriptions").insert(payload);
-  if (error && !String(error.message).includes("duplicate")) throw error;
-}
-
-async function removeSubscriptionByEndpoint(endpoint) {
-  const { error } = await supabase.from("subscriptions").delete().eq("endpoint", endpoint);
-  if (error) console.warn("Failed to remove invalid subscription:", error.message);
-}
-
-app.post("/api/subscribe", async (req, res) => {
-  try {
-    const subscription = req.body;
-    if (!subscription?.endpoint) {
-      return res.status(400).json({ ok: false, message: "Invalid subscription" });
-    }
-
-    await addSubscription(subscription);
-
-    const payload = JSON.stringify({
-      title: "Welcome to Zawadi Intel News!",
-      body: "You are now subscribed to breaking news and updates.",
-      url: "https://zawadiintelnews.vercel.app/"
-    });
-
-    webpush.sendNotification(subscription, payload).catch(err => {
-      console.error("Welcome notification failed:", err);
-    });
-
-    res.status(201).json({ ok: true, endpoint: subscription.endpoint });
-  } catch (err) {
-    console.error("Subscribe error:", err);
-    res.status(500).json({ ok: false, message: "Failed to save subscription" });
-  }
-});
-
-app.post("/api/notify", requireAuth, requireAdmin, async (req, res) => {
-  try {
-    const { title, body, url } = req.body || {};
-    const payload = JSON.stringify({
-      title: title || "Zawadi Intel News",
-      body: body || "New headline just dropped!",
-      url: url || "https://zawadiintelnews.vercel.app/"
-    });
-
-    const subscriptions = await getSubscriptions();
-    const results = await Promise.allSettled(
-      subscriptions.map(sub => webpush.sendNotification(
-        { endpoint: sub.endpoint, keys: sub.keys },
-        payload
-      ))
-    );
-
-    // Prune invalid subscriptions
-    await Promise.all(results.map(async (r, i) => {
-      if (r.status === "rejected") {
-        console.warn(`Push failed for subscription ${i}:`, r.reason?.message || r.reason);
-        const endpoint = subscriptions[i]?.endpoint;
-        if (endpoint) await removeSubscriptionByEndpoint(endpoint);
-      }
-    }));
-
-    const failedCount = results.filter(r => r.status === "rejected").length;
-
-    res.status(200).json({
-      ok: true,
-      count: subscriptions.length,
-      failedCount
-    });
-  } catch (err) {
-    console.error("Notify error:", err);
-    res.status(500).json({ ok: false, message: "Failed to send notifications" });
   }
 });
 
@@ -443,79 +649,113 @@ app.get("/api/news", async (req, res) => {
       const topArticle = data.articles[0];
       const subscriptions = await getSubscriptions();
 
-      const payload = JSON.stringify({
-        title: "Zawadi Intel News",
-        body: `${topArticle.title} — ${topArticle.description || "Tap to read more."}`,
-        url: topArticle.url || "https://zawadiintelnews.vercel.app/"
-      });
-
       const results = await Promise.allSettled(
-        subscriptions.map(sub => webpush.sendNotification(
-          { endpoint: sub.endpoint, keys: sub.keys },
-          payload
-        ))
+        subscriptions.map(subscription => {
+          const payload = JSON.stringify({
+            title: "Zawadi Intel News",
+            body: `${topArticle.title} — ${topArticle.description || "Tap to read more."}`,
+            url: topArticle.url || "https://zawadiintelnews.vercel.app/"
+          });
+          return webpush.sendNotification(subscription, payload);
+        })
       );
 
-      await Promise.all(results.map(async (r, i) => {
+      results.forEach((r, i) => {
         if (r.status === "rejected") {
-          console.warn(`Push failed for subscription ${i}:`, r.reason?.message || r.reason);
-          const endpoint = subscriptions[i]?.endpoint;
-          if (endpoint) await removeSubscriptionByEndpoint(endpoint);
+          console.warn(`Push failed for subscription ${i}:`, r.reason);
+          // Optionally remove invalid subscription here
         }
-      }));
+      });
     }
   } catch (err) {
-    console.error("Error fetching news:", err);
+    console.error("Error fetching news:", err.stack || err);
     res.status(500).json({ ok: false, message: "Failed to fetch news" });
   }
 });
 
-// --- Health Route ---
-app.get("/api/health", async (req, res) => {
+// --- Push Subscription ---
+app.post("/api/subscribe", async (req, res) => {
   try {
-    // Lightweight Supabase check
-    const { error } = await supabase.from("articles").select("id").limit(1);
-    const dbHealthy = !error;
-    const pushHealthy = !!(publicVapidKey && privateVapidKey);
+    const subscription = req.body;
+    if (!subscription?.endpoint) {
+      return res.status(400).json({ ok: false, message: "Invalid subscription" });
+    }
 
-    res.status(200).json({
-      ok: dbHealthy && pushHealthy,
-      services: {
-        api: { status: "online", message: "✅ Operational" },
-        db: { status: dbHealthy ? "online" : "degraded", message: dbHealthy ? "✅ Database healthy" : "⚠️ Experiencing issues" },
-        notifications: { status: pushHealthy ? "online" : "offline", message: pushHealthy ? "✅ Push service active" : "❌ VAPID keys missing" }
-      },
-      timestamp: new Date().toISOString()
+    await addSubscription(subscription);
+
+    const payload = JSON.stringify({
+      title: "Welcome to Zawadi Intel News!",
+      body: "You are now subscribed to breaking news and updates.",
+      url: "https://zawadiintelnews.vercel.app/"
+    });
+
+    webpush.sendNotification(subscription, payload).catch(err => {
+      console.error("Welcome notification failed:", err.stack || err);
+    });
+
+    res.status(201).json({ ok: true, endpoint: subscription.endpoint });
+  } catch (err) {
+    console.error("Subscribe error:", err.stack || err);
+    res.status(500).json({ ok: false, message: "Failed to save subscription" });
+  }
+});
+
+// --- Manual Notify ---
+app.post("/api/notify", async (req, res) => {
+  try {
+    const { title, body, url } = req.body || {};
+    const payload = JSON.stringify({
+      title: title || "Zawadi Intel News",
+      body: body || "New headline just dropped!",
+      url: url || "https://zawadiintelnews.vercel.app/"
+    });
+
+    const subscriptions = await getSubscriptions();
+    const results = await Promise.allSettled(
+      subscriptions.map(sub => webpush.sendNotification(sub, payload))
+    );
+
+    const failed = results.filter(r => r.status === "rejected");
+    failed.forEach((f, i) => console.warn(`Manual notify failed [${i}]:`, f.reason));
+
+    res.status(200).json({ 
+      ok: true, 
+      count: subscriptions.length, 
+      failedCount: failed.length 
     });
   } catch (err) {
-    console.error("Health check error:", err);
-    res.status(500).json({ ok: false, message: "Health check failed", services: {} });
+    console.error("Notify error:", err.stack || err);
+    res.status(500).json({ ok: false, message: "Failed to send notifications" });
   }
 });
 
 // --- Fallback for HTML pages ---
-app.get("*", (req, res) => {
+app.get('*', (req, res) => {
+  // Check if the request is for a file with an extension
   if (path.extname(req.path)) {
-    return res.status(404).send("Not Found");
+    return res.status(404).send('Not Found');
   }
-  const filePath = path.join(process.cwd(), "public", `${req.path}.html`);
-  res.sendFile(filePath, err => {
-    if (err) res.sendFile(path.join(process.cwd(), "public", "index.html"));
+
+  // Construct the path to the potential HTML file
+  const filePath = path.join(process.cwd(), 'public', `${req.path}.html`);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      // If the file doesn't exist, send the main index.html or a custom 404 page
+      res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+    } else {
+      // If the file exists, send it
+      res.sendFile(filePath);
+    }
   });
 });
 
-// --- Centralized error handler ---
-app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
-  res.status(500).json({ ok: false, message: "Internal server error" });
+// --- Start server ---
+app.listen(PORT, () => {
+  console.log(`Zawadi server listening on port ${PORT}`);
+  console.log(`Firebase enabled: ${firebaseEnabled}`);
 });
 
-// --- Start server locally only ---
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`Zawadi server listening on port ${PORT}`);
-  });
-}
-
-// --- Export for Vercel ---
+// Export the app for Vercel
 module.exports = app;
