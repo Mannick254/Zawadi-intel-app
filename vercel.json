@@ -1,32 +1,5 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "builds": [
-    {
-      "src": "server/index.js",
-      "use": "@vercel/node"
-    }
-  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "server/index.js" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
-    }
+    { "source": "/api/(.*)", "destination": "/public/api/$1" }
   ]
 }

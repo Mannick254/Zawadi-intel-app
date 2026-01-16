@@ -14,6 +14,9 @@ const crypto = require("crypto");
 const webpush = require("web-push");
 const rateLimit = require("express-rate-limit");
 const multer = require("multer");
+const supabase = require('./supabase');
+
+
 
 let admin;
 let firebaseEnabled = false;
@@ -747,7 +750,6 @@ app.get('*', (req, res) => {
     }
   });
 });
-
 
 // --- Start server ---
 app.listen(PORT, () => {
