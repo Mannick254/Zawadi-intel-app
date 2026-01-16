@@ -1,67 +1,34 @@
+
 const fs = require('fs');
 const path = require('path');
 
-function deleteFolderRecursive(directoryPath) {
-  if (fs.existsSync(directoryPath)) {
-    fs.readdirSync(directoryPath).forEach(file => {
-      const curPath = path.join(directoryPath, file);
-      if (fs.lstatSync(curPath).isDirectory()) {
-        deleteFolderRecursive(curPath);
-      } else {
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(directoryPath);
-  }
+// Check for required environment variables
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {
+  console.error('Error: SUPABASE_URL and SUPABASE_ANON_KEY must be set in the environment.');
+  process.exit(1);
 }
 
-function copyDirSync(src, dest) {
-  fs.mkdirSync(dest, { recursive: true });
-  const entries = fs.readdirSync(src, { withFileTypes: true });
+// Define paths
+const templatePath = path.resolve(__dirname, 'public', 'js', 'supabase-client.js.template');
+const outputPath = path.resolve(__dirname, 'public', 'js', 'supabase-client.js');
 
-  for (const entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
+// Read the template file
+fs.readFile(templatePath, 'utf8', (err, data) => {
+  if (err) {
+    console.error(`Error reading template file: ${templatePath}`, err);
+    process.exit(1);
+  }
 
-    if (entry.isDirectory()) {
-      copyDirSync(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
+  // Replace placeholders with actual environment variables
+  let result = data.replace(/process\.env\.SUPABASE_URL/g, `'${process.env.SUPABASE_URL}'`);
+  result = result.replace(/process\.env\.SUPABASE_ANON_KEY/g, `'${process.env.SUPABASE_ANON_KEY}'`);
+
+  // Write the final file
+  fs.writeFile(outputPath, result, 'utf8', (err) => {
+    if (err) {
+      console.error(`Error writing output file: ${outputPath}`, err);
+      process.exit(1);
     }
-  }
-}
-
-const dist = 'dist';
-
-// Clean dist
-deleteFolderRecursive(dist);
-fs.mkdirSync(dist, { recursive: true });
-
-// Files to copy from root
-const rootFiles = [
-  'index.html', 'global.html', 'about.html', 'account.html', 'app.html',
-  'biography.html', 'books.html', 'media.html', 'offline.html', 'profile.html',
-  'search.html', 'manifest.json', 'robots.txt', 'service-worker.js'
-];
-
-rootFiles.forEach(file => {
-  if (fs.existsSync(file)) {
-    fs.copyFileSync(file, path.join(dist, file));
-  }
+    console.log(`Successfully created ${outputPath}`);
+  });
 });
-
-// Directories to copy from root
-const rootDirs = ['css', 'js', 'icons'];
-
-rootDirs.forEach(dir => {
-  if (fs.existsSync(dir)) {
-    copyDirSync(dir, path.join(dist, dir));
-  }
-});
-
-// Copy contents of public to dist (⚠️ don’t delete public on Vercel)
-if (fs.existsSync('public')) {
-  copyDirSync('public', dist);
-}
-
-console.log('Build successful!');

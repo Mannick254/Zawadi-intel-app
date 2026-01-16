@@ -1,3 +1,4 @@
+
 // ==========================
 // Utility Functions
 // ==========================
@@ -56,11 +57,7 @@ async function initAdmin() {
 // Button Handlers
 // ==========================
 function wireAdminButtons() {
-  const refreshBtn = document.getElementById('refresh-stats');
   const clearBtn = document.getElementById('clear-local');
-  const exportBtn = document.getElementById('export-recent');
-
-  if (refreshBtn) refreshBtn.addEventListener('click', fetchStats);
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -69,69 +66,8 @@ function wireAdminButtons() {
       setText(document.getElementById('total-local'), '0');
     });
   }
-
-  if (exportBtn) {
-    exportBtn.addEventListener('click', async () => {
-      try {
-        const res = await fetch('/api/stats');
-        if (!res.ok) throw new Error('No server data');
-        const data = await res.json();
-        const csv = (data.recent || [])
-          .map(r => `${new Date(r.ts).toISOString()},${r.username}`)
-          .join('\n');
-        downloadCSV(csv, 'recent-logins.csv');
-      } catch {
-        alert('No server data available to export.');
-      }
-    });
-  }
 }
 
-// ==========================
-// Helper: download CSV
-// ==========================
-function downloadCSV(content, filename) {
-  const blob = new Blob([content], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// ==========================
-// Fetch Stats
-// ==========================
-async function fetchStats() {
-  const warn = document.getElementById('admin-warn');
-  const serverTotal = document.getElementById('total-server');
-  const localTotal = document.getElementById('total-local');
-  const list = document.getElementById('recent-list');
-
-  try {
-    const res = await fetch('/api/stats');
-    if (!res.ok) throw new Error('Server unavailable');
-    const data = await res.json();
-
-    setText(serverTotal, data.total || 0);
-    setText(warn, '');
-    if (list) {
-      list.innerHTML = '';
-      (data.recent || []).forEach(r => {
-        const li = document.createElement('li');
-        li.textContent = `${new Date(r.ts).toLocaleString()} — ${r.username}`;
-        list.appendChild(li);
-      });
-    }
-  } catch (e) {
-    setText(warn, 'Server not available — showing local fallback counts.');
-    setText(serverTotal, 'n/a');
-    const local = parseInt(localStorage.getItem('zawadi_global_count_v1') || '0', 10);
-    setText(localTotal, local);
-    if (list) list.innerHTML = '';
-  }
-}
 
 // ==========================
 // Inline Admin Login
@@ -199,8 +135,7 @@ if (registerBtn) {
   });
 }
 
-// ==========================
+// =f==========================
 // Initial Load
 // ==========================
-fetchStats();
 initAdmin();

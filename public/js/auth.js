@@ -1,104 +1,58 @@
+
 // public/js/auth.js
+import { supabase } from './supabase-client.js';
 
 let currentUser = null;
 let authChecked = false;
 
 /**
- * Safe wrapper around fetch with JSON parsing and error handling.
+ * Login user using Supabase.
  */
-async function safeFetch(url, options = {}) {
-  try {
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(options.headers || {})
-      },
-      cache: 'no-store' // avoid cached responses
-    });
-
-    let result;
-    try {
-      result = await response.json();
-    } catch {
-      throw new Error(`Invalid JSON response (status ${response.status})`);
-    }
-
-    if (!response.ok) {
-      return { ok: false, message: result.message || `Error ${response.status}` };
-    }
-    return result;
-  } catch (err) {
-    console.error(`Request to ${url} failed:`, err);
-    return { ok: false, message: err.message };
-  }
-}
-
-/**
- * Login user and store token.
- */
-async function loginUser(username, password) {
-  const result = await safeFetch('/api/login', {
-    method: 'POST',
-    body: JSON.stringify({ username, password })
+async function loginUser(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
-  if (result.ok && result.token) {
-    localStorage.setItem('token', result.token);
-    await verifyToken(result.token);
+  if (error) {
+    return { ok: false, message: error.message };
   }
-  return result;
+
+  await checkAuth(); // Refresh user state
+  return { ok: true, user: data.user };
 }
 
 /**
- * Register new user.
+ * Register new user using Supabase.
  */
-async function registerUser(username, password) {
-  return await safeFetch('/api/register', {
-    method: 'POST',
-    body: JSON.stringify({ username, password })
-  });
-}
-
-/**
- * Verify token and update currentUser.
- */
-async function verifyToken(token) {
-  if (!token) {
-    currentUser = null;
-    return;
-  }
-  const result = await safeFetch('/api/verify', {
-    method: 'POST',
-    body: JSON.stringify({ token })
+async function registerUser(email, password) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
   });
 
-  if (result.ok && result.session) {
-    currentUser = result.session;
-  } else {
-    currentUser = null;
-    localStorage.removeItem('token');
+  if (error) {
+    return { ok: false, message: error.message };
   }
+
+  // By default, Supabase sends a confirmation email. The user is not fully logged in yet.
+  return { ok: true, message: 'Registration successful! Please check your email to confirm.', user: data.user };
 }
 
 /**
- * Logout user and clear token.
+ * Logout user from Supabase.
  */
 async function logout() {
-  const token = localStorage.getItem('token');
-  if (token) {
-    await safeFetch('/api/logout', {
-      method: 'POST',
-      body: JSON.stringify({ token })
-    });
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error('Logout failed', error);
   }
-  localStorage.removeItem('token');
   currentUser = null;
-  window.location.reload();
+  window.location.reload(); // Refresh the page to clear state
 }
 
 /**
- * Show or hide loading indicator.
+ * Show or hide a loading indicator.
  */
 function showLoading(visible) {
   const loading = document.getElementById('loading');
@@ -106,27 +60,56 @@ function showLoading(visible) {
 }
 
 /**
- * Check authentication status on page load, only once.
+ * Check authentication status by getting the current session from Supabase.
  */
 async function checkAuth() {
   if (authChecked) return;
 
-  const token = localStorage.getItem('token');
-  if (!token) {
-    authChecked = true;
-    return;
+  showLoading(true);
+  const { data, error } = await supabase.auth.getSession();
+  showLoading(false);
+
+  if (error) {
+    console.error('Error getting session:', error.message);
+    currentUser = null;
+  } else {
+    currentUser = data.session?.user ?? null;
   }
 
-  showLoading(true);
-  await verifyToken(token);
-  showLoading(false);
   authChecked = true;
 }
 
+
 /**
- * Get the current user, performing auth check if needed.
+ * Get the current user, performing an auth check if needed.
  */
 async function getCurrentUser() {
+  if (!authChecked) {
     await checkAuth();
-    return currentUser;
+  }
+
+  if (!currentUser) return null;
+
+  // Optionally, enrich user with data from your public 'profiles' table
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('is_admin')
+    .eq('id', currentUser.id)
+    .single();
+
+  if (error) {
+    // This can happen if the profile doesn't exist yet. Not necessarily a critical error.
+    console.warn('Could not fetch user profile:', error.message);
+    return { ...currentUser, isAdmin: false };
+  }
+
+  return { ...currentUser, isAdmin: data?.is_admin || false };
 }
+
+// Listen for auth state changes
+supabase.auth.onAuthStateChange((event, session) => {
+    currentUser = session?.user ?? null;
+    // You might want to trigger a UI update here if your app is a single-page application.
+    // For multi-page apps, a page reload on login/logout is often sufficient.
+    console.log(`Supabase auth state changed: ${event}`, session);
+});
