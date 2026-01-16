@@ -16,8 +16,6 @@ const rateLimit = require("express-rate-limit");
 const multer = require("multer");
 const supabase = require('./supabase');
 
-
-
 let admin;
 let firebaseEnabled = false;
 let db = null;
@@ -46,10 +44,8 @@ function writeLocalData(data) {
 }
 
 // --- Firebase Initialization ---
-
-
 try {
-  const admin = require("firebase-admin");
+  admin = require("firebase-admin");
   const svcPath = path.join(__dirname, "service-account.json");
 
   if (fs.existsSync(svcPath)) {
@@ -409,7 +405,8 @@ async function checkDbStatus() {
   }
 }
 // --- Auth Routes with Supabase ---
-const supabase = require('./supabase'); // adjust path to your supabase client
+// (single import at the top of this file)
+
 
 // Register
 app.post("/api/register", async (req, res) => {
@@ -780,10 +777,15 @@ app.get('*', (req, res) => {
 });
 
 // --- Start server ---
-app.listen(PORT, () => {
-  console.log(`Zawadi server listening on port ${PORT}`);
-  console.log(`Firebase enabled: ${firebaseEnabled}`);
-});
+// Do NOT call listen in serverless (Vercel) environment
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Zawadi server listening on port ${PORT}`);
+    console.log(`Firebase enabled: ${firebaseEnabled}`);
+  });
+} else {
+  console.log("Vercel detected: server will run in serverless mode (no app.listen()).");
+}
 
-// Export the app for Vercel
+// Export the app for Vercel (serverless wrapper)
 module.exports = app;
