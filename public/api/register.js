@@ -1,13 +1,14 @@
+// api/register.js (for Vercel serverless functions)
+// or server/routes/register.js (for Express)
 
-// server/routes/register.js
-const supabase = require('../../server/supabase');
+import supabase from '../../server/supabase.js'; // use `require` if CommonJS
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const { email, password, isAdmin } = req.body;
+  const { email, password, isAdmin } = req.body || {};
 
   if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required' });
@@ -18,30 +19,29 @@ module.exports = async (req, res) => {
       email,
       password,
       options: {
-        // optional metadata to flag admin accounts
-        data: { isAdmin: !!isAdmin }
+        data: { isAdmin: !!isAdmin } // optional metadata
       }
     });
 
     if (error) {
+      console.error('Supabase registration error:', error);
       return res.status(400).json({ message: error.message });
     }
 
-    // Return only safe fields, not the full user object
+    // Return only safe fields
     const userInfo = {
       id: data.user?.id,
       email: data.user?.email,
-      isAdmin: data.user?.user_metadata?.isAdmin || false
+      isAdmin: data.user?.user_metadata?.isAdmin || false,
     };
 
-    res.status(200).json({
+    return res.status(200).json({
       ok: true,
       message: 'Registration successful! Please check your email to confirm.',
-      user: userInfo
+      user: userInfo,
     });
-
   } catch (err) {
-    console.error('Registration error:', err);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error('Registration route error:', err);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
-};
+}

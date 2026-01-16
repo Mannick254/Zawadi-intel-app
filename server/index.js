@@ -408,89 +408,117 @@ async function checkDbStatus() {
     }
   }
 }
-// --- Auth Routes ---
-app.post("/api/register", async (req, res) => {
-  const { username, password } = req.body || {};
-  if (!username || !password) {
-    return res.status(400).json({ ok: false, message: "Username and password required" });
-  }
-  try {
-    const user = await getUser(username);
-    if (user) return res.status(400).json({ ok: false, message: "User already exists" });
-    const newUser = { password: hashPassword(password), isAdmin: false, createdAt: Date.now() };
-    await setUser(username, newUser);
-    return res.json({ ok: true });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ ok: false, message: "Internal server error" });
-  }
-});
+// --- Auth Routes with Supabase ---
+const supabase = require('./supabase'); // adjust path to your supabase client
 
-app.post("/api/login", loginLimiter, async (req, res) => {
-  const { username, password } = req.body || {};
-  if (!username || !password) {
-    return res.status(400).json({ ok: false, message: "Username and password required" });
+// Register
+app.post("/api/register", async (req, res) => {
+  const { email, password, isAdmin } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: "Email and password required" });
   }
+
   try {
-    let isAdmin = false;
-    if (process.env.ADMIN_USERNAME && username === process.env.ADMIN_USERNAME) {
-      if (password === process.env.ADMIN_PASSWORD) {
-        isAdmin = true;
-      } else {
-        return res.status(401).json({ ok: false, message: "Invalid credentials" });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { isAdmin: !!isAdmin } // optional metadata
       }
-    } else {
-      const user = await getUser(username);
-      if (!user || !verifyPassword(password, user.password)) {
-        return res.status(401).json({ ok: false, message: "Invalid credentials" });
-      }
-      isAdmin = user.isAdmin || false;
+    });
+
+    if (error) {
+      console.error("Supabase registration error:", error);
+      return res.status(400).json({ ok: false, message: error.message });
     }
 
-    const token = generateToken();
-    const session = { username, isAdmin, expires: Date.now() + 24 * 60 * 60 * 1000 };
-    await storeToken(token, session);
+    const userInfo = {
+      id: data.user?.id,
+      email: data.user?.email,
+      isAdmin: data.user?.user_metadata?.isAdmin || false,
+    };
 
-    await incrementTotal();
-    await pushRecent({ username, ts: Date.now() });
-
-    return res.json({ ok: true, token, isAdmin });
+    return res.json({
+      ok: true,
+      message: "Registration successful! Please check your email to confirm.",
+      user: userInfo,
+    });
   } catch (err) {
-    console.error(err);
+    console.error("Registration route error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
+// Login
+app.post("/api/login", loginLimiter, async (req, res) => {
+  const { email, password } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: "Email and password required" });
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      console.error("Supabase login error:", error);
+      return res.status(401).json({ ok: false, message: error.message });
+    }
+
+    const userInfo = {
+      id: data.user?.id,
+      email: data.user?.email,
+      isAdmin: data.user?.user_metadata?.isAdmin || false,
+    };
+
+    return res.json({
+      ok: true,
+      token: data.session?.access_token,
+      user: userInfo,
+    });
+  } catch (err) {
+    console.error("Login route error:", err);
+    return res.status(500).json({ ok: false, message: "Internal server error" });
+  }
+});
+
+// Verify token
 app.post("/api/verify", async (req, res) => {
   const { token } = req.body || {};
   if (!token) {
     return res.status(400).json({ ok: false, message: "Token is required" });
   }
+
   try {
-    const session = await getToken(token);
-    if (!session || session.expires < Date.now()) {
-      if (session) await deleteToken(token);
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error || !data.user) {
       return res.status(401).json({ ok: false, message: "Invalid or expired token" });
     }
-    session.expires = Date.now() + 24 * 60 * 60 * 1000;
-    await storeToken(token, session);
-    return res.json({ ok: true, session });
+
+    const userInfo = {
+      id: data.user.id,
+      email: data.user.email,
+      isAdmin: data.user.user_metadata?.isAdmin || false,
+    };
+
+    return res.json({ ok: true, user: userInfo });
   } catch (err) {
     console.error("Token verification error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
+// Logout
 app.post("/api/logout", async (req, res) => {
-  const { token } = req.body || {};
-  if (token) {
-    try {
-      await deleteToken(token);
-    } catch (err) {
-      console.error("Logout error:", err);
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout error:", error);
+      return res.status(400).json({ ok: false, message: error.message });
     }
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error("Logout route error:", err);
+    return res.status(500).json({ ok: false, message: "Internal server error" });
   }
-  return res.json({ ok: true });
 });
 
 
