@@ -1,4 +1,4 @@
-
+// server/routes/login.js
 const supabase = require('../../server/supabase');
 
 module.exports = async (req, res) => {
@@ -6,24 +6,36 @@ module.exports = async (req, res) => {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required' });
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
   }
 
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: username,
-      password: password,
+      email,
+      password,
     });
 
     if (error) {
       return res.status(401).json({ message: error.message });
     }
 
-    res.status(200).json({ ok: true, token: data.session.access_token, session: data.session });
-  } catch (error) {
+    // Return only safe fields and token
+    const userInfo = {
+      id: data.user?.id,
+      email: data.user?.email,
+      isAdmin: data.user?.user_metadata?.isAdmin || false,
+    };
+
+    res.status(200).json({
+      ok: true,
+      token: data.session?.access_token,
+      user: userInfo,
+    });
+  } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };

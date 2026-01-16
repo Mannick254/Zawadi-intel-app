@@ -1,70 +1,46 @@
-
-// public/js/auth.js
 import { supabase } from './supabase-client.js';
 
 let currentUser = null;
 let authChecked = false;
 
-/**
- * Login user using Supabase.
- */
-async function loginUser(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
+export async function loginUser(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
+    console.error('Login error:', error);
     return { ok: false, message: error.message };
   }
-
-  await checkAuth(); // Refresh user state
+  await checkAuth();
   return { ok: true, user: data.user };
 }
 
-/**
- * Register new user using Supabase.
- */
-async function registerUser(email, password) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-
+export async function registerUser(email, password) {
+  const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) {
+    console.error('Registration error:', error);
     return { ok: false, message: error.message };
   }
 
-  // By default, Supabase sends a confirmation email. The user is not fully logged in yet.
-  return { ok: true, message: 'Registration successful! Please check your email to confirm.', user: data.user };
+  // Ensure a profile row exists
+  await supabase.from('profiles').insert({ id: data.user.id, is_admin: false });
+
+  return { ok: true, message: 'Registration successful! Please check your email.', user: data.user };
 }
 
-/**
- * Logout user from Supabase.
- */
-async function logout() {
+export async function logout() {
   const { error } = await supabase.auth.signOut();
-  if (error) {
-    console.error('Logout failed', error);
-  }
+  if (error) console.error('Logout failed', error);
   currentUser = null;
-  window.location.reload(); // Refresh the page to clear state
+  authChecked = false;
+  window.location.reload();
 }
 
-/**
- * Show or hide a loading indicator.
- */
 function showLoading(visible) {
   const loading = document.getElementById('loading');
   if (loading) loading.style.display = visible ? 'block' : 'none';
 }
 
-/**
- * Check authentication status by getting the current session from Supabase.
- */
-async function checkAuth() {
+export async function checkAuth() {
   if (authChecked) return;
-
   showLoading(true);
   const { data, error } = await supabase.auth.getSession();
   showLoading(false);
@@ -75,22 +51,13 @@ async function checkAuth() {
   } else {
     currentUser = data.session?.user ?? null;
   }
-
   authChecked = true;
 }
 
-
-/**
- * Get the current user, performing an auth check if needed.
- */
-async function getCurrentUser() {
-  if (!authChecked) {
-    await checkAuth();
-  }
-
+export async function getCurrentUser() {
+  if (!authChecked) await checkAuth();
   if (!currentUser) return null;
 
-  // Optionally, enrich user with data from your public 'profiles' table
   const { data, error } = await supabase
     .from('profiles')
     .select('is_admin')
@@ -98,18 +65,14 @@ async function getCurrentUser() {
     .single();
 
   if (error) {
-    // This can happen if the profile doesn't exist yet. Not necessarily a critical error.
     console.warn('Could not fetch user profile:', error.message);
     return { ...currentUser, isAdmin: false };
   }
-
   return { ...currentUser, isAdmin: data?.is_admin || false };
 }
 
-// Listen for auth state changes
 supabase.auth.onAuthStateChange((event, session) => {
-    currentUser = session?.user ?? null;
-    // You might want to trigger a UI update here if your app is a single-page application.
-    // For multi-page apps, a page reload on login/logout is often sufficient.
-    console.log(`Supabase auth state changed: ${event}`, session);
+  currentUser = session?.user ?? null;
+  authChecked = false;
+  console.log(`Supabase auth state changed: ${event}`, session);
 });
