@@ -16,7 +16,6 @@ const DIRECTORIES_TO_CACHE = [
 const EXCLUDED_FILES = [
   'service-worker.js',
   'generate-sw-assets.js',
-  'firebase-debug.log',
   'articles_list.txt',
   'sitemap_articles.txt',
   'image_references.txt',

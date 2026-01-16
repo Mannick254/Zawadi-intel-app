@@ -27,7 +27,6 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-rate-limit": "^8.2.1",
-    "firebase-admin": "^13.6.0",
     "multer": "^2.0.2",
     "web-push": "^3.6.7"
   },

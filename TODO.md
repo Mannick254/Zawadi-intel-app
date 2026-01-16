@@ -2,11 +2,9 @@
 
 ## Information Gathered
 - TODO.md outlines sitemap compliance issues for articles: canonical URLs, structured data, Open Graph titles.
-- Firebase deploy error due to command run from wrong directory.
 - GitHub workflow for sitemap generation exists.
 
 ## Plan
-- Fix Firebase deploy by ensuring commands run from project root.
 - Update remaining articles for sitemap compliance: canonical URLs to match sitemap.xml, add/update structured data, specific OG titles, descriptions, keywords.
 - Start with bishop-kiengei.html as it's open in VSCode.
 
@@ -56,8 +54,3 @@
 - [ ] articles/wmo-warning.html: Update canonical, add structured data, specific OG title
 - [ ] articles/world-leaders-gather-for-climate-summit.html: Update canonical, add structured data, specific OG title
 - [ ] articles/zoho-eastafrica.html: Update canonical, add structured data, specific OG title
-
-## Followup Steps
-- Test Firebase deploy from project root.
-- Run GitHub workflow to regenerate sitemap.
-- Verify canonical URLs match sitemap.xml.
