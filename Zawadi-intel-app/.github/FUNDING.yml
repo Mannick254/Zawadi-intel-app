@@ -1,0 +1,15 @@
+# Supported funding model platforms
+
+github: [mannick254]          # Your GitHub Sponsors username
+patreon:                      # Leave blank if not using
+open_collective:              # Add if you create an Open Collective
+ko_fi: mannick254             # Your Ko-fi username
+tidelift:                     # Add if you publish packages via Tidelift
+community_bridge:             # Add if you join Community Bridge
+liberapay:                    # Add if you set up Liberapay
+issuehunt:                    # Add if you join IssueHunt
+lfx_crowdfunding:             # Add if you join LFX Crowdfunding
+polar:                        # Add if you join Polar
+buy_me_a_coffee: mannick254   # Your Buy Me a Coffee username
+thanks_dev:                   # Add if you join thanks.dev
+custom: ['https://zawadiintelnews.vercel.app/support', 'https://mannick254.github.io/Zawadi-intel-app/donate']

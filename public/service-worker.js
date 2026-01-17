@@ -3,9 +3,9 @@ const DYNAMIC_CACHE = "zawadi-intel-dynamic-v4";
 
 const STATIC_ASSETS = [
   "/", "/index.html", "/offline.html",
-  "/css/style.css", "/css/layout.css", "/css/theme.css",
-  "/js/index-feed.js", "/js/notifications.js",
-  "/icons/icon-192.png", "/icons/icon-512.png"
+  "/assets/css/style.css", "/assets/css/layout.css", "/assets/css/theme.css",
+  "/assets/js/index-feed.js", "/assets/js/notifications.js",
+  "/assets/icons/icon-192.png", "/assets/icons/icon-512.png"
 ];
 
 // Install: precache core assets
@@ -39,7 +39,7 @@ self.addEventListener("fetch", event => {
         });
       }).catch(() => {
         if (event.request.destination === "document") return caches.match("/offline.html");
-        if (event.request.destination === "image") return caches.match("/icons/icon-192.png");
+        if (event.request.destination === "image") return caches.match("/assets/icons/icon-192.png");
       });
     })
   );
@@ -51,8 +51,8 @@ self.addEventListener("push", event => {
   const title = data.title || "Zawadi Intel Update";
   const options = {
     body: data.body || "Breaking story just in...",
-    icon: "/icons/icon-192.png",
-    badge: "/icons/icon-192.png",
+    icon: "/assets/icons/icon-192.png",
+    badge: "/assets/icons/icon-192.png",
     data: { url: data.url || "/" }
   };
   event.waitUntil(self.registration.showNotification(title, options));
