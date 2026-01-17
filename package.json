@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.11",
-    "vercel": "^50.4.1"
+    "vercel": "^32.3.0"
   },
   "engines": {
     "node": ">=18"
