@@ -8,15 +8,12 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const webpush = require("web-push");
 const rateLimit = require("express-rate-limit");
 const multer = require("multer");
 const supabase = require('./supabase');
-
-const DATA_FILE = path.join(__dirname, "data.json");
 
 // Rate limiter for login attempts: limit repeated login requests
 const loginLimiter = rateLimit({
@@ -26,18 +23,6 @@ const loginLimiter = rateLimit({
   standardHeaders: true, // return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // disable the `X-RateLimit-*` headers
 });
-
-// --- Safe JSON helpers (fallback) ---
-function readLocalData() {
-  try {
-    return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
-  } catch {
-    return { total: 0, recent: [], users: {}, tokens: {}, subscriptions: [], articles: [] };
-  }
-}
-function writeLocalData(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
-}
 
 // --- VAPID Keys ---
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY || process.env.VAPID_PUBLIC_KEY;
@@ -148,72 +133,9 @@ async function deleteToken(token) {
     return data;
 }
 
-async function incrementTotal() {
-    // This is more complex in Supabase and would likely involve a stored procedure
-    // for atomicity. For now, we'll skip implementing this correctly.
-}
-async function pushRecent(entry) {
-    // Similar to incrementTotal, this requires more complex logic in Supabase
-    // to maintain a capped list.
-}
 async function getStats() {
     // This would require separate queries for total and recent.
     return { total: 0, recent: [] };
-}
-async function getSubscriptions() {
-    const { data, error } = await supabase.from('subscriptions').select('*');
-    if (error) {
-        console.error('Error fetching subscriptions:', error);
-        return [];
-    }
-    return data.map(s => s.subscription);
-}
-async function addSubscription(subscription) {
-    const { data, error } = await supabase.from('subscriptions').insert([{ subscription }]);
-    if (error) {
-        console.error('Error adding subscription:', error);
-    }
-}
-
-async function getArticles() {
-    const { data, error } = await supabase.from('articles').select('*');
-    if (error) {
-        console.error('Error fetching articles:', error);
-        return [];
-    }
-    return data;
-}
-
-async function getArticle(id) {
-    const { data, error } = await supabase.from('articles').select('*').eq('id', id).single();
-    if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching article:', error);
-        return null;
-    }
-    return data;
-}
-
-async function addArticle(article) {
-    const { data, error } = await supabase.from('articles').insert([article]).select();
-    if (error) {
-        console.error('Error adding article:', error);
-        return null;
-    }
-    return data[0].id;
-}
-
-async function updateArticle(id, article) {
-    const { data, error } = await supabase.from('articles').update(article).eq('id', id);
-    if (error) {
-        console.error('Error updating article:', error);
-    }
-}
-// --- Delete Article Helper ---
-async function deleteArticle(id) {
-    const { data, error } = await supabase.from('articles').delete().eq('id', id);
-    if (error) {
-        console.error('Error deleting article:', error);
-    }
 }
 
 // Check database connection status
@@ -226,6 +148,36 @@ async function checkDbStatus() {
         return { status: 'offline', message: error.message };
     }
 }
+
+// --- Auth Middleware ---
+const requireAuth = async (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ ok: false, message: 'Unauthorized' });
+    }
+    const token = authHeader.split(' ')[1];
+    try {
+        const session = await getToken(token);
+        if (!session || new Date(session.expires) < new Date()) {
+            if (session) await deleteToken(token);
+            return res.status(401).json({ ok: false, message: 'Invalid or expired token' });
+        }
+        req.session = session;
+        next();
+    } catch (error) {
+        console.error('Auth error:', error);
+        return res.status(500).json({ ok: false, message: 'Internal server error' });
+    }
+};
+
+const requireAdmin = (req, res, next) => {
+    if (!req.session || !req.session.isAdmin) {
+        return res.status(403).json({ ok: false, message: 'Forbidden' });
+    }
+    next();
+};
+
+
 // --- Auth Routes ---
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body || {};
@@ -588,20 +540,7 @@ app.post("/api/notify", async (req, res) => {
   }
 });
 
-// --- Fallback for HTML pages ---
-app.get('*', (req, res) => {
-  if (path.extname(req.path)) {
-    return res.status(404).send('Not Found');
-  }
-  const filePath = path.join(process.cwd(), 'public', `${req.path}.html`);
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
-    } else {
-      res.sendFile(filePath);
-    }
-  });
-});
+
 
 // --- Start server locally only ---
 if (process.env.NODE_ENV !== "production") {
