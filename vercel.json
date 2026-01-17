@@ -1,6 +1,7 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "public": "public",
   "builds": [
     {
       "src": "server/index.js",
@@ -8,7 +9,14 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "server/index.js" }
+    {
+      "source": "/api/(.*)",
+      "destination": "server/index.js"
+    },
+    {
+      "source": "/:path((?!api/).*)",
+      "destination": "server/index.js"
+    }
   ],
   "headers": [
     {
