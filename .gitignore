@@ -1,2 +1,5 @@
 public/js/supabase-client.js
 node_modules
+.env.local
+.env
+.vercel
