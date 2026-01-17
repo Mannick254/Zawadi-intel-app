@@ -4,7 +4,9 @@
   "description": "Zawadi Intel Progressive Web App",
   "main": "server/index.js",
   "scripts": {
-    "start": "vercel dev"
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "vercel": "vercel dev"
   },
   "keywords": [
     "pwa",
@@ -17,22 +19,20 @@
   "author": "Mannick",
   "license": "ISC",
   "dependencies": {
-    "@vercel/blob": "^0.0.2",
-    "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-rate-limit": "^8.2.1",
-    "firebase-admin": "^13.6.0",
-    "multer": "^1.4.5-lts.1",
-    "web-push": "^3.6.7"
+    "multer": "1.4.5-lts.1",
+    "web-push": "^3.6.7",
+    "@supabase/supabase-js": "^2.90.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",
     "vercel": "^50.4.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": "20.19.0"
   },
   "repository": {
     "type": "git",
