@@ -21,13 +21,14 @@
 
 /* Grid Layout */
 .update-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  overflow-x: auto;
   gap: 25px;
 }
 
 /* Card Styling */
 .update-card {
+  flex: 0 0 260px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 6px;

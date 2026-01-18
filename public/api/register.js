@@ -1,32 +1,21 @@
 
-const supabase = require('../../server/supabase');
+import { users } from '../_utils/users';
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
-
+export default (req, res) => {
   const { username, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required' });
+  if (users.find((u) => u.username === username)) {
+    return res.status(409).json({ message: 'User already exists' });
   }
 
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email: username,
-      password: password,
-    });
+  const newUser = {
+    id: users.length + 1,
+    username,
+    password, // In a real app, hash and salt the password
+    isAdmin: false,
+  };
 
-    if (error) {
-      return res.status(400).json({ message: error.message });
-    }
+  users.push(newUser);
 
-    // Supabase sends a confirmation email. The user is not signed in until they confirm.
-    // If you have disabled email confirmation, this will sign the user up and sign them in.
-    res.status(200).json({ ok: true, message: 'Registration successful! Please check your email to confirm.', user: data.user });
-
-  } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+  res.status(201).json({ ...newUser, message: 'User created successfully' });
 };

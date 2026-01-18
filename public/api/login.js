@@ -1,29 +1,16 @@
 
-const supabase = require('../../server/supabase');
+import { createSession } from '../_utils/session';
+import { users } from '../_utils/users';
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
-
+export default (req, res) => {
   const { username, password } = req.body;
+  const user = users.find((u) => u.username === username && u.password === password);
 
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required' });
-  }
-
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: username,
-      password: password,
-    });
-
-    if (error) {
-      return res.status(401).json({ message: error.message });
-    }
-
-    res.status(200).json({ ok: true, token: data.session.access_token, session: data.session });
-  } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
+  if (user) {
+    const sessionId = createSession(user);
+    res.setHeader('Set-Cookie', `sessionId=${sessionId}; HttpOnly; Path=/`);
+    res.status(200).json({ ...user, message: 'Login successful' });
+  } else {
+    res.status(401).json({ message: 'Invalid credentials' });
   }
 };

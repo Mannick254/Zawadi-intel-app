@@ -42,3 +42,16 @@ async function logoutUser() {
     return { ok: false, message: 'An error occurred during logout.' };
   }
 }
+
+async function getCurrentUser() {
+  try {
+    const response = await fetch('/api/user');
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching current user:', error);
+    return null;
+  }
+}
