@@ -1,9 +1,16 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "server/index.js" }
+  "builds": [
+    { "src": "public/api/**/*.js", "use": "@vercel/node" },
+    { "src": "public/**/*.html", "use": "@vercel/static" },
+    { "src": "public/js/**/*.js", "use": "@vercel/static" },
+    { "src": "public/css/**/*.css", "use": "@vercel/static" }
   ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/public/api/$1" },
+    { "src": "/(.*)", "dest": "/public/$1" }
+  ],
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/(.*)",
