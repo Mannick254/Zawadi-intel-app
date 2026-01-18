@@ -46,7 +46,7 @@ function writeLocalData(data) {
 
 
 try {
-  const admin = require("firebase-admin");
+  admin = require("firebase-admin");
   const svcPath = path.join(__dirname, "service-account.json");
 
   if (fs.existsSync(svcPath)) {
@@ -412,13 +412,17 @@ app.post("/api/register", async (req, res) => {
     return res.status(400).json({ ok: false, message: "Username and password required" });
   }
   try {
+    console.log("Registering new user:", username);
     const user = await getUser(username);
+    console.log("Checked for existing user:", user);
     if (user) return res.status(400).json({ ok: false, message: "User already exists" });
     const newUser = { password: hashPassword(password), isAdmin: false, createdAt: Date.now() };
+    console.log("Hashed password and created new user object");
     await setUser(username, newUser);
+    console.log("Set new user in data store");
     return res.json({ ok: true });
   } catch (err) {
-    console.error(err);
+    console.error("Registration error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });

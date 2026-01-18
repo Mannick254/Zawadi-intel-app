@@ -1,5 +1,15 @@
-public/js/supabase-client.js
-node_modules
-.env.local
+# Environment variables
 .env
-.vercel
+
+# Local data storage
+data.json
+service-account.json
+
+# Node.js dependencies
+node_modules/
+
+# Build output
+dist/
+
+# macOS specific
+.DS_Store
