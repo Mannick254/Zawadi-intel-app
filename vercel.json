@@ -4,6 +4,70 @@
     {
       "src": "public/api/**/*.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/css/**/*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/js/**/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/data/**/*.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/icons/**/*.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/images/**/*.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/images/**/*.jpg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/images/**/*.jpeg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/images/**/*.avif",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/images/**/*.webp",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/manifest.json",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/robots.txt",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/service-worker.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/sitemap-index.xml",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/sitemap.xsl",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "public/articles-sitemap.xml",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
