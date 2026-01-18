@@ -1,12 +1,6 @@
 {
   "total": 0,
   "recent": [],
-  "users": {
-    "Nickson": {
-      "password": "43c0099eccdc9c6336d4e05e3ad23446:feec1e04b259f71db2a3d6690aa7265a6db51921e19a70847447064d9bb7a2fe759bbb3ac62e5525a742a5532b6ff2ef741d93b9c836d2287fa171b296615d41",
-      "isAdmin": true,
-      "createdAt": 1640995200000
-    }
-  },
+  "users": {},
   "tokens": {}
 }

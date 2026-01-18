@@ -13,7 +13,6 @@ const path = require("path");
 const crypto = require("crypto");
 const webpush = require("web-push");
 const rateLimit = require("express-rate-limit");
-const multer = require("multer");
 const supabase = require('./supabase');
 
 
@@ -128,19 +127,6 @@ app.use(express.json());
 // CORRECTED PATH: Use absolute path for Vercel environment
 app.use(express.static(path.join(process.cwd(), "public")));
 const PORT = process.env.PORT || 3001;
-
-// --- Multer setup for image uploads ---
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // CORRECTED PATH: Use absolute path for Vercel environment
-    cb(null, path.join(process.cwd(), 'public', 'images'))
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-  }
-});
-
-const upload = multer({ storage: storage });
 
 // --- Data access helpers ---
 async function getUser(username) {
@@ -493,14 +479,6 @@ app.post("/api/logout", async (req, res) => {
   return res.json({ ok: true });
 });
 
-
-// --- Image Upload Route ---
-app.post('/api/upload-image', upload.single('image'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ ok: false, message: 'No image uploaded' });
-  }
-  res.json({ ok: true, imageUrl: `/images/${req.file.filename}` });
-});
 
 // --- Health Route ---
 app.get("/api/health", async (req, res) => {
