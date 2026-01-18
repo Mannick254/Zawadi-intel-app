@@ -1,6 +1,7 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "trailingSlash": false,
   "builds": [
     {
       "src": "public/api/**/*.js",
@@ -27,23 +28,7 @@
       "use": "@vercel/static"
     },
     {
-      "src": "public/images/**/*.png",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/images/**/*.jpg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/images/**/*.jpeg",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/images/**/*.avif",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "public/images/**/*.webp",
+      "src": "public/images/**/*",
       "use": "@vercel/static"
     },
     {
@@ -79,6 +64,13 @@
     {
       "src": "/(.*)",
       "dest": "/public/$1"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "^/(.*)\\.html$",
+      "destination": "/$1",
+      "permanent": true
     }
   ]
 }
