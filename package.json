@@ -2,12 +2,10 @@
   "name": "zawadi-intel-app",
   "version": "1.0.0",
   "description": "Zawadi Intel Progressive Web App",
-  "main": "server/index.js",
+  "main": "public/index.html",
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "start": "node server/index.js",
-    "vercel": "vercel dev",
-    "build": "echo 'No build step required' && exit 0"
+    "start": "vercel dev",
+    "build": "echo 'No build step required'"
   },
   "keywords": [
     "pwa",
@@ -23,16 +21,10 @@
     "@supabase/supabase-js": "^2.90.1",
     "@vercel/blob": "^0.0.2",
     "cloudinary": "^2.8.0",
-    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.2.1",
-    "express-rate-limit": "^8.2.1",
-    "firebase-admin": "^13.6.0",
-    "uuid": "^13.0.0",
     "web-push": "^3.6.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11",
     "vercel": "^50.4.1"
   },
   "engines": {
@@ -41,8 +33,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mannick/zawadi-intel-app.git"
-  },
-  "overrides": {
-    "protobufjs": "^7.2.5"
   }
 }
