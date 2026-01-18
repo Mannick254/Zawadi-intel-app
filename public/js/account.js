@@ -180,7 +180,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => logout());
+    logoutBtn.addEventListener('click', async () => {
+      const result = await logoutUser();
+      if (result?.ok) {
+        updateProfileUI();
+      } else {
+        setMessage('status-message', result?.message || 'Logout failed.', 'red');
+      }
+    });
   }
 
   if (adminLink) {

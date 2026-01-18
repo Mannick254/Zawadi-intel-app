@@ -1,6 +1,24 @@
 
 [
   {
+    "category": "Environment",
+    "badgeClass": "environment",
+    "image": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1768735646/Copilot_20260118_141232_got03f.png",
+    "headline": "Kenya Deploys Satellites to Protect Endangered Mountain Bongos",
+    "timestamp": "Updated Jan 18, 2026",
+    "url": "/articles/kenyaenvironment.html",
+    "readMoreText": "Read More"
+  },
+  {
+    "category": "Local",
+    "badgeClass": "local",
+    "image": "https://res.cloudinary.com/dtcb3ffnv/image/upload/v1768735261/Copilot_20260118_142013_j9qcyw.png",
+    "headline": "Classroom Roof Collapse in Nakuru East Kills One Pupil",
+    "timestamp": "Updated Jan 18, 2026",
+    "url": "/articles/kenyalocal.html",
+    "readMoreText": "Read More"
+  },
+  {
     "category": "Politics",
     "badgeClass": "politics",
     "image": "https://cdn.tuko.co.ke/images/1200x675/96e1ed92aba0c549.jpeg?v=1",
