@@ -4,10 +4,10 @@
   "description": "Zawadi Intel Progressive Web App",
   "main": "server/index.js",
   "scripts": {
-    "dev": "nodemon server/index.js",
+    "dev": "vite",
     "start": "node server/index.js",
     "vercel": "vercel dev",
-    "build": "echo 'No build step required' && exit 0"
+    "build": "vite build"
   },
   "keywords": [
     "pwa",
@@ -29,11 +29,15 @@
     "express-rate-limit": "^8.2.1",
     "firebase-admin": "^13.6.0",
     "multer": "^2.0.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "web-push": "^3.6.7"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
     "nodemon": "^3.1.11",
-    "vercel": "^50.4.1"
+    "vercel": "^50.4.1",
+    "vite": "^6.4.1"
   },
   "engines": {
     "node": ">=24"
