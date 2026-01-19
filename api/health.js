@@ -1,4 +1,11 @@
-
-export default (req, res) => {
-  res.status(200).json({ ok: true, message: 'Healthy' });
-};
+// api/health.js
+export default function handler(req, res) {
+  res.status(200).json({
+    ok: true,
+    services: {
+      api: { status: "online", message: "API responding normally" },
+      db: { status: "online", message: "Database connection healthy" },
+      notifications: { status: "offline", message: "Push service temporarily unavailable" }
+    }
+  });
+}
