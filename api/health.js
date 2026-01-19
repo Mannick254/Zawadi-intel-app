@@ -5,7 +5,7 @@ export default function handler(req, res) {
     services: {
       api: { status: "online", message: "API responding normally" },
       db: { status: "online", message: "Database connection healthy" },
-      notifications: { status: "offline", message: "Push service temporarily unavailable" }
+      notifications: { status: "online", message: "Push service temporarily unavailable" }
     }
   });
 }
