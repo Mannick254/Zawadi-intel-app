@@ -1,23 +1,13 @@
-// --- Auth Helpers ---
-
-// Register new user
 export async function registerUser(username, password) {
-  try {
     const res = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
-    return await res.json();
-  } catch (err) {
-    console.error('Register error:', err);
-    return { ok: false, message: 'Registration failed.' };
+    return res.json();
   }
-}
-
-// Login user and persist token
-export async function loginUser(username, password) {
-  try {
+  
+  export async function loginUser(username, password) {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,18 +18,11 @@ export async function loginUser(username, password) {
       localStorage.setItem('authToken', data.token);
     }
     return data;
-  } catch (err) {
-    console.error('Login error:', err);
-    return { ok: false, message: 'Login failed.' };
   }
-}
-
-// Verify current session
-export async function checkAuth() {
-  try {
+  
+  export async function checkAuth() {
     const token = localStorage.getItem('authToken');
     if (!token) return null;
-
     const res = await fetch('/api/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -47,25 +30,15 @@ export async function checkAuth() {
     });
     const data = await res.json();
     return data.ok ? data.session : null;
-  } catch (err) {
-    console.error('Auth check error:', err);
-    return null;
   }
-}
-
-// Logout user and clear token
-export async function logoutUser() {
-  try {
+  
+  export async function logoutUser() {
     const token = localStorage.getItem('authToken');
-    const res = await fetch('/api/logout', {
+    await fetch('/api/logout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),
     });
     localStorage.removeItem('authToken');
-    return await res.json();
-  } catch (err) {
-    console.error('Logout error:', err);
-    return { ok: false, message: 'Logout failed.' };
   }
-}
+  

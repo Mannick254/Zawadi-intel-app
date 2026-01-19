@@ -1,4 +1,4 @@
-import { users } from '../_utils/users';
+import { users } from '../../_utils/users';
 
 export default function handler(req, res) {
   if (req.method !== 'POST') {

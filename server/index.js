@@ -393,38 +393,56 @@ async function checkDbStatus() {
     }
   }
 }
+// --- Middleware ---
+app.use(express.json()); // Make sure this is at the top
+
 // --- Auth Routes ---
+
+// Register
 app.post("/api/register", async (req, res) => {
-  const { username, password } = req.body || {};
-  if (!username || !password) {
-    return res.status(400).json({ ok: false, message: "Username and password required" });
-  }
   try {
-    const user = await getUser(username);
-    if (user) return res.status(400).json({ ok: false, message: "User already exists" });
-    const newUser = { password: hashPassword(password), isAdmin: false, createdAt: Date.now() };
+    const { username, password } = req.body || {};
+    if (!username || !password) {
+      return res.status(400).json({ ok: false, message: "Username and password required" });
+    }
+
+    const existingUser = await getUser(username);
+    if (existingUser) {
+      return res.status(400).json({ ok: false, message: "User already exists" });
+    }
+
+    const newUser = {
+      password: hashPassword(password),
+      isAdmin: false,
+      createdAt: Date.now(),
+    };
     await setUser(username, newUser);
-    return res.json({ ok: true });
+
+    return res.json({ ok: true, message: "Registration successful" });
   } catch (err) {
-    console.error(err);
+    console.error("Register error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
+// Login
 app.post("/api/login", loginLimiter, async (req, res) => {
-  const { username, password } = req.body || {};
-  if (!username || !password) {
-    return res.status(400).json({ ok: false, message: "Username and password required" });
-  }
   try {
+    const { username, password } = req.body || {};
+    if (!username || !password) {
+      return res.status(400).json({ ok: false, message: "Username and password required" });
+    }
+
     let isAdmin = false;
+
+    // Admin login
     if (process.env.ADMIN_USERNAME && username === process.env.ADMIN_USERNAME) {
-      if (password === process.env.ADMIN_PASSWORD) {
-        isAdmin = true;
-      } else {
+      if (password !== process.env.ADMIN_PASSWORD) {
         return res.status(401).json({ ok: false, message: "Invalid credentials" });
       }
+      isAdmin = true;
     } else {
+      // Normal user login
       const user = await getUser(username);
       if (!user || !verifyPassword(password, user.password)) {
         return res.status(401).json({ ok: false, message: "Invalid credentials" });
@@ -432,6 +450,7 @@ app.post("/api/login", loginLimiter, async (req, res) => {
       isAdmin = user.isAdmin || false;
     }
 
+    // Create session
     const token = generateToken();
     const session = { username, isAdmin, expires: Date.now() + 24 * 60 * 60 * 1000 };
     await storeToken(token, session);
@@ -441,41 +460,46 @@ app.post("/api/login", loginLimiter, async (req, res) => {
 
     return res.json({ ok: true, token, isAdmin });
   } catch (err) {
-    console.error(err);
+    console.error("Login error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
+// Verify
 app.post("/api/verify", async (req, res) => {
-  const { token } = req.body || {};
-  if (!token) {
-    return res.status(400).json({ ok: false, message: "Token is required" });
-  }
   try {
+    const { token } = req.body || {};
+    if (!token) {
+      return res.status(400).json({ ok: false, message: "Token is required" });
+    }
+
     const session = await getToken(token);
     if (!session || session.expires < Date.now()) {
       if (session) await deleteToken(token);
       return res.status(401).json({ ok: false, message: "Invalid or expired token" });
     }
+
+    // Extend session
     session.expires = Date.now() + 24 * 60 * 60 * 1000;
     await storeToken(token, session);
+
     return res.json({ ok: true, session });
   } catch (err) {
-    console.error("Token verification error:", err);
+    console.error("Verify error:", err);
     return res.status(500).json({ ok: false, message: "Internal server error" });
   }
 });
 
+// Logout
 app.post("/api/logout", async (req, res) => {
-  const { token } = req.body || {};
-  if (token) {
-    try {
-      await deleteToken(token);
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
+  try {
+    const { token } = req.body || {};
+    if (token) await deleteToken(token);
+    return res.json({ ok: true, message: "Logged out successfully" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    return res.status(500).json({ ok: false, message: "Internal server error" });
   }
-  return res.json({ ok: true });
 });
 
 
