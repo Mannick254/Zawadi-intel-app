@@ -37,6 +37,15 @@
       "VERCEL_CLI_PACKAGE_MANAGER": "npm"
     }
   },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
