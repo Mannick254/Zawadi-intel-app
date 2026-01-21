@@ -1,7 +1,6 @@
-
 const { Pool } = require('pg');
 const crypto = require('crypto');
-const { verifyToken } = require('../utils/auth-utils'); // Import the verifier
+const { verifyToken } = require('../utils/auth-utils');
 
 // --- Vercel Postgres Configuration ---
 const pool = new Pool({
@@ -26,6 +25,22 @@ async function ensureTableExists() {
   } finally {
     client.release();
   }
+}
+
+// --- Helper to parse JSON body ---
+async function parseBody(req) {
+  if (req.body) return req.body;
+  return new Promise((resolve) => {
+    let data = '';
+    req.on('data', (chunk) => (data += chunk));
+    req.on('end', () => {
+      try {
+        resolve(JSON.parse(data || '{}'));
+      } catch {
+        resolve({});
+      }
+    });
+  });
 }
 
 // --- Main Handler for /api/articles ---
@@ -54,13 +69,13 @@ module.exports = async (req, res) => {
         if (id) {
           const result = await pool.query('SELECT * FROM articles WHERE id = $1', [id]);
           if (result.rows.length > 0) {
-            return res.status(200).json(result.rows[0]);
+            return res.status(200).json({ article: result.rows[0] });
           } else {
             return res.status(404).json({ ok: false, message: "Article not found" });
           }
         } else {
           const result = await pool.query('SELECT * FROM articles ORDER BY createdAt DESC');
-          return res.status(200).json(result.rows);
+          return res.status(200).json({ articles: result.rows });
         }
       } catch (err) {
         console.error("Article fetch error:", err.stack || err);
@@ -69,7 +84,8 @@ module.exports = async (req, res) => {
 
     case 'POST':
       try {
-        const { title, content, imageUrl } = req.body;
+        const body = await parseBody(req);
+        const { title, content, imageUrl } = body;
         if (!title?.trim() || !content?.trim()) {
           return res.status(400).json({ ok: false, message: "Title and content are required" });
         }
@@ -87,8 +103,9 @@ module.exports = async (req, res) => {
 
     case 'PUT':
       try {
+        const body = await parseBody(req);
         const articleId = id;
-        const { title, content, imageUrl } = req.body;
+        const { title, content, imageUrl } = body;
         if (!articleId || !title?.trim() || !content?.trim()) {
           return res.status(400).json({ ok: false, message: "ID, title, and content are required" });
         }
