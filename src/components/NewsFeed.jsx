@@ -10,7 +10,7 @@ export default function NewsFeed() {
 
   return (
     <div>
-      <h2>Top Headlines</h2>
+      <h2>Top Headlines Today</h2>
       {news.map((n, i) => (
         <div key={i}>
           <h3>{n.title}</h3>
