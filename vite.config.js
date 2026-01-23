@@ -1,51 +1,34 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Optional: simple rewrite plugin for dev server
-function rewritePlugin() {
-  return {
-    name: 'rewrite-plugin',
-    configureServer(server) {
-      server.middlewares.use((req, res, next) => {
-        if (req.url === '/admin') {
-          req.url = '/admin.html';
-        } else if (req.url === '/') {
-          req.url = '/index.html';
-        }
-        next();
-      });
-    }
-  };
-}
-
 export default defineConfig({
-  plugins: [react(), rewritePlugin()],
+  plugins: [react()],
   server: {
-    port: 5173,   // Dev server port
-    open: true,   // Auto-open browser
-    host: true    // LAN access for testing
+    port: 4173,
+    open: true,
+    host: true
   },
   build: {
-    outDir: 'dist',      // Production output
-    assetsDir: 'assets', // Static assets folder
-    sourcemap: true,     // Easier debugging
-    minify: 'esbuild',   // Fast minification
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
+    minify: 'esbuild',
     rollupOptions: {
-      // ✅ Only include admin.html if it exists
       input: {
         main: 'index.html'
-        // admin: 'admin.html' // Uncomment if you actually create admin.html
+        // admin: 'admin.html' // only if you actually have this file
       },
       output: {
         manualChunks: {
-          react: ['react', 'react-dom'] // Vendor chunk splitting
+          react: ['react', 'react-dom']
         }
       }
     }
   },
   resolve: {
     alias: {
-      '@': '/src' // Shortcut for imports
+      '@': '/src'
     }
-  }
+  },
+  base: '/'   // ✅ ensures assets load correctly on Vercel
 });
