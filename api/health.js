@@ -1,5 +1,4 @@
-require("dotenv").config();
-const { createClient } = require("@supabase/supabase-js");
+import { createClient } from '@supabase/supabase-js';
 
 // --- Supabase client (server-side) ---
 const supabase = createClient(
@@ -11,9 +10,9 @@ const supabase = createClient(
 const publicVapidKey = process.env.PUBLIC_VAPID_KEY || process.env.VAPID_PUBLIC_KEY;
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY || process.env.VAPID_PRIVATE_KEY;
 
-module.exports = async (req, res) => {
-  if (req.method !== "GET") {
-    res.setHeader("Allow", ["GET"]);
+export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', ['GET']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
@@ -21,13 +20,13 @@ module.exports = async (req, res) => {
   const pushHealthy = Boolean(publicVapidKey && privateVapidKey);
 
   let dbHealthy = true;
-  let dbMessage = "✅ Database healthy";
+  let dbMessage = '✅ Database healthy';
   let latencyMs = null;
 
   try {
     const start = Date.now();
-    // Lightweight DB check — use RPC ping if defined, else fallback to any table
-    const { error } = await supabase.rpc("ping"); 
+    // Try a lightweight query instead of RPC ping
+    const { error } = await supabase.from('articles').select('id').limit(1);
     latencyMs = Date.now() - start;
 
     if (error) {
@@ -44,14 +43,14 @@ module.exports = async (req, res) => {
   res.status(overallOk ? 200 : 503).json({
     ok: overallOk,
     services: {
-      api: { status: "online", message: "✅ Operational" },
-      db: { status: dbHealthy ? "online" : "degraded", message: dbMessage, latencyMs },
+      api: { status: 'online', message: '✅ Operational' },
+      db: { status: dbHealthy ? 'online' : 'degraded', message: dbMessage, latencyMs },
       notifications: {
-        status: pushHealthy ? "online" : "offline",
-        message: pushHealthy ? "✅ Push service active" : "❌ VAPID keys not configured"
+        status: pushHealthy ? 'online' : 'offline',
+        message: pushHealthy ? '✅ Push service active' : '❌ VAPID keys not configured'
       }
     },
     nodeVersion: process.version,
     timestamp: new Date().toISOString()
   });
-};
+}

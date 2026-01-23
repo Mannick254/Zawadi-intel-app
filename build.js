@@ -1,7 +1,8 @@
+
 // supabase-client-build.js
-import fs from 'fs';
-import path from 'path';
-import dotenv from 'dotenv';
+const fs = require('fs');
+const path = require('path');
+const dotenv = require('dotenv');
 
 // Load environment variables from .env file (for local dev)
 dotenv.config();
@@ -21,7 +22,7 @@ const outputPath = path.resolve('public/js/supabase-client.js');
 try {
   const template = fs.readFileSync(templatePath, 'utf8');
 
-  // Replace placeholders (use clear markers instead of regex on process.env)
+  // Replace placeholders
   const result = template
     .replace(/__SUPABASE_URL__/g, SUPABASE_URL)
     .replace(/__SUPABASE_ANON_KEY__/g, SUPABASE_ANON_KEY);

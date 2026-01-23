@@ -3,8 +3,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // These placeholders will be replaced by the build script
-const SUPABASE_URL = "__SUPABASE_URL__";
-const SUPABASE_ANON_KEY = "__SUPABASE_ANON_KEY__";
+const SUPABASE_URL = "https://bgbwlgzyvoxfkqkwzsnh.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnYndsZ3p5dm94Zmtxa3d6c25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0NzY4OTMsImV4cCI6MjA4NDA1Mjg5M30.FNet5nkxPWm0rv3hLosv0NjvG5SL5IsAlt5HdtnO0f8";
 
 if (!SUPABASE_URL) {
   console.error('Supabase URL is not set. Check your environment variables and build script.');

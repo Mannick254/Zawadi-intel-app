@@ -1,9 +1,11 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import NewsFeed from './components/NewsFeed';
+import App from './App.jsx';
+import { supabase } from '../public/js/supabase-client.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <NewsFeed />
+    <App />
   </React.StrictMode>
 );
