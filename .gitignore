@@ -1,2 +1,4 @@
 public/js/supabase-client.js
 node_modules
+.env
+.env.local

@@ -1,11 +1,12 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import { supabase } from '../public/js/supabase-client.js';
+import App from './App';
+import Header from './components/header'; // Import the Header component
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <Header />
     <App />
   </React.StrictMode>
 );
