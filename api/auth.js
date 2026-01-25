@@ -1,45 +1,80 @@
-
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = "https://bgbwlgzyvoxfkqkwzsnh.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJnYndsZ3p5dm94Zmtxa3d6c25oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0NzY4OTMsImV4cCI6MjA4NDA1Mjg5M30.FNet5nkxPWm0rv3hLosv0NjvG5SL5IsAlt5HdtnO0f8";
+const supabase = createClient(
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY
+);
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-export async function registerUser(email, password) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-  if (error) {
-    console.error('Error signing up:', error.message);
-    return { ok: false, error: error.message };
+async function login(req, res) {
+  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+  const { email, password } = body || {};
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: 'Email and password are required' });
   }
-  return { ok: true, data };
-}
-
-export async function loginUser(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    console.error('Error signing in:', error.message);
-    return { ok: false, error: error.message };
+    console.error('Supabase Login Error:', error.message);
+    return res.status(401).json({ ok: false, message: error.message });
   }
-  return { ok: true, data };
+  return res.status(200).json({
+    ok: true,
+    message: 'Login successful',
+    user: data.user,
+    session: data.session,
+  });
 }
 
-export async function checkAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
-    return session;
+async function register(req, res) {
+  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+  const { email, password } = body || {};
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: 'Email and password are required' });
+  }
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) {
+    console.error('Supabase Registration Error:', error.message);
+    return res.status(400).json({ ok: false, message: error.message });
+  }
+  if (data.user) {
+    return res.status(201).json({
+      ok: true,
+      message: 'Registration successful. Please check your email to confirm your account.',
+      userId: data.user.id,
+    });
+  }
+  return res.status(200).json({
+    ok: true,
+    message: 'Registration initiated. Please check your email to complete the process.',
+  });
 }
 
-export async function logoutUser() {
+async function logout(req, res) {
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.error('Error signing out:', error.message);
-    return { ok: false, error: error.message };
+    return res.status(400).json({ ok: false, message: error.message });
   }
-  return { ok: true };
+  return res.status(200).json({ ok: true, message: 'Logout successful' });
+}
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).json({ ok: false, message: `Method ${req.method} Not Allowed` });
+  }
+
+  try {
+    const { action } = req.query;
+    if (action === 'login') {
+      return await login(req, res);
+    } else if (action === 'register') {
+      return await register(req, res);
+    } else if (action === 'logout') {
+      return await logout(req, res);
+    } else {
+      return res.status(400).json({ ok: false, message: 'Invalid action' });
+    }
+  } catch (err) {
+    console.error('Auth Handler Error:', err);
+    return res.status(500).json({ ok: false, message: 'Unexpected error during authentication.' });
+  }
 }

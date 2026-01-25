@@ -5,16 +5,13 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 
 // Import route handlers
-import registerHandler from './register.js';
-import loginHandler from './login.js';
-import logoutHandler from './logout.js';
+import authHandler from './auth.js';
 import verifyHandler from './verify.js';
 import articlesHandler from './articles.js';
 import uploadImageHandler from './upload-image.js';
 import healthHandler from './health.js'; // Import the health handler
 
 const app = express();
-const port = process.env.PORT || 3001;
 
 // --- Middleware ---
 app.use(express.json());
@@ -31,10 +28,8 @@ const apiLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 
 // --- API Routes ---
+app.post('/api/auth', authHandler);
 app.get('/api/health', healthHandler); // Add the health check route
-app.post('/api/register', registerHandler);
-app.post('/api/login', loginHandler);
-app.post('/api/logout', logoutHandler);
 app.post('/api/verify', verifyHandler);
 app.all('/api/articles', articlesHandler);
 app.all('/api/articles/:id', articlesHandler);
@@ -55,6 +50,4 @@ app.get('*', (req, res) => {
 });
 
 // --- Server Startup ---
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+export default app;

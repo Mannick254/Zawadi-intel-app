@@ -1,4 +1,3 @@
-
 import './config.js';
 import { createClient } from '@supabase/supabase-js';
 
@@ -9,90 +8,83 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
-  const { method, query, body } = req;
+  const { method, query } = req;
+  const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-  switch (method) {
-    case 'GET':
-      if (query.id) {
-        // Fetch a single article by ID
-        try {
+  try {
+    switch (method) {
+      case 'GET':
+        if (query.id) {
+          // Fetch a single article by ID
           const { data, error } = await supabase
             .from('articles')
             .select('*')
             .eq('id', query.id)
             .single();
 
-          if (error) throw error;
-          if (!data) return res.status(404).json({ message: 'Article not found' });
+          if (error) return res.status(500).json({ ok: false, message: error.message });
+          if (!data) return res.status(404).json({ ok: false, message: 'Article not found' });
 
-          return res.status(200).json(data);
-        } catch (error) {
-          return res.status(500).json({ message: error.message });
+          return res.status(200).json({ ok: true, data });
+        } else {
+          // Fetch all articles
+          const { data, error } = await supabase.from('articles').select('*');
+          if (error) return res.status(500).json({ ok: false, message: error.message });
+
+          return res.status(200).json({ ok: true, data });
         }
-      } else {
-        // Fetch all articles
-        try {
-          const { data, error } = await supabase
-            .from('articles')
-            .select('*');
 
-          if (error) throw error;
-
-          return res.status(200).json(data);
-        } catch (error) {
-          return res.status(500).json({ message: error.message });
+      case 'POST':
+        // Validate input
+        if (!body?.title) {
+          return res.status(400).json({ ok: false, message: 'Title is required' });
         }
-      }
 
-    case 'POST':
-      // Create a new article
-      try {
-        const { data, error } = await supabase
+        const { data: inserted, error: insertError } = await supabase
           .from('articles')
-          .insert([body])
-          .single();
+          .insert([{ title: body.title, content: body.content }])
+          .select();
 
-        if (error) throw error;
+        if (insertError) return res.status(500).json({ ok: false, message: insertError.message });
 
-        return res.status(201).json(data);
-      } catch (error) {
-        return res.status(500).json({ message: error.message });
-      }
+        return res.status(201).json({ ok: true, data: inserted[0] });
 
-    case 'PUT':
-      // Update an article by ID
-      try {
-        const { data, error } = await supabase
+      case 'PUT':
+        if (!query.id) {
+          return res.status(400).json({ ok: false, message: 'Article ID is required for update' });
+        }
+
+        const { data: updated, error: updateError } = await supabase
           .from('articles')
           .update(body)
           .eq('id', query.id)
+          .select()
           .single();
 
-        if (error) throw error;
+        if (updateError) return res.status(500).json({ ok: false, message: updateError.message });
 
-        return res.status(200).json(data);
-      } catch (error) {
-        return res.status(500).json({ message: error.message });
-      }
+        return res.status(200).json({ ok: true, data: updated });
 
-    case 'DELETE':
-      // Delete an article by ID
-      try {
-        const { data, error } = await supabase
+      case 'DELETE':
+        if (!query.id) {
+          return res.status(400).json({ ok: false, message: 'Article ID is required for delete' });
+        }
+
+        const { error: deleteError } = await supabase
           .from('articles')
           .delete()
-          .eq('id', query.id)
-          .single();
+          .eq('id', query.id);
 
-        if (error) throw error;
+        if (deleteError) return res.status(500).json({ ok: false, message: deleteError.message });
 
         return res.status(204).end();
-      } catch (error) {
-        return res.status(500).json({ message: error.message });
-      }
 
-    default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      default:
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        return res.status(405).json({ ok: false, message: `Method ${method} Not Allowed` });
+    }
+  } catch (err) {
+    console.error('Articles API Error:', err);
+    return res.status(500).json({ ok: false, message: 'Unexpected server error' });
   }
 }

@@ -1,16 +1,7 @@
-
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './css/style.css';
-import './css/layout.css';
-import './css/theme.css';
-import './css/articles.css';
-import './css/featuredstory.css';
-import './css/clock-calendar.css';
-import './css/admin.css';
-import './css/widgets.css';
-import './css/custom.css';
-import './css/template.css';
-import './css/kenyaupdate.css';
+// ... your other CSS imports
 import HeroBanner from './components/HeroBanner';
 import SearchBar from './components/SearchBar';
 import InstallBanner from './components/InstallBanner';
@@ -20,8 +11,9 @@ import KenyaUpdate from './components/KenyaUpdate';
 import NewsColumns from './components/NewsColumns';
 import BottomHub from './components/BottomHub';
 import Footer from './components/Footer';
+import AdminPage from './pages/AdminPage'; // new admin component
 
-function App() {
+function HomePage() {
   return (
     <div>
       <HeroBanner />
@@ -34,6 +26,17 @@ function App() {
       <BottomHub />
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </Router>
   );
 }
 
