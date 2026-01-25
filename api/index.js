@@ -11,6 +11,7 @@ import logoutHandler from './logout.js';
 import verifyHandler from './verify.js';
 import articlesHandler from './articles.js';
 import uploadImageHandler from './upload-image.js';
+import healthHandler from './health.js'; // Import the health handler
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -30,6 +31,7 @@ const apiLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 
 // --- API Routes ---
+app.get('/api/health', healthHandler); // Add the health check route
 app.post('/api/register', registerHandler);
 app.post('/api/login', loginHandler);
 app.post('/api/logout', logoutHandler);
