@@ -28,8 +28,9 @@ async function initAdmin() {
 
   try {
     const current = await getCurrentUser(); // defined in main.js
-    if (!current || !current.isAdmin) {
-      setText(warn, 'Admin access required. Please sign in with an admin account.');
+
+    if (!current) {
+      setText(warn, 'Please sign in to write articles.');
       show(loginSection);
       show(registerSection);
       hide(actionsSection);
@@ -38,18 +39,25 @@ async function initAdmin() {
       return;
     }
 
-    // Admin verified
+    // User is logged in
     setText(warn, '');
     hide(loginSection);
-    show(registerSection);
-    show(actionsSection);
-    show(articleSection);
-    show(pushSection);
+    show(articleSection); // Show for any logged-in user
 
-    wireAdminButtons();
+    // Admin-only sections
+    if (current.isAdmin) {
+      show(registerSection);
+      show(actionsSection);
+      show(pushSection);
+      wireAdminButtons();
+    } else {
+      hide(registerSection);
+      hide(actionsSection);
+      hide(pushSection);
+    }
   } catch (e) {
     console.warn('Admin check failed', e);
-    setText(document.getElementById('admin-warn'), 'Unable to verify admin status.');
+    setText(warn, 'Unable to verify user status.');
   }
 }
 
