@@ -1,12 +1,46 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import Header from './components/header'; // Import the Header component
+import Articles from './pages/Articles';
+import Header from './components/header';
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      })
+      .catch(error => {
+        console.log('ServiceWorker registration failed: ', error);
+      });
+  });
+}
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <>
+        <Header />
+        <App />
+      </>
+    ),
+  },
+  {
+    path: '/articles',
+    element: (
+      <>
+        <Header />
+        <Articles />
+      </>
+    ),
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Header />
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

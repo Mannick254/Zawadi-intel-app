@@ -1,59 +1,49 @@
-const fs = require('fs');
-const path = require('path');
-const jwt = require('jsonwebtoken');
 
-const DATA_FILE = path.join(process.cwd(), 'server', 'data.json');
+import './config.js';
+import { createClient } from '@supabase/supabase-js';
 
-// --- Helper function to read user data ---
-function getUsers() {
-  try {
-    if (fs.existsSync(DATA_FILE)) {
-      const fileContent = fs.readFileSync(DATA_FILE, "utf8");
-      const data = JSON.parse(fileContent);
-      return data.users || [];
-    }
-    return [];
-  } catch (error) {
-    console.error("Error reading user data:", error);
-    return [];
-  }
-}
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
-// --- Main handler for /api/login ---
-module.exports = (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ ok: false, message: 'Method not allowed' });
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  const { username, password } = req.body || {};
-  if (!username || !password) {
-    return res.status(400).json({ ok: false, message: 'Username and password are required' });
+  // The client sends 'username', but Supabase Auth uses 'email'.
+  const { username: email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: 'Email and password are required' });
   }
 
-  const users = getUsers();
-  const user = users.find(u => u.username === username && u.password === password); // Note: Passwords should be hashed in a real app
-
-  if (!user) {
-    return res.status(401).json({ ok: false, message: 'Invalid credentials' });
-  }
-
-  // --- Generate JWT Token ---
   try {
-    const token = jwt.sign(
-      { userId: user.id, username: user.username, isAdmin: user.isAdmin },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' } // Token expires in 1 hour
-    );
-
-    // Return the token in the response body, as expected by the client
-    return res.status(200).json({
-      ok: true,
-      token: token, // This is what api/auth.js is looking for
-      message: 'Login successful',
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
+    if (error) {
+      console.error('Supabase Login Error:', error.message);
+      return res.status(401).json({ ok: false, message: error.message || 'Invalid login credentials' });
+    }
+
+    if (data.session) {
+      return res.status(200).json({ 
+        ok: true, 
+        message: 'Login successful', 
+        session: data.session 
+      });
+    } else {
+      return res.status(401).json({ ok: false, message: 'Invalid login credentials' });
+    }
+
   } catch (error) {
-    console.error("JWT Signing Error:", error);
-    return res.status(500).json({ ok: false, message: 'Could not generate authentication token.' });
+    console.error('Login Handler Error:', error);
+    return res.status(500).json({ ok: false, message: 'An unexpected error occurred during login.' });
   }
-};
+}

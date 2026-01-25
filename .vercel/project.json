@@ -1,1 +1,16 @@
-{"projectId":"prj_AA8yuCSM6Hi5CcjXH1owj9j3b1lk","orgId":"team_YvWkK1Le8u8LfMaoAGRcDXey","projectName":"zawadiintelapp"}
+{
+  "projectId": "prj_AA8yuCSM6Hi5CcjXH1owj9j3b1lk",
+  "orgId": "team_YvWkK1Le8u8LfMaoAGRcDXey",
+  "projectName": "zawadiintelapp",
+  "settings": {
+    "createdAt": 1765640523917,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

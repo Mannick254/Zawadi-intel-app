@@ -1,69 +1,78 @@
-const cloudinary = require('cloudinary').v2;
-const multer = require('multer');
-const { verifyToken } = require('../utils/auth-utils'); // Import the verifier
+import { createClient } from '@supabase/supabase-js';
+import { v4 as uuidv4 } from 'uuid';
+import multer from 'multer';
 
-// --- Cloudinary Configuration ---
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Multer setup to parse multipart/form-data
+const upload = multer();
 
-// --- Multer Configuration ---
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+// Initialize Supabase client (server-side only)
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY // ⚠️ Never expose this key client-side
+);
 
-// --- Main Handler for /api/upload-image ---
-const handler = async (req, res) => {
-  // --- AUTHENTICATION CHECK ---
-  // We check for authentication here, after multer has processed the request
-  // so that we have access to the headers.
-  const session = verifyToken(req);
-  if (!session) {
-    return res.status(401).json({ ok: false, message: "Unauthorized. Please log in to upload images." });
-  }
-
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
-    return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-
-  try {
-    if (!req.file) {
-      return res.status(400).json({ ok: false, message: 'No image file provided.' });
-    }
-
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: 'my-app-images' },
-      (error, result) => {
-        if (error) {
-          console.error('Cloudinary upload error:', error);
-          return res.status(500).json({ ok: false, message: 'Image upload failed.' });
-        }
-        return res.status(200).json({ ok: true, url: result.secure_url });
-      }
-    );
-
-    stream.end(req.file.buffer);
-
-  } catch (error) {
-    console.error('Server error during upload:', error);
-    res.status(500).json({ ok: false, message: 'An unexpected server error occurred.' });
-  }
-};
-
-// --- Middleware Integration ---
+// Disable Next.js body parser so Multer can handle file uploads
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-module.exports = (req, res) => {
-  upload.single('image')(req, res, (err) => {
-    if (err) {
-      return res.status(400).json({ ok: false, message: err.message });
-    }
-    return handler(req, res);
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).json({ ok: false, message: `Method ${req.method} Not Allowed` });
+  }
+
+  return new Promise((resolve) => {
+    upload.single('image')(req, res, async (err) => {
+      if (err) {
+        res.status(400).json({ ok: false, message: 'File upload error.' });
+        return resolve();
+      }
+
+      try {
+        if (!req.file) {
+          res.status(400).json({ ok: false, message: 'No file uploaded.' });
+          return resolve();
+        }
+
+        const file = req.file;
+        const safeName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+        const fileName = `${uuidv4()}-${safeName}`;
+
+        console.log(`Uploading file: ${fileName}`);
+
+        // Upload to Supabase bucket
+        const { data, error } = await supabase.storage
+          .from('Zawadiintelnews')
+          .upload(fileName, file.buffer, {
+            contentType: file.mimetype,
+            cacheControl: '3600',
+            upsert: false,
+          });
+
+        if (error) throw error;
+
+        // Construct public URL
+        const { data: publicData } = supabase.storage
+          .from('Zawadiintelnews')
+          .getPublicUrl(fileName);
+
+        res.status(200).json({
+          ok: true,
+          message: 'File uploaded successfully',
+          path: data.path,
+          url: publicData.publicUrl,
+        });
+      } catch (error) {
+        console.error('Upload Handler Error:', error);
+        res.status(500).json({
+          ok: false,
+          message: error.message || 'Unexpected error during file upload.',
+        });
+      }
+      resolve();
+    });
   });
-};
+}

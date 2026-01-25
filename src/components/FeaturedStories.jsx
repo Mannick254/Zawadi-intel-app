@@ -1,14 +1,25 @@
 
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 
 const FeaturedStories = () => {
   const [stories, setStories] = useState([]);
 
   useEffect(() => {
-    fetch('/data/featured-card.json')
-      .then(response => response.json())
-      .then(data => setStories(data))
-      .catch(error => console.error('Error loading featured stories:', error));
+    const fetchStories = async () => {
+      const { data, error } = await supabase
+        .from('stories')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) {
+        console.error('Error loading featured stories:', error);
+      } else {
+        setStories(data);
+      }
+    };
+
+    fetchStories();
   }, []);
 
   return (

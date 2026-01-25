@@ -1,0 +1,29 @@
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.clock-calendar-container {
+  text-align: right;
+  margin-top: 5px;
+}
+
+#clock {
+    font-size: 1em;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 0;
+}
+
+#calendar-widget {
+   font-size: 0.8em;
+   font-weight: bold;
+   color: #000000;
+}
+
+.news-card img {
+  max-height: 450px;
+  object-fit: cover;
+}

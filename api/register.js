@@ -1,70 +1,59 @@
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
 
-const DATA_FILE = path.join(process.cwd(), 'server', 'data.json');
+import './config.js';
+import { createClient } from '@supabase/supabase-js';
 
-// --- Helper Functions to Read/Write Data ---
-function readData() {
-  try {
-    if (fs.existsSync(DATA_FILE)) {
-      const fileContent = fs.readFileSync(DATA_FILE, "utf8");
-      return JSON.parse(fileContent);
-    }
-    // Return a default structure if the file doesn't exist
-    return { users: [], articles: [] };
-  } catch (error) {
-    console.error("Error reading data.json:", error);
-    return { users: [], articles: [] };
-  }
-}
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
-function writeData(data) {
-  try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
-  } catch (error) {
-    console.error("Error writing to data.json:", error);
-  }
-}
-
-// --- Main handler for /api/register ---
-module.exports = (req, res) => {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ ok: false, message: 'Method not allowed' });
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  const { username, password } = req.body || {};
-  if (!username?.trim() || !password?.trim()) {
-    return res.status(400).json({ ok: false, message: 'Username and password are required' });
+  // The client sends 'username', but Supabase Auth uses 'email'.
+  // We'll treat the incoming 'username' as the 'email'.
+  const { username: email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: 'Email and password are required' });
   }
 
-  // In a real application, you should add more robust validation
-  // (e.g., password strength, username format).
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-  const data = readData();
-  
-  // Check if the username is already taken
-  if (data.users && data.users.some(user => user.username === username)) {
-    return res.status(409).json({ ok: false, message: 'Username already exists' });
+    if (error) {
+      console.error('Supabase Registration Error:', error.message);
+      return res.status(400).json({ ok: false, message: error.message || 'Registration failed' });
+    }
+
+    // Supabase returns a user object on successful signup
+    if (data.user) {
+        // You can decide what you want to return to the client.
+        // For security reasons, it's often best not to return the full user object.
+        return res.status(201).json({
+          ok: true,
+          message: 'Registration successful. Please check your email to confirm your account.',
+          // You might choose to return some non-sensitive info, e.g., user ID
+          userId: data.user.id,
+        });
+    } else {
+      // This case handles situations where sign up doesn't return a user but doesn't throw an error either
+      // (e.g., if email confirmation is required, the user object might be in the session but not directly returned).
+      return res.status(200).json({ 
+        ok: true, 
+        message: 'Registration initiated. Please check your email to complete the process.' 
+      });
+    }
+
+  } catch (error) {
+    console.error('Registration Handler Error:', error);
+    return res.status(500).json({ ok: false, message: 'An unexpected error occurred during registration.' });
   }
-
-  // In a production environment, you MUST hash the password.
-  // Storing plain text passwords is a major security risk.
-  const newUser = {
-    id: crypto.randomBytes(16).toString("hex"),
-    username: username,
-    password: password, // HASH THIS in a real app (e.g., using bcrypt)
-    isAdmin: false, // Default to not being an admin
-    createdAt: Date.now(),
-  };
-
-  // Initialize users array if it doesn't exist
-  if (!data.users) {
-    data.users = [];
-  }
-
-  data.users.push(newUser);
-  writeData(data);
-
-  return res.status(201).json({ ok: true, message: 'User registered successfully' });
-};
+}

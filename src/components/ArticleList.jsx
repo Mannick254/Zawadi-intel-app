@@ -1,22 +1,38 @@
-import { useEffect, useState } from 'react';
-import { getArticles } from '../api/articles';
+
+const articles = [
+  {
+    id: 1,
+    title: "Cyrus Jirongo",
+    path: "/news/cyrus-jirongo.html"
+  },
+  {
+    id: 2,
+    title: "Kenya-France Immunity",
+    path: "/news/kenya-france-immunity.html"
+  },
+  {
+    id: 3,
+    title: "Uhuru Youth",
+    path: "/news/uhuru-youth.html"
+  },
+  {
+    id: 4,
+    title: "Wahoho",
+    path: "/news/wahoho.html"
+  }
+];
 
 export default function ArticleList() {
-  const [articles, setArticles] = useState([]);
-
-  useEffect(() => {
-    getArticles().then(setArticles);
-  }, []);
-
   return (
     <div>
       <h2>Articles</h2>
-      {articles.map(a => (
-        <div key={a.id}>
-          <h3>{a.title}</h3>
-          <p>{a.content}</p>
-        </div>
-      ))}
+      <ul>
+        {articles.map(a => (
+          <li key={a.id}>
+            <a href={a.path} target="_blank" rel="noopener noreferrer">{a.title}</a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

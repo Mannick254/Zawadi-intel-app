@@ -5,7 +5,7 @@ const NewsColumns = () => {
   const [globalNews, setGlobalNews] = useState([]);
   const [africanNews, setAfricanNews] = useState([]);
   const [localNews, setLocalNews] = useState([]);
-  const API_KEY = 'd04b7a14c9eb48258a8a29a0c326d252'; // Replace with your actual NewsAPI key
+  const API_KEY = import.meta.env.VITE_NEWS_API_KEY; // Replace with your actual NewsAPI key
 
   useEffect(() => {
     // Fetch Global News

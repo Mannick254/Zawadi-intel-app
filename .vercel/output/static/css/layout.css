@@ -1,0 +1,207 @@
+/* ===========================
+   Three Column Layout
+   =========================== */
+   .three-column-layout {
+    display: grid;
+    grid-template-columns: 4fr 3.5fr 2.5fr;
+    gap: 16px;
+    margin-top: 1rem;
+  }
+  
+  .global-column,
+  .african-column,
+  .local-column {
+    padding: 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+  
+  .global-column:hover,
+  .african-column:hover,
+  .local-column:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  /* Section headers */
+  .global-column h2,
+  .african-column h2,
+  .local-column h2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1d3557;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .three-column-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .three-column-layout {
+      gap: 8px;
+    }
+    .global-column,
+    .african-column,
+    .local-column {
+      padding: 8px;
+    }
+  }
+  
+  /* ===========================
+     Global Reset & Base Styles
+     =========================== */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #fafafa;
+  }
+  
+  /* ===========================
+     Container
+     =========================== */
+  .aj-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  /* ===========================
+     Grid Layout
+     =========================== */
+  .aj-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* main + sidebar */
+    gap: 2rem;
+    align-items: start;
+  }
+  
+  /* ===========================
+     Main Content Grid
+     =========================== */
+  .aj-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Featured article styling */
+  .aj-main .feature-article,
+  .aj-main .feature-article.side-by-side {
+    grid-column: 1 / -1;
+    margin-bottom: 1.5rem;
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  
+  /* Live update badge */
+  .feature-article::before {
+    content: "Live Update";
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #e63946;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  
+  /* ===========================
+     Sidebar
+     =========================== */
+  .aj-sidebar {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: 1rem;
+    max-width: 320px;
+    overflow-y: auto;
+  }
+  
+  /* ===========================
+     Story Card Alignment
+     =========================== */
+  .story-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  }
+  
+  .story-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  /* Ensure media scales properly */
+  .story-card img,
+  .feature-article img,
+  .story-card video,
+  .feature-article video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+  }
+  
+  /* ===========================
+     Responsive Layout
+     =========================== */
+  @media (max-width: 992px) {
+    .aj-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .aj-sidebar {
+      position: static;
+      order: 2;
+      max-width: 100%;
+    }
+    .aj-main {
+      order: 1;
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .aj-container { padding: 0.75rem; }
+    .aj-grid { grid-template-columns: 1fr !important; gap: 1rem; }
+    .aj-main { grid-template-columns: 1fr !important; gap: 1rem; }
+    .aj-main .feature-article,
+    .aj-main .feature-article.side-by-side { grid-column: 1 / -1; }
+    .story-card { width: 100%; }
+  }
+  
+  @media (max-width: 480px) {
+    body { font-size: 0.95rem; }
+    .aj-container { padding: 0.5rem; }
+    .aj-sidebar { gap: 1rem; }
+  }
+  

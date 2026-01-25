@@ -1,13 +1,17 @@
-const fs = require('fs').promises;
-const path = require('path');
+import { promises as fs } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const ARTICLES_DIR = path.join(__dirname, '..', 'public', 'articles');
-const TEST_FILE = 'zoho-eastafrica.html';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const ARTICLES_DIR = join(__dirname, '..', 'public', 'news');
+const TEST_FILE = 'cyrus-jirongo.html';
 
 async function testParser() {
   console.log('--- Running Migration Parser Test ---');
   try {
-    const filePath = path.join(ARTICLES_DIR, TEST_FILE);
+    const filePath = join(ARTICLES_DIR, TEST_FILE);
     const htmlContent = await fs.readFile(filePath, 'utf8');
     console.log('✅ File read successfully.');
 

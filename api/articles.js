@@ -1,87 +1,98 @@
-import { Pool } from 'pg';
-import crypto from 'crypto';
-import { verifyToken } from '../utils/auth-utils.js';
 
-// --- Postgres Pool (reused across invocations) ---
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
-  ssl: { rejectUnauthorized: false },
-});
+import './config.js';
+import { createClient } from '@supabase/supabase-js';
 
-// --- Main Handler ---
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
 export default async function handler(req, res) {
-  const { method, query } = req;
-  const { id } = query;
+  const { method, query, body } = req;
 
-  // --- AUTH CHECK ---
-  if (['POST', 'PUT', 'DELETE'].includes(method)) {
-    const session = verifyToken(req);
-    if (!session) {
-      return res.status(401).json({ ok: false, message: 'Unauthorized. Please log in.' });
-    }
-  }
+  switch (method) {
+    case 'GET':
+      if (query.id) {
+        // Fetch a single article by ID
+        try {
+          const { data, error } = await supabase
+            .from('articles')
+            .select('*')
+            .eq('id', query.id)
+            .single();
 
-  try {
-    switch (method) {
-      case 'GET': {
-        if (id) {
-          const result = await pool.query('SELECT * FROM articles WHERE id = $1', [id]);
-          if (result.rows.length > 0) {
-            return res.status(200).json({ article: result.rows[0] });
-          }
-          return res.status(404).json({ ok: false, message: 'Article not found' });
+          if (error) throw error;
+          if (!data) return res.status(404).json({ message: 'Article not found' });
+
+          return res.status(200).json(data);
+        } catch (error) {
+          return res.status(500).json({ message: error.message });
         }
-        const result = await pool.query('SELECT * FROM articles ORDER BY createdAt DESC');
-        return res.status(200).json({ articles: result.rows });
+      } else {
+        // Fetch all articles
+        try {
+          const { data, error } = await supabase
+            .from('articles')
+            .select('*');
+
+          if (error) throw error;
+
+          return res.status(200).json(data);
+        } catch (error) {
+          return res.status(500).json({ message: error.message });
+        }
       }
 
-      case 'POST': {
-        const { title, content, imageUrl } = req.body || {};
-        if (!title?.trim() || !content?.trim()) {
-          return res.status(400).json({ ok: false, message: 'Title and content are required' });
-        }
-        const newId = crypto.randomBytes(16).toString('hex');
-        const createdAt = Date.now();
-        await pool.query(
-          'INSERT INTO articles (id, title, content, imageUrl, createdAt) VALUES ($1, $2, $3, $4, $5)',
-          [newId, title, content, imageUrl, createdAt]
-        );
-        return res.status(201).json({ ok: true, id: newId });
+    case 'POST':
+      // Create a new article
+      try {
+        const { data, error } = await supabase
+          .from('articles')
+          .insert([body])
+          .single();
+
+        if (error) throw error;
+
+        return res.status(201).json(data);
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
       }
 
-      case 'PUT': {
-        const { title, content, imageUrl } = req.body || {};
-        if (!id || !title?.trim() || !content?.trim()) {
-          return res.status(400).json({ ok: false, message: 'ID, title, and content are required' });
-        }
-        const updatedAt = Date.now();
-        const result = await pool.query(
-          'UPDATE articles SET title = $1, content = $2, imageUrl = $3, updatedAt = $4 WHERE id = $5',
-          [title, content, imageUrl, updatedAt, id]
-        );
-        if (result.rowCount > 0) {
-          return res.status(200).json({ ok: true, message: 'Article updated' });
-        }
-        return res.status(404).json({ ok: false, message: 'Article not found' });
+    case 'PUT':
+      // Update an article by ID
+      try {
+        const { data, error } = await supabase
+          .from('articles')
+          .update(body)
+          .eq('id', query.id)
+          .single();
+
+        if (error) throw error;
+
+        return res.status(200).json(data);
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
       }
 
-      case 'DELETE': {
-        if (!id) {
-          return res.status(400).json({ ok: false, message: 'Article ID is required' });
-        }
-        const result = await pool.query('DELETE FROM articles WHERE id = $1', [id]);
-        if (result.rowCount > 0) {
-          return res.status(200).json({ ok: true, message: 'Article deleted' });
-        }
-        return res.status(404).json({ ok: false, message: 'Article not found' });
+    case 'DELETE':
+      // Delete an article by ID
+      try {
+        const { data, error } = await supabase
+          .from('articles')
+          .delete()
+          .eq('id', query.id)
+          .single();
+
+        if (error) throw error;
+
+        return res.status(204).end();
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
       }
 
-      default:
-        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-        return res.status(405).end(`Method ${method} Not Allowed`);
-    }
-  } catch (err) {
-    console.error('Database error:', err.stack || err);
-    return res.status(500).json({ ok: false, message: 'Internal server error' });
+    default:
+      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+      res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

@@ -1,16 +1,16 @@
 
 import React from 'react';
-import '../public/css/style.css';
-import '../public/css/layout.css';
-import '../public/css/theme.css';
-import '../public/css/articles.css';
-import '../public/css/featuredstory.css';
-import '../public/css/clock-calendar.css';
-import '../public/css/admin.css';
-import '../public/css/widgets.css';
-import '../public/css/custom.css';
-import '../public/css/template.css';
-import '../public/css/kenyaupdate.css';
+import './css/style.css';
+import './css/layout.css';
+import './css/theme.css';
+import './css/articles.css';
+import './css/featuredstory.css';
+import './css/clock-calendar.css';
+import './css/admin.css';
+import './css/widgets.css';
+import './css/custom.css';
+import './css/template.css';
+import './css/kenyaupdate.css';
 import HeroBanner from './components/HeroBanner';
 import SearchBar from './components/SearchBar';
 import InstallBanner from './components/InstallBanner';

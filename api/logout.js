@@ -1,16 +1,36 @@
-import { deleteSession } from '../_utils/session';
 
-export default function handler(req, res) {
+import './config.js';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
-  deleteSession(req);
+  const { token } = req.body;
 
-  res.setHeader(
-    'Set-Cookie',
-    'sessionId=; HttpOnly; Path=/; Max-Age=0; Secure; SameSite=Strict'
-  );
+  if (!token) {
+    return res.status(400).json({ ok: false, message: 'Token is required' });
+  }
 
-  res.status(200).json({ ok: true, message: 'Logout successful' });
+  try {
+    const { error } = await supabase.auth.signOut(token);
+
+    if (error) {
+      return res.status(400).json({ ok: false, message: error.message });
+    }
+
+    return res.status(200).json({ ok: true, message: 'Logout successful' });
+
+  } catch (error) {
+    console.error('Logout Handler Error:', error);
+    return res.status(500).json({ ok: false, message: 'An unexpected error occurred during logout.' });
+  }
 }
