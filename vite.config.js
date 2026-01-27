@@ -1,12 +1,14 @@
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
   server: {
     port: 4173,
     open: true,
-    host: true
+    host: true,
   },
   build: {
     outDir: 'dist',
@@ -15,20 +17,20 @@ export default defineConfig({
     minify: 'esbuild',
     rollupOptions: {
       input: {
-        main: 'index.html'
-        // admin: 'admin.html' // only if you actually have this file
+        main: resolve(__dirname, 'index.html'),
+        admin: resolve(__dirname, 'admin.html'), // ✅ add admin.html here
       },
       output: {
         manualChunks: {
-          react: ['react', 'react-dom']
-        }
-      }
-    }
+          react: ['react', 'react-dom'],
+        },
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': '/src'
-    }
+      '@': resolve(__dirname, 'src'),
+    },
   },
-  base: '/'   // ✅ ensures assets load correctly on Vercel
+  base: '/',
 });

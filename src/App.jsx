@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+
+// Global styles
 import "./css/style.css";
 import "./css/admin.css";
 import "./css/article.css";
@@ -14,6 +16,7 @@ import "./css/theme.css";
 import "./css/widgets.css";
 
 // Component imports
+import Header from "./components/Header";
 import HeroBanner from "./components/HeroBanner";
 import SearchBar from "./components/SearchBar";
 import InstallBanner from "./components/InstallBanner";
@@ -24,14 +27,14 @@ import NewsColumns from "./components/NewsColumns";
 import BottomHub from "./components/BottomHub";
 import Footer from "./components/Footer";
 
-// Page imports
-import AdminPage from "./pages/AdminPage";
-import ErrorPage from "./pages/ErrorPage"; // new error page
+// Pages
+import AdminPage from "./pages/AdminPage.jsx";
+import Login from "./pages/Login.jsx";
 
-// ✅ HomePage moved to pages/HomePage.jsx for clarity
 function HomePage() {
   return (
     <div>
+      <Header />
       <HeroBanner />
       <SearchBar />
       <InstallBanner />
@@ -45,16 +48,12 @@ function HomePage() {
   );
 }
 
-// ✅ Refined App component: no extra <Router>, only <Routes>
-function App() {
+export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/admin" element={<AdminPage />} />
-      {/* Catch-all route for 404s */}
-      <Route path="*" element={<ErrorPage />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 }
-
-export default App;
