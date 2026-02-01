@@ -27,14 +27,18 @@ const BottomHub = () => {
           </div>
         </div>
 
-        {/* Social Media */}
+        {/* Social Media & Contact */}
         <div className="hub-block social">
-          <h3>Connect With Us</h3>
+          <h3>Connect & Contact</h3>
           <div className="social-icons">
             <a href="https://twitter.com/zawadiintel" target="_blank" rel="noopener noreferrer">🐦 Twitter</a>
             <a href="https://facebook.com/zawadiintel" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
             <a href="https://instagram.com/zawadiintel" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
             <a href="https://linkedin.com/company/zawadiintel" target="_blank" rel="noopener noreferrer">💼 LinkedIn</a>
+          </div>
+          <div className="contact-info" style={{marginTop: '1rem'}}>
+            <p>Email: <a href="mailto:contact@zawadiintel.com">contact@zawadiintel.com</a></p>
+            <p>Phone: +254 700 000 000</p>
           </div>
         </div>
 
@@ -42,10 +46,11 @@ const BottomHub = () => {
         <div className="hub-block quick-links">
           <h3>Quick Links</h3>
           <ul>
+            <li><a href="/">Home</a></li>
             <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
-            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/tags/politics">Politics</a></li>
+            <li><a href="/tags/technology">Technology</a></li>
+            <li><a href="/tags/sports">Sports</a></li>
           </ul>
         </div>
       </div>

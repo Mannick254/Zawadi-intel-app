@@ -1,0 +1,47 @@
+.trending-sidebar {
+    border-left: 1px solid #ddd;
+    padding-left: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .trending-sidebar h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .trending-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+  
+  .trending-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 0.75rem;
+    border-radius: 4px;
+  }
+  
+  .trending-info {
+    flex: 1;
+  }
+  
+  .trending-title {
+    font-weight: 600;
+    color: #222;
+    text-decoration: none;
+  }
+  
+  .trending-title:hover {
+    text-decoration: underline;
+  }
+  
+  .badge {
+    background: #eee;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+  }
+  

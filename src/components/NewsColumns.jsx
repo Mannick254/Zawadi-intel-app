@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient"; // adjust path if needed
+import StoryCard from "./Storycard"; // ✅ import StoryCard
 
 const NewsColumns = () => {
   const [globalNews, setGlobalNews] = useState([]);
@@ -6,23 +8,24 @@ const NewsColumns = () => {
   const [localNews, setLocalNews] = useState([]);
 
   useEffect(() => {
-    // Mock data instead of API calls
-    const mockGlobal = [
-      { title: "Global headline 1", description: "Summary of global news", url: "#" },
-      { title: "Global headline 2", description: "Another global story", url: "#" },
-    ];
-    const mockAfrican = [
-      { title: "African headline 1", description: "Summary of African news", url: "#" },
-      { title: "African headline 2", description: "Another African story", url: "#" },
-    ];
-    const mockLocal = [
-      { title: "Kenya headline 1", description: "Summary of local news", url: "#" },
-      { title: "Kenya headline 2", description: "Another local story", url: "#" },
-    ];
+    const fetchNews = async () => {
+      const { data, error } = await supabase
+        .from("articles")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-    setGlobalNews(mockGlobal);
-    setAfricanNews(mockAfrican);
-    setLocalNews(mockLocal);
+      if (error) {
+        console.error("Error fetching articles:", error.message);
+        return;
+      }
+
+      // Split into categories
+      setGlobalNews(data.filter((a) => a.category === "global"));
+      setAfricanNews(data.filter((a) => a.category === "africa"));
+      setLocalNews(data.filter((a) => a.category === "local"));
+    };
+
+    fetchNews();
   }, []);
 
   return (
@@ -30,39 +33,27 @@ const NewsColumns = () => {
       <section className="three-column-layout">
         <div className="global-column">
           <h2>News Today</h2>
-          <blockquote>
-            "The future belongs to those who believe in the beauty of their dreams." — Eleanor Roosevelt
-          </blockquote>
-          <section className="global-news">
-            {globalNews.map((article, index) => (
-              <article key={index}>
-                <h3><a href={article.url}>{article.title}</a></h3>
-                <p>{article.description}</p>
-              </article>
+          <section className="global-news article-list">
+            {globalNews.map((article) => (
+              <StoryCard key={article.id} article={article} />
             ))}
           </section>
         </div>
 
         <div className="african-column">
           <h2>Africa Trending News</h2>
-          <section className="african-news">
-            {africanNews.map((article, index) => (
-              <article key={index}>
-                <h3><a href={article.url}>{article.title}</a></h3>
-                <p>{article.description}</p>
-              </article>
+          <section className="african-news article-list">
+            {africanNews.map((article) => (
+              <StoryCard key={article.id} article={article} />
             ))}
           </section>
         </div>
 
         <div className="local-column">
           <h2>Local News</h2>
-          <section className="local-news">
-            {localNews.map((article, index) => (
-              <article key={index}>
-                <h3><a href={article.url}>{article.title}</a></h3>
-                <p>{article.description}</p>
-              </article>
+          <section className="local-news article-list">
+            {localNews.map((article) => (
+              <StoryCard key={article.id} article={article} />
             ))}
           </section>
         </div>

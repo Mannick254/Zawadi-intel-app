@@ -1,0 +1,91 @@
+/* ===========================
+   Search Bar Container
+   =========================== */
+   .search-bar {
+    max-width: 280px;       /* ✅ keep it compact */
+    margin: 1rem;           /* space from edges */
+    padding: 0.75rem;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    float: left;            /* ✅ align to left side */
+  }
+  
+  /* ===========================
+     Form Styling
+     =========================== */
+  .search-bar form {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .search-bar input {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .search-bar .btn {
+    padding: 0.4rem 0.8rem;
+    background: #2a9d8f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .search-bar .btn:hover {
+    background: #21867a;
+  }
+  
+  /* ===========================
+     Results Section
+     =========================== */
+  .search-results {
+    margin-top: 1rem;
+  }
+  
+  .result-card {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+  }
+  
+  .result-card img {
+    width: 60px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .result-content h3 {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  
+  .result-content p {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0.25rem 0;
+  }
+  
+  .result-content small {
+    font-size: 0.75rem;
+    color: #777;
+  }
+  
+  /* ===========================
+     Error Message
+     =========================== */
+  .error {
+    color: #e63946;
+    font-weight: bold;
+  }
+  

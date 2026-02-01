@@ -1,0 +1,29 @@
+/* ===========================
+   Injected Heading Style (Al Jazeera Inspired)
+   =========================== */
+   .injected-heading {
+    margin: 1.5rem 0;
+  }
+  
+  .injected-heading a {
+    display: block;
+    background-color: #f7f7f7;        /* soft neutral background */
+    border-left: 3px solid #c81010;   /* bold red accent (Al Jazeera tone) */
+    padding: 0.85rem 1rem;
+    text-decoration: none;
+    color: #222;                      /* strong but neutral text */
+    font-size: 1.1rem;
+    font-weight: 500;                 /* lighter than bold */
+    line-height: 1.4;
+    transition: all 0.25s ease-in-out;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .injected-heading a:hover {
+    background-color: #ececec;        /* subtle hover background */
+    border-left-color: #a50e0e;       /* deeper red accent */
+    color: #c81010;                   /* headline red on hover */
+    transform: translateX(3px);       /* restrained movement */
+  }
+  

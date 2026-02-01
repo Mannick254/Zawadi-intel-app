@@ -1,7 +1,6 @@
 import './config.js';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -13,7 +12,7 @@ export default async function handler(req, res) {
 
   try {
     switch (method) {
-      case 'GET':
+      case 'GET': {
         if (query.id) {
           // Fetch a single article by ID
           const { data, error } = await supabase
@@ -27,29 +26,40 @@ export default async function handler(req, res) {
 
           return res.status(200).json({ ok: true, data });
         } else {
-          // Fetch all articles
-          const { data, error } = await supabase.from('articles').select('*');
+          // Fetch all or only published articles depending on query
+          let q = supabase.from('articles').select('*').order('created_at', { ascending: false });
+
+          if (query.published === 'true') {
+            q = q.eq('published', true);
+          }
+
+          const { data, error } = await q;
           if (error) return res.status(500).json({ ok: false, message: error.message });
 
           return res.status(200).json({ ok: true, data });
         }
+      }
 
-      case 'POST':
-        // Validate input
+      case 'POST': {
         if (!body?.title) {
           return res.status(400).json({ ok: false, message: 'Title is required' });
         }
 
         const { data: inserted, error: insertError } = await supabase
           .from('articles')
-          .insert([{ title: body.title, content: body.content }])
+          .insert([{ 
+            title: body.title, 
+            content: body.content, 
+            published: body.published ?? true // default to published
+          }])
           .select();
 
         if (insertError) return res.status(500).json({ ok: false, message: insertError.message });
 
         return res.status(201).json({ ok: true, data: inserted[0] });
+      }
 
-      case 'PUT':
+      case 'PUT': {
         if (!query.id) {
           return res.status(400).json({ ok: false, message: 'Article ID is required for update' });
         }
@@ -64,8 +74,9 @@ export default async function handler(req, res) {
         if (updateError) return res.status(500).json({ ok: false, message: updateError.message });
 
         return res.status(200).json({ ok: true, data: updated });
+      }
 
-      case 'DELETE':
+      case 'DELETE': {
         if (!query.id) {
           return res.status(400).json({ ok: false, message: 'Article ID is required for delete' });
         }
@@ -78,6 +89,7 @@ export default async function handler(req, res) {
         if (deleteError) return res.status(500).json({ ok: false, message: deleteError.message });
 
         return res.status(204).end();
+      }
 
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);

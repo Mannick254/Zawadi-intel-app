@@ -2,30 +2,37 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { supabase } from "./supabaseClient"; // your Supabase client setup
+import { supabase } from "./supabaseClient"; // Supabase client setup
 
-// Utility: convert base64 VAPID public key to Uint8Array
+/* ===========================
+   Utility Functions
+   =========================== */
+
+// Convert base64 VAPID public key to Uint8Array
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
   const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
+  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
 }
 
-// Utility: convert ArrayBuffer to base64 string
+// Convert ArrayBuffer to base64 string
 function arrayBufferToBase64(buffer) {
   const bytes = new Uint8Array(buffer);
   let binary = "";
-  bytes.forEach(b => (binary += String.fromCharCode(b)));
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
   return window.btoa(binary);
 }
 
-// Save subscription directly into Supabase
+/* ===========================
+   Supabase Subscription Save
+   =========================== */
 async function saveSubscription(subscription) {
+  if (!supabase) {
+    console.error("❌ Supabase client not initialized.");
+    return;
+  }
+
   const endpoint = subscription.endpoint;
   const p256dh = arrayBufferToBase64(subscription.getKey("p256dh"));
   const auth = arrayBufferToBase64(subscription.getKey("auth"));
@@ -35,13 +42,15 @@ async function saveSubscription(subscription) {
     .insert([{ endpoint, p256dh, auth }]);
 
   if (error) {
-    console.error("❌ Error saving subscription:", error);
+    console.error("❌ Error saving subscription:", error.message);
   } else {
-    console.log("✅ Subscription saved to Supabase");
+    console.log("✅ Subscription saved to Supabase:", endpoint);
   }
 }
 
-// Register Service Worker + Push Subscription
+/* ===========================
+   Service Worker Registration
+   =========================== */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
@@ -54,14 +63,21 @@ if ("serviceWorker" in navigator) {
         return;
       }
 
+      // Check if already subscribed
+      const existingSubscription = await registration.pushManager.getSubscription();
+      if (existingSubscription) {
+        console.log("ℹ️ Already subscribed:", existingSubscription.endpoint);
+        await saveSubscription(existingSubscription);
+        return;
+      }
+
+      // Create new subscription
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
       });
 
-      console.log("📡 Push subscription created:", subscription);
-
-      // Save subscription directly to Supabase
+      console.log("📡 Push subscription created:", subscription.endpoint);
       await saveSubscription(subscription);
     } catch (error) {
       console.error("❌ ServiceWorker registration or subscription failed:", error);
@@ -69,7 +85,9 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// ✅ Mount App with BrowserRouter so Routes in App.jsx work
+/* ===========================
+   Mount App
+   =========================== */
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
