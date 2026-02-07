@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+devun { pkgs, ... }: {
   channel = "stable-24.05";
 
   packages = [

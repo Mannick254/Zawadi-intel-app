@@ -11,7 +11,7 @@ export default function TrendingSidebar() {
     const fetchTrending = async () => {
       const { data, error } = await supabase
         .from("articles")
-        .select("id, title, slug, image_url, badge, category")
+        .select("id, title, slug, image_url, category")
         .eq("trending", true)
         .order("created_at", { ascending: false })
         .limit(5);
@@ -28,27 +28,30 @@ export default function TrendingSidebar() {
   if (error) return <p className="error">Failed to load trending: {error}</p>;
 
   return (
-    <aside className="trending-sidebar">
+    <aside className="trending-sidebar" aria-label="Trending articles">
       <h2>Trending Now</h2>
       {trending.length === 0 && <p>No trending articles yet.</p>}
-      <ul>
+      <ul className="trending-list">
         {trending.map((item) => (
           <li key={item.id} className="trending-item">
-            {item.image_url && (
-              <img
-                src={item.image_url}
-                alt={item.title}
-                loading="lazy"
-                className="trending-thumb"
-              />
-            )}
-            <div className="trending-info">
-              <Link to={`/articles/${item.slug}`} className="trending-title">
-                {item.title}
+            <article className="trending-card">
+              <Link to={`/articles/${item.slug}`} className="trending-link">
+                {item.image_url && (
+                  <img
+                    src={item.image_url}
+                    alt={item.title || "Trending article image"}
+                    loading="lazy"
+                    className="trending-thumb"
+                  />
+                )}
+                <div className="trending-info">
+                  <h3 className="trending-title">{item.title}</h3>
+                  {item.category && (
+                    <span className="category">{item.category}</span>
+                  )}
+                </div>
               </Link>
-              {item.badge && <span className={`badge ${item.badge}`}>{item.badge}</span>}
-              <span className="category">{item.category}</span>
-            </div>
+            </article>
           </li>
         ))}
       </ul>

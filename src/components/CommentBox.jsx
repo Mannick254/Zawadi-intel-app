@@ -1,14 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
 
-export default function CommentBox() {
+export default function CommentBox({ articleId }) {
   const [comments, setComments] = useState([]);
   const [text, setText] = useState("");
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const fetchComments = async () => {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("* ")
+        .eq("article_id", articleId)
+        .order("created_at", { ascending: false });
+
+      if (data) {
+        setComments(data);
+      }
+      if (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [articleId]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (text.trim()) {
-      setComments([...comments, { text, date: new Date().toLocaleString() }]);
-      setText("");
+      const { data, error } = await supabase
+        .from("comments")
+        .insert([{ text, article_id: articleId }])
+        .single();
+
+      if (data) {
+        setComments([data, ...comments]);
+        setText("");
+      } else {
+        console.error("Error posting comment:", error);
+      }
     }
   };
 
@@ -24,10 +53,10 @@ export default function CommentBox() {
         <button type="submit">Post</button>
       </form>
       <ul>
-        {comments.map((c, idx) => (
-          <li key={idx}>
+        {comments.map((c) => (
+          <li key={c.id}>
             <p>{c.text}</p>
-            <small>{c.date}</small>
+            <small>{new Date(c.created_at).toLocaleString()}</small>
           </li>
         ))}
       </ul>

@@ -1,0 +1,152 @@
+/* ===========================
+   Al Jazeera Inspired Layout (Refined)
+   =========================== */
+   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans:wght@400;600&family=Merriweather:wght@400;700&display=swap');
+
+   .aj-container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 3rem 2rem; /* more breathing space */
+     background: #FFFFFF;
+   }
+   
+   /* Layouts */
+   .three-row-layout,
+   .single-row-layout {
+     display: flex;
+     flex-direction: column;
+     gap: 3.5rem; /* extra spacing between rows */
+   }
+   
+   /* Section titles */
+   .global-row h2,
+   .african-row h2,
+   .local-row h2 {
+     font-family: "Aljazeera", Georgia, serif;
+     font-size: 1.9rem;
+     font-weight: 700;
+     color: #1a202c;
+     margin-bottom: 2rem; /* more breathing space */
+     border-left: 4px solid #d69e2e; /* Al Jazeera gold accent */
+     padding-left: 1rem;
+   }
+   
+   /* Featured layout: main story + side stories */
+   .featuredLayout {
+     display: grid;
+     grid-template-columns: 2fr 1fr;
+     gap: 2.5rem;
+     align-items: start;
+   }
+   
+   /* Main story styling */
+   .mainStory {
+     display: flex;
+     flex-direction: column;
+   }
+   
+   .mainImage img {
+     width: 100%;
+     aspect-ratio: 11/6;
+     object-fit: cover;
+     border-radius: 6px;
+   }
+   
+   .mainContent {
+     margin-top: 1.25rem;
+   }
+   
+   .mainTitle a {
+     font-family: "Aljazeera", serif; /* Al Jazeera headline font */
+     font-size: 1.6rem;
+     font-weight: 700;
+     color: #1a202c;
+     text-decoration: none;
+     line-height: 1.5;
+   }
+   
+   .mainTitle a:hover {
+     color: #d69e2e;
+   }
+   
+   .mainExcerpt {
+     margin: 1rem 0;
+     font-size: 1.05rem;
+     line-height: 1.7;
+     color: #374151;
+     font-family: "Noto Sans", sans-serif;
+   }
+   
+   .storyDate {
+     font-size: 0.85rem;
+     color: #718096;
+     margin-top: 0.5rem;
+   }
+   
+   /* Side stories column */
+   .sideStories {
+     display: flex;
+     flex-direction: column;
+     border-left: 1px solid #e5e7eb;
+     padding-left: 1.75rem;
+     gap: 2rem; /* more breathing space between side cards */
+   }
+   
+   /* Each side card */
+   .sideCard {
+     display: flex;
+     align-items: flex-start;
+     gap: 1.25rem;
+     padding-bottom: 1.75rem;
+     border-bottom: 1px solid #e5e7eb;
+   }
+   
+   .sideCard:last-child {
+     border-bottom: none;
+   }
+   
+   .sideContent {
+     flex: 1;
+   }
+   
+   .sideTitle a {
+     font-family: "Amiri", serif; /* Al Jazeera headline font */
+     font-size: 1.05rem;
+     font-weight: 600;
+     color: #2d3748;
+     text-decoration: none;
+     line-height: 1.5;
+   }
+   
+   .sideTitle a:hover {
+     color: #d69e2e;
+   }
+   
+   .sideImage img {
+     width: 110px;
+     height: 80px;
+     object-fit: cover;
+     border-radius: 4px;
+   }
+   
+   /* Responsive adjustments */
+   @media (max-width: 768px) {
+     .featuredLayout {
+       grid-template-columns: 1fr;
+     }
+   
+     .sideStories {
+       border-left: none;
+       padding-left: 0;
+     }
+   
+     .mainTitle a {
+       font-size: 1.4rem;
+     }
+   
+     .global-row h2,
+     .african-row h2,
+     .local-row h2 {
+       font-size: 1.6rem;
+     }
+   }

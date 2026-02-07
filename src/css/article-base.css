@@ -1,149 +1,153 @@
 /* ===========================
    Global Typography & Body
    =========================== */
+   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Sans:wght@400;600&display=swap');
+
    body {
-    background-color: #fafafa;
-    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
-    color: #1a1a1a;
-    line-height: 1.75;        /* slightly tighter for readability */
-    font-size: 1rem;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  /* ===========================
-     Article Container
-     =========================== */
-  .news-article {
-    max-width: 960px;
-    margin: 2.5rem auto;
-    padding: 2rem;
-    background: #fff;
-    border-top: 3px solid #c81010; /* refined accent red */
-    border-radius: 6px;            /* slightly softer corners */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: box-shadow 0.25s ease;
-  }
-  .news-article:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-  
-  /* ===========================
-     Article Header
-     =========================== */
-  .article-header {
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 1rem;
-  }
-  .article-header h1 {
-    font-size: 2.1rem;       /* slightly reduced for balance */
-    font-weight: 600;        /* smoother than 700 */
-    color: #111;
-    line-height: 1.3;
-    margin: 0.5rem 0 1rem;
-  }
-  .article-header .subtitle {
-    font-size: 1.05rem;
-    color: #555;
-    margin-top: 0.5rem;
-    font-style: italic;
-    font-weight: 400;        /* lighter for contrast */
-  }
-  
-  /* ===========================
-     Article Meta
-     =========================== */
-  .article-meta {
-    font-size: 0.9rem;
-    color: #777;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 0.75rem;
-  }
-  .article-meta .author {
-    font-weight: 500;        /* softer than 600 */
-    color: #c81010;
-  }
-  
-  /* ===========================
-     Article Body
-     =========================== */
-  .article-body {
-    font-size: 1.05rem;
-    color: #333;
-    line-height: 1.75;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-  .article-body p {
-    margin-bottom: 1.4rem;
-    font-weight: 400;
-  }
-  .article-body h2 {
-    font-size: 1.7rem;
-    font-weight: 600;
-    margin: 2.2rem 0 1rem;
-    color: #111;
-    border-left: 3px solid #c81010; /* slimmer accent */
-    padding-left: 0.5rem;
-    font-family: "Roboto Slab", Georgia, serif;
-  }
-  .article-body h3 {
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin: 2rem 0 1rem;
-    color: #333;
-    font-family: "Roboto Slab", Georgia, serif;
-  }
-  .article-body h4, .injected-subtitle {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin: 1.6rem 0 1rem;
-    color: #444;
-    font-family: "Roboto Slab", Georgia, serif;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  /* ===========================
-     Images & Captions
-     =========================== */
-  .article-image,
-  .article-body img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 2rem auto;
-    border-radius: 6px;       /* softer corners */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .caption,
-  .article-body .injected-caption {
-    font-size: 0.9rem;
-    color: #666;
-    text-align: center;
-    margin-top: -0.5rem;
-    margin-bottom: 2rem;
-    font-style: italic;
-    font-weight: 400;
-  }
-  
-  /* ===========================
-     Blockquotes
-     =========================== */
-  blockquote {
-    border-left: 3px solid #c81010; /* slimmer accent */
-    margin: 2rem 0;
-    padding: 1rem 1.25rem;
-    font-size: 1rem;
-    font-style: italic;
-    color: #333;
-    background-color: #f7f7f7;      /* softer neutral background */
-    border-radius: 4px;
-    line-height: 1.6;
-  }
-  
+     background-color: #FFFFFF;
+     font-family: 'Noto Sans', sans-serif;
+     color: #1a1a1a;
+     line-height: 1.75;
+     font-size: 1rem;
+     margin: 0;
+     padding: 0;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+   }
+   
+   h1, h2, h3, h4 {
+     font-family: 'Amiri', serif;
+     font-weight: 700;
+     color: #111;
+   }
+   
+   /* ===========================
+      Article Container
+      =========================== */
+   .news-article {
+     max-width: 960px;
+     margin: 2.5rem auto;
+     padding: 2rem;
+     background: #FFFFFF;
+     border-top: 3px solid #d69e2e; /* Al Jazeera gold accent */
+     border-radius: 8px;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+     transition: box-shadow 0.25s ease;
+   }
+   .news-article:hover {
+     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+   }
+   
+   /* ===========================
+      Article Header
+      =========================== */
+   .article-header {
+     margin-bottom: 2rem;
+     border-bottom: 1px solid #e5e5e5;
+     padding-bottom: 1rem;
+   }
+   .article-header h1 {
+     font-size: 2.2rem;
+     font-weight: 700;
+     line-height: 1.3;
+     margin: 0.5rem 0 1rem;
+   }
+   .article-header .subtitle {
+     font-size: 1.1rem;
+     color: #555;
+     margin-top: 0.5rem;
+     font-style: italic;
+     font-weight: 400;
+   }
+   
+   /* ===========================
+      Article Meta
+      =========================== */
+   .article-meta {
+     font-size: 0.9rem;
+     color: #777;
+     display: flex;
+     flex-wrap: wrap;
+     gap: 1rem;
+     margin-top: 0.75rem;
+   }
+   .article-meta .author {
+     font-weight: 600;
+     color: #d69e2e; /* gold accent for author */
+   }
+   
+   /* ===========================
+      Article Body
+      =========================== */
+   .article-body {
+     font-size: 1.05rem;
+     color: #333;
+     line-height: 1.75;
+     max-width: 720px;
+     margin: 0 auto;
+   }
+   .article-body p {
+     margin-bottom: 1.4rem;
+     font-weight: 400;
+   }
+   .article-body h2 {
+     font-size: 1.7rem;
+     font-weight: 700;
+     margin: 2.2rem 0 1rem;
+     color: #111;
+     border-left: 4px solid #d69e2e; /* gold accent bar */
+     padding-left: 0.5rem;
+   }
+   .article-body h3 {
+     font-size: 1.4rem;
+     font-weight: 600;
+     margin: 2rem 0 1rem;
+     color: #333;
+   }
+   .article-body h4, .injected-subtitle {
+     font-size: 1.2rem;
+     font-weight: 600;
+     margin: 1.6rem 0 1rem;
+     color: #444;
+     padding-bottom: 0.3rem;
+     border-bottom: 2px solid #eee;
+   }
+   
+   /* ===========================
+      Images & Captions
+      =========================== */
+   .article-image,
+   .article-body img {
+     width: 100%;
+     height: auto;
+     display: block;
+     margin: 2rem auto;
+     border-radius: 8px;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+   }
+   .caption,
+   .article-body .injected-caption {
+     font-size: 0.9rem;
+     color: #666;
+     text-align: center;
+     margin-top: -0.5rem;
+     margin-bottom: 2rem;
+     font-style: italic;
+     font-weight: 400;
+   }
+   
+   /* ===========================
+      Blockquotes
+      =========================== */
+   blockquote {
+     border-left: 4px solid #d69e2e; /* gold accent */
+     margin: 2rem 0;
+     padding: 1rem 1.25rem;
+     font-size: 1rem;
+     font-style: italic;
+     color: #333;
+     background-color: #f7f7f7;
+     border-radius: 6px;
+     line-height: 1.6;
+   }
+   

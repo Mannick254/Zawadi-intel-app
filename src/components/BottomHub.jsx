@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const BottomHub = () => {
   return (
@@ -19,11 +19,11 @@ const BottomHub = () => {
         <div className="hub-block tags">
           <h3>Explore Topics</h3>
           <div className="tag-list">
-            <a href="/tags/kenya">Kenya</a>
-            <a href="/tags/economy">Economy</a>
-            <a href="/tags/climate">Climate</a>
-            <a href="/tags/politics">Politics</a>
-            <a href="/tags/africa">Africa</a>
+            <Link to="/tags/kenya">Kenya</Link>
+            <Link to="/tags/economy">Economy</Link>
+            <Link to="/tags/climate">Climate</Link>
+            <Link to="/tags/politics">Politics</Link>
+            <Link to="/tags/africa">Africa</Link>
           </div>
         </div>
 
@@ -46,11 +46,11 @@ const BottomHub = () => {
         <div className="hub-block quick-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/tags/politics">Politics</a></li>
-            <li><a href="/tags/technology">Technology</a></li>
-            <li><a href="/tags/sports">Sports</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/tags/politics">Politics</Link></li>
+            <li><Link to="/tags/technology">Technology</Link></li>
+            <li><Link to="/tags/sports">Sports</Link></li>
           </ul>
         </div>
       </div>

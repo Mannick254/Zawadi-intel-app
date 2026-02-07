@@ -2,7 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { supabase } from "./supabaseClient"; // Supabase client setup
+import { supabase } from "./supabaseClient"; 
+
+// Global Styles
+import "./css/styles.css";
+import "./css/layout.css";
+import "./css/theme.css";
+import "./css/admin.css";
+import "./css/article-base.css";
+import "./css/article-components.css";
+import "./css/article-interactive.css";
+import "./css/clock-calendar.css";
+import "./css/custom.css";
+import "./css/kenyaupdate.css";
+import "./css/template.css";
+import "./css/widgets.css";
 
 /* ===========================
    Utility Functions
@@ -28,23 +42,26 @@ function arrayBufferToBase64(buffer) {
    Supabase Subscription Save
    =========================== */
 async function saveSubscription(subscription) {
-  if (!supabase) {
-    console.error("❌ Supabase client not initialized.");
-    return;
-  }
+  try {
+    if (!supabase) {
+      throw new Error("Supabase client not initialized.");
+    }
 
-  const endpoint = subscription.endpoint;
-  const p256dh = arrayBufferToBase64(subscription.getKey("p256dh"));
-  const auth = arrayBufferToBase64(subscription.getKey("auth"));
+    const endpoint = subscription.endpoint;
+    const p256dh = arrayBufferToBase64(subscription.getKey("p256dh"));
+    const auth = arrayBufferToBase64(subscription.getKey("auth"));
 
-  const { error } = await supabase
-    .from("subscriptions")
-    .insert([{ endpoint, p256dh, auth }]);
+    const { error } = await supabase
+      .from("subscriptions")
+      .insert([{ endpoint, p256dh, auth }]);
 
-  if (error) {
-    console.error("❌ Error saving subscription:", error.message);
-  } else {
-    console.log("✅ Subscription saved to Supabase:", endpoint);
+    if (error) {
+      console.error("❌ Failed to save subscription:", error.message);
+    } else {
+      console.log("✅ Subscription saved:", endpoint);
+    }
+  } catch (err) {
+    console.error("❌ Subscription save error:", err.message);
   }
 }
 
@@ -55,11 +72,11 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
       const registration = await navigator.serviceWorker.register("/service-worker.js");
-      console.log("✅ ServiceWorker registered with scope:", registration.scope);
+      console.log("✅ ServiceWorker registered:", registration.scope);
 
       const vapidPublicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY;
       if (!vapidPublicKey) {
-        console.error("❌ VAPID public key missing. Check your .env file.");
+        console.error("❌ Missing VAPID public key. Check your .env file.");
         return;
       }
 
@@ -77,10 +94,10 @@ if ("serviceWorker" in navigator) {
         applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
       });
 
-      console.log("📡 Push subscription created:", subscription.endpoint);
+      console.log("📡 New push subscription:", subscription.endpoint);
       await saveSubscription(subscription);
     } catch (error) {
-      console.error("❌ ServiceWorker registration or subscription failed:", error);
+      console.error("❌ ServiceWorker setup failed:", error);
     }
   });
 }

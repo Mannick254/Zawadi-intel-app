@@ -78,6 +78,17 @@ body {
   padding: 1rem;
 }
 
+.nav-inner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  margin-right: auto;
+}
+
 /* ===========================
    Grid Layout
    =========================== */
@@ -94,14 +105,14 @@ body {
 .aj-main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 /* Featured article spans full width */
 .aj-main .feature-article,
 .aj-main .feature-article.side-by-side {
   grid-column: 1 / -1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   background: #f9f9f9;
   border-radius: 8px;
   padding: 1.25rem;
@@ -174,4 +185,20 @@ body {
   body { font-size: 0.95rem; }
   .aj-container { padding: 0.5rem; }
   .aj-sidebar { gap: 1rem; }
+}
+
+.navigation-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+}
+
+.nav-controls .search-toggle {
+  margin-left: 1rem;
 }

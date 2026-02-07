@@ -1,4 +1,7 @@
 import styles from "../pages/AdminPage.module.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import PropTypes from "prop-types";
 
 const slugify = (title) =>
   title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -17,7 +20,7 @@ export default function Preview({
   publicationDate,
   tags,
   videoUrl,
-  relatedLinks
+  relatedLinks,
 }) {
   return (
     <div className={styles.previewContainer}>
@@ -27,43 +30,49 @@ export default function Preview({
         {/* Featured Image */}
         {imageUrl && (
           <figure className={styles.featuredImage}>
-            <img src={imageUrl} alt={title} />
-            <figcaption>{subtitle}</figcaption>
+            <img
+              src={imageUrl}
+              alt={title ? `Featured image for ${title}` : "Featured image"}
+              loading="lazy"
+            />
+            {subtitle && <figcaption>{subtitle}</figcaption>}
           </figure>
         )}
 
         {/* Title & Subtitle */}
         <h3>{title || "Untitled"}</h3>
         {subtitle && (
-          <h4
-            className={styles.subtitle}
-            dangerouslySetInnerHTML={{ __html: subtitle }}
-          />
+          <ReactMarkdown remarkPlugins={[remarkGfm]} className={styles.subtitle}>
+            {subtitle}
+          </ReactMarkdown>
         )}
 
         {/* Metadata */}
-        <div className={styles.metaInfo}>
+        <section className={styles.metaInfo}>
           {author && <span className={styles.author}>By {author}</span>}
           {dateline && <span className={styles.dateline}>{dateline}</span>}
           {publicationDate && (
-            <span className={styles.date}>
+            <time className={styles.date} dateTime={publicationDate}>
               {new Date(publicationDate).toLocaleDateString()}
-            </span>
+            </time>
           )}
-        </div>
+        </section>
 
         {/* Content */}
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: content || "Content will appear here..." }}
-        />
+        <section className={styles.content}>
+          {content ? (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+          ) : (
+            <p>Content will appear here...</p>
+          )}
+        </section>
 
         {/* Video Embed */}
         {videoUrl && (
           <div className={styles.videoEmbed}>
             <iframe
               src={videoUrl}
-              title="Video"
+              title="Embedded video"
               frameBorder="0"
               allow="autoplay; encrypted-media"
               allowFullScreen
@@ -73,29 +82,34 @@ export default function Preview({
 
         {/* Tags */}
         {tags && (
-          <div className={styles.tags}>
+          <aside className={styles.tags}>
             {tags.split(",").map((tag) => (
               <span key={tag.trim()} className={styles.tag}>
                 {tag.trim()}
               </span>
             ))}
-          </div>
+          </aside>
         )}
 
         {/* Related Links */}
         {relatedLinks && (
-          <div className={styles.related}>
+          <aside className={styles.related}>
             <h5>Related</h5>
             <ul>
               {relatedLinks.split(",").map((link, idx) => (
                 <li key={idx}>
-                  <a href={link.trim()} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={link.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`Related link ${idx + 1}`}
+                  >
                     {link.trim()}
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </aside>
         )}
 
         {/* Badges */}
@@ -107,8 +121,25 @@ export default function Preview({
         </div>
 
         {/* Slug */}
-        <small>Slug: {slugify(title)}</small>
+        <small>Slug: {slugify(title || "untitled")}</small>
       </article>
     </div>
   );
 }
+
+Preview.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  content: PropTypes.string,
+  imageUrl: PropTypes.string,
+  section: PropTypes.string,
+  category: PropTypes.string,
+  badge: PropTypes.string,
+  trending: PropTypes.bool,
+  author: PropTypes.string,
+  dateline: PropTypes.string,
+  publicationDate: PropTypes.string,
+  tags: PropTypes.string,
+  videoUrl: PropTypes.string,
+  relatedLinks: PropTypes.string,
+};

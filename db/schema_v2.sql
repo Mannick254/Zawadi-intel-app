@@ -1,0 +1,11 @@
+CREATE TABLE likes (
+  article_id TEXT PRIMARY KEY REFERENCES articles(id) ON DELETE CASCADE,
+  like_count INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  article_id TEXT REFERENCES articles(id) ON DELETE CASCADE,
+  text TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

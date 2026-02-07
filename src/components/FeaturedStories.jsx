@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import styles from "./FeaturedStories.module.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const FeaturedStories = () => {
   const [stories, setStories] = useState([]);
@@ -63,9 +65,11 @@ const FeaturedStories = () => {
                 {mainStory.title}
               </a>
             </h3>
-            <p className={styles.mainExcerpt}>
-              {mainStory.content?.slice(0, 160)}...
-            </p>
+            <div className={styles.mainExcerpt}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {mainStory.content ? `${mainStory.content.slice(0, 160)}...` : ""}
+              </ReactMarkdown>
+            </div>
             <time className={styles.storyDate} dateTime={mainStory.created_at}>
               {new Date(mainStory.created_at).toLocaleDateString("en-US", {
                 year: "numeric",
