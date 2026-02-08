@@ -121,9 +121,9 @@ export default function ArticleDetail() {
 
             {/* Engagement toolbar */}
             <div className="article-engagement">
-              <span className="engagement-link" onClick={() => setShowLike(!showLike)}>Like</span>
-              <span className="engagement-link" onClick={() => setShowShare(!showShare)}>Share</span>
-              <span className="engagement-link" onClick={() => setShowComment(!showComment)}>Comment</span>
+              <span className="engagement-link" onClick={() => setShowLike(!showLike)}>👍 Like</span>
+              <span className="engagement-link" onClick={() => setShowShare(!showShare)}>🔗 Share</span>
+              <span className="engagement-link" onClick={() => setShowComment(!showComment)}>💬 Comment</span>
 
               {showLike && <LikeButton />}
               {showShare && <ShareButtons url={`https://zawadiintelnews.vercel.app/articles/${slug}`} />}

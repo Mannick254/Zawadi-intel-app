@@ -357,6 +357,14 @@ form button:hover:not(:disabled) {
   color: #444;
 }
 
+/* Featured Options Separator */
+.featured-options-separator {
+  height: 1px;
+  background-color: #ddd;
+  margin: 1rem 0;
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .adminContainer {

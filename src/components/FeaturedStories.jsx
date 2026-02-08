@@ -5,26 +5,60 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 const FeaturedStories = () => {
-  const [stories, setStories] = useState([]);
+  const [mainStory, setMainStory] = useState(null);
+  const [sideStories, setSideStories] = useState([]);
+  const [mustRead, setMustRead] = useState([]);
+  const [mostRelevant, setMostRelevant] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const fetchStories = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("articles")
-        .select("*")
-        .eq("published", true)
-        .eq("section", "feature")
-        .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Error loading featured stories:", error.message);
+      try {
+        // Featured stories
+        const { data: featured, error: featuredError } = await supabase
+          .from("articles")
+          .select("*")
+          .eq("published", true)
+          .eq("section", "feature")
+          .order("created_at", { ascending: false });
+
+        if (featuredError) throw featuredError;
+
+        if (featured && featured.length > 0) {
+          setMainStory(featured[0]);
+          setSideStories(featured.slice(1, 5));
+        }
+
+        // MUST READ
+        const { data: mustReadData, error: mustReadError } = await supabase
+          .from("articles")
+          .select("*")
+          .eq("published", true)
+          .eq("must_read", true)
+          .order("created_at", { ascending: false });
+
+        if (mustReadError) throw mustReadError;
+        setMustRead(mustReadData || []);
+
+        // MOST RELEVANT
+        const { data: mostRelevantData, error: mostRelevantError } = await supabase
+          .from("articles")
+          .select("*")
+          .eq("published", true)
+          .eq("most_relevant", true)
+          .order("created_at", { ascending: false });
+
+        if (mostRelevantError) throw mostRelevantError;
+        setMostRelevant(mostRelevantData || []);
+
+      } catch (err) {
+        console.error("Error loading stories:", err.message);
         setErrorMsg("Failed to load stories.");
-      } else {
-        setStories(data || []);
       }
+
       setLoading(false);
     };
 
@@ -33,17 +67,11 @@ const FeaturedStories = () => {
 
   if (loading) return <p className={styles.status}>Loading stories...</p>;
   if (errorMsg) return <p className={styles.error}>{errorMsg}</p>;
-  if (stories.length === 0)
-    return <p className={styles.status}>No featured stories available at the moment.</p>;
-
-  const [mainStory, ...otherStories] = stories;
+  if (!mainStory) return <p className={styles.status}>No featured stories available at the moment.</p>;
 
   return (
     <section id="featured-stories" className={styles.featuredStories}>
-      <div className={styles.featuredHeader}>
-      
-        {/* Intro minimized for newsroom feel */}
-      </div>
+      <div className={styles.featuredHeader}></div>
 
       <div className={styles.featuredLayout}>
         {/* Hero story */}
@@ -82,7 +110,7 @@ const FeaturedStories = () => {
 
         {/* Side stories */}
         <div className={styles.sideStories}>
-          {otherStories.map((story) => (
+          {sideStories.map((story) => (
             <article className={styles.sideCard} key={story.id}>
               <div className={styles.sideContent}>
                 <h4 className={styles.sideTitle}>
@@ -111,6 +139,45 @@ const FeaturedStories = () => {
             </article>
           ))}
         </div>
+
+        {/* Third column */}
+        <aside className={styles.thirdColumn}>
+          <div className={styles.mustRead}>
+            <div className={styles.mustReadHeading}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {`### **MUST READ**`}
+              </ReactMarkdown>
+            </div>
+            <div className={styles.mustReadList}>
+              {mustRead.map((story) => (
+                <div key={story.id} className={styles.mustReadItem}>
+                  <a href={`/articles/${story.slug || story.id}`}>
+                    {story.title}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <hr className={styles.separator} />
+
+          <div className={styles.mostRelevant}>
+            <div className={styles.mostRelevantHeading}>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {`### **MOST RELEVANT**`}
+              </ReactMarkdown>
+            </div>
+            <div className={styles.relevantList}>
+              {mostRelevant.map((story) => (
+                <div key={story.id} className={styles.relevantItem}>
+                  <a href={`/articles/${story.slug || story.id}`}>
+                    {story.title}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   );

@@ -19,6 +19,7 @@ export default function ArticleForm({
   contentRef,
   handleInjectSubtitle,
   handleInjectImage,
+  handleInjectLink,
 }) {
   const handleChange = createChangeHandler(setForm);
 
@@ -38,6 +39,7 @@ export default function ArticleForm({
             <option value="news">News Columns</option>
             <option value="feature">Feature Stories</option>
             <option value="update">Kenya Update</option>
+            <option value="opinion">Opinion</option>
           </select>
         </label>
 
@@ -57,6 +59,33 @@ export default function ArticleForm({
           </label>
         )}
       </fieldset>
+
+      {/* Featured Options */}
+      {form.section === "feature" && (
+        <fieldset>
+          <legend>Featured Options</legend>
+          <label>
+            <input
+              type="checkbox"
+              name="must_read"
+              checked={form.must_read || false}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            MUST READ
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              name="most_relevant"
+              checked={form.most_relevant || false}
+              onChange={handleChange}
+              disabled={loading}
+            />
+            MOST RELEVANT
+          </label>
+        </fieldset>
+      )}
 
       {/* Metadata */}
       <fieldset>
@@ -167,6 +196,14 @@ export default function ArticleForm({
           disabled={loading}
         />
         <input
+          type="text"
+          name="imageCaption"
+          placeholder="Featured Image Caption"
+          value={form.imageCaption || ""}
+          onChange={handleChange}
+          disabled={loading}
+        />
+        <input
           type="url"
           name="videoUrl"
           placeholder="Video Embed URL"
@@ -237,6 +274,28 @@ export default function ArticleForm({
           />
           <button type="button" onClick={handleInjectImage} disabled={loading}>
             Inject Image (Markdown ![alt](url "caption"))
+          </button>
+        </div>
+
+        <div className={styles.injectContainer}>
+          <input
+            type="text"
+            name="injectLinkText"
+            placeholder="Link Text"
+            value={form.injectLinkText || ""}
+            onChange={handleChange}
+            disabled={loading}
+          />
+          <input
+            type="text"
+            name="injectLinkSlug"
+            placeholder="Target Article Slug"
+            value={form.injectLinkSlug || ""}
+            onChange={handleChange}
+            disabled={loading}
+          />
+          <button type="button" onClick={handleInjectLink} disabled={loading}>
+            Inject Link
           </button>
         </div>
       </fieldset>

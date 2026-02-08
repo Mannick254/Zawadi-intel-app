@@ -15,13 +15,24 @@ const initialForm = {
   subtitle: "",
   content: "",
   imageUrl: "",
+  imageCaption: "",
   category: "global",
   section: "news",
   badge: "",
   trending: false,
+  must_read: false,
+  most_relevant: false,
+  author: "",
+  dateline: "",
+  publicationDate: "",
+  tags: "",
+  videoUrl: "",
+  relatedLinks: "",
   injectImageUrl: "",
   injectImageCaption: "",
   injectSubtitle: "",
+  injectLinkText: "",
+  injectLinkSlug: "",
 };
 
 export default function AdminPage() {
@@ -75,15 +86,24 @@ export default function AdminPage() {
   const handleEdit = (item) => {
     setEditingId(item.id);
     setForm({
-      ...form,
+      ...initialForm,
       title: item.title,
       subtitle: item.subtitle || "",
       content: item.content,
       imageUrl: item.image_url || "",
+      imageCaption: item.image_caption || "",
       category: item.category || "global",
       section: item.section,
       badge: item.badge || "",
       trending: item.trending || false,
+      must_read: item.must_read || false,
+      most_relevant: item.most_relevant || false,
+      author: item.author || "",
+      dateline: item.dateline || "",
+      publicationDate: item.publication_date || "",
+      tags: Array.isArray(item.tags) ? item.tags.join(", ") : item.tags || "",
+      videoUrl: item.video_url || "",
+      relatedLinks: Array.isArray(item.related_links) ? item.related_links.join(", ") : item.related_links || "",
     });
   };
 
@@ -127,7 +147,7 @@ export default function AdminPage() {
     if (!textarea) return;
 
     const cursorPosition = textarea.selectionStart;
-    const caption = form.injectImageCaption ? `"${form.injectImageCaption}"` : "";
+    const caption = form.injectImageCaption ? `\"${form.injectImageCaption}\"` : "";
     const markdownImage = `![${form.injectImageCaption || "image"}](${form.injectImageUrl} ${caption})\n`;
 
     const newContent = `${form.content.slice(0, cursorPosition)}\n${markdownImage}\n${form.content.slice(cursorPosition)}`;
@@ -137,6 +157,25 @@ export default function AdminPage() {
       content: newContent,
       injectImageUrl: "",
       injectImageCaption: "",
+    });
+    textarea.focus();
+  };
+
+  const handleInjectLink = () => {
+    if (!form.injectLinkText || !form.injectLinkSlug) return;
+    const textarea = contentRef.current;
+    if (!textarea) return;
+
+    const cursorPosition = textarea.selectionStart;
+    const markdownLink = `[${form.injectLinkText}](/articles/${form.injectLinkSlug})`;
+
+    const newContent = `${form.content.slice(0, cursorPosition)}${markdownLink}${form.content.slice(cursorPosition)}`;
+
+    setForm({
+      ...form,
+      content: newContent,
+      injectLinkText: "",
+      injectLinkSlug: "",
     });
     textarea.focus();
   };
@@ -154,7 +193,6 @@ export default function AdminPage() {
     try {
       const slug = slugify(form.title);
 
-      // Map camelCase → snake_case for Supabase
       const payload = {
         title: form.title,
         subtitle: form.subtitle,
@@ -165,12 +203,17 @@ export default function AdminPage() {
         badge: form.badge,
         trending: form.trending,
         image_url: form.imageUrl,
-        inject_image_url: form.injectImageUrl,
-        inject_image_caption: form.injectImageCaption,
-        inject_subtitle: form.injectSubtitle,
+        image_caption: form.imageCaption,
+        must_read: form.must_read,
+        most_relevant: form.most_relevant,
+        author: form.author,
+        dateline: form.dateline,
+        publication_date: form.publicationDate,
+        tags: form.tags.split(",").map(tag => tag.trim()).filter(Boolean),
+        video_url: form.videoUrl,
+        related_links: form.relatedLinks.split(",").map(link => link.trim()).filter(Boolean),
       };
 
-      // Check for duplicate slug
       const { data: slugCheck } = await supabase.from("articles").select("id").eq("slug", slug);
       if (!editingId && slugCheck.length > 0) {
         throw new Error("Slug already exists. Choose a different title.");
@@ -217,6 +260,7 @@ export default function AdminPage() {
           loading,
           handleInjectSubtitle,
           handleInjectImage,
+          handleInjectLink,
         }}
       />
       <Preview {...form} />
@@ -227,6 +271,8 @@ export default function AdminPage() {
             ? `News - ${form.category} Articles`
             : form.section === "feature"
             ? "Feature Stories"
+            : form.section === "opinion"
+            ? "Opinion Articles"
             : "Kenya Updates"}
         </h2>
         {loading ? (

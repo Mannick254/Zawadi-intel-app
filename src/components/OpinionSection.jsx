@@ -1,101 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import "./OpinionSection.css";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import './OpinionSection.css';
+
 
 const OpinionSection = () => {
-  const [opinionArticles, setOpinionArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     const fetchOpinions = async () => {
-      setLoading(true);
       const { data, error } = await supabase
-        .from("articles")
-        .select("*")
-        .eq("published", true)
-        .eq("category", "opinion")
-        .order("created_at", { ascending: false })
-        .limit(4);
+        .from('articles')
+        .select('*')
+        .eq('section', 'opinion')
+        .order('publication_date', { ascending: false });
 
       if (error) {
-        console.error("Error fetching opinion articles:", error.message);
-        setError(error.message);
+        console.error('Error fetching opinion articles:', error);
       } else {
-        setOpinionArticles(data);
+        setArticles(data);
       }
-      setLoading(false);
     };
 
     fetchOpinions();
   }, []);
 
-  if (loading) {
-    return (
-      <section className="opinion-hub">
-        <div className="opinion-container">
-          <h2>Opinion & Analysis</h2>
-          <p>Loading opinion articles...</p>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="opinion-hub">
-        <div className="opinion-container">
-          <h2>Opinion & Analysis</h2>
-          <p>Could not load opinion articles at this time.</p>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="opinion-hub">
-      <div className="opinion-container">
-        <h2>Opinion & Analysis</h2>
-        {opinionArticles.length > 0 ? (
-          <div className="opinion-grid">
-            {opinionArticles.map((story) => (
-              <article className="opinion-piece" key={story.id}>
-                {story.image_url && (
-                  <div className="opinion-piece-image">
-                    <a href={`/articles/${story.slug || story.id}`}>
-                      <img
-                        src={story.image_url}
-                        alt={story.title}
-                        loading="lazy"
-                      />
-                    </a>
-                  </div>
-                )}
-                <div className="opinion-piece-content">
-                  <h3 className="opinion-piece-title">
-                    <a href={`/articles/${story.slug || story.id}`}>
-                      {story.title}
-                    </a>
-                  </h3>
-                  <p className="opinion-piece-author">
-                    By {story.author || "Zawadi Intel Contributor"}
-                  </p>
-                  <div className="opinion-piece-excerpt">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {story.content
-                        ? `${story.content.slice(0, 120)}...`
-                        : ""}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              </article>
-            ))}
+    <section className="opinion-section">
+      <h2 className="opinion-title">Opinion</h2>
+      <div className="opinion-grid">
+        {articles.map(article => (
+          <div key={article.id} className="opinion-card">
+            <img src={article.image_url} alt={article.title} />
+            <div className="opinion-card-content">
+              <h3><a href={`/articles/${article.slug}`}>{article.title}</a></h3>
+              <p>{article.subtitle}</p>
+              <small>By {article.author} on {new Date(article.publication_date).toLocaleDateString()}</small>
+            </div>
           </div>
-        ) : (
-          <p>No opinion articles available at the moment.</p>
-        )}
+        ))}
       </div>
     </section>
   );
